@@ -1,0 +1,46 @@
+Traceback (most recent call last):
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 627, in _async_poll_for_reply
+    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/util.py", line 89, in ensure_async
+    result = await obj
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/jupyter_client/asynchronous/channels.py", line 48, in get_msg
+    raise Empty
+_queue.Empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 1117, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/util.py", line 78, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/util.py", line 57, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 558, in async_execute
+    await self.async_execute_cell(
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 846, in async_execute_cell
+    exec_reply = await self.task_poll_for_reply
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 651, in _async_poll_for_reply
+    await self._async_handle_timeout(timeout, cell)
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/nbclient/client.py", line 701, in _async_handle_timeout
+    raise CellTimeoutError.error_from_timeout_and_cell(
+nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
+The message was: Cell execution timed out.
+Here is a preview of the cell contents:
+-------------------
+from timeit import timeit
+import random 
+
+random.seed(0)
+num_list = [random.randint(0,22) for _ in range(1000)]
+
+numExp = 100
+custom_time = timeit("custom_counter(num_list)", globals=globals())
+counter_time = timeit("Counter(num_list)", globals=globals())
+print(custom_time/counter_time)
+-------------------
+
