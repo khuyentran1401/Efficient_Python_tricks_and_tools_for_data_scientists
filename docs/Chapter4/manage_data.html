@@ -42,6 +42,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -90,6 +92,11 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../how_to_read.html">
+   How to Read This Book
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../Chapter1/Chapter1.html">
    Python Built-in Methods
@@ -499,6 +506,96 @@
 <p>This section covers some tools to work with your data.</p>
 <div class="section" id="dvc-a-data-version-control-tool-for-your-data-science-projects">
 <h2>DVC: A Data Version Control Tool for Your Data Science Projects<a class="headerlink" href="#dvc-a-data-version-control-tool-for-your-data-science-projects" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dvc
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: dvc in /home/khuyen/book/venv/lib/python3.8/site-packages (2.7.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: gitpython&gt;3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (3.1.18)
+Requirement already satisfied: pathspec&lt;0.9.0,&gt;=0.6.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.8.1)
+Requirement already satisfied: setuptools&gt;=34.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (44.0.0)
+Requirement already satisfied: dpath&lt;3,&gt;=2.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.0.5)
+Requirement already satisfied: pygtrie&gt;=2.3.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.4.2)
+Requirement already satisfied: dulwich&gt;=0.20.23 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.20.25)
+Requirement already satisfied: flufl.lock&lt;4,&gt;=3.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (3.2)
+Requirement already satisfied: pydot&gt;=1.2.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.4.2)
+Requirement already satisfied: requests&gt;=2.22.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.24.0)
+Requirement already satisfied: distro&gt;=1.3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.6.0)
+Requirement already satisfied: fsspec[http]&gt;=2021.8.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2021.8.1)
+Requirement already satisfied: voluptuous&gt;=0.11.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.12.1)
+Requirement already satisfied: configobj&gt;=5.0.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (5.0.6)
+Requirement already satisfied: appdirs&gt;=1.4.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.4.4)
+Requirement already satisfied: flatten-dict&lt;1,&gt;=0.4.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.4.2)
+Requirement already satisfied: rich&gt;=10.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (10.9.0)
+Requirement already satisfied: typing-extensions&gt;=3.7.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (3.10.0.2)
+Requirement already satisfied: ruamel.yaml&gt;=0.17.11 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.17.16)
+Requirement already satisfied: networkx&gt;=2.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.6.3)
+Requirement already satisfied: shtab&lt;2,&gt;=1.3.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.4.1)
+Requirement already satisfied: shortuuid&gt;=0.5.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.0.1)
+Requirement already satisfied: pyasn1&gt;=0.4.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.4.8)
+Requirement already satisfied: psutil&gt;=5.8.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (5.8.0)
+Requirement already satisfied: pygit2&gt;=1.5.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.6.1)
+Requirement already satisfied: aiohttp-retry==2.4.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.4.5)
+Requirement already satisfied: diskcache&gt;=5.2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (5.2.1)
+Requirement already satisfied: dictdiffer&gt;=0.8.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.8.1)
+Requirement already satisfied: zc.lockfile&gt;=1.2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.0)
+Requirement already satisfied: grandalf==0.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.6)
+Requirement already satisfied: funcy&gt;=1.14 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (1.16)
+Requirement already satisfied: tabulate&gt;=0.8.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.8.9)
+Requirement already satisfied: toml&gt;=0.10.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.10.2)
+Requirement already satisfied: packaging&gt;=19.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (21.0)
+Requirement already satisfied: colorama&gt;=0.3.9 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.4.4)
+Requirement already satisfied: tqdm&lt;5,&gt;=4.45.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (4.62.2)
+Requirement already satisfied: ply&gt;=3.9 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (3.11)
+Requirement already satisfied: python-benedict&gt;=0.21.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.24.2)
+Requirement already satisfied: pyparsing==2.4.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (2.4.7)
+Requirement already satisfied: nanotime&gt;=0.5.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dvc) (0.5.2)
+Requirement already satisfied: aiohttp in /home/khuyen/book/venv/lib/python3.8/site-packages (from aiohttp-retry==2.4.5-&gt;dvc) (3.7.4.post0)
+Requirement already satisfied: future in /home/khuyen/book/venv/lib/python3.8/site-packages (from grandalf==0.6-&gt;dvc) (0.18.2)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from configobj&gt;=5.0.6-&gt;dvc) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi in /home/khuyen/book/venv/lib/python3.8/site-packages (from dulwich&gt;=0.20.23-&gt;dvc) (2021.5.30)
+Requirement already satisfied: urllib3&gt;=1.24.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dulwich&gt;=0.20.23-&gt;dvc) (1.25.11)
+Requirement already satisfied: atpublic in /home/khuyen/book/venv/lib/python3.8/site-packages (from flufl.lock&lt;4,&gt;=3.2-&gt;dvc) (2.3)
+Requirement already satisfied: gitdb&lt;5,&gt;=4.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from gitpython&gt;3-&gt;dvc) (4.0.7)
+Requirement already satisfied: smmap&lt;5,&gt;=3.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from gitdb&lt;5,&gt;=4.0.1-&gt;gitpython&gt;3-&gt;dvc) (4.0.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cffi&gt;=1.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pygit2&gt;=1.5.0-&gt;dvc) (1.14.6)
+Requirement already satisfied: pycparser in /home/khuyen/book/venv/lib/python3.8/site-packages (from cffi&gt;=1.4.0-&gt;pygit2&gt;=1.5.0-&gt;dvc) (2.20)
+Requirement already satisfied: phonenumbers in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (8.12.32)
+Requirement already satisfied: pyyaml in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (5.4.1)
+Requirement already satisfied: python-fsutil in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (0.5.0)
+Requirement already satisfied: python-slugify in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (4.0.1)
+Requirement already satisfied: python-dateutil in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (2.8.2)
+Requirement already satisfied: xmltodict in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (0.12.0)
+Requirement already satisfied: ftfy in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (6.0.3)
+Requirement already satisfied: mailchecker in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-benedict&gt;=0.21.1-&gt;dvc) (4.0.11)
+Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests&gt;=2.22.0-&gt;dvc) (3.0.4)
+Requirement already satisfied: idna&lt;3,&gt;=2.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests&gt;=2.22.0-&gt;dvc) (2.10)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.6.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from rich&gt;=10.0.0-&gt;dvc) (2.10.0)
+Requirement already satisfied: commonmark&lt;0.10.0,&gt;=0.9.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from rich&gt;=10.0.0-&gt;dvc) (0.9.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ruamel.yaml.clib&gt;=0.1.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ruamel.yaml&gt;=0.17.11-&gt;dvc) (0.2.6)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from aiohttp-&gt;aiohttp-retry==2.4.5-&gt;dvc) (5.1.0)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from aiohttp-&gt;aiohttp-retry==2.4.5-&gt;dvc) (1.6.3)
+Requirement already satisfied: async-timeout&lt;4.0,&gt;=3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from aiohttp-&gt;aiohttp-retry==2.4.5-&gt;dvc) (3.0.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: attrs&gt;=17.3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from aiohttp-&gt;aiohttp-retry==2.4.5-&gt;dvc) (21.2.0)
+Requirement already satisfied: wcwidth in /home/khuyen/book/venv/lib/python3.8/site-packages (from ftfy-&gt;python-benedict&gt;=0.21.1-&gt;dvc) (0.2.5)
+Requirement already satisfied: text-unidecode&gt;=1.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-slugify-&gt;python-benedict&gt;=0.21.1-&gt;dvc) (1.3)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Git is a powerful tool to go back and forth different versions of your code. Is there a way that you can also control different versions of your data?</p>
 <p>That is when DVC comes in handy. With DVC, you can keep the information about different versions of your data in Git while storing your original data somewhere else.</p>
 <p>It is essentially like Git but is used for data. The code below shows how to use DVC.</p>
@@ -529,6 +626,36 @@ $ dvc checkout
 </div>
 <div class="section" id="sweetviz-compare-the-similar-features-between-2-different-datasets">
 <h2>sweetviz: Compare the similar features between 2 different datasets<a class="headerlink" href="#sweetviz-compare-the-similar-features-between-2-different-datasets" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install sweetviz 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sweetviz in /home/khuyen/book/venv/lib/python3.8/site-packages (2.1.3)
+Requirement already satisfied: numpy&gt;=1.16.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (1.19.5)
+Requirement already satisfied: importlib-resources&gt;=1.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (5.2.2)
+Requirement already satisfied: tqdm&gt;=4.43.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (4.62.2)
+Requirement already satisfied: matplotlib&gt;=3.1.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (3.4.3)
+Requirement already satisfied: pandas!=1.0.0,!=1.0.1,!=1.0.2,&gt;=0.25.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (1.3.2)
+Requirement already satisfied: jinja2&gt;=2.11.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (3.0.1)
+Requirement already satisfied: scipy&gt;=1.3.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from sweetviz) (1.7.1)
+Requirement already satisfied: zipp&gt;=3.1.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from importlib-resources&gt;=1.2.0-&gt;sweetviz) (3.5.0)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jinja2&gt;=2.11.1-&gt;sweetviz) (2.0.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cycler&gt;=0.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=3.1.3-&gt;sweetviz) (0.10.0)
+Requirement already satisfied: pillow&gt;=6.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=3.1.3-&gt;sweetviz) (8.3.1)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=3.1.3-&gt;sweetviz) (1.3.2)
+Requirement already satisfied: pyparsing&gt;=2.2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=3.1.3-&gt;sweetviz) (2.4.7)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=3.1.3-&gt;sweetviz) (2.8.2)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from cycler&gt;=0.10-&gt;matplotlib&gt;=3.1.3-&gt;sweetviz) (1.16.0)
+Requirement already satisfied: pytz&gt;=2017.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas!=1.0.0,!=1.0.1,!=1.0.2,&gt;=0.25.3-&gt;sweetviz) (2021.1)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Sometimes it is important to compare the similar features between 2 different datasets side by side such as comparing train and test sets. If you want to quickly compare 2 datasets through graphs, check out sweetviz.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -546,26 +673,8 @@ $ dvc checkout
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8373d1bacc894532a51f7ca635d47127", "version_major": 2, "version_minor": 0}
+{"model_id": "b024f3fab0dd4068850a437d65a67486", "version_major": 2, "version_minor": 0}
 </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Report SWEETVIZ_REPORT.html was generated! NOTEBOOK/COLAB USERS: the web browser MAY not pop up, regardless, the report IS saved in your notebook/colab files.
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 17;
-                var nbb_unformatted_code = "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\nimport sweetviz as sv \n\nX, y = load_iris(return_X_y=True, as_frame=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\nreport = sv.compare([X_train, 'train data'], [X_test, 'test data'])\nreport.show_html()";
-                var nbb_formatted_code = "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\nimport sweetviz as sv\n\nX, y = load_iris(return_X_y=True, as_frame=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\nreport = sv.compare([X_train, \"train data\"], [X_test, \"test data\"])\nreport.show_html()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Opening in existing browser session.
 </pre></div>
 </div>
 </div>
@@ -575,6 +684,12 @@ $ dvc checkout
 <p><a class="reference external" href="https://github.com/fbdesignpro/sweetviz">Link to sweetviz</a></p>
 </div>
 </div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"01bc5a32b31b43a7bc53d6a5ad978c98": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "183c1c407ab145eb9c7076091c4f4550": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": "2", "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "25c8ce83a335467db4cbd1bf1cbb10b5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_ad9133dcaec445efb1df43cde9854597", "placeholder": "\u200b", "style": "IPY_MODEL_e361ed934b6f434d8ba8a2b8b3b70a22", "value": " [100%]   00:00 -&gt; (00:00 left)"}}, "305c9d117b054eeda111fd91c278adf6": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "3bc2887dd8924e358ec2fa72d0803f49": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HTMLView", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_305c9d117b054eeda111fd91c278adf6", "placeholder": "\u200b", "style": "IPY_MODEL_01bc5a32b31b43a7bc53d6a5ad978c98", "value": "Done! Use &#x27;show&#x27; commands to display/save.   "}}, "3fc77b8b6b7148e2a812e5f4528d24f7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "8baa65073d8349769961b9a9bf06f78f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": "inline-flex", "flex": null, "flex_flow": "row wrap", "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": "100%"}}, "9a4191057cd7499cb323f1fb8313f4e9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_tooltip": null, "layout": "IPY_MODEL_183c1c407ab145eb9c7076091c4f4550", "max": 1.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_3fc77b8b6b7148e2a812e5f4528d24f7", "value": 1.0}}, "ad9133dcaec445efb1df43cde9854597": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b024f3fab0dd4068850a437d65a67486": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_3bc2887dd8924e358ec2fa72d0803f49", "IPY_MODEL_9a4191057cd7499cb323f1fb8313f4e9", "IPY_MODEL_25c8ce83a335467db4cbd1bf1cbb10b5"], "layout": "IPY_MODEL_8baa65073d8349769961b9a9bf06f78f"}}, "e361ed934b6f434d8ba8a2b8b3b70a22": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}}, "version_major": 2, "version_minor": 0}
+</script>
+
 
     <script type="text/x-thebe-config">
     {

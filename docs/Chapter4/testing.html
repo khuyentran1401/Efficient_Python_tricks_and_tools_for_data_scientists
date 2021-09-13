@@ -42,6 +42,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -90,6 +92,11 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../how_to_read.html">
+   How to Read This Book
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../Chapter1/Chapter1.html">
    Python Built-in Methods
@@ -518,6 +525,23 @@
 <h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="snoop-smart-print-to-debug-your-python-function">
 <h2>snoop : Smart Print to Debug Your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: snoop in /home/khuyen/book/venv/lib/python3.8/site-packages (0.4.0)
+Requirement already satisfied: cheap-repr&gt;=0.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from snoop) (0.4.6)
+Requirement already satisfied: executing in /home/khuyen/book/venv/lib/python3.8/site-packages (from snoop) (0.8.0)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from snoop) (1.16.0)
+Requirement already satisfied: asttokens in /home/khuyen/book/venv/lib/python3.8/site-packages (from snoop) (2.0.5)
+Requirement already satisfied: pygments in /home/khuyen/book/venv/lib/python3.8/site-packages (from snoop) (2.10.0)
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to figure out what is happening in your code without adding many print statements, try snoop.</p>
 <p>To use snoop, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;snoop</span></code> decorator to a function you want to understand.</p>
 <div class="cell docutils container">
@@ -533,23 +557,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 2;
-                var nbb_unformatted_code = "import snoop \n\n@snoop\ndef factorial(x: int):\n    if x == 1:\n        return 1\n    else: \n        return (x * factorial(x-1))";
-                var nbb_formatted_code = "import snoop\n\n\n@snoop\ndef factorial(x: int):\n    if x == 1:\n        return 1\n    else:\n        return x * factorial(x - 1)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -559,61 +566,69 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:22:51.67 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_301614/20705592.py&quot;, line 4
-16:22:51.67 ...... x = 2
-16:22:51.67    4 | def factorial(x: int):
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20:11:29.45 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_341813/20705592.py&quot;, line 4
+20:11:29.45 ...... x = 2
+20:11:29.45    4 | def factorial(x: int):
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:22:51.67    5 |     if x == 1:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20:11:29.45    5 |     if x == 1:
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:22:51.67    8 |         return (x * factorial(x-1))
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20:11:29.46    8 |         return (x * factorial(x-1))
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    16:22:51.67 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_301614/20705592.py&quot;, line 4
-    16:22:51.67 ...... x = 1
-    16:22:51.67    4 | def factorial(x: int):
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    20:11:29.46 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_341813/20705592.py&quot;, line 4
+    20:11:29.46 ...... x = 1
+    20:11:29.46    4 | def factorial(x: int):
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    16:22:51.67    5 |     if x == 1:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    20:11:29.46    5 |     if x == 1:
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    16:22:51.67    6 |         return 1
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    20:11:29.46    6 |         return 1
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    16:22:51.67 &lt;&lt;&lt; Return value from factorial: 1
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    20:11:29.46 &lt;&lt;&lt; Return value from factorial: 1
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:22:51.67    8 |         return (x * factorial(x-1))
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20:11:29.46    8 |         return (x * factorial(x-1))
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>16:22:51.67 &lt;&lt;&lt; Return value from factorial: 2
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20:11:29.46 &lt;&lt;&lt; Return value from factorial: 2
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 2 is 2
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 3;
-                var nbb_unformatted_code = "num = 2\nprint(f'The factorial of {num} is {factorial(num)}')";
-                var nbb_formatted_code = "num = 2\nprint(f\"The factorial of {num} is {factorial(num)}\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://towardsdatascience.com/3-tools-to-track-and-visualize-the-execution-of-your-python-code-666a153e435e">Link to my article about snoop</a>.</p>
 </div>
 <div class="section" id="pytest-benchmark-a-pytest-fixture-to-benchmark-your-code">
 <h2>pytest benchmark: A Pytest Fixture to Benchmark Your Code<a class="headerlink" href="#pytest-benchmark-a-pytest-fixture-to-benchmark-your-code" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-benchmark
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytest-benchmark in /home/khuyen/book/venv/lib/python3.8/site-packages (3.4.1)
+Requirement already satisfied: py-cpuinfo in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest-benchmark) (8.0.0)
+Requirement already satisfied: pytest&gt;=3.8 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest-benchmark) (6.2.5)
+Requirement already satisfied: toml in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (0.10.2)
+Requirement already satisfied: pluggy&lt;2.0,&gt;=0.12 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (0.13.1)
+Requirement already satisfied: py&gt;=1.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (1.10.0)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (21.0)
+Requirement already satisfied: iniconfig in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (1.1.1)
+Requirement already satisfied: attrs&gt;=19.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.8-&gt;pytest-benchmark) (21.2.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;pytest&gt;=3.8-&gt;pytest-benchmark) (2.4.7)
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to benchmark your code while testing with pytest, try pytest-benchmark.</p>
 <p>To understand how pytest-benchmark works, add the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_benchmark_example.py</span></code>. Note that we add <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> to the test function that we want to benchmark.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_benchmark_example.py</span>
@@ -655,36 +670,40 @@ pytest_benchmark_example.py
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">---------------------------------------------------- benchmark: 1 tests ----------------------------------------------------</span>
 Name (time in ns)          Min         Max      Mean   StdDev    Median     IQR   Outliers  OPS (Mops/s)  Rounds  Iterations
 <span class=" -Color -Color-Yellow">----------------------------------------------------------------------------------------------------------------------------</span>
-test_concat         <span class=" -Color -Color-Bold">  316.6497  3,286.4504  346.4739  54.1317  344.3500  7.4506</span>  1428;3799<span class=" -Color -Color-Bold">        2.8862</span>  150106          20
+test_concat         <span class=" -Color -Color-Bold">  305.3494  5,237.7502  332.3408  71.6519  327.9500  8.7501</span>  1274;1681<span class=" -Color -Color-Bold">        3.0090</span>  147254          20
 <span class=" -Color -Color-Yellow">----------------------------------------------------------------------------------------------------------------------------</span>
 
 Legend:
   Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
   OPS: Operations Per Second, computed as 1 / Mean
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 2.50s ===============================</span>
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 2.43s ===============================</span>
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 4;
-                var nbb_unformatted_code = "!pytest pytest_benchmark_example.py";
-                var nbb_formatted_code = "!pytest pytest_benchmark_example.py";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://github.com/ionelmc/pytest-benchmark">Link to pytest-benchmark</a>.</p>
 </div>
 <div class="section" id="pytest-mark-parametrize-test-your-functions-with-multiple-inputs">
 <h2>pytest.mark.parametrize: Test Your Functions with Multiple Inputs<a class="headerlink" href="#pytest-mark-parametrize-test-your-functions-with-multiple-inputs" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytest in /home/khuyen/book/venv/lib/python3.8/site-packages (6.2.5)
+Requirement already satisfied: pluggy&lt;2.0,&gt;=0.12 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (0.13.1)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (21.0)
+Requirement already satisfied: attrs&gt;=19.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (21.2.0)
+Requirement already satisfied: py&gt;=1.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (1.10.0)
+Requirement already satisfied: toml in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (0.10.2)
+Requirement already satisfied: iniconfig in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (1.1.1)
+Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;pytest) (2.4.7)
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to test your function with different examples, use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> decorator.</p>
 <p>To understand how <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> works, start with adding the code below to <code class="docutils literal notranslate"><span class="pre">pytest_parametrize.py</span></code>. <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> is added to the test function <code class="docutils literal notranslate"><span class="pre">test_text_contain_word</span></code> to tell pytest to experiment with different pairs of inputs and expected outputs specified in its arguments.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_parametrize.py</span>
@@ -721,41 +740,48 @@ Legend:
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
 platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
 rootdir: /home/khuyen/book/book/Chapter4
 plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0
 <span class=" -Color -Color-Bold">collecting ... </span>
 <span class=" -Color -Color-Bold">collected 2 items                                                              </span>
 
-pytest_parametrize.py <span class=" -Color -Color-Green">..                                                 [100%]</span>
+pytest_parametrize.py 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">..                                                 [100%]</span>
 
 <span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">2 passed</span><span class=" -Color -Color-Green"> in 0.03s ===============================</span>
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "!pytest pytest_parametrize.py";
-                var nbb_formatted_code = "!pytest pytest_parametrize.py";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p>Sweet! 2 tests passed when running pytest.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/pytest-for-data-scientists-2990319e55e6?sk=2d3a81903b154db0c7ca832b9f29fee8">Link to my article about pytest</a>.</p>
 </div>
 <div class="section" id="pytest-fixtures-use-the-same-data-for-different-tests">
 <h2>Pytest Fixtures: Use The Same Data for Different Tests<a class="headerlink" href="#pytest-fixtures-use-the-same-data-for-different-tests" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytest in /home/khuyen/book/venv/lib/python3.8/site-packages (6.2.5)
+Requirement already satisfied: iniconfig in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (1.1.1)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (21.0)
+Requirement already satisfied: py&gt;=1.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (1.10.0)
+Requirement already satisfied: pluggy&lt;2.0,&gt;=0.12 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (0.13.1)
+Requirement already satisfied: attrs&gt;=19.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (21.2.0)
+Requirement already satisfied: toml in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest) (0.10.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;pytest) (2.4.7)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Sometimes, you might want to use the same data to test different functions. If you are using pytest, use pytest fixtures to provide data to different test functions instead.</p>
 <p>To understand how to use pytest fixtures, start with adding the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_fixture.py</span></code>. We use the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code> to create the data we want to use many times.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_fixture.py</span>
@@ -806,29 +832,36 @@ pytest_fixture.py
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.                                                      [100%]</span>
 
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.59s ===============================</span>
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.63s ===============================</span>
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "!pytest pytest_fixture.py ";
-                var nbb_formatted_code = "!pytest pytest_fixture.py";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </div>
 <div class="section" id="pytest-repeat">
 <h2>Pytest repeat<a class="headerlink" href="#pytest-repeat" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-repeat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytest-repeat in /home/khuyen/book/venv/lib/python3.8/site-packages (0.9.1)
+Requirement already satisfied: pytest&gt;=3.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest-repeat) (6.2.5)
+Requirement already satisfied: toml in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (0.10.2)
+Requirement already satisfied: attrs&gt;=19.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (21.2.0)
+Requirement already satisfied: py&gt;=1.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (1.10.0)
+Requirement already satisfied: pluggy&lt;2.0,&gt;=0.12 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (0.13.1)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (21.0)
+Requirement already satisfied: iniconfig in /home/khuyen/book/venv/lib/python3.8/site-packages (from pytest&gt;=3.6-&gt;pytest-repeat) (1.1.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;pytest&gt;=3.6-&gt;pytest-repeat) (2.4.7)
+</pre></div>
+</div>
+</div>
+</div>
 <p>It is a good practice to test your functions to make sure they work as expected, but sometimes you need to test 100 times until you found the rare cases when the test fails. That is when pytest-repeat comes in handy.</p>
 <p>To understand how pytest-repeat works, start with putting the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_repeat_example.py</span></code>. The <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.repeat(100)</span></code> decorator tells pytest to repeat the experiment 100 times.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_repeat_example.py</span>
@@ -857,60 +890,119 @@ pytest_fixture.py
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
 platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
 rootdir: /home/khuyen/book/book/Chapter4
 plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0
 <span class=" -Color -Color-Bold">collecting ... </span>
 <span class=" -Color -Color-Bold">collected 100 items                                                            </span>
 
-pytest_repeat_example.py <span class=" -Color -Color-Green">................................</span>
+pytest_repeat_example.py 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">F</span><span class=" -Color -Color-Green">..............</span><span class=" -Color -Color-Red"> [ 47%]</span>
-<span class=" -Color -Color-Green">...................................................</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.......</span><span class=" -Color -Color-Red">F</span><span class=" -Color -Color-Green">.......................................</span><span class=" -Color -Color-Red"> [ 47%]</span>
+<span class=" -Color -Color-Green">........</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">..</span><span class=" -Color -Color-Red">                    [100%]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.................</span><span class=" -Color -Color-Red">F</span><span class=" -Color -Color-Green">......................</span><span class=" -Color -Color-Red">F</span><span class=" -Color -Color-Green">....</span><span class=" -Color -Color-Red">                    [100%]</span>
 
 =================================== FAILURES ===================================
-<span class=" -Color -Color-Bold -Color-Bold-Red">________________________ test_generate_numbers[33-100] _________________________</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">_________________________ test_generate_numbers[8-100] _________________________</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    <span class=" -Color -Color-White">@pytest</span>.mark.repeat(100)
+    def test_generate_numbers():
+&gt;       assert generate_numbers() &gt; 1 and generate_numbers() &lt; 100
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (1 &gt; 1)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 1 = generate_numbers()</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">pytest_repeat_example.py</span>:9: AssertionError
+<span class=" -Color -Color-Bold -Color-Bold-Red">________________________ test_generate_numbers[73-100] _________________________</span>
 
     <span class=" -Color -Color-White">@pytest</span>.mark.repeat(100)
     def test_generate_numbers():
 &gt;       assert generate_numbers() &gt; 1 and generate_numbers() &lt; 100
-<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (94 &gt; 1 and 100 &lt; 100)</span>
-<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 94 = generate_numbers()</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (40 &gt; 1 and 100 &lt; 100)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 40 = generate_numbers()</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  and   100 = generate_numbers()</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">pytest_repeat_example.py</span>:9: AssertionError
+<span class=" -Color -Color-Bold -Color-Bold-Red">________________________ test_generate_numbers[96-100] _________________________</span>
+
+    <span class=" -Color -Color-White">@pytest</span>.mark.repeat(100)
+    def test_generate_numbers():
+&gt;       assert generate_numbers() &gt; 1 and generate_numbers() &lt; 100
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (43 &gt; 1 and 100 &lt; 100)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E        +  where 43 = generate_numbers()</span>
 <span class=" -Color -Color-Bold -Color-Bold-Red">E        +  and   100 = generate_numbers()</span>
 
 <span class=" -Color -Color-Bold -Color-Bold-Red">pytest_repeat_example.py</span>:9: AssertionError
 =========================== short test summary info ============================
-FAILED pytest_repeat_example.py::test_generate_numbers[33-100] - assert (94 &gt;...
-<span class=" -Color -Color-Red">========================= </span><span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span>, <span class=" -Color -Color-Green">99 passed</span><span class=" -Color -Color-Red"> in 0.14s =========================</span>
+FAILED pytest_repeat_example.py::test_generate_numbers[8-100] - assert (1 &gt; 1)
+FAILED pytest_repeat_example.py::test_generate_numbers[73-100] - assert (40 &gt;...
+FAILED pytest_repeat_example.py::test_generate_numbers[96-100] - assert (43 &gt;...
+<span class=" -Color -Color-Red">========================= </span><span class=" -Color -Color-Bold -Color-Bold-Red">3 failed</span>, <span class=" -Color -Color-Green">97 passed</span><span class=" -Color -Color-Red"> in 0.14s =========================</span>
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "!pytest pytest_repeat_example.py";
-                var nbb_formatted_code = "!pytest pytest_repeat_example.py";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://github.com/pytest-dev/pytest-repeat">Link to pytest-repeat</a></p>
 </div>
 <div class="section" id="pandera-a-python-library-to-validate-your-pandas-dataframe">
 <h2>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandera
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandera in /home/khuyen/book/venv/lib/python3.8/site-packages (0.7.0)
+Requirement already satisfied: frictionless in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (4.16.6)
+Requirement already satisfied: packaging&gt;=20.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (21.0)
+Requirement already satisfied: numpy&gt;=1.9.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (1.19.5)
+Requirement already satisfied: typing-inspect&gt;=0.6.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (0.7.1)
+Requirement already satisfied: wrapt in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (1.12.1)
+Requirement already satisfied: pyarrow in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (5.0.0)
+Requirement already satisfied: pandas&gt;=1.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandera) (1.3.2)
+Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging&gt;=20.0-&gt;pandera) (2.4.7)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2017.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas&gt;=1.0-&gt;pandera) (2021.1)
+Requirement already satisfied: python-dateutil&gt;=2.7.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas&gt;=1.0-&gt;pandera) (2.8.2)
+Requirement already satisfied: six&gt;=1.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-dateutil&gt;=2.7.3-&gt;pandas&gt;=1.0-&gt;pandera) (1.16.0)
+Requirement already satisfied: typing-extensions&gt;=3.7.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typing-inspect&gt;=0.6.0-&gt;pandera) (3.10.0.2)
+Requirement already satisfied: mypy-extensions&gt;=0.3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typing-inspect&gt;=0.6.0-&gt;pandera) (0.4.3)
+Requirement already satisfied: jsonschema&gt;=2.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (3.2.0)
+Requirement already satisfied: pyyaml&gt;=5.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (5.4.1)
+Requirement already satisfied: requests&gt;=2.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (2.24.0)
+Requirement already satisfied: simpleeval&gt;=0.9 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (0.9.10)
+Requirement already satisfied: petl&gt;=1.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (1.7.4)
+Requirement already satisfied: chardet&gt;=3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (3.0.4)
+Requirement already satisfied: stringcase&gt;=1.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (1.2.0)
+Requirement already satisfied: typer[all]&gt;=0.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (0.4.0)
+Requirement already satisfied: rfc3986&gt;=1.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (1.5.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: validators&gt;=0.18 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (0.18.2)
+Requirement already satisfied: python-slugify&gt;=1.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (4.0.1)
+Requirement already satisfied: isodate&gt;=0.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from frictionless-&gt;pandera) (0.6.0)
+Requirement already satisfied: attrs&gt;=17.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jsonschema&gt;=2.5-&gt;frictionless-&gt;pandera) (21.2.0)
+Requirement already satisfied: setuptools in /home/khuyen/book/venv/lib/python3.8/site-packages (from jsonschema&gt;=2.5-&gt;frictionless-&gt;pandera) (44.0.0)
+Requirement already satisfied: pyrsistent&gt;=0.14.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jsonschema&gt;=2.5-&gt;frictionless-&gt;pandera) (0.18.0)
+Requirement already satisfied: text-unidecode&gt;=1.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from python-slugify&gt;=1.2-&gt;frictionless-&gt;pandera) (1.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests&gt;=2.10-&gt;frictionless-&gt;pandera) (2021.5.30)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;3,&gt;=2.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests&gt;=2.10-&gt;frictionless-&gt;pandera) (2.10)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests&gt;=2.10-&gt;frictionless-&gt;pandera) (1.25.11)
+Requirement already satisfied: click&lt;9.0.0,&gt;=7.1.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typer[all]&gt;=0.4-&gt;frictionless-&gt;pandera) (7.1.2)
+Requirement already satisfied: shellingham&lt;2.0.0,&gt;=1.3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typer[all]&gt;=0.4-&gt;frictionless-&gt;pandera) (1.4.0)
+Requirement already satisfied: colorama&lt;0.5.0,&gt;=0.4.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typer[all]&gt;=0.4-&gt;frictionless-&gt;pandera) (0.4.4)
+Requirement already satisfied: decorator&gt;=3.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from validators&gt;=0.18-&gt;frictionless-&gt;pandera) (5.0.9)
+</pre></div>
+</div>
+</div>
+</div>
 <p>The outputs of your pandas DataFrame might not be like what you expected either due to the error in your code or the change in the data format. Using data that is different from what you expected can cause errors or lead to decrease performance.</p>
 <p>Thus, it is important to validate your data before using it. A good tool to validate pandas DataFrame is pandera. Pandera is easy to read and use.</p>
 <div class="cell docutils container">
@@ -972,22 +1064,7 @@ FAILED pytest_repeat_example.py::test_generate_numbers[33-100] - assert (94 &gt;
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 8;
-                var nbb_unformatted_code = "import pandera as pa\nfrom pandera import check_input\nimport pandas as pd\n\ndf = pd.DataFrame({\"col1\": [5.0, 8.0, 10.0], \"col2\": [\"text_1\", \"text_2\", \"text_3\"]})\nschema = pa.DataFrameSchema(\n    {\n        \"col1\": pa.Column(float, pa.Check(lambda minute: 5 <= minute)),\n        \"col2\": pa.Column(str, pa.Check.str_startswith(\"text_\")),\n    }\n)\nvalidated_df = schema(df)\nvalidated_df";
-                var nbb_formatted_code = "import pandera as pa\nfrom pandera import check_input\nimport pandas as pd\n\ndf = pd.DataFrame({\"col1\": [5.0, 8.0, 10.0], \"col2\": [\"text_1\", \"text_2\", \"text_3\"]})\nschema = pa.DataFrameSchema(\n    {\n        \"col1\": pa.Column(float, pa.Check(lambda minute: 5 <= minute)),\n        \"col2\": pa.Column(str, pa.Check.str_startswith(\"text_\")),\n    }\n)\nvalidated_df = schema(df)\nvalidated_df";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
 <p>You can also use the pandera’s decorator check_inputto validates input pandas DataFrame before entering the function.</p>
 <div class="cell docutils container">
@@ -1047,22 +1124,7 @@ FAILED pytest_repeat_example.py::test_generate_numbers[33-100] - assert (94 &gt;
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 9;
-                var nbb_unformatted_code = "@check_input(schema)\ndef plus_three(df):\n    df[\"col1_plus_3\"] = df[\"col1\"] + 3\n    return df\n\n\nplus_three(df)";
-                var nbb_formatted_code = "@check_input(schema)\ndef plus_three(df):\n    df[\"col1_plus_3\"] = df[\"col1\"] + 3\n    return df\n\n\nplus_three(df)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </div>

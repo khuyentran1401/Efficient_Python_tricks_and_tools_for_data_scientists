@@ -42,6 +42,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -90,6 +92,11 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../how_to_read.html">
+   How to Read This Book
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../Chapter1/Chapter1.html">
    Python Built-in Methods
@@ -499,6 +506,75 @@
 <p>This section covers some tools to speed up your code.</p>
 <div class="section" id="fastai-s-df-shrink-shrink-dataframe-s-memory-usage-in-one-line-of-code">
 <h2>Fastai’s df_shrink: Shrink DataFrame’s Memory Usage in One Line of Code<a class="headerlink" href="#fastai-s-df-shrink-shrink-dataframe-s-memory-usage-in-one-line-of-code" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install fastai
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: fastai in /home/khuyen/book/venv/lib/python3.8/site-packages (2.5.2)
+Requirement already satisfied: fastprogress&gt;=0.2.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (1.0.0)
+Requirement already satisfied: requests in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (2.24.0)
+Requirement already satisfied: spacy&lt;4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (3.1.2)
+Requirement already satisfied: scikit-learn in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (0.24.2)
+Requirement already satisfied: matplotlib in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (3.4.3)
+Requirement already satisfied: fastdownload&lt;2,&gt;=0.0.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (0.0.5)
+Requirement already satisfied: pip in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (21.2.4)
+Requirement already satisfied: pyyaml in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (5.4.1)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (21.0)
+Requirement already satisfied: torch&lt;1.10,&gt;=1.7.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (1.9.0)
+Requirement already satisfied: fastcore&lt;1.4,&gt;=1.3.8 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (1.3.26)
+Requirement already satisfied: pillow&gt;6.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (8.3.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (1.3.2)
+Requirement already satisfied: scipy in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (1.7.1)
+Requirement already satisfied: torchvision&gt;=0.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastai) (0.10.0)
+Requirement already satisfied: numpy in /home/khuyen/book/venv/lib/python3.8/site-packages (from fastprogress&gt;=0.2.4-&gt;fastai) (1.19.5)
+Requirement already satisfied: cymem&lt;2.1.0,&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (2.0.5)
+Requirement already satisfied: pathy&gt;=0.3.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (0.6.0)
+Requirement already satisfied: blis&lt;0.8.0,&gt;=0.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (0.7.4)
+Requirement already satisfied: wasabi&lt;1.1.0,&gt;=0.8.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (0.8.2)
+Requirement already satisfied: catalogue&lt;2.1.0,&gt;=2.0.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (2.0.6)
+Requirement already satisfied: setuptools in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (44.0.0)
+Requirement already satisfied: preshed&lt;3.1.0,&gt;=3.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (3.0.5)
+Requirement already satisfied: typer&lt;0.4.0,&gt;=0.3.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (0.3.2)
+Requirement already satisfied: tqdm&lt;5.0.0,&gt;=4.38.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (4.62.2)
+Requirement already satisfied: murmurhash&lt;1.1.0,&gt;=0.28.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (1.0.5)
+Requirement already satisfied: jinja2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (3.0.1)
+Requirement already satisfied: pydantic!=1.8,!=1.8.1,&lt;1.9.0,&gt;=1.7.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (1.8.2)
+Requirement already satisfied: srsly&lt;3.0.0,&gt;=2.4.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (2.4.1)
+Requirement already satisfied: spacy-legacy&lt;3.1.0,&gt;=3.0.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (3.0.8)
+Requirement already satisfied: thinc&lt;8.1.0,&gt;=8.0.8 in /home/khuyen/book/venv/lib/python3.8/site-packages (from spacy&lt;4-&gt;fastai) (8.0.10)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;fastai) (2.4.7)
+Requirement already satisfied: smart-open&lt;6.0.0,&gt;=5.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pathy&gt;=0.3.5-&gt;spacy&lt;4-&gt;fastai) (5.2.1)
+Requirement already satisfied: typing-extensions&gt;=3.7.4.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pydantic!=1.8,!=1.8.1,&lt;1.9.0,&gt;=1.7.4-&gt;spacy&lt;4-&gt;fastai) (3.10.0.2)
+Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests-&gt;fastai) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests-&gt;fastai) (1.25.11)
+Requirement already satisfied: idna&lt;3,&gt;=2.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests-&gt;fastai) (2.10)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/khuyen/book/venv/lib/python3.8/site-packages (from requests-&gt;fastai) (2021.5.30)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: click&lt;7.2.0,&gt;=7.1.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from typer&lt;0.4.0,&gt;=0.3.0-&gt;spacy&lt;4-&gt;fastai) (7.1.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jinja2-&gt;spacy&lt;4-&gt;fastai) (2.0.1)
+Requirement already satisfied: cycler&gt;=0.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib-&gt;fastai) (0.10.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib-&gt;fastai) (1.3.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib-&gt;fastai) (2.8.2)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from cycler&gt;=0.10-&gt;matplotlib-&gt;fastai) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pytz&gt;=2017.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas-&gt;fastai) (2021.1)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from scikit-learn-&gt;fastai) (2.2.0)
+Requirement already satisfied: joblib&gt;=0.11 in /home/khuyen/book/venv/lib/python3.8/site-packages (from scikit-learn-&gt;fastai) (1.0.1)
+</pre></div>
+</div>
+</div>
+</div>
 <p>Changing data types of DataFrame columns to smaller data types can significantly reduce the memory usage of the DataFrame. Instead of manually choosing smaller data types, is there a way that you can automatically change data types in one line of code?</p>
 <p>That is when the <code class="docutils literal notranslate"><span class="pre">df_shrink</span></code> method of Fastai comes in handy. In the code below, the memory usage of the DataFrame decreases from 200 bytes to 146 bytes.</p>
 <div class="cell docutils container">
@@ -524,22 +600,7 @@ memory usage: 176.0 bytes
 None
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 4;
-                var nbb_unformatted_code = "from fastai.tabular.core import df_shrink\nimport pandas as pd \n\ndf = pd.DataFrame({\"col1\": [1, 2, 3], \"col2\": [1.0, 2.0, 3.0]})\nprint(df.info())";
-                var nbb_formatted_code = "from fastai.tabular.core import df_shrink\nimport pandas as pd\n\ndf = pd.DataFrame({\"col1\": [1, 2, 3], \"col2\": [1.0, 2.0, 3.0]})\nprint(df.info())";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -561,27 +622,95 @@ memory usage: 143.0 bytes
 None
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "new_df = df_shrink(df)\nprint(new_df.info())";
-                var nbb_formatted_code = "new_df = df_shrink(df)\nprint(new_df.info())";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://docs.fast.ai/">Link to Fastai</a>.</p>
 </div>
 <div class="section" id="swifter-add-one-word-to-make-your-pandas-apply-23-times-faster">
 <h2>Swifter: Add One Word to Make Your Pandas Apply 23 Times Faster<a class="headerlink" href="#swifter-add-one-word-to-make-your-pandas-apply-23-times-faster" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install swifter
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: swifter in /home/khuyen/book/venv/lib/python3.8/site-packages (1.0.9)
+Requirement already satisfied: dask[dataframe]&gt;=2.10.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (2021.9.0)
+Requirement already satisfied: parso&gt;0.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (0.8.2)
+Requirement already satisfied: ipywidgets&gt;=7.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (7.6.3)
+Requirement already satisfied: psutil&gt;=5.6.6 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (5.8.0)
+Requirement already satisfied: cloudpickle&gt;=0.2.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (2.0.0)
+Requirement already satisfied: pandas&gt;=1.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (1.3.2)
+Requirement already satisfied: tqdm&gt;=4.33.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (4.62.2)
+Requirement already satisfied: bleach&gt;=3.1.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from swifter) (4.1.0)
+Requirement already satisfied: packaging in /home/khuyen/book/venv/lib/python3.8/site-packages (from bleach&gt;=3.1.1-&gt;swifter) (21.0)
+Requirement already satisfied: webencodings in /home/khuyen/book/venv/lib/python3.8/site-packages (from bleach&gt;=3.1.1-&gt;swifter) (0.5.1)
+Requirement already satisfied: six&gt;=1.9.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from bleach&gt;=3.1.1-&gt;swifter) (1.16.0)
+Requirement already satisfied: toolz&gt;=0.8.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dask[dataframe]&gt;=2.10.0-&gt;swifter) (0.11.1)
+Requirement already satisfied: partd&gt;=0.3.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dask[dataframe]&gt;=2.10.0-&gt;swifter) (1.2.0)
+Requirement already satisfied: pyyaml in /home/khuyen/book/venv/lib/python3.8/site-packages (from dask[dataframe]&gt;=2.10.0-&gt;swifter) (5.4.1)
+Requirement already satisfied: fsspec&gt;=0.6.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dask[dataframe]&gt;=2.10.0-&gt;swifter) (0.8.7)
+Requirement already satisfied: numpy&gt;=1.18 in /home/khuyen/book/venv/lib/python3.8/site-packages (from dask[dataframe]&gt;=2.10.0-&gt;swifter) (1.19.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ipython&gt;=4.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (7.27.0)
+Requirement already satisfied: ipykernel&gt;=4.5.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (6.2.0)
+Requirement already satisfied: nbformat&gt;=4.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (5.1.3)
+Requirement already satisfied: traitlets&gt;=4.3.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (5.0.5)
+Requirement already satisfied: jupyterlab-widgets&gt;=1.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (1.0.0)
+Requirement already satisfied: widgetsnbextension~=3.5.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipywidgets&gt;=7.0.0-&gt;swifter) (3.5.1)
+Requirement already satisfied: tornado&lt;7.0,&gt;=4.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (6.1)
+Requirement already satisfied: debugpy&lt;2.0,&gt;=1.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (1.4.1)
+Requirement already satisfied: matplotlib-inline&lt;0.2.0,&gt;=0.1.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.1.2)
+Requirement already satisfied: jupyter-client&lt;8.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (6.1.12)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (3.0.20)
+Requirement already satisfied: decorator in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (5.0.9)
+Requirement already satisfied: jedi&gt;=0.16 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.18.0)
+Requirement already satisfied: pygments in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (2.10.0)
+Requirement already satisfied: setuptools&gt;=18.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (44.0.0)
+Requirement already satisfied: pexpect&gt;4.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (4.8.0)
+Requirement already satisfied: backcall in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.2.0)
+Requirement already satisfied: pickleshare in /home/khuyen/book/venv/lib/python3.8/site-packages (from ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.7.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyzmq&gt;=13 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jupyter-client&lt;8.0-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (22.2.1)
+Requirement already satisfied: python-dateutil&gt;=2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jupyter-client&lt;8.0-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (2.8.2)
+Requirement already satisfied: jupyter-core&gt;=4.6.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jupyter-client&lt;8.0-&gt;ipykernel&gt;=4.5.1-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (4.7.1)
+Requirement already satisfied: ipython-genutils in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbformat&gt;=4.2.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.2.0)
+Requirement already satisfied: jsonschema!=2.5.0,&gt;=2.4 in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbformat&gt;=4.2.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (3.2.0)
+Requirement already satisfied: pyrsistent&gt;=0.14.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jsonschema!=2.5.0,&gt;=2.4-&gt;nbformat&gt;=4.2.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.18.0)
+Requirement already satisfied: attrs&gt;=17.4.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jsonschema!=2.5.0,&gt;=2.4-&gt;nbformat&gt;=4.2.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (21.2.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyparsing&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from packaging-&gt;bleach&gt;=3.1.1-&gt;swifter) (2.4.7)
+Requirement already satisfied: pytz&gt;=2017.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas&gt;=1.0.0-&gt;swifter) (2021.1)
+Requirement already satisfied: locket in /home/khuyen/book/venv/lib/python3.8/site-packages (from partd&gt;=0.3.10-&gt;dask[dataframe]&gt;=2.10.0-&gt;swifter) (0.2.1)
+Requirement already satisfied: ptyprocess&gt;=0.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pexpect&gt;4.3-&gt;ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.7.0)
+Requirement already satisfied: wcwidth in /home/khuyen/book/venv/lib/python3.8/site-packages (from prompt-toolkit!=3.0.0,!=3.0.1,&lt;3.1.0,&gt;=2.0.0-&gt;ipython&gt;=4.0.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.2.5)
+Requirement already satisfied: notebook&gt;=4.4.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (6.4.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prometheus-client in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.11.0)
+Requirement already satisfied: jinja2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (3.0.1)
+Requirement already satisfied: argon2-cffi in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (21.1.0)
+Requirement already satisfied: terminado&gt;=0.8.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.11.1)
+Requirement already satisfied: Send2Trash&gt;=1.5.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (1.8.0)
+Requirement already satisfied: nbconvert in /home/khuyen/book/venv/lib/python3.8/site-packages (from notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (5.6.1)
+Requirement already satisfied: cffi&gt;=1.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from argon2-cffi-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (1.14.6)
+Requirement already satisfied: pycparser in /home/khuyen/book/venv/lib/python3.8/site-packages (from cffi&gt;=1.0.0-&gt;argon2-cffi-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (2.20)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jinja2-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (2.0.1)
+Requirement already satisfied: mistune&lt;2,&gt;=0.8.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbconvert-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.8.4)
+Requirement already satisfied: entrypoints&gt;=0.2.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbconvert-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.3)
+Requirement already satisfied: testpath in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbconvert-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.5.0)
+Requirement already satisfied: defusedxml in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbconvert-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (0.7.1)
+Requirement already satisfied: pandocfilters&gt;=1.4.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from nbconvert-&gt;notebook&gt;=4.4.1-&gt;widgetsnbextension~=3.5.0-&gt;ipywidgets&gt;=7.0.0-&gt;swifter) (1.4.3)
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to have faster pandas apply when working with large data, try swifter. To use swifter, simply add <code class="docutils literal notranslate"><span class="pre">.swifter</span></code> before <code class="docutils literal notranslate"><span class="pre">.apply</span></code>. Everything else is the same.</p>
 <p>In the code below, I compared the speed of Pandas’ <code class="docutils literal notranslate"><span class="pre">apply</span></code> and the speed of swifter’s <code class="docutils literal notranslate"><span class="pre">apply</span></code> using the California housing dataset of 20640 rows.</p>
 <div class="cell docutils container">
@@ -613,27 +742,13 @@ None
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Swifter apply is 16.82 times faster than Pandas apply
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Swifter apply is 20.78 times faster than Pandas apply
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "from time import time\nfrom sklearn.datasets import fetch_california_housing\nfrom scipy.special import boxcox1p\nimport swifter\nimport timeit\n\nX, y = fetch_california_housing(return_X_y=True, as_frame=True)\n\ndef pandas_apply():\n    X[\"AveRooms\"].apply(lambda x: boxcox1p(x, 0.25))\n\n\ndef swifter_apply():\n    X[\"AveRooms\"].swifter.apply(lambda x: boxcox1p(x, 0.25))\n\nnum_experiments = 100\npandas_time = timeit.timeit(pandas_apply, number=num_experiments)\nswifter_time = timeit.timeit(swifter_apply, number=num_experiments)\n\npandas_vs_swifter = round(pandas_time/swifter_time, 2)\nprint(f'Swifter apply is {pandas_vs_swifter} times faster than Pandas apply')";
-                var nbb_formatted_code = "from time import time\nfrom sklearn.datasets import fetch_california_housing\nfrom scipy.special import boxcox1p\nimport swifter\nimport timeit\n\nX, y = fetch_california_housing(return_X_y=True, as_frame=True)\n\n\ndef pandas_apply():\n    X[\"AveRooms\"].apply(lambda x: boxcox1p(x, 0.25))\n\n\ndef swifter_apply():\n    X[\"AveRooms\"].swifter.apply(lambda x: boxcox1p(x, 0.25))\n\n\nnum_experiments = 100\npandas_time = timeit.timeit(pandas_apply, number=num_experiments)\nswifter_time = timeit.timeit(swifter_apply, number=num_experiments)\n\npandas_vs_swifter = round(pandas_time / swifter_time, 2)\nprint(f\"Swifter apply is {pandas_vs_swifter} times faster than Pandas apply\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p>Using swifter apply is 23.56 times faster than Pandas apply! This ratio is calculated by taking the average run time of each method after 100 experiments.</p>
+<p><a class="reference external" href="https://github.com/jmcarpenter2/swifter">Link to swifter</a>.</p>
 </div>
 </div>
 

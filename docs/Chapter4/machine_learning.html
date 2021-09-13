@@ -42,6 +42,8 @@
     <script src="../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -90,6 +92,11 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../how_to_read.html">
+   How to Read This Book
+  </a>
+ </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../Chapter1/Chapter1.html">
    Python Built-in Methods
@@ -508,6 +515,35 @@
 <h1>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="causalimpact-find-causal-relation-of-an-event-and-a-variable-in-python">
 <h2>causalimpact: Find Causal Relation of an Event and a Variable in Python<a class="headerlink" href="#causalimpact-find-causal-relation-of-an-event-and-a-variable-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pycausalimpact
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pycausalimpact in /home/khuyen/book/venv/lib/python3.8/site-packages (0.0.16)
+Requirement already satisfied: matplotlib&gt;=2.2.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pycausalimpact) (3.4.3)
+Requirement already satisfied: statsmodels&gt;=0.11.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pycausalimpact) (0.12.2)
+Requirement already satisfied: numpy in /home/khuyen/book/venv/lib/python3.8/site-packages (from pycausalimpact) (1.19.5)
+Requirement already satisfied: jinja2&gt;=2.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pycausalimpact) (3.0.1)
+Requirement already satisfied: scipy in /home/khuyen/book/venv/lib/python3.8/site-packages (from pycausalimpact) (1.7.1)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from jinja2&gt;=2.10-&gt;pycausalimpact) (2.0.1)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=2.2.3-&gt;pycausalimpact) (2.8.2)
+Requirement already satisfied: cycler&gt;=0.10 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=2.2.3-&gt;pycausalimpact) (0.10.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=2.2.3-&gt;pycausalimpact) (1.3.2)
+Requirement already satisfied: pillow&gt;=6.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=2.2.3-&gt;pycausalimpact) (8.3.1)
+Requirement already satisfied: pyparsing&gt;=2.2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib&gt;=2.2.3-&gt;pycausalimpact) (2.4.7)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from cycler&gt;=0.10-&gt;matplotlib&gt;=2.2.3-&gt;pycausalimpact) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: patsy&gt;=0.5 in /home/khuyen/book/venv/lib/python3.8/site-packages (from statsmodels&gt;=0.11.0-&gt;pycausalimpact) (0.5.1)
+Requirement already satisfied: pandas&gt;=0.21 in /home/khuyen/book/venv/lib/python3.8/site-packages (from statsmodels&gt;=0.11.0-&gt;pycausalimpact) (1.3.2)
+Requirement already satisfied: pytz&gt;=2017.3 in /home/khuyen/book/venv/lib/python3.8/site-packages (from pandas&gt;=0.21-&gt;statsmodels&gt;=0.11.0-&gt;pycausalimpact) (2021.1)
+</pre></div>
+</div>
+</div>
+</div>
 <p>When working with time series data, you might want to determine whether an event has an impact on some response variable or not. For example, if your company creates an advertisement, you might want to track whether the advertisement results in an increase in sales or not.</p>
 <p>That is when causalimpact comes in handy. causalimpact analyses the differences between expected and observed time series data. With causalimpact, you can infer the expected effect of an intervention in 3 lines of code.</p>
 <div class="cell docutils container">
@@ -533,23 +569,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 13;
-                var nbb_unformatted_code = "import numpy as np\nimport pandas as pd \nfrom statsmodels.tsa.arima_process import ArmaProcess\nimport causalimpact \nfrom causalimpact import CausalImpact\n\n# Generate random sample\n\nnp.random.seed(0)\nar = np.r_[1, 0.9]\nma = np.array([1])\narma_process = ArmaProcess(ar, ma)\n\nX = 50 + arma_process.generate_sample(nsample=1000)\ny = 1.6 * X + np.random.normal(size=1000)\n\n# There is a change starting from index 800\ny[800:] += 10";
-                var nbb_formatted_code = "import numpy as np\nimport pandas as pd\nfrom statsmodels.tsa.arima_process import ArmaProcess\nimport causalimpact\nfrom causalimpact import CausalImpact\n\n# Generate random sample\n\nnp.random.seed(0)\nar = np.r_[1, 0.9]\nma = np.array([1])\narma_process = ArmaProcess(ar, ma)\n\nX = 50 + arma_process.generate_sample(nsample=1000)\ny = 1.6 * X + np.random.normal(size=1000)\n\n# There is a change starting from index 800\ny[800:] += 10";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -559,23 +578,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 14;
-                var nbb_unformatted_code = "data = pd.DataFrame({'y': y, 'X': X}, columns=['y', 'X'])\npre_period = [0, 799]\npost_period = [800, 999]";
-                var nbb_formatted_code = "data = pd.DataFrame({\"y\": y, \"X\": X}, columns=[\"y\", \"X\"])\npre_period = [0, 799]\npost_period = [800, 999]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -644,22 +646,7 @@ significant.
 </pre></div>
 </div>
 <img alt="../_images/machine_learning_6_1.png" src="../_images/machine_learning_6_1.png" />
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "ci = CausalImpact(data, pre_period, post_period)\nprint(ci.summary())\nprint(ci.summary(output='report'))\nci.plot()";
-                var nbb_formatted_code = "ci = CausalImpact(data, pre_period, post_period)\nprint(ci.summary())\nprint(ci.summary(output=\"report\"))\nci.plot()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </div>
 <div class="section" id="pipeline-gridsearchcv-prevent-data-leakage-when-scaling-the-data">
@@ -697,27 +684,36 @@ significant.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 16;
-                var nbb_unformatted_code = "from sklearn.model_selection import train_test_split, GridSearchCV\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.svm import SVC \nfrom sklearn.datasets import load_iris \n\n# load data\ndf = load_iris()\nX = df.data\ny = df.target \n\n# split data into train and test\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\n\n# Create a pipeline variable\nmake_pipe = make_pipeline(StandardScaler(), SVC())\n\n# Defining parameters grid\ngrid_params = {'svc__C': [0.1, 1, 10, 100, 1000], 'svc__gamma': [0.1, 1, 10, 100]}\n\n# hypertuning\ngrid = GridSearchCV(make_pipe, grid_params, cv = 5)\ngrid.fit(X_train, y_train)\n\n# predict\ny_pred = grid.predict(X_test)";
-                var nbb_formatted_code = "from sklearn.model_selection import train_test_split, GridSearchCV\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.svm import SVC\nfrom sklearn.datasets import load_iris\n\n# load data\ndf = load_iris()\nX = df.data\ny = df.target\n\n# split data into train and test\nX_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)\n\n# Create a pipeline variable\nmake_pipe = make_pipeline(StandardScaler(), SVC())\n\n# Defining parameters grid\ngrid_params = {\"svc__C\": [0.1, 1, 10, 100, 1000], \"svc__gamma\": [0.1, 1, 10, 100]}\n\n# hypertuning\ngrid = GridSearchCV(make_pipe, grid_params, cv=5)\ngrid.fit(X_train, y_train)\n\n# predict\ny_pred = grid.predict(X_test)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 </div>
 <div class="section" id="decompose-high-dimensional-data-into-two-or-three-dimensions">
 <h2>Decompose high dimensional data into two or three dimensions<a class="headerlink" href="#decompose-high-dimensional-data-into-two-or-three-dimensions" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install yellowbrick
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: yellowbrick in /home/khuyen/book/venv/lib/python3.8/site-packages (1.3.post1)
+Requirement already satisfied: cycler&gt;=0.10.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from yellowbrick) (0.10.0)
+Requirement already satisfied: matplotlib!=3.0.0,&gt;=2.0.2 in /home/khuyen/book/venv/lib/python3.8/site-packages (from yellowbrick) (3.4.3)
+Requirement already satisfied: scikit-learn&gt;=0.20 in /home/khuyen/book/venv/lib/python3.8/site-packages (from yellowbrick) (0.24.2)
+Requirement already satisfied: numpy&lt;1.20,&gt;=1.16.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from yellowbrick) (1.19.5)
+Requirement already satisfied: scipy&gt;=1.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from yellowbrick) (1.7.1)
+Requirement already satisfied: six in /home/khuyen/book/venv/lib/python3.8/site-packages (from cycler&gt;=0.10.0-&gt;yellowbrick) (1.16.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pillow&gt;=6.2.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib!=3.0.0,&gt;=2.0.2-&gt;yellowbrick) (8.3.1)
+Requirement already satisfied: pyparsing&gt;=2.2.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib!=3.0.0,&gt;=2.0.2-&gt;yellowbrick) (2.4.7)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib!=3.0.0,&gt;=2.0.2-&gt;yellowbrick) (2.8.2)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /home/khuyen/book/venv/lib/python3.8/site-packages (from matplotlib!=3.0.0,&gt;=2.0.2-&gt;yellowbrick) (1.3.2)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /home/khuyen/book/venv/lib/python3.8/site-packages (from scikit-learn&gt;=0.20-&gt;yellowbrick) (2.2.0)
+Requirement already satisfied: joblib&gt;=0.11 in /home/khuyen/book/venv/lib/python3.8/site-packages (from scikit-learn&gt;=0.20-&gt;yellowbrick) (1.0.1)
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to decompose high dimensional data into two or three dimensions to visualize it, what should you do? A common technique is PCA. Even though PCA is useful, I always find it complicated to create a PCA plot until I found Yellowbrick.</p>
 <p>I really recommend using this tool if you want to visualize PCA in a few lines of code</p>
 <div class="cell docutils container">
@@ -727,23 +723,6 @@ significant.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 17;
-                var nbb_unformatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
-                var nbb_formatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -752,23 +731,6 @@ significant.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 18;
-                var nbb_unformatted_code = "X, y = load_credit()\nclasses = ['account in defaut', 'current with bills']";
-                var nbb_formatted_code = "X, y = load_credit()\nclasses = [\"account in defaut\", \"current with bills\"]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -779,27 +741,13 @@ significant.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine_learning_14_0.png" src="../_images/machine_learning_14_0.png" />
+<img alt="../_images/machine_learning_15_0.png" src="../_images/machine_learning_15_0.png" />
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Principal Component Plot&#39;}, xlabel=&#39;$PC_1$&#39;, ylabel=&#39;$PC_2$&#39;&gt;
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 19;
-                var nbb_unformatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
-                var nbb_formatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
+</div>
+<p><a class="reference external" href="https://www.scikit-yb.org/en/latest/">Link to Yellowbrick</a></p>
 </div>
 <div class="section" id="squared-false-get-rmse-from-sklearns-mean-squared-error-method">
 <h2>squared=False: Get RMSE from Sklearn’s mean_squared_error method<a class="headerlink" href="#squared-false-get-rmse-from-sklearns-mean-squared-error-method" title="Permalink to this headline">¶</a></h2>
@@ -819,22 +767,7 @@ significant.
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 42;
-                var nbb_unformatted_code = "from sklearn.metrics import mean_squared_error\n\ny_actual = [1, 2, 3]\ny_predicted = [1.5, 2.5, 3.5]\nrmse = mean_squared_error(y_actual, y_predicted, squared=False)\nrmse ";
-                var nbb_formatted_code = "from sklearn.metrics import mean_squared_error\n\ny_actual = [1, 2, 3]\ny_predicted = [1.5, 2.5, 3.5]\nrmse = mean_squared_error(y_actual, y_predicted, squared=False)\nrmse";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </div>
 </div>
