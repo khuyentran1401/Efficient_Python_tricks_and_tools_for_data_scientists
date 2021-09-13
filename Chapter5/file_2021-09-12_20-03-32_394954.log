@@ -1,0 +1,138 @@
+2021-09-12T20:03:32.396821-0500 ERROR An error has been caught in function '<module>', process 'MainProcess' (337207), thread 'MainThread' (139991471953728):
+Traceback (most recent call last):
+
+  File "/usr/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+           │         │     └ {'__name__': '__main__', '__doc__': 'Entry point for launching an IPython kernel.\n\nThis is separate from the ipykernel pack...
+           │         └ <code object <module> at 0x7f524d534be0, file "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel_launcher.py", lin...
+           └ <function _run_code at 0x7f524d524040>
+  File "/usr/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+         │     └ {'__name__': '__main__', '__doc__': 'Entry point for launching an IPython kernel.\n\nThis is separate from the ipykernel pack...
+         └ <code object <module> at 0x7f524d534be0, file "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel_launcher.py", lin...
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel_launcher.py", line 16, in <module>
+    app.launch_new_instance()
+    │   └ <bound method Application.launch_instance of <class 'ipykernel.kernelapp.IPKernelApp'>>
+    └ <module 'ipykernel.kernelapp' from '/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelapp.py'>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/traitlets/config/application.py", line 845, in launch_instance
+    app.start()
+    │   └ <function IPKernelApp.start at 0x7f5249a39d30>
+    └ <ipykernel.kernelapp.IPKernelApp object at 0x7f524d63d040>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelapp.py", line 667, in start
+    self.io_loop.start()
+    │    │       └ <function BaseAsyncIOLoop.start at 0x7f524a9f84c0>
+    │    └ <tornado.platform.asyncio.AsyncIOMainLoop object at 0x7f52499fa7c0>
+    └ <ipykernel.kernelapp.IPKernelApp object at 0x7f524d63d040>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/tornado/platform/asyncio.py", line 199, in start
+    self.asyncio_loop.run_forever()
+    │    │            └ <function BaseEventLoop.run_forever at 0x7f524ae33af0>
+    │    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+    └ <tornado.platform.asyncio.AsyncIOMainLoop object at 0x7f52499fa7c0>
+  File "/usr/lib/python3.8/asyncio/base_events.py", line 570, in run_forever
+    self._run_once()
+    │    └ <function BaseEventLoop._run_once at 0x7f524ae36670>
+    └ <_UnixSelectorEventLoop running=True closed=False debug=False>
+  File "/usr/lib/python3.8/asyncio/base_events.py", line 1859, in _run_once
+    handle._run()
+    │      └ <function Handle._run at 0x7f524aee2430>
+    └ <Handle <TaskWakeupMethWrapper object at 0x7f52481ca7f0>(<Future finis...3b0>, ...],))>)>
+  File "/usr/lib/python3.8/asyncio/events.py", line 81, in _run
+    self._context.run(self._callback, *self._args)
+    │    │            │    │           │    └ <member '_args' of 'Handle' objects>
+    │    │            │    │           └ <Handle <TaskWakeupMethWrapper object at 0x7f52481ca7f0>(<Future finis...3b0>, ...],))>)>
+    │    │            │    └ <member '_callback' of 'Handle' objects>
+    │    │            └ <Handle <TaskWakeupMethWrapper object at 0x7f52481ca7f0>(<Future finis...3b0>, ...],))>)>
+    │    └ <member '_context' of 'Handle' objects>
+    └ <Handle <TaskWakeupMethWrapper object at 0x7f52481ca7f0>(<Future finis...3b0>, ...],))>)>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelbase.py", line 457, in dispatch_queue
+    await self.process_one()
+          │    └ <function Kernel.process_one at 0x7f5249a7dc10>
+          └ <ipykernel.ipkernel.IPythonKernel object at 0x7f5249a572b0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelbase.py", line 446, in process_one
+    await dispatch(*args)
+          │         └ ([<zmq.sugar.frame.Frame object at 0x7f52481b7250>, <zmq.sugar.frame.Frame object at 0x7f52481b75c0>, <zmq.sugar.frame.Frame ...
+          └ <bound method Kernel.dispatch_shell of <ipykernel.ipkernel.IPythonKernel object at 0x7f5249a572b0>>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelbase.py", line 353, in dispatch_shell
+    await result
+          └ <coroutine object Kernel.execute_request at 0x7f5249a1f6c0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/kernelbase.py", line 648, in execute_request
+    reply_content = await reply_content
+                          └ <coroutine object IPythonKernel.do_execute at 0x7f5249a1f7c0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/ipkernel.py", line 345, in do_execute
+    res = shell.run_cell(code, store_history=store_history, silent=silent)
+          │     │        │                   │                     └ False
+          │     │        │                   └ True
+          │     │        └ 'from sklearn.metrics import mean_squared_error\nimport numpy as np\nfrom loguru import logger\n\nlogger.add("file_{time}.log...
+          │     └ <function ZMQInteractiveShell.run_cell at 0x7f5249a92ee0>
+          └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/ipykernel/zmqshell.py", line 532, in run_cell
+    return super(ZMQInteractiveShell, self).run_cell(*args, **kwargs)
+                 │                    │               │       └ {'store_history': True, 'silent': False}
+                 │                    │               └ ('from sklearn.metrics import mean_squared_error\nimport numpy as np\nfrom loguru import logger\n\nlogger.add("file_{time}.lo...
+                 │                    └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+                 └ <class 'ipykernel.zmqshell.ZMQInteractiveShell'>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 2898, in run_cell
+    result = self._run_cell(
+             │    └ <function InteractiveShell._run_cell at 0x7f524a4c6550>
+             └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 2944, in _run_cell
+    return runner(coro)
+           │      └ <coroutine object InteractiveShell.run_cell_async at 0x7f5249a1f840>
+           └ <function _pseudo_sync_runner at 0x7f524a530b80>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/async_helpers.py", line 68, in _pseudo_sync_runner
+    coro.send(None)
+    │    └ <method 'send' of 'coroutine' objects>
+    └ <coroutine object InteractiveShell.run_cell_async at 0x7f5249a1f840>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 3169, in run_cell_async
+    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+                       │    │             │        │     └ '/tmp/ipykernel_337207/1455742643.py'
+                       │    │             │        └ [<_ast.ImportFrom object at 0x7f52257e7b80>, <_ast.Import object at 0x7f52257f2670>, <_ast.ImportFrom object at 0x7f52257f297...
+                       │    │             └ <_ast.Module object at 0x7f52257e7c70>
+                       │    └ <function InteractiveShell.run_ast_nodes at 0x7f524a4c6820>
+                       └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 3361, in run_ast_nodes
+    if (await self.run_code(code, result,  async_=asy)):
+              │    │        │     │               └ False
+              │    │        │     └ <ExecutionResult object at 7f52257e7820, execution_count=8 error_before_exec=None error_in_exec=None info=<ExecutionInfo obje...
+              │    │        └ <code object <module> at 0x7f51640f5920, file "/tmp/ipykernel_337207/1455742643.py", line 14>
+              │    └ <function InteractiveShell.run_code at 0x7f524a4c6940>
+              └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 3441, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+         │         │    │               │    └ {'__name__': '__main__', '__doc__': 'Automatically created module for IPython interactive environment', '__package__': None, ...
+         │         │    │               └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+         │         │    └ <property object at 0x7f524a544090>
+         │         └ <ipykernel.zmqshell.ZMQInteractiveShell object at 0x7f5249a573a0>
+         └ <code object <module> at 0x7f51640f5920, file "/tmp/ipykernel_337207/1455742643.py", line 14>
+
+> File "/tmp/ipykernel_337207/1455742643.py", line 14, in <module>
+    evaluate_result(y_true, y_pred)
+    │               │       └ array([1.5, 2.2])
+    │               └ array([1, 2, 3])
+    └ <function evaluate_result at 0x7f51640a9430>
+
+  File "/tmp/ipykernel_337207/1455742643.py", line 9, in evaluate_result
+    mean_square_err = mean_squared_error(y_true, y_pred)
+                      │                  │       └ array([1.5, 2.2])
+                      │                  └ array([1, 2, 3])
+                      └ <function mean_squared_error at 0x7f51645baca0>
+
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/sklearn/utils/validation.py", line 63, in inner_f
+    return f(*args, **kwargs)
+           │  │       └ {}
+           │  └ (array([1, 2, 3]), array([1.5, 2.2]))
+           └ <function mean_squared_error at 0x7f51645bab80>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/sklearn/metrics/_regression.py", line 335, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+            │       │                     └ <function _check_reg_targets at 0x7f51645b1af0>
+            │       └ array([1.5, 2.2])
+            └ array([1, 2, 3])
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/sklearn/metrics/_regression.py", line 88, in _check_reg_targets
+    check_consistent_length(y_true, y_pred)
+    │                       │       └ array([1.5, 2.2])
+    │                       └ array([1, 2, 3])
+    └ <function check_consistent_length at 0x7f5164ff3040>
+  File "/home/khuyen/book/venv/lib/python3.8/site-packages/sklearn/utils/validation.py", line 319, in check_consistent_length
+    raise ValueError("Found input variables with inconsistent numbers of"
+
+ValueError: Found input variables with inconsistent numbers of samples: [3, 2]
