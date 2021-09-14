@@ -169,7 +169,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="function.html">
-     Efficient Function
+     Function
     </a>
    </li>
    <li class="toctree-l2">
@@ -488,6 +488,16 @@
    re.sub: Replace One String with Another String Using Regular Expression
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#difflib-sequencematcher-detect-the-almost-similar-articles">
+   difflib.SequenceMatcher: Detect The “Almost Similar” Articles
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#difflib-get-close-matches-get-a-list-of-he-best-matches-for-a-certain-word">
+   difflib.get_close_matches:  Get a List of he Best Matches for a Certain Word
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -622,6 +632,58 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Today is 2021-3-7&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="difflib-sequencematcher-detect-the-almost-similar-articles">
+<h2>difflib.SequenceMatcher: Detect The “Almost Similar” Articles<a class="headerlink" href="#difflib-sequencematcher-detect-the-almost-similar-articles" title="Permalink to this headline">¶</a></h2>
+<p>When analyzing articles, different articles can be almost similar but not 100% identical, maybe because of the grammar, or because of the change in two or three words (such as cross-posting). How can we detect the “almost similar” articles and drop one of them? That is when <code class="docutils literal notranslate"><span class="pre">difflib.SequenceMatcher</span></code> comes in handy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">SequenceMatcher</span>
+
+<span class="n">text1</span> <span class="o">=</span> <span class="s1">&#39;I am Khuyen&#39;</span>
+<span class="n">text2</span> <span class="o">=</span> <span class="s1">&#39;I am Khuen&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">SequenceMatcher</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">text1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">text2</span><span class="p">)</span><span class="o">.</span><span class="n">ratio</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9523809523809523
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="difflib-get-close-matches-get-a-list-of-he-best-matches-for-a-certain-word">
+<h2>difflib.get_close_matches:  Get a List of he Best Matches for a Certain Word<a class="headerlink" href="#difflib-get-close-matches-get-a-list-of-he-best-matches-for-a-certain-word" title="Permalink to this headline">¶</a></h2>
+<p>If you want to get a list of the best matches for a certain word, use <code class="docutils literal notranslate"><span class="pre">difflib.get_close_matches</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">get_close_matches</span>
+
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pencil&#39;</span><span class="p">,</span> <span class="s1">&#39;pen&#39;</span><span class="p">,</span> <span class="s1">&#39;erasor&#39;</span><span class="p">,</span> <span class="s1">&#39;ink&#39;</span><span class="p">]</span>
+<span class="n">get_close_matches</span><span class="p">(</span><span class="s1">&#39;pencel&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;pencil&#39;, &#39;pen&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get closer matches, increase the value of the argument <code class="docutils literal notranslate"><span class="pre">cutoff</span></code> (default 0.6).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_close_matches</span><span class="p">(</span><span class="s1">&#39;pencel&#39;</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;pencil&#39;]
 </pre></div>
 </div>
 </div>
