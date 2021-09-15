@@ -30,4 +30,4 @@ Khuyen Tran is a data science writer at NVIDIA and a data science intern at Ocel
 ## Supporters
 Special thanks to these supporters for supporting this project!
 
-[<img src="img/danny.png" width="100" height="100">](https://github.com/DataWithDanny) [<img src="img/sagar.jpeg" width="100" height="100">](https://github.com/sagar-r-sonawane)
+[<img src="https://github.com/khuyentran1401/Data-science/blob/master/img/danny.png?raw=true" width="100" height="100">](https://github.com/DataWithDanny) [<img src="https://github.com/khuyentran1401/Data-science/blob/master/img/sagar.jpeg?raw=true" width="100" height="100">](https://github.com/sagar-r-sonawane)
