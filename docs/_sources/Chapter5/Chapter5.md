@@ -1,3 +1,3 @@
-# Cool Tools
+# Data Science Tools
 
-This chapter covers some tools that are not necessarily used for a data science but very useful and cool. 
+This chapter covers some useful tools for a data science project.
