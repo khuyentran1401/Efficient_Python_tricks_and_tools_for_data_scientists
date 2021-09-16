@@ -1,3 +1,3 @@
-# Jupyter Notebook
+# Cool Tools
 
-Jupyter Notebook is a popular tool among data scientists. This chapter covers some libraries and tools to improve Jupyter Notebook experience. 
+This chapter covers some tools that are not necessarily used for a data science but very useful and cool. 
