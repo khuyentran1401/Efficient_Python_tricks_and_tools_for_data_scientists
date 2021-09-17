@@ -301,6 +301,11 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="time_series.html">
+     Time Series
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="sharing_downloading.html">
      Sharing and Downloading
     </a>
@@ -496,33 +501,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#datefinder-automatically-find-dates-and-time-in-a-python-string">
-   datefinder: Automatically Find Dates and Time in a Python String
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
    pytrends: Get the Trend of a Keyword on Google Search Over Time
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#fastai-s-add-datepart-add-relevant-datetime-features-in-one-line-of-code">
-   Fastai’s add_datepart: Add Relevant DateTime Features in One Line of Code
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#geopy-extract-location-based-on-python-string">
    Geopy: Extract Location Based on Python String
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#maya-convert-the-string-to-datetime-automatically">
-   Maya: Convert the string to datetime automatically
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extract-holiday-from-date-column">
-   Extract holiday from date column
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -610,59 +595,6 @@
 <p>Besides finding the best theoretical distribution, distfit is also useful in detecting outliers. New data points that deviate significantly can then be marked as outliers.</p>
 <p><a class="reference external" href="https://erdogant.github.io/distfit/pages/html/index.html">Link to distfit</a>.</p>
 </div>
-<div class="section" id="datefinder-automatically-find-dates-and-time-in-a-python-string">
-<h2>datefinder: Automatically Find Dates and Time in a Python String<a class="headerlink" href="#datefinder-automatically-find-dates-and-time-in-a-python-string" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install datefinder
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to automatically find date and time with different formats in a Python string, try datefinder.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datefinder</span> <span class="kn">import</span> <span class="n">find_dates</span>
-
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th,</span>
-<span class="s2">2021 at 9:00am and another meeting on 5/18/2021</span>
-<span class="s2">at 10:00. I hope you can attend one of the</span>
-<span class="s2">meetings.&quot;&quot;&quot;</span>
-
-<span class="n">matches</span> <span class="o">=</span> <span class="n">find_dates</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Date and time:&quot;</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Only day:&quot;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date and time: 2021-05-17 09:00:00
-Only day: 17
-Date and time: 2021-05-18 10:00:00
-Only day: 18
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 32;
-                var nbb_unformatted_code = "from datefinder import find_dates\n\ntext = \"\"\"\"We have one meeting on May 17th,\n2021 at 9:00am and another meeting on 5/18/2021\nat 10:00. I hope you can attend one of the\nmeetings.\"\"\"\n\nmatches = find_dates(text)\n\nfor match in matches:\n    print(\"Date and time:\", match)\n    print(\"Only day:\", match.day)";
-                var nbb_formatted_code = "from datefinder import find_dates\n\ntext = \"\"\"\"We have one meeting on May 17th,\n2021 at 9:00am and another meeting on 5/18/2021\nat 10:00. I hope you can attend one of the\nmeetings.\"\"\"\n\nmatches = find_dates(text)\n\nfor match in matches:\n    print(\"Date and time:\", match)\n    print(\"Only day:\", match.day)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p><a class="reference external" href="https://github.com/akoumjian/datefinder">Link to datefinder</a>.</p>
-</div>
 <div class="section" id="pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
 <h2>pytrends: Get the Trend of a Keyword on Google Search Over Time<a class="headerlink" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
@@ -712,7 +644,7 @@ Only day: 18
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;date&#39;&gt;
 </pre></div>
 </div>
-<img alt="../_images/feature_extraction_16_1.png" src="../_images/feature_extraction_16_1.png" />
+<img alt="../_images/feature_extraction_11_1.png" src="../_images/feature_extraction_11_1.png" />
 <script type="application/javascript">
             setTimeout(function() {
                 var nbb_cell_id = 20;
@@ -731,135 +663,6 @@ Only day: 18
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/GeneralMills/pytrends">Link to pytrends</a></p>
-</div>
-<div class="section" id="fastai-s-add-datepart-add-relevant-datetime-features-in-one-line-of-code">
-<h2>Fastai’s add_datepart: Add Relevant DateTime Features in One Line of Code<a class="headerlink" href="#fastai-s-add-datepart-add-relevant-datetime-features-in-one-line-of-code" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install fastai
-</pre></div>
-</div>
-</div>
-</div>
-<p>When working with time series, other features such as year, month, week, day of the week, day of the year, whether it is the end of the year or not, can be really helpful to predict future events. Is there a way that you can get all of those features in one line of code?</p>
-<p>Fastai’s add_datepart method allows you to do exactly that.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">fastai.tabular.core</span> <span class="kn">import</span> <span class="n">add_datepart</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-            <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
-            <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
-            <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>val</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2020-02-05</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2020-02-06</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2020-02-07</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2020-02-08</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 41;
-                var nbb_unformatted_code = "import pandas as pd\nfrom fastai.tabular.core import add_datepart\nfrom datetime import datetime\n\ndf = pd.DataFrame(\n    {\n        \"date\": [\n            datetime(2020, 2, 5),\n            datetime(2020, 2, 6),\n            datetime(2020, 2, 7),\n            datetime(2020, 2, 8),\n        ],\n        \"val\": [1, 2, 3, 4],\n    }\n)\n\ndf";
-                var nbb_formatted_code = "import pandas as pd\nfrom fastai.tabular.core import add_datepart\nfrom datetime import datetime\n\ndf = pd.DataFrame(\n    {\n        \"date\": [\n            datetime(2020, 2, 5),\n            datetime(2020, 2, 6),\n            datetime(2020, 2, 7),\n            datetime(2020, 2, 8),\n        ],\n        \"val\": [1, 2, 3, 4],\n    }\n)\n\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">add_datepart</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">columns</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;val&#39;, &#39;Year&#39;, &#39;Month&#39;, &#39;Week&#39;, &#39;Day&#39;, &#39;Dayofweek&#39;, &#39;Dayofyear&#39;,
-       &#39;Is_month_end&#39;, &#39;Is_month_start&#39;, &#39;Is_quarter_end&#39;, &#39;Is_quarter_start&#39;,
-       &#39;Is_year_end&#39;, &#39;Is_year_start&#39;, &#39;Elapsed&#39;],
-      dtype=&#39;object&#39;)
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 42;
-                var nbb_unformatted_code = "df = add_datepart(df, \"date\")\ndf.columns";
-                var nbb_formatted_code = "df = add_datepart(df, \"date\")\ndf.columns";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p><a class="reference external" href="https://docs.fast.ai/tabular.core.html">Link to Fastai’s methods to work with tabular data</a></p>
 </div>
 <div class="section" id="geopy-extract-location-based-on-python-string">
 <h2>Geopy: Extract Location Based on Python String<a class="headerlink" href="#geopy-extract-location-based-on-python-string" title="Permalink to this headline">¶</a></h2>
@@ -955,178 +758,6 @@ Only day: 18
             </script></div>
 </div>
 <p><a class="reference external" href="https://geopy.readthedocs.io/en/stable/">Link to Geopy</a></p>
-</div>
-<div class="section" id="maya-convert-the-string-to-datetime-automatically">
-<h2>Maya: Convert the string to datetime automatically<a class="headerlink" href="#maya-convert-the-string-to-datetime-automatically" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install maya
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to convert a string type to a datetime type, the common way is to use strptime(date_string, format). But it is quite inconvenient to to specify the structure of your datetime string, such as ‘ %Y-%m-%d %H:%M:%S’.</p>
-<p>There is a tool that helps you convert the string to datetime automatically called maya. You just need to parse the string and maya will figure out the structure of your string.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">maya</span>
-
-<span class="c1"># Automatically parse datetime string</span>
-<span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;2016-12-16 18:23:45.423992+00:00&quot;</span>
-<span class="n">maya</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="o">.</span><span class="n">datetime</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.datetime(2016, 12, 16, 18, 23, 45, 423992, tzinfo=&lt;UTC&gt;)
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 49;
-                var nbb_unformatted_code = "import maya\n\n# Automatically parse datetime string\nstring = '2016-12-16 18:23:45.423992+00:00'\nmaya.parse(string).datetime()";
-                var nbb_formatted_code = "import maya\n\n# Automatically parse datetime string\nstring = \"2016-12-16 18:23:45.423992+00:00\"\nmaya.parse(string).datetime()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>Better yet, if you want to convert the string to a different time zone (for example, CST), you can parse that into maya’s datetime function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">maya</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">)</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">to_timezone</span><span class="o">=</span><span class="s2">&quot;US/Central&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.datetime(2016, 12, 16, 12, 23, 45, 423992, tzinfo=&lt;DstTzInfo &#39;US/Central&#39; CST-1 day, 18:00:00 STD&gt;)
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 50;
-                var nbb_unformatted_code = "maya.parse(string).datetime(to_timezone='US/Central')";
-                var nbb_formatted_code = "maya.parse(string).datetime(to_timezone=\"US/Central\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>Check out the doc for more ways of manipulating your date string faster <a class="reference external" href="https://github.com/timofurrer/maya">here</a>.</p>
-</div>
-<div class="section" id="extract-holiday-from-date-column">
-<h2>Extract holiday from date column<a class="headerlink" href="#extract-holiday-from-date-column" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install holidays
-</pre></div>
-</div>
-</div>
-</div>
-<p>You have a date column and you think the holidays might affect the target of your data. Is there an easy way to extract the holidays from the date? Yes, that is when holidays package comes in handy.</p>
-<p>Holidays package provides a dictionary of holidays for different countries. The code below is to confirm whether 2020-07-04 is a US holiday and extract the name of the holiday.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-<span class="kn">import</span> <span class="nn">holidays</span>
-
-<span class="n">us_holidays</span> <span class="o">=</span> <span class="n">holidays</span><span class="o">.</span><span class="n">UnitedStates</span><span class="p">()</span>
-
-<span class="s2">&quot;2014-07-04&quot;</span> <span class="ow">in</span> <span class="n">us_holidays</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 52;
-                var nbb_unformatted_code = "from datetime import date \nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n'2014-07-04' in us_holidays";
-                var nbb_formatted_code = "from datetime import date\nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n\"2014-07-04\" in us_holidays";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>The great thing about this package is that you can write the date in whatever way you want and the package is still able to detect which date you are talking about.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014-7-4&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 53;
-                var nbb_unformatted_code = "us_holidays.get('2014-7-4')";
-                var nbb_formatted_code = "us_holidays.get(\"2014-7-4\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014/7/4&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 54;
-                var nbb_unformatted_code = "us_holidays.get('2014/7/4')";
-                var nbb_formatted_code = "us_holidays.get(\"2014/7/4\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>You can also add more holidays if you think that the library is lacking some holidays. Try <a class="reference external" href="https://pypi.org/project/holidays/">this</a> out if you are looking for something similar.</p>
 </div>
 <div class="section" id="fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality">
 <h2>fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality<a class="headerlink" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality" title="Permalink to this headline">¶</a></h2>
