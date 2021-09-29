@@ -515,6 +515,11 @@
    7.1.4. virtualenv-clone: Create a Copy of a Virtual Environment
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pip-autoremove-remove-a-package-and-its-unused-dependencies">
+   7.1.5. pip-autoremove: Remove a Package and Its Unused Dependencies
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -751,6 +756,119 @@ $ <span class="nb">source</span> new_venv/bin/activate
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/edwardgeorge/virtualenv-clone">Link to virtualenv-clone</a>.</p>
+</div>
+<div class="section" id="pip-autoremove-remove-a-package-and-its-unused-dependencies">
+<h2><span class="section-number">7.1.5. </span>pip-autoremove: Remove a Package and Its Unused Dependencies<a class="headerlink" href="#pip-autoremove-remove-a-package-and-its-unused-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">uninstall</span></code>, you only remove a specific package.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U pandas-profiling<span class="o">[</span>notebook<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip uninstall pandas-profiling<span class="o">[</span>notebook<span class="o">]</span> -y
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip uninstall pandas-profiling<span class="o">[</span>notebook<span class="o">]</span> -y
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found existing installation: pandas-profiling 3.1.0
+Uninstalling pandas-profiling-3.1.0:
+  Successfully uninstalled pandas-profiling-3.1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Wouldn’t it be nice if you can install that package and its unused dependencies? That is when <code class="docutils literal notranslate"><span class="pre">pip-autoremove</span></code> comes in handy.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pip-autoremove
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pip-autoremove
+  Downloading pip_autoremove-0.10.0-py2.py3-none-any.whl (5.0 kB)
+Requirement already satisfied: setuptools in /home/khuyen/book/venv/lib/python3.8/site-packages (from pip-autoremove) (44.0.0)
+Requirement already satisfied: pip in /home/khuyen/book/venv/lib/python3.8/site-packages (from pip-autoremove) (21.2.4)
+Installing collected packages: pip-autoremove
+Successfully installed pip-autoremove-0.10.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U pandas-profiling<span class="o">[</span>notebook<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip-autoremove pandas-profiling<span class="o">[</span>notebook<span class="o">]</span> -y
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip-autoremove pandas-profiling<span class="o">[</span>notebook<span class="o">]</span> -y
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jinja2 3.0.1 is installed but jinja2~=2.11.2 is required
+Redoing requirement with just package name...
+spacy 3.1.2 is installed but spacy&lt;3.0.0 is required
+Redoing requirement with just package name...
+markdown-it-py 0.6.2 is installed but markdown-it-py~=1.0 is required
+Redoing requirement with just package name...
+attrs 21.2.0 is installed but attrs&lt;21,&gt;=19 is required
+Redoing requirement with just package name...
+typer 0.3.2 is installed but typer[all]&gt;=0.4 is required
+Redoing requirement with just package name...
+fsspec 0.8.7 is installed but fsspec[http]&gt;=2021.8.1 is required
+Redoing requirement with just package name...
+pandas-profiling 3.1.0 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    seaborn 0.11.2 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    htmlmin 0.1.12 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    phik 0.12.0 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    multimethod 1.6 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    tangled-up-in-unicode 0.1.0 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    visions 0.7.4 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+    missingno 0.5.0 (/home/khuyen/book/venv/lib/python3.8/site-packages)
+Found existing installation: phik 0.12.0
+Uninstalling phik-0.12.0:
+  Successfully uninstalled phik-0.12.0
+Found existing installation: multimethod 1.6
+Uninstalling multimethod-1.6:
+  Successfully uninstalled multimethod-1.6
+Found existing installation: pandas-profiling 3.1.0
+Uninstalling pandas-profiling-3.1.0:
+  Successfully uninstalled pandas-profiling-3.1.0
+Found existing installation: seaborn 0.11.2
+Uninstalling seaborn-0.11.2:
+  Successfully uninstalled seaborn-0.11.2
+Found existing installation: tangled-up-in-unicode 0.1.0
+Uninstalling tangled-up-in-unicode-0.1.0:
+  Successfully uninstalled tangled-up-in-unicode-0.1.0
+Found existing installation: visions 0.7.4
+Uninstalling visions-0.7.4:
+  Successfully uninstalled visions-0.7.4
+Found existing installation: htmlmin 0.1.12
+Uninstalling htmlmin-0.1.12:
+  Successfully uninstalled htmlmin-0.1.12
+Found existing installation: missingno 0.5.0
+Uninstalling missingno-0.5.0:
+  Successfully uninstalled missingno-0.5.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>By using pip-autoremove, pandas-profiling and its unused dependencies are removed!</p>
+<p><a class="reference external" href="https://github.com/invl/pip-autoremove">Link to pip-autoremove</a>.</p>
 </div>
 </div>
 
