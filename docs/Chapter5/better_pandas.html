@@ -592,7 +592,7 @@ Name: a, dtype: int64
 <span class="n">df</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span>
     <span class="n">input_df</span><span class="p">,</span>
     <span class="n">map_price_to_fruit</span><span class="p">,</span>
-    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;*, price:int&quot;</span><span class="p">,</span>
     <span class="n">params</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">mapping</span><span class="o">=</span><span class="n">map_price</span><span class="p">),</span>
     <span class="n">engine</span><span class="o">=</span><span class="n">SparkExecutionEngine</span><span class="p">,</span>
 <span class="p">)</span>
@@ -601,56 +601,36 @@ Name: a, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/khuyen/book/venv/lib/python3.8/site-packages/triad/utils/pandas_like.py:166: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df[v.name] = s
-/home/khuyen/book/venv/lib/python3.8/site-packages/triad/utils/pandas_like.py:166: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df[v.name] = s
-/home/khuyen/book/venv/lib/python3.8/site-packages/triad/utils/pandas_like.py:166: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  df[v.name] = s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>21/10/01 11:17:05 WARN Utils: Your hostname, khuyen-Precision-7740 resolves to a loopback address: 127.0.1.1; using 192.168.1.90 instead (on interface wlp111s0)
+21/10/01 11:17:05 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/khuyen/book/venv/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.1.2.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+21/10/01 11:17:05 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark&#39;s default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to &quot;WARN&quot;.
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+21/10/01 11:17:06 WARN Utils: Service &#39;SparkUI&#39; could not bind on port 4040. Attempting port 4041.
+[Stage 2:===============&gt;                                          (3 + 8) / 11]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+------+
-| id| fruit|
-+---+------+
-|  0| apple|
-|  1|banana|
-|  2|orange|
-+---+------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+------+-----+
+| id| fruit|price|
++---+------+-----+
+|  0| apple|    2|
+|  1|banana|    1|
+|  2|orange|    3|
++---+------+-----+
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 38:==============================================&gt;          (9 + 2) / 11]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 2:==========================================&gt;               (8 + 3) / 11]
 
                                                                                 
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 25;
-                var nbb_unformatted_code = "import pandas as pd\nfrom typing import Dict\nfrom fugue import transform\nfrom fugue_spark import SparkExecutionEngine\n\ninput_df = pd.DataFrame({\"id\": [0, 1, 2], \"fruit\": ([\"apple\", \"banana\", \"orange\"])})\nmap_price = {\"apple\": 2, \"banana\": 1, \"orange\": 3}\n\n\ndef map_price_to_fruit(df: pd.DataFrame, mapping: dict) -> pd.DataFrame:\n    df[\"price\"] = df[\"fruit\"].map(mapping)\n    return df\n\n\ndf = transform(\n    input_df,\n    map_price_to_fruit,\n    schema=\"*\",\n    params=dict(mapping=map_price),\n    engine=SparkExecutionEngine,\n)\ndf.show()";
-                var nbb_formatted_code = "import pandas as pd\nfrom typing import Dict\nfrom fugue import transform\nfrom fugue_spark import SparkExecutionEngine\n\ninput_df = pd.DataFrame({\"id\": [0, 1, 2], \"fruit\": ([\"apple\", \"banana\", \"orange\"])})\nmap_price = {\"apple\": 2, \"banana\": 1, \"orange\": 3}\n\n\ndef map_price_to_fruit(df: pd.DataFrame, mapping: dict) -> pd.DataFrame:\n    df[\"price\"] = df[\"fruit\"].map(mapping)\n    return df\n\n\ndf = transform(\n    input_df,\n    map_price_to_fruit,\n    schema=\"*\",\n    params=dict(mapping=map_price),\n    engine=SparkExecutionEngine,\n)\ndf.show()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </div>
