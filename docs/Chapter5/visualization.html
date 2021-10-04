@@ -515,6 +515,11 @@
    6.9.4. HiPlot - High Dimensional Interactive Plotting
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#missingno-dendogram-visualize-correlation-between-missing-data">
+   6.9.5. missingno.dendogram: Visualize Correlation Between Missing Data
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -748,6 +753,43 @@ catch(err) {
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/facebookresearch/hiplot">Link to HiPlot.</a></p>
+</div>
+<div class="section" id="missingno-dendogram-visualize-correlation-between-missing-data">
+<h2><span class="section-number">6.9.5. </span>missingno.dendogram: Visualize Correlation Between Missing Data<a class="headerlink" href="#missingno-dendogram-visualize-correlation-between-missing-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">missingno</span> <span class="n">sklearn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Missing values can sometimes tell you how strongly the presence or absence of one variable affects the presence of another. To visualize the correlation between different columns based on the missing values, use <code class="docutils literal notranslate"><span class="pre">missingno.dendogram</span></code>.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+
+<span class="n">soybean</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;soybean&quot;</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">missingno</span> <span class="k">as</span> <span class="nn">msno</span>
+
+<span class="n">msno</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">soybean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="../_images/visualization_29_1.png" src="../_images/visualization_29_1.png" />
+</div>
+</div>
+<p>The dendrogram uses a hierarchical clustering algorithm to bin variables against one another by their nullity correlation. Cluster leaves which linked together at a distance of zero fully predict one another’s presence. In the graph above, the nullity of <code class="docutils literal notranslate"><span class="pre">seed-discolor</span></code> fully predicts the <code class="docutils literal notranslate"><span class="pre">nullity</span></code> of <code class="docutils literal notranslate"><span class="pre">germination</span></code>.</p>
+<p><a class="reference external" href="https://github.com/ResidentMario/missingno">Link to missingno</a>.</p>
 </div>
 </div>
 
