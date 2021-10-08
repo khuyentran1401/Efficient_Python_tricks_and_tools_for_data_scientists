@@ -520,6 +520,11 @@
    6.1.4. fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#patsy-build-features-with-arbitrary-python-code">
+   6.1.5. Patsy: Build Features with Arbitrary Python Code
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -847,6 +852,314 @@ Categorical columns: [&#39;col2&#39;]
             </script></div>
 </div>
 <p><a class="reference external" href="https://docs.fast.ai/tabular.core.html">Link to the documentation</a>.</p>
+</div>
+<div class="section" id="patsy-build-features-with-arbitrary-python-code">
+<h2><span class="section-number">6.1.5. </span>Patsy: Build Features with Arbitrary Python Code<a class="headerlink" href="#patsy-build-features-with-arbitrary-python-code" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install patsy
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to quickly experiment with different combinations of features, try Patsy. Patsy allows you to create features for your model using human-readable syntax.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>alcohol</th>
+      <th>malic_acid</th>
+      <th>ash</th>
+      <th>alcalinity_of_ash</th>
+      <th>magnesium</th>
+      <th>total_phenols</th>
+      <th>flavanoids</th>
+      <th>nonflavanoid_phenols</th>
+      <th>proanthocyanins</th>
+      <th>color_intensity</th>
+      <th>hue</th>
+      <th>od280/od315_of_diluted_wines</th>
+      <th>proline</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>14.23</td>
+      <td>1.71</td>
+      <td>2.43</td>
+      <td>15.6</td>
+      <td>127.0</td>
+      <td>2.80</td>
+      <td>3.06</td>
+      <td>0.28</td>
+      <td>2.29</td>
+      <td>5.64</td>
+      <td>1.04</td>
+      <td>3.92</td>
+      <td>1065.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>13.20</td>
+      <td>1.78</td>
+      <td>2.14</td>
+      <td>11.2</td>
+      <td>100.0</td>
+      <td>2.65</td>
+      <td>2.76</td>
+      <td>0.26</td>
+      <td>1.28</td>
+      <td>4.38</td>
+      <td>1.05</td>
+      <td>3.40</td>
+      <td>1050.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>13.16</td>
+      <td>2.36</td>
+      <td>2.67</td>
+      <td>18.6</td>
+      <td>101.0</td>
+      <td>2.80</td>
+      <td>3.24</td>
+      <td>0.30</td>
+      <td>2.81</td>
+      <td>5.68</td>
+      <td>1.03</td>
+      <td>3.17</td>
+      <td>1185.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>14.37</td>
+      <td>1.95</td>
+      <td>2.50</td>
+      <td>16.8</td>
+      <td>113.0</td>
+      <td>3.85</td>
+      <td>3.49</td>
+      <td>0.24</td>
+      <td>2.18</td>
+      <td>7.80</td>
+      <td>0.86</td>
+      <td>3.45</td>
+      <td>1480.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>13.24</td>
+      <td>2.59</td>
+      <td>2.87</td>
+      <td>21.0</td>
+      <td>118.0</td>
+      <td>2.80</td>
+      <td>2.69</td>
+      <td>0.39</td>
+      <td>1.82</td>
+      <td>4.32</td>
+      <td>1.04</td>
+      <td>2.93</td>
+      <td>735.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>14.20</td>
+      <td>1.76</td>
+      <td>2.45</td>
+      <td>15.2</td>
+      <td>112.0</td>
+      <td>3.27</td>
+      <td>3.39</td>
+      <td>0.34</td>
+      <td>1.97</td>
+      <td>6.75</td>
+      <td>1.05</td>
+      <td>2.85</td>
+      <td>1450.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>14.39</td>
+      <td>1.87</td>
+      <td>2.45</td>
+      <td>14.6</td>
+      <td>96.0</td>
+      <td>2.50</td>
+      <td>2.52</td>
+      <td>0.30</td>
+      <td>1.98</td>
+      <td>5.25</td>
+      <td>1.02</td>
+      <td>3.58</td>
+      <td>1290.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>14.06</td>
+      <td>2.15</td>
+      <td>2.61</td>
+      <td>17.6</td>
+      <td>121.0</td>
+      <td>2.60</td>
+      <td>2.51</td>
+      <td>0.31</td>
+      <td>1.25</td>
+      <td>5.05</td>
+      <td>1.06</td>
+      <td>3.58</td>
+      <td>1295.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>14.83</td>
+      <td>1.64</td>
+      <td>2.17</td>
+      <td>14.0</td>
+      <td>97.0</td>
+      <td>2.80</td>
+      <td>2.98</td>
+      <td>0.29</td>
+      <td>1.98</td>
+      <td>5.20</td>
+      <td>1.08</td>
+      <td>2.85</td>
+      <td>1045.0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>13.86</td>
+      <td>1.35</td>
+      <td>2.27</td>
+      <td>16.0</td>
+      <td>98.0</td>
+      <td>2.98</td>
+      <td>3.15</td>
+      <td>0.22</td>
+      <td>1.85</td>
+      <td>7.22</td>
+      <td>1.01</td>
+      <td>3.55</td>
+      <td>1045.0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">patsy</span> <span class="kn">import</span> <span class="n">dmatrices</span>
+
+<span class="n">y</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">dmatrices</span><span class="p">(</span><span class="s1">&#39;target ~ alcohol + flavanoids + proline&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DesignMatrix with shape (178, 4)
+  Intercept  alcohol  flavanoids  proline
+          1    14.23        3.06     1065
+          1    13.20        2.76     1050
+          1    13.16        3.24     1185
+          1    14.37        3.49     1480
+          1    13.24        2.69      735
+          1    14.20        3.39     1450
+          1    14.39        2.52     1290
+          1    14.06        2.51     1295
+          1    14.83        2.98     1045
+          1    13.86        3.15     1045
+          1    14.10        3.32     1510
+          1    14.12        2.43     1280
+          1    13.75        2.76     1320
+          1    14.75        3.69     1150
+          1    14.38        3.64     1547
+          1    13.63        2.91     1310
+          1    14.30        3.14     1280
+          1    13.83        3.40     1130
+          1    14.19        3.93     1680
+          1    13.64        3.03      845
+          1    14.06        3.17      780
+          1    12.93        2.41      770
+          1    13.71        2.88     1035
+          1    12.85        2.37     1015
+          1    13.50        2.61      845
+          1    13.05        2.68      830
+          1    13.39        2.94     1195
+          1    13.30        2.19     1285
+          1    13.87        2.97      915
+          1    14.02        2.33     1035
+  [148 rows omitted]
+  Terms:
+    &#39;Intercept&#39; (column 0)
+    &#39;alcohol&#39; (column 1)
+    &#39;flavanoids&#39; (column 2)
+    &#39;proline&#39; (column 3)
+  (to view full data, use np.asarray(this_obj))
+</pre></div>
+</div>
+</div>
+</div>
+<p>The features created by Patsy could be easily used by popular machine learning libraries like scikit-learn.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://patsy.readthedocs.io/en/latest/overview.html">Link to Patsy</a>.</p>
+<p><a class="reference external" href="https://towardsdatascience.com/patsy-build-powerful-features-with-arbitrary-python-code-bb4bb98db67a#3be4-4bcff97738cd">Link to my full article on Patsy</a>.</p>
 </div>
 </div>
 
