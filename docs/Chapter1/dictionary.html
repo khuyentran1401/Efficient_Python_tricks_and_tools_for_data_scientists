@@ -511,8 +511,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys">
+   2.5.3. Double dict.get: Get Values in a Nested Dictionary with Missing Keys
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dict-fromkeys-get-a-dictionary-from-a-list-and-a-value">
-   2.5.3. dict.fromkeys: Get a Dictionary From a List and a Value
+   2.5.4. dict.fromkeys: Get a Dictionary From a List and a Value
   </a>
  </li>
 </ul>
@@ -594,8 +599,104 @@
 </div>
 </div>
 </div>
+<div class="section" id="double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys">
+<h2><span class="section-number">2.5.3. </span>Double dict.get: Get Values in a Nested Dictionary with Missing Keys<a class="headerlink" href="#double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys" title="Permalink to this headline">¶</a></h2>
+<p>It can be challenging to get values in a nested dictionary with missing keys.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;attr&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;attr&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sour&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;grape&quot;</span><span class="p">,</span> <span class="s2">&quot;attr&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;purple&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;banana&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 23;
+                var nbb_unformatted_code = "fruits = [\n    {\"name\": \"apple\", \"attr\": {\"color\": \"red\", \"taste\": \"sweet\"}},\n    {\"name\": \"orange\", \"attr\": {\"taste\": \"sour\"}},\n    {\"name\": \"grape\", \"attr\": {\"color\": \"purple\"}},\n    {\"name\": \"banana\"},\n]";
+                var nbb_formatted_code = "fruits = [\n    {\"name\": \"apple\", \"attr\": {\"color\": \"red\", \"taste\": \"sweet\"}},\n    {\"name\": \"orange\", \"attr\": {\"taste\": \"sour\"}},\n    {\"name\": \"grape\", \"attr\": {\"color\": \"purple\"}},\n    {\"name\": \"banana\"},\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>You can use an if-else statement but it is long and hard to read.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;attr&quot;</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;attr&quot;</span> <span class="ow">in</span> <span class="n">fruit</span> <span class="ow">and</span> <span class="s2">&quot;color&quot;</span> <span class="ow">in</span> <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;attr&quot;</span><span class="p">]</span>
+    <span class="k">else</span> <span class="s2">&quot;unknown&quot;</span>
+    <span class="k">for</span> <span class="n">fruit</span> <span class="ow">in</span> <span class="n">fruits</span>
+<span class="p">]</span>
+<span class="n">colors</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;red&#39;, &#39;unknown&#39;, &#39;purple&#39;, &#39;unknown&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 29;
+                var nbb_unformatted_code = "colors = [\n    fruit[\"attr\"][\"color\"]\n    if \"attr\" in fruit and \"color\" in fruit[\"attr\"]\n    else \"unknown\"\n    for fruit in fruits\n]\ncolors";
+                var nbb_formatted_code = "colors = [\n    fruit[\"attr\"][\"color\"]\n    if \"attr\" in fruit and \"color\" in fruit[\"attr\"]\n    else \"unknown\"\n    for fruit in fruits\n]\ncolors";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>A better way is to use the <code class="docutils literal notranslate"><span class="pre">get</span></code> method twice like below. The first <code class="docutils literal notranslate"><span class="pre">get</span></code> method will return an empty dictionary if the key <code class="docutils literal notranslate"><span class="pre">attr</span></code> doesn’t exist. The second <code class="docutils literal notranslate"><span class="pre">get</span></code> method will return <code class="docutils literal notranslate"><span class="pre">unknown</span></code> if the key <code class="docutils literal notranslate"><span class="pre">color</span></code> doesn’t exist</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">fruit</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;attr&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">fruit</span> <span class="ow">in</span> <span class="n">fruits</span><span class="p">]</span>
+<span class="n">colors</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;red&#39;, &#39;unknown&#39;, &#39;purple&#39;, &#39;unknown&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 30;
+                var nbb_unformatted_code = "colors = [fruit.get(\"attr\", {}).get(\"color\", \"unknown\") for fruit in fruits]\ncolors";
+                var nbb_formatted_code = "colors = [fruit.get(\"attr\", {}).get(\"color\", \"unknown\") for fruit in fruits]\ncolors";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
 <div class="section" id="dict-fromkeys-get-a-dictionary-from-a-list-and-a-value">
-<h2><span class="section-number">2.5.3. </span>dict.fromkeys: Get a Dictionary From a List and a Value<a class="headerlink" href="#dict-fromkeys-get-a-dictionary-from-a-list-and-a-value" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.5.4. </span>dict.fromkeys: Get a Dictionary From a List and a Value<a class="headerlink" href="#dict-fromkeys-get-a-dictionary-from-a-list-and-a-value" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get a dictionary from a list and a value, try <code class="docutils literal notranslate"><span class="pre">dict.fromkeys.</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
