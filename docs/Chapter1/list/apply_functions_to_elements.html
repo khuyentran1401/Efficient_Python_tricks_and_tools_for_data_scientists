@@ -516,8 +516,8 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#filter-get-the-elements-of-an-iterable-that-a-function-returns-true">
-   2.3.6.3. filter: Get the Elements of an Iterable that a Function Returns True
+  <a class="reference internal nav-link" href="#filter-get-the-elements-of-an-iterable-that-a-function-evaluates-true">
+   2.3.6.3. filter: Get the Elements of an Iterable that a Function Evaluates True
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -544,7 +544,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;abcdE&quot;</span>
-<span class="nb">any</span><span class="p">(</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isupper</span><span class="p">())</span>
+<span class="nb">any</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -573,18 +573,15 @@
 </div>
 </div>
 </div>
-<div class="section" id="filter-get-the-elements-of-an-iterable-that-a-function-returns-true">
-<h2><span class="section-number">2.3.6.3. </span>filter: Get the Elements of an Iterable that a Function Returns True<a class="headerlink" href="#filter-get-the-elements-of-an-iterable-that-a-function-returns-true" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filter-get-the-elements-of-an-iterable-that-a-function-evaluates-true">
+<h2><span class="section-number">2.3.6.3. </span>filter: Get the Elements of an Iterable that a Function Evaluates True<a class="headerlink" href="#filter-get-the-elements-of-an-iterable-that-a-function-evaluates-true" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the elements of an iterable that a function returns true, use filter.</p>
 <p>In the code below, I use the filter method to get items that are fruits.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_fruit</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;grape&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">fruits</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span> 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span> 
+    <span class="k">return</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">fruits</span>
 
 <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;chair&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;water&#39;</span><span class="p">,</span> <span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">]</span>
 <span class="n">fruits</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">get_fruit</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
@@ -617,9 +614,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply_by_two</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">2</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multiply_by_two</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">num</span><span class="p">:</span> <span class="n">num</span> <span class="o">*</span> <span class="mi">2</span>
 
 <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">multiply_by_two</span><span class="p">,</span> <span class="n">nums</span><span class="p">))</span>
 </pre></div>
