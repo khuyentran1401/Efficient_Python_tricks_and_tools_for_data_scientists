@@ -585,6 +585,11 @@
    4.1.16. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-dateoffset-add-a-time-interval-to-a-pandas-timestamp">
+   4.1.17. pandas’ DateOffset: Add a Time Interval to a pandas Timestamp
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -2172,6 +2177,56 @@ dtype: int64
             }, 500);
             </script></div>
 </div>
+</div>
+<div class="section" id="pandas-dateoffset-add-a-time-interval-to-a-pandas-timestamp">
+<h2><span class="section-number">4.1.17. </span>pandas’ DateOffset: Add a Time Interval to a pandas Timestamp<a class="headerlink" href="#pandas-dateoffset-add-a-time-interval-to-a-pandas-timestamp" title="Permalink to this headline">¶</a></h2>
+<p>If you want to add days, months, or other time intervals to a pandas <code class="docutils literal notranslate"><span class="pre">Timestamp</span></code>,  use <code class="docutils literal notranslate"><span class="pre">pd.DateOffset</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">from</span> <span class="nn">pandas.tseries.offsets</span> <span class="kn">import</span> <span class="n">DateOffset</span><span class="p">,</span> <span class="n">BDay</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2021-10-10 9:00:00&#39;</span><span class="p">)</span>
+
+<span class="c1"># Increase the timestamp by 3 months</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">DateOffset</span><span class="p">(</span><span class="n">months</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2022-01-10 09:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase the timestamp by 3 years and 3 hours</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">DateOffset</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2024-10-10 12:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also increase the timestamp by <code class="docutils literal notranslate"><span class="pre">n</span></code> business days using <code class="docutils literal notranslate"><span class="pre">BDay</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase the timestamp by 6 business days</span>
+<span class="n">ts</span> <span class="o">+</span> <span class="n">BDay</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Timestamp(&#39;2021-10-18 09:00:00&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.tseries.offsets.DateOffset.html">Link to pandas DateOffset</a>.</p>
 </div>
 </div>
 
