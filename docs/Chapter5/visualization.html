@@ -530,6 +530,11 @@
    6.9.5. missingno.dendogram: Visualize Correlation Between Missing Data
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#matplotlib-venn-create-venn-diagram-using-python">
+   6.9.6. matplotlib-venn: Create Venn Diagram Using Python
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -800,6 +805,57 @@ catch(err) {
 </div>
 <p>The dendrogram uses a hierarchical clustering algorithm to bin variables against one another by their nullity correlation. Cluster leaves which linked together at a distance of zero fully predict one another’s presence. In the graph above, the nullity of <code class="docutils literal notranslate"><span class="pre">seed-discolor</span></code> fully predicts the <code class="docutils literal notranslate"><span class="pre">nullity</span></code> of <code class="docutils literal notranslate"><span class="pre">germination</span></code>.</p>
 <p><a class="reference external" href="https://github.com/ResidentMario/missingno">Link to missingno</a>.</p>
+</div>
+<div class="section" id="matplotlib-venn-create-venn-diagram-using-python">
+<h2><span class="section-number">6.9.6. </span>matplotlib-venn: Create Venn Diagram Using Python<a class="headerlink" href="#matplotlib-venn-create-venn-diagram-using-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install matplotlib-venn
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to draw a venn diagram using Python, try matplotlib-venn. To create a venn diagram using matplotlib-venn, you can specify the size of each region:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib_venn</span> <span class="kn">import</span> <span class="n">venn2</span>
+
+<span class="n">venn2</span><span class="p">(</span><span class="n">subsets</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">set_labels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Are Healthy&#39;</span><span class="p">,</span> <span class="s1">&#39;Do Exercise&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/visualization_35_0.png" src="../_images/visualization_35_0.png" />
+</div>
+</div>
+<p>… or specify the elements in each set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">venn2</span><span class="p">([</span><span class="nb">set</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]),</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">])],</span> <span class="n">set_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Group1&#39;</span><span class="p">,</span> <span class="s1">&#39;Group2&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/visualization_37_0.png" src="../_images/visualization_37_0.png" />
+</div>
+</div>
+<p>You can also draw three cicles using <code class="docutils literal notranslate"><span class="pre">venn3</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib_venn</span> <span class="kn">import</span> <span class="n">venn3</span>
+<span class="n">venn3</span><span class="p">(</span><span class="n">subsets</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">set_labels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Are Healthy&#39;</span><span class="p">,</span> <span class="s1">&#39;Do Exercise&#39;</span><span class="p">,</span> <span class="s1">&#39;Eat Well&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/visualization_39_0.png" src="../_images/visualization_39_0.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/konstantint/matplotlib-venn">Link to matplotlib-venn</a>.</p>
 </div>
 </div>
 
