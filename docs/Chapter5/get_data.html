@@ -530,6 +530,11 @@
    6.2.5. pandas-reader: Extract Data from Various Internet Sources Directly into a Pandas DataFrame
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
+   6.2.6. pytrends: Get the Trend of a Keyword on Google Search Over Time
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -928,6 +933,75 @@ How to check version of python modules?
 </div>
 </div>
 <p><a class="reference external" href="https://pandas-datareader.readthedocs.io/en/latest/">Link to pandas_reader</a>.</p>
+</div>
+<div class="section" id="pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
+<h2><span class="section-number">6.2.6. </span>pytrends: Get the Trend of a Keyword on Google Search Over Time<a class="headerlink" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytrends
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to get the trend of a keyword on Google Search over time, try pytrends.</p>
+<p>In the code below, I use pytrends to get the interest of the keyword “data science” on Google Search from 2016 to 2021.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytrends.request</span> <span class="kn">import</span> <span class="n">TrendReq</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 13;
+                var nbb_unformatted_code = "from pytrends.request import TrendReq\nimport seaborn as sns ";
+                var nbb_formatted_code = "from pytrends.request import TrendReq\nimport seaborn as sns";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pytrends</span> <span class="o">=</span> <span class="n">TrendReq</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
+<span class="n">pytrends</span><span class="o">.</span><span class="n">build_payload</span><span class="p">(</span><span class="n">kw_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">])</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pytrends</span><span class="o">.</span><span class="n">interest_over_time</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;date&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/get_data_33_1.png" src="../_images/get_data_33_1.png" />
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 20;
+                var nbb_unformatted_code = "pytrends = TrendReq(hl=\"en-US\", tz=360)\npytrends.build_payload(kw_list=[\"data science\"])\n\ndf = pytrends.interest_over_time()\ndf[\"data science\"].plot(figsize=(20, 7))";
+                var nbb_formatted_code = "pytrends = TrendReq(hl=\"en-US\", tz=360)\npytrends.build_payload(kw_list=[\"data science\"])\n\ndf = pytrends.interest_over_time()\ndf[\"data science\"].plot(figsize=(20, 7))";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/GeneralMills/pytrends">Link to pytrends</a></p>
 </div>
 </div>
 

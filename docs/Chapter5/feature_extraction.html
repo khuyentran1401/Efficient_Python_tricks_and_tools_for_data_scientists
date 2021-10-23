@@ -511,23 +511,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
-   6.1.2. pytrends: Get the Trend of a Keyword on Google Search Over Time
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#geopy-extract-location-based-on-python-string">
-   6.1.3. Geopy: Extract Location Based on Python String
+   6.1.2. Geopy: Extract Location Based on Python String
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality">
-   6.1.4. fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality
+   6.1.3. fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#patsy-build-features-with-arbitrary-python-code">
-   6.1.5. Patsy: Build Features with Arbitrary Python Code
+   6.1.4. Patsy: Build Features with Arbitrary Python Code
   </a>
  </li>
 </ul>
@@ -610,77 +605,8 @@
 <p>Besides finding the best theoretical distribution, distfit is also useful in detecting outliers. New data points that deviate significantly can then be marked as outliers.</p>
 <p><a class="reference external" href="https://erdogant.github.io/distfit/pages/html/index.html">Link to distfit</a>.</p>
 </div>
-<div class="section" id="pytrends-get-the-trend-of-a-keyword-on-google-search-over-time">
-<h2><span class="section-number">6.1.2. </span>pytrends: Get the Trend of a Keyword on Google Search Over Time<a class="headerlink" href="#pytrends-get-the-trend-of-a-keyword-on-google-search-over-time" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytrends
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to get the trend of a keyword on Google Search over time, try pytrends.</p>
-<p>In the code below, I use pytrends to get the interest of the keyword “data science” on Google Search from 2016 to 2021.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytrends.request</span> <span class="kn">import</span> <span class="n">TrendReq</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 13;
-                var nbb_unformatted_code = "from pytrends.request import TrendReq\nimport seaborn as sns ";
-                var nbb_formatted_code = "from pytrends.request import TrendReq\nimport seaborn as sns";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pytrends</span> <span class="o">=</span> <span class="n">TrendReq</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
-<span class="n">pytrends</span><span class="o">.</span><span class="n">build_payload</span><span class="p">(</span><span class="n">kw_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">])</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pytrends</span><span class="o">.</span><span class="n">interest_over_time</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:xlabel=&#39;date&#39;&gt;
-</pre></div>
-</div>
-<img alt="../_images/feature_extraction_11_1.png" src="../_images/feature_extraction_11_1.png" />
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 20;
-                var nbb_unformatted_code = "pytrends = TrendReq(hl=\"en-US\", tz=360)\npytrends.build_payload(kw_list=[\"data science\"])\n\ndf = pytrends.interest_over_time()\ndf[\"data science\"].plot(figsize=(20, 7))";
-                var nbb_formatted_code = "pytrends = TrendReq(hl=\"en-US\", tz=360)\npytrends.build_payload(kw_list=[\"data science\"])\n\ndf = pytrends.interest_over_time()\ndf[\"data science\"].plot(figsize=(20, 7))";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p><a class="reference external" href="https://github.com/GeneralMills/pytrends">Link to pytrends</a></p>
-</div>
 <div class="section" id="geopy-extract-location-based-on-python-string">
-<h2><span class="section-number">6.1.3. </span>Geopy: Extract Location Based on Python String<a class="headerlink" href="#geopy-extract-location-based-on-python-string" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1.2. </span>Geopy: Extract Location Based on Python String<a class="headerlink" href="#geopy-extract-location-based-on-python-string" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install geopy
@@ -775,7 +701,7 @@
 <p><a class="reference external" href="https://geopy.readthedocs.io/en/stable/">Link to Geopy</a></p>
 </div>
 <div class="section" id="fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality">
-<h2><span class="section-number">6.1.4. </span>fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality<a class="headerlink" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1.3. </span>fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality<a class="headerlink" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install fastai
@@ -859,7 +785,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://docs.fast.ai/tabular.core.html">Link to the documentation</a>.</p>
 </div>
 <div class="section" id="patsy-build-features-with-arbitrary-python-code">
-<h2><span class="section-number">6.1.5. </span>Patsy: Build Features with Arbitrary Python Code<a class="headerlink" href="#patsy-build-features-with-arbitrary-python-code" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.1.4. </span>Patsy: Build Features with Arbitrary Python Code<a class="headerlink" href="#patsy-build-features-with-arbitrary-python-code" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install patsy
