@@ -358,23 +358,28 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter6/automation.html">
-     7.2. Automation
+    <a class="reference internal" href="../Chapter6/workflow_automation.html">
+     7.2. Workflow Automation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/code_review.html">
+     7.3. Code Review
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter6/better_outputs.html">
-     7.3. Better Outputs
+     7.4. Better Outputs
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter6/git_github.html">
-     7.4. Git and GitHub
+     7.5. Git and GitHub
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter6/env_management.html">
-     7.5. Environment Management
+     7.6. Environment Management
     </a>
    </li>
   </ul>
@@ -540,6 +545,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#patsy-build-features-with-arbitrary-python-code">
    6.1.4. Patsy: Build Features with Arbitrary Python Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#yarl-create-and-extract-elements-from-a-url-using-python">
+   6.1.5. yarl: Create and Extract Elements from a URL Using Python
   </a>
  </li>
 </ul>
@@ -1108,6 +1118,70 @@ Categorical columns: [&#39;col2&#39;]
 </div>
 <p><a class="reference external" href="https://patsy.readthedocs.io/en/latest/overview.html">Link to Patsy</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/patsy-build-powerful-features-with-arbitrary-python-code-bb4bb98db67a#3be4-4bcff97738cd">Link to my full article on Patsy</a>.</p>
+</div>
+<div class="section" id="yarl-create-and-extract-elements-from-a-url-using-python">
+<h2><span class="section-number">6.1.5. </span>yarl: Create and Extract Elements from a URL Using Python<a class="headerlink" href="#yarl-create-and-extract-elements-from-a-url-using-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install yarl
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to easily create and extract elements from a URL using Python, try yarl. In the code below, I use yarl to extract different elements of the URL <a class="reference external" href="https://github.com/search?q=data+science">https://github.com/search?q=data+science</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yarl</span> <span class="kn">import</span> <span class="n">URL</span> 
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="s1">&#39;https://github.com&#39;</span><span class="p">)</span>
+<span class="n">new_url</span> <span class="o">=</span> <span class="n">url</span><span class="o">/</span> <span class="s2">&quot;search&quot;</span> <span class="o">%</span> <span class="s1">&#39;q=data+science&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_url</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://github.com/search?q=data+science
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">new_url</span><span class="o">.</span><span class="n">host</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>github.com
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">new_url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/search
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">new_url</span><span class="o">.</span><span class="n">query_string</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>q=data science
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/aio-libs/yarl">Link to yarl</a>.</p>
 </div>
 </div>
 
