@@ -552,6 +552,11 @@
    3.2.5. itertools.groupby: Group Elements in an Iterable by a Key
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#itertools-zip-longest-zip-iterables-of-different-lengths">
+   3.2.6. itertools.zip_longest: Zip Iterables of Different Lengths
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -804,6 +809,50 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>apple : [(&#39;apple&#39;, 3), (&#39;apple&#39;, 4)]
 grape : [(&#39;grape&#39;, 3)]
 orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="itertools-zip-longest-zip-iterables-of-different-lengths">
+<h2><span class="section-number">3.2.6. </span>itertools.zip_longest: Zip Iterables of Different Lengths<a class="headerlink" href="#itertools-zip-longest-zip-iterables-of-different-lengths" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">zip</span></code> allows you to aggregate elements from each of the iterables. However, <code class="docutils literal notranslate"><span class="pre">zip</span></code> doesn’t show all pairs of elements when iterables have different lengths.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;grape&#39;</span><span class="p">]</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>To aggregate iterables of different lengths, use <code class="docutils literal notranslate"><span class="pre">itertools.zip_longest</span></code>. This method will fill missing values with <code class="docutils literal notranslate"><span class="pre">fillvalue</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">zip_longest</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2), (&#39;grape&#39;, &#39;-&#39;)]
 </pre></div>
 </div>
 </div>
