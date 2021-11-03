@@ -567,6 +567,11 @@
    6.5.8. newspaper3k: Extract Meaningful Information From an Articles in 2 Lines of Code
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#questgen-ai-question-generator-in-python">
+   6.5.9. Questgen.ai: Question Generator in Python
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1249,6 +1254,148 @@ Name: text, dtype: object
             </script></div>
 </div>
 <p><a class="reference external" href="https://newspaper.readthedocs.io/en/latest/user_guide/quickstart.html?highlight=parse#performing-nlp-on-an-article">Link to newspaper3k</a>.</p>
+</div>
+<div class="section" id="questgen-ai-question-generator-in-python">
+<h2><span class="section-number">6.5.9. </span><a class="reference external" href="http://Questgen.ai">Questgen.ai</a>: Question Generator in Python<a class="headerlink" href="#questgen-ai-question-generator-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install git+https://github.com/ramsrigouthamg/Questgen.ai
+<span class="o">!</span>pip install git+https://github.com/boudinfl/pke.git
+
+<span class="o">!</span>python -m nltk.downloader universal_tagset
+<span class="o">!</span>python -m spacy download en 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget https://github.com/explosion/sense2vec/releases/download/v1.0.0/s2v_reddit_2015_md.tar.gz
+<span class="o">!</span>tar -xvf  s2v_reddit_2015_md.tar.gz
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can be time-consuming to generate questions for a document. Wouldn’t it be nice if you can automatically generate questions using Python? That is when <code class="docutils literal notranslate"><span class="pre">Questgen.ai</span></code> comes in handy.</p>
+<p>With a few lines of code, the questions for your document are automatically generated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">Questgen</span> <span class="kn">import</span> <span class="n">main</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;input_text&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;The weather today was nice so I went for a walk. I stopped for a quick chat with my neighbor.</span>
+<span class="s2">    It turned out that my neighbor just got a dog named Pepper. It is a black Labrador Retriever.&quot;&quot;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 21;
+                var nbb_unformatted_code = "payload = {\n    \"input_text\": \"\"\"The weather today was nice so I went for a walk. I stopped for a quick chat with my neighbor.\n    It turned out that my neighbor just got a dog named Pepper. It is a black Labrador Retriever.\"\"\"\n}";
+                var nbb_formatted_code = "payload = {\n    \"input_text\": \"\"\"The weather today was nice so I went for a walk. I stopped for a quick chat with my neighbor.\n    It turned out that my neighbor just got a dog named Pepper. It is a black Labrador Retriever.\"\"\"\n}";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">Questgen.ai</span></code>, you can either generate boolean questions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">BoolQGen</span><span class="p">()</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">predict_boolq</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Boolean Questions&#39;: [&#39;Is there a dog in my neighborhood?&#39;,
+                       &quot;Is pepper my neighbor&#39;s dog?&quot;,
+                       &#39;Is pepper the same as a labrador?&#39;],
+ &#39;Count&#39;: 4,
+ &#39;Text&#39;: &#39;The weather today was nice so I went for a walk. I stopped for a &#39;
+         &#39;quick chat with my neighbor.\n&#39;
+         &#39;    It turned out that my neighbor just got a dog named Pepper. It &#39;
+         &#39;is a black Labrador Retriever.&#39;}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "qe = main.BoolQGen()\noutput = qe.predict_boolq(payload)\npprint(output)";
+                var nbb_formatted_code = "qe = main.BoolQGen()\noutput = qe.predict_boolq(payload)\npprint(output)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>… or generate FAQ questions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span> <span class="o">=</span> <span class="n">qg</span><span class="o">.</span><span class="n">predict_shortq</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running model for generation
+{&#39;questions&#39;: [{&#39;Question&#39;: &#39;What was the purpose of the stop?&#39;, &#39;Answer&#39;: &#39;chat&#39;, &#39;id&#39;: 1, &#39;context&#39;: &#39;I stopped for a quick chat with my neighbor.&#39;}, {&#39;Question&#39;: &#39;Who got a dog named Pepper?&#39;, &#39;Answer&#39;: &#39;neighbor&#39;, &#39;id&#39;: 2, &#39;context&#39;: &#39;It turned out that my neighbor just got a dog named Pepper. I stopped for a quick chat with my neighbor.&#39;}]}
+{&#39;questions&#39;: [{&#39;Answer&#39;: &#39;chat&#39;,
+                &#39;Question&#39;: &#39;What was the purpose of the stop?&#39;,
+                &#39;context&#39;: &#39;I stopped for a quick chat with my neighbor.&#39;,
+                &#39;id&#39;: 1},
+               {&#39;Answer&#39;: &#39;neighbor&#39;,
+                &#39;Question&#39;: &#39;Who got a dog named Pepper?&#39;,
+                &#39;context&#39;: &#39;It turned out that my neighbor just got a dog &#39;
+                           &#39;named Pepper. I stopped for a quick chat with my &#39;
+                           &#39;neighbor.&#39;,
+                &#39;id&#39;: 2}],
+ &#39;statement&#39;: &#39;The weather today was nice so I went for a walk. I stopped for &#39;
+              &#39;a quick chat with my neighbor. It turned out that my neighbor &#39;
+              &#39;just got a dog named Pepper. It is a black Labrador Retriever.&#39;}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 23;
+                var nbb_unformatted_code = "output = qg.predict_shortq(payload)\npprint(output)";
+                var nbb_formatted_code = "output = qg.predict_shortq(payload)\npprint(output)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/ramsrigouthamg/Questgen.ai">Link to Questgen.ai</a>.</p>
 </div>
 </div>
 
