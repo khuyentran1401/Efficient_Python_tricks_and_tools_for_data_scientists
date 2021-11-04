@@ -592,6 +592,11 @@
    4.2.13. pandas.Categorical: Turn a List of Strings into a Categorical Variable
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#df-to-dict-turn-a-dataframe-into-a-dictionary">
+   4.2.14. df.to_dict: Turn a DataFrame into a Dictionary
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -2115,6 +2120,101 @@ Categories (3, object): [&#39;S&#39; &lt; &#39;M&#39; &lt; &#39;L&#39;]
   </tbody>
 </table>
 </div></div></div>
+</div>
+</div>
+<div class="section" id="df-to-dict-turn-a-dataframe-into-a-dictionary">
+<h2><span class="section-number">4.2.14. </span>df.to_dict: Turn a DataFrame into a Dictionary<a class="headerlink" href="#df-to-dict-turn-a-dataframe-into-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<p>To turn a DataFrame into a Python dictionary, use <code class="docutils literal notranslate"><span class="pre">df.to_dict()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;fruits&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">],</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   fruits  price
+0   apple      1
+1  orange      2
+2   grape      3
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 6;
+                var nbb_unformatted_code = "import pandas as pd\n\ndf = pd.DataFrame({\"fruits\": [\"apple\", \"orange\", \"grape\"], \"price\": [1, 2, 3]})\nprint(df)";
+                var nbb_formatted_code = "import pandas as pd\n\ndf = pd.DataFrame({\"fruits\": [\"apple\", \"orange\", \"grape\"], \"price\": [1, 2, 3]})\nprint(df)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>This will return a dictionary whose keys are columns and values are rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;fruits&#39;: {0: &#39;apple&#39;, 1: &#39;orange&#39;, 2: &#39;grape&#39;}, &#39;price&#39;: {0: 1, 1: 2, 2: 3}}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 4;
+                var nbb_unformatted_code = "df.to_dict()";
+                var nbb_formatted_code = "df.to_dict()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>However, if you prefer to get a list of dictionaries whose elements are rows, use <code class="docutils literal notranslate"><span class="pre">df.to_dict(orient='records')</span></code> instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;fruits&#39;: &#39;apple&#39;, &#39;price&#39;: 1},
+ {&#39;fruits&#39;: &#39;orange&#39;, &#39;price&#39;: 2},
+ {&#39;fruits&#39;: &#39;grape&#39;, &#39;price&#39;: 3}]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 5;
+                var nbb_unformatted_code = "df.to_dict(orient='records')";
+                var nbb_formatted_code = "df.to_dict(orient=\"records\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
 </div>
 </div>
 </div>
