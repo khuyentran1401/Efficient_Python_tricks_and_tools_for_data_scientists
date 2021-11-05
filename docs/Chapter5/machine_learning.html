@@ -547,6 +547,11 @@
    6.4.4. squared=False: Get RMSE from Sklearn’s mean_squared_error method
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#modelkit-build-production-ml-systems-in-python">
+   6.4.5. modelkit: Build Production ML Systems in Python
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -905,6 +910,254 @@ significant.
             }, 500);
             </script></div>
 </div>
+</div>
+<div class="section" id="modelkit-build-production-ml-systems-in-python">
+<h2><span class="section-number">6.4.5. </span>modelkit: Build Production ML Systems in Python<a class="headerlink" href="#modelkit-build-production-ml-systems-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> nb_black
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "%load_ext nb_black";
+                var nbb_formatted_code = "%load_ext nb_black";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install modelkit textblob 
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want your ML models to be fast, type-safe, testable, and fast to deploy to production, try modelkit. modelkit allows you to incorporate all of these features into your model in several lines of code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">modelkit</span> <span class="kn">import</span> <span class="n">ModelLibrary</span><span class="p">,</span> <span class="n">Model</span> 
+<span class="kn">from</span> <span class="nn">textblob</span> <span class="kn">import</span> <span class="n">TextBlob</span><span class="p">,</span> <span class="n">WordList</span>
+<span class="c1"># import nltk</span>
+<span class="c1"># nltk.download(&#39;brown&#39;)</span>
+<span class="c1"># nltk.download(&#39;punkt&#39;)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To define a modelkit Model, you need to:</p>
+<ul class="simple">
+<li><p>create class inheriting from <code class="docutils literal notranslate"><span class="pre">modelkit.Model</span></code></p></li>
+<li><p>implement a <code class="docutils literal notranslate"><span class="pre">_predict</span></code> method</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NounPhraseExtractor</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="c1"># Give model a name</span>
+    <span class="n">CONFIGURATIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;noun_phrase_extractor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">TextBlob</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">noun_phrases</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 24;
+                var nbb_unformatted_code = "class NounPhraseExtractor(Model):\n    \n    # Give model a name\n    CONFIGURATIONS = {\"noun_phrase_extractor\": {}}\n\n    def _predict(self, text):\n        blob = TextBlob(text)\n        return blob.noun_phrases";
+                var nbb_formatted_code = "class NounPhraseExtractor(Model):\n\n    # Give model a name\n    CONFIGURATIONS = {\"noun_phrase_extractor\": {}}\n\n    def _predict(self, text):\n        blob = TextBlob(text)\n        return blob.noun_phrases";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>You can now instantiate and use the model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">noun_extractor</span> <span class="o">=</span> <span class="n">NounPhraseExtractor</span><span class="p">()</span>
+<span class="n">noun_extractor</span><span class="p">(</span><span class="s2">&quot;What are your learning strategies?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-05 09:55.55 [debug    ] Model loaded                   memory=0 Bytes memory_bytes=0 model_name=None time=0 microseconds time_s=4.232699939166196e-05
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WordList([&#39;learning strategies&#39;])
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 25;
+                var nbb_unformatted_code = "noun_extractor = NounPhraseExtractor()\nnoun_extractor(\"What are your learning strategies?\")";
+                var nbb_formatted_code = "noun_extractor = NounPhraseExtractor()\nnoun_extractor(\"What are your learning strategies?\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>You can also create test cases for your model and make sure all test cases are passed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NounPhraseExtractor</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="c1"># Give model a name</span>
+    <span class="n">CONFIGURATIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;noun_phrase_extractor&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+    <span class="n">TEST_CASES</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">:</span> <span class="s2">&quot;There is a red apple on the tree&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">WordList</span><span class="p">([</span><span class="s2">&quot;red apple&quot;</span><span class="p">])}</span>
+    <span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">TextBlob</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">noun_phrases</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 26;
+                var nbb_unformatted_code = "class NounPhraseExtractor(Model):\n\n    # Give model a name\n    CONFIGURATIONS = {\"noun_phrase_extractor\": {}}\n\n    TEST_CASES = [\n        {\"item\": \"There is a red apple on the tree\", \"result\": WordList([\"red apple\"])}\n    ]\n\n    def _predict(self, text):\n        blob = TextBlob(text)\n        return blob.noun_phrases";
+                var nbb_formatted_code = "class NounPhraseExtractor(Model):\n\n    # Give model a name\n    CONFIGURATIONS = {\"noun_phrase_extractor\": {}}\n\n    TEST_CASES = [\n        {\"item\": \"There is a red apple on the tree\", \"result\": WordList([\"red apple\"])}\n    ]\n\n    def _predict(self, text):\n        blob = TextBlob(text)\n        return blob.noun_phrases";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">noun_extractor</span> <span class="o">=</span> <span class="n">NounPhraseExtractor</span><span class="p">()</span>
+<span class="n">noun_extractor</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-05 09:55.58 [debug    ] Model loaded                   memory=0 Bytes memory_bytes=0 model_name=None time=0 microseconds time_s=4.3191997974645346e-05
+</pre></div>
+</div>
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #008000; text-decoration-color: #008000">TEST </span><span style="color: #008000; text-decoration-color: #008000; font-weight: bold">1</span><span style="color: #008000; text-decoration-color: #008000">: SUCCESS</span>
+</pre>
+</div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 27;
+                var nbb_unformatted_code = "noun_extractor = NounPhraseExtractor()\nnoun_extractor.test()";
+                var nbb_formatted_code = "noun_extractor = NounPhraseExtractor()\nnoun_extractor.test()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>modelkit also allows you to organize a group of models using <code class="docutils literal notranslate"><span class="pre">ModelLibrary</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SentimentAnalyzer</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    
+    <span class="c1"># Give model a name</span>
+    <span class="n">CONFIGURATIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;sentiment_analyzer&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+
+    <span class="k">def</span> <span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="n">TextBlob</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">sentiment</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nlp_models</span> <span class="o">=</span> <span class="n">ModelLibrary</span><span class="p">(</span><span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">NounPhraseExtractor</span><span class="p">,</span> <span class="n">SentimentAnalyzer</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-11-05 09:50.13 [info     ] Instantiating AssetsManager    lazy_loading=False
+2021-11-05 09:50.13 [info     ] No remote storage provider configured
+2021-11-05 09:50.13 [debug    ] Resolving asset for Model      model_name=sentiment_analyzer
+2021-11-05 09:50.13 [debug    ] Loading model                  model_name=sentiment_analyzer
+2021-11-05 09:50.13 [debug    ] Instantiating Model object     model_name=sentiment_analyzer
+2021-11-05 09:50.13 [debug    ] Model loaded                   memory=0 Bytes memory_bytes=0 model_name=sentiment_analyzer time=0 microseconds time_s=3.988200114690699e-05
+2021-11-05 09:50.13 [debug    ] Done loading Model             model_name=sentiment_analyzer
+2021-11-05 09:50.13 [info     ] Model and dependencies loaded  memory=0 Bytes memory_bytes=0 name=sentiment_analyzer time=0 microseconds time_s=0.00894871700074873
+2021-11-05 09:50.13 [debug    ] Resolving asset for Model      model_name=noun_phrase_extractor
+2021-11-05 09:50.13 [debug    ] Loading model                  model_name=noun_phrase_extractor
+2021-11-05 09:50.13 [debug    ] Instantiating Model object     model_name=noun_phrase_extractor
+2021-11-05 09:50.13 [debug    ] Model loaded                   memory=0 Bytes memory_bytes=0 model_name=noun_phrase_extractor time=0 microseconds time_s=2.751099964370951e-05
+2021-11-05 09:50.13 [debug    ] Done loading Model             model_name=noun_phrase_extractor
+2021-11-05 09:50.13 [info     ] Model and dependencies loaded  memory=0 Bytes memory_bytes=0 name=noun_phrase_extractor time=0 microseconds time_s=0.006440052002290031
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get and use the models from <code class="docutils literal notranslate"><span class="pre">nlp_models</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">noun_extractor</span> <span class="o">=</span> <span class="n">model_collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;noun_phrase_extractor&quot;</span><span class="p">)</span>
+<span class="n">noun_extractor</span><span class="p">(</span><span class="s2">&quot;What are your learning strategies?&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WordList([&#39;learning strategies&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentiment_analyzer</span> <span class="o">=</span> <span class="n">model_collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sentiment_analyzer&quot;</span><span class="p">)</span>
+<span class="n">sentiment_analyzer</span><span class="p">(</span><span class="s2">&quot;Today is a beautiful day!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sentiment(polarity=1.0, subjectivity=1.0)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Cornerstone-OnDemand/modelkit/">Link to modelkit</a>.</p>
 </div>
 </div>
 
