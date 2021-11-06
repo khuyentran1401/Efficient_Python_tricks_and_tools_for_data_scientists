@@ -635,7 +635,7 @@
 </div>
 </div>
 <p>If you want to benchmark your code while testing with pytest, try pytest-benchmark.</p>
-<p>To understand how pytest-benchmark works, add the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_benchmark_example.py</span></code>. Note that we add <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> to the test function that we want to benchmark.</p>
+<p>To use pytest-benchmark works, add <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> to the test function that you want to benchmark.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_benchmark_example.py</span>
 <span class="k">def</span> <span class="nf">list_comprehension</span><span class="p">(</span><span class="n">len_list</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_list</span><span class="p">)]</span>
@@ -650,7 +650,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest pytest_benchmark_example.py
 </pre></div>
 </div>
-<p>Now you should see the statistics of the time it takes to excecute the test functions on your terminal:</p>
+<p>Now you should see the statistics of the time it takes to execute the test functions on your terminal:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest pytest_benchmark_example.py
@@ -709,7 +709,7 @@ Legend:
 </div>
 </div>
 <p>If you want to test your function with different examples, use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> decorator.</p>
-<p>To understand how <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> works, start with adding the code below to <code class="docutils literal notranslate"><span class="pre">pytest_parametrize.py</span></code>. <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> is added to the test function <code class="docutils literal notranslate"><span class="pre">test_text_contain_word</span></code> to tell pytest to experiment with different pairs of inputs and expected outputs specified in its arguments.</p>
+<p>To use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code>, add <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> to the test function that you want to experiment with.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_parametrize.py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
@@ -769,8 +769,8 @@ pytest_parametrize.py <span class=" -Color -Color-Green">..                     
 </div>
 </div>
 </div>
-<p>Sometimes, you might want to use the same data to test different functions. If you are using pytest, use pytest fixtures to provide data to different test functions instead.</p>
-<p>To understand how to use pytest fixtures, start with adding the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_fixture.py</span></code>. We use the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code> to create the data we want to use many times.</p>
+<p>If you want to use the same data to test different functions, use pytest fixtures.</p>
+<p>To use pytest fixtures,  add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code> to the function that creates the data you want to reuse.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_fixture.py</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 <span class="kn">from</span> <span class="nn">textblob</span> <span class="kn">import</span> <span class="n">TextBlob</span>
@@ -827,7 +827,19 @@ pytest_fixture.py <span class=" -Color -Color-Green">.                          
 </div>
 </div>
 <p>It is a good practice to test your functions to make sure they work as expected, but sometimes you need to test 100 times until you found the rare cases when the test fails. That is when pytest-repeat comes in handy.</p>
-<p>To understand how pytest-repeat works, start with putting the code below to the file named <code class="docutils literal notranslate"><span class="pre">pytest_repeat_example.py</span></code>. The <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.repeat(100)</span></code> decorator tells pytest to repeat the experiment 100 times.</p>
+<p>To use pytest-repeat, add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.repeat(N)</span></code> to the test function you want to repeat <code class="docutils literal notranslate"><span class="pre">N</span></code> times</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_repeat_example.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span> 
+<span class="kn">import</span> <span class="nn">random</span> 
+
+<span class="k">def</span> <span class="nf">generate_numbers</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_generate_numbers</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span>
+</pre></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_repeat_example.py</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 <span class="kn">import</span> <span class="nn">random</span> 
@@ -956,7 +968,7 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
             }, 500);
             </script></div>
 </div>
-<p>You can also use the pandera’s decorator check_inputto validates input pandas DataFrame before entering the function.</p>
+<p>You can also use the pandera’s decorator check_input to validates input pandas DataFrame before entering the function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@check_input</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
