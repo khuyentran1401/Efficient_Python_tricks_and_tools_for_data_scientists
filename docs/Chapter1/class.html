@@ -580,6 +580,11 @@
    : Create a String Representation of a Python Object
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attrs-bring-back-the-joy-of-writing-classes">
+   2.7.8. attrs: Bring Back the Joy of Writing Classes
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1037,6 +1042,108 @@ Instance is called
             }, 500);
             </script></div>
 </div>
+</div>
+<div class="section" id="attrs-bring-back-the-joy-of-writing-classes">
+<h2><span class="section-number">2.7.8. </span>attrs: Bring Back the Joy of Writing Classes<a class="headerlink" href="#attrs-bring-back-the-joy-of-writing-classes" title="Permalink to this headline">¶</a></h2>
+<p>!python -m pip install attrs</p>
+<p>Do you find it annoying to write an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method every time you want to create a class in Python?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If so, try <code class="docutils literal notranslate"><span class="pre">attrs</span></code>. With <code class="docutils literal notranslate"><span class="pre">attrs</span></code>, you can declaratively define the attributes of a class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">attr</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@attr</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">auto_attribs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Labrador Retriever&#39;</span>
+        
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pepper</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Pepper&#39;</span><span class="p">,</span> <span class="s1">&#39;Labrador Retriever&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The instance created using <code class="docutils literal notranslate"><span class="pre">attrs</span></code> has a nice human-readable <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pepper</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dog(age=7, name=&#39;Pepper&#39;, type_=&#39;Labrador Retriever&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pepper</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pepper is a Labrador Retriever.
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also turn the attributes of that instance into a dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attr</span><span class="o">.</span><span class="n">asdict</span><span class="p">(</span><span class="n">pepper</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;age&#39;: 7, &#39;name&#39;: &#39;Pepper&#39;, &#39;type_&#39;: &#39;Labrador Retriever&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also compare 2 instances of the same class using the first attribute of that class.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bim</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;Bim Bim&#39;</span><span class="p">,</span> <span class="s1">&#39;Dachshund&#39;</span><span class="p">)</span>
+
+<span class="n">pepper</span> <span class="o">&lt;</span> <span class="n">bim</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>Find other benefits of <code class="docutils literal notranslate"><span class="pre">attrs</span></code> <a class="reference external" href="https://www.attrs.org/en/stable/overview.html">here</a>.</p>
 </div>
 </div>
 
