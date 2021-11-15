@@ -6,7 +6,7 @@ Why efficient Python? Because using Python more efficiently will make your code 
 Why for data scientist? Because Python has a wide application. The Python tools used in the data science field are not necessarily useful for other fields such as web development. 
 
 The goal of this book is to spread the awareness of efficient ways to do Python. They include:
-* efficient built-in methods and libraries to work with iterator, dictionary, function, and class
+* efficient methods and libraries to work with iterator, dictionary, function, and class
 * efficient methods to work with popular data science libraries such as pandas and NumPy
 * efficient tools to incorporate in a data science project
 * efficient tools to incorporate in any project

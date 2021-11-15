@@ -1,0 +1,1417 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3.4. Pydash &#8212; Effective Python for Data Scientists</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/togglebutton.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.5. Operator" href="operator.html" />
+    <link rel="prev" title="3.3. Functools" href="functools.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+      <img src="../_static/data_simplified_icon.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Effective Python for Data Scientists</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../README.html">
+   Efficient Python Tricks and Tools for Data Scientists
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../how_to_read.html">
+   1. How to Read This Book
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter1/Chapter1.html">
+   2. Python Built-in Methods
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/string.html">
+     2.1. String
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/number.html">
+     2.2. Number
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../Chapter1/list/list.html">
+     2.3. List
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/good_practices.html">
+       2.3.1. Good Practices
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/get_elements.html">
+       2.3.2. Get Elements
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/unpack_iterables.html">
+       2.3.3. Unpack Iterables
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/join_iterable.html">
+       2.3.4. Join Iterables
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">
+       2.3.5. Interaction Between 2 Lists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">
+       2.3.6. Apply Functions to Elements in a List
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/tuple.html">
+     2.4. Tuple
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/dictionary.html">
+     2.5. Dictionary
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/function.html">
+     2.6. Function
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/class.html">
+     2.7. Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/datetime.html">
+     2.8. Datetime
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/best_practices.html">
+     2.9. Best Practices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/code_speed.html">
+     2.10. Code Speed
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="Chapter2.html">
+   3. Python Utility Libraries
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="collections.html">
+     3.1. Collections
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="itertools.html">
+     3.2. Itertools
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="functools.html">
+     3.3. Functools
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     3.4. Pydash
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="operator.html">
+     3.5. Operator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="typing.html">
+     3.6. Typing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter3/Chapter3.html">
+   4. Pandas
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+  <label for="toctree-checkbox-4">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter3/change_values.html">
+     4.1. Change Values
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter3/get_values.html">
+     4.2. Get Values
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter3/testing.html">
+     4.3. Testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter4/Chapter4.html">
+   5. NumPy
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+  <label for="toctree-checkbox-5">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter4/Numpy.html">
+     5.1. NumPy
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter5/Chapter5.html">
+   6. Data Science Tools
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+  <label for="toctree-checkbox-6">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/feature_extraction.html">
+     6.1. Feature Extraction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/get_data.html">
+     6.2. Get Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/manage_data.html">
+     6.3. Manage Data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/machine_learning.html">
+     6.4. Machine Learning
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/natural_language_processing.html">
+     6.5. Natural Language Processing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/time_series.html">
+     6.6. Time Series
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/sharing_downloading.html">
+     6.7. Sharing and Downloading
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/speed_up_code.html">
+     6.8. Tools to Speed Up Code
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/visualization.html">
+     6.9. Visualization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/best_python_practice_tools.html">
+     6.10. Tools for Best Python Practices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/better_pandas.html">
+     6.11. Better Pandas
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/testing.html">
+     6.12. Testing
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter6/Chapter6.html">
+   7. Cool Tools
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/alternative_approach.html">
+     7.1. Alternative Approach
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/workflow_automation.html">
+     7.2. Workflow Automation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/code_review.html">
+     7.3. Code Review
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/better_outputs.html">
+     7.4. Better Outputs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/git_github.html">
+     7.5. Git and GitHub
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter6/env_management.html">
+     7.6. Environment Management
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter7/Chapter7.html">
+   8. Jupyter Notebook
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+  <label for="toctree-checkbox-8">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter7/jupyter_notebook.html">
+     8.1. Jupyter Notebook
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../Chapter8/Chapter8.html">
+   9. Insights From Data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+  <label for="toctree-checkbox-9">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter8/insights.html">
+     9.1. Find Top Most Popular Languages
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../_sources/Chapter2/pydash.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/issues/new?title=Issue%20on%20page%20%2FChapter2/pydash.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/master?urlpath=tree/./Chapter2/pydash.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <a class="colab-button" href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter2/pydash.ipynb"><button type="button" class="btn btn-secondary topbarbtn"
+                title="Launch Colab" data-toggle="tooltip" data-placement="left"><img class="colab-button-logo"
+                    src="../_static/images/logo_colab.png"
+                    alt="Interact on Colab">Colab</button></a>
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#work-with-list">
+   3.4.1. Work with List
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pydash-flatten-flatten-a-nested-python-list">
+     3.4.1.1. pydash.flatten: Flatten a Nested Python List
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pydash-flatten-deep-flatten-a-deeply-nested-python-list">
+     3.4.1.2. pydash.flatten_deep: Flatten a Deeply Nested Python List
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pydash-chunk-split-elements-into-groups">
+     3.4.1.3. pydash.chunk: Split Elements into Groups
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#work-with-dictionary">
+   3.4.2. Work with Dictionary
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#omit-dictionarys-attribute">
+     3.4.2.1. Omit Dictionary’s Attribute
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#get-nested-dictionarys-attribute">
+     3.4.2.2. Get Nested Dictionary’s Attribute
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#work-with-list-of-dictionaries">
+   3.4.3. Work with List of Dictionaries
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-item-index-using-a-function">
+     3.4.3.1. Find Item Index Using a Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#find-objects-with-matching-style">
+     3.4.3.2. Find Objects With Matching Style
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#get-nested-object-value">
+     3.4.3.3. Get Nested Object Value
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#work-with-functions">
+   3.4.4. Work with Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#execute-a-function-n-times">
+     3.4.4.1. Execute a Function n Times
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chaining">
+   3.4.5. Chaining
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#pydashs-methods">
+     3.4.5.1. Pydash’s Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#customized-methods">
+     3.4.5.2. Customized Methods
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#planting-a-value">
+     3.4.5.3. Planting a Value
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="pydash">
+<h1><span class="section-number">3.4. </span>Pydash<a class="headerlink" href="#pydash" title="Permalink to this headline">¶</a></h1>
+<p>Pydash is the kitchen sink of Python utility libraries for doing “stuff” in a functional way.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pydash 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="work-with-list">
+<h2><span class="section-number">3.4.1. </span>Work with List<a class="headerlink" href="#work-with-list" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pydash-flatten-flatten-a-nested-python-list">
+<h3><span class="section-number">3.4.1.1. </span>pydash.flatten: Flatten a Nested Python List<a class="headerlink" href="#pydash-flatten-flatten-a-nested-python-list" title="Permalink to this headline">¶</a></h3>
+<p>If you want to flatten a nested Python list, use the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydash</span> <span class="kn">import</span> <span class="n">py_</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+<span class="n">py_</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2, 3, 4, 5]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 8;
+                var nbb_unformatted_code = "from pydash import py_\n\na = [[1, 2], [3, 4, 5]]\npy_.flatten(a)";
+                var nbb_formatted_code = "from pydash import py_\n\na = [[1, 2], [3, 4, 5]]\npy_.flatten(a)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="pydash-flatten-deep-flatten-a-deeply-nested-python-list">
+<h3><span class="section-number">3.4.1.2. </span>pydash.flatten_deep: Flatten a Deeply Nested Python List<a class="headerlink" href="#pydash-flatten-deep-flatten-a-deeply-nested-python-list" title="Permalink to this headline">¶</a></h3>
+<p>If your list is deeply nested, use <code class="docutils literal notranslate"><span class="pre">flatten_deep</span></code> instead:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]</span>
+<span class="n">py_</span><span class="o">.</span><span class="n">flatten_deep</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2, 4, 5, 6, 7]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 9;
+                var nbb_unformatted_code = "b = [[1, 2, [4, 5]], [6, 7]]\npy_.flatten_deep(b)";
+                var nbb_formatted_code = "b = [[1, 2, [4, 5]], [6, 7]]\npy_.flatten_deep(b)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="pydash-chunk-split-elements-into-groups">
+<h3><span class="section-number">3.4.1.3. </span>pydash.chunk: Split Elements into Groups<a class="headerlink" href="#pydash-chunk-split-elements-into-groups" title="Permalink to this headline">¶</a></h3>
+<p>If you can flatten a list, can you also turn a flattened list into a nested one? Yes, that could be done with the <code class="docutils literal notranslate"><span class="pre">chunk</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">py_</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[1, 2], [3, 4], [5]]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 10;
+                var nbb_unformatted_code = "a = [1, 2, 3, 4, 5]\npy_.chunk(a, 2)";
+                var nbb_formatted_code = "a = [1, 2, 3, 4, 5]\npy_.chunk(a, 2)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+</div>
+<div class="section" id="work-with-dictionary">
+<h2><span class="section-number">3.4.2. </span>Work with Dictionary<a class="headerlink" href="#work-with-dictionary" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="omit-dictionarys-attribute">
+<h3><span class="section-number">3.4.2.1. </span>Omit Dictionary’s Attribute<a class="headerlink" href="#omit-dictionarys-attribute" title="Permalink to this headline">¶</a></h3>
+<p>To omit an attribute from the dictionary, we can use the <code class="docutils literal notranslate"><span class="pre">omit</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}</span>
+<span class="n">py_</span><span class="o">.</span><span class="n">omit</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;color&#39;: &#39;red&#39;, &#39;taste&#39;: &#39;sweet&#39;}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "fruits = {\"name\": \"apple\", \"color\": \"red\", \"taste\": \"sweet\"}\npy_.omit(fruits, \"name\")";
+                var nbb_formatted_code = "fruits = {\"name\": \"apple\", \"color\": \"red\", \"taste\": \"sweet\"}\npy_.omit(fruits, \"name\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="get-nested-dictionarys-attribute">
+<h3><span class="section-number">3.4.2.2. </span>Get Nested Dictionary’s Attribute<a class="headerlink" href="#get-nested-dictionarys-attribute" title="Permalink to this headline">¶</a></h3>
+<p>How do you get the price of an apple from Walmart that is in season in a nested dictionary like below?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">apple</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;in_season&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Walmart&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;Aldi&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}},</span>
+        <span class="s2">&quot;out_of_season&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Walmart&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;Aldi&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 12;
+                var nbb_unformatted_code = "apple = {\n    \"price\": {\n        \"in_season\": {\"store\": {\"Walmart\": [2, 4], \"Aldi\": 1}},\n        \"out_of_season\": {\"store\": {\"Walmart\": [3, 5], \"Aldi\": 2}},\n    }\n}";
+                var nbb_formatted_code = "apple = {\n    \"price\": {\n        \"in_season\": {\"store\": {\"Walmart\": [2, 4], \"Aldi\": 1}},\n        \"out_of_season\": {\"store\": {\"Walmart\": [3, 5], \"Aldi\": 2}},\n    }\n}";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Normally, you need to use a lot of brackets to get that information:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">apple</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">][</span><span class="s2">&quot;in_season&quot;</span><span class="p">][</span><span class="s2">&quot;store&quot;</span><span class="p">][</span><span class="s2">&quot;Walmart&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 4]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 13;
+                var nbb_unformatted_code = "apple[\"price\"][\"in_season\"][\"store\"][\"Walmart\"]";
+                var nbb_formatted_code = "apple[\"price\"][\"in_season\"][\"store\"][\"Walmart\"]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Wouldn’t it be nice if you could use the dot notation instead of brackets? That could be done with the <code class="docutils literal notranslate"><span class="pre">get</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">apple</span><span class="p">,</span> <span class="s2">&quot;price.in_season.store.Walmart&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 4]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 14;
+                var nbb_unformatted_code = "py_.get(apple, \"price.in_season.store.Walmart\")";
+                var nbb_formatted_code = "py_.get(apple, \"price.in_season.store.Walmart\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Cool! You can also get the element in an array using <code class="docutils literal notranslate"><span class="pre">[index]</span></code> :</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">apple</span><span class="p">,</span> <span class="s2">&quot;price.in_season.store.Walmart[0]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "py_.get(apple, \"price.in_season.store.Walmart[0]\")";
+                var nbb_formatted_code = "py_.get(apple, \"price.in_season.store.Walmart[0]\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+</div>
+<div class="section" id="work-with-list-of-dictionaries">
+<h2><span class="section-number">3.4.3. </span>Work with List of Dictionaries<a class="headerlink" href="#work-with-list-of-dictionaries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="find-item-index-using-a-function">
+<h3><span class="section-number">3.4.3.1. </span>Find Item Index Using a Function<a class="headerlink" href="#find-item-index-using-a-function" title="Permalink to this headline">¶</a></h3>
+<p>To get the index of an element in a list using a function, use the <code class="docutils literal notranslate"><span class="pre">find_index</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;grapes&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 16;
+                var nbb_unformatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
+                var nbb_formatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filter_fruits</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span>
+<span class="n">py_</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">filter_fruits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 17;
+                var nbb_unformatted_code = "filter_fruits = lambda fruit: fruit[\"name\"] == \"apple\"\npy_.find_index(fruits, filter_fruits)";
+                var nbb_formatted_code = "filter_fruits = lambda fruit: fruit[\"name\"] == \"apple\"\npy_.find_index(fruits, filter_fruits)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="find-objects-with-matching-style">
+<h3><span class="section-number">3.4.3.2. </span>Find Objects With Matching Style<a class="headerlink" href="#find-objects-with-matching-style" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">find_index</span></code> method allows you to get the index of the object that matches a certain pattern. But what if you want to get the items in a list instead of the index?
+That could be done with the <code class="docutils literal notranslate"><span class="pre">filter</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;grapes&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 18;
+                var nbb_unformatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
+                var nbb_formatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">filter_</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;name&#39;: &#39;apple&#39;, &#39;price&#39;: 2}]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "py_.filter_(fruits, {\"name\": \"apple\"})";
+                var nbb_formatted_code = "py_.filter_(fruits, {\"name\": \"apple\"})";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="get-nested-object-value">
+<h3><span class="section-number">3.4.3.3. </span>Get Nested Object Value<a class="headerlink" href="#get-nested-object-value" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes your list of dictionaries can be nested like below. How can you get the taste attribute of apple ?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lemon&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sour&quot;</span><span class="p">}},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 23;
+                var nbb_unformatted_code = "fruits = [\n    {\"name\": \"apple\", \"attributes\": {\"color\": \"red\", \"taste\": \"sweet\"}},\n    {\"name\": \"orange\", \"attributes\": {\"color\": \"orange\", \"taste\": \"sweet\"}},\n    {\"name\": \"lemon\", \"attributes\": {\"color\": \"yellow\", \"taste\": \"sour\"}},\n]";
+                var nbb_formatted_code = "fruits = [\n    {\"name\": \"apple\", \"attributes\": {\"color\": \"red\", \"taste\": \"sweet\"}},\n    {\"name\": \"orange\", \"attributes\": {\"color\": \"orange\", \"taste\": \"sweet\"}},\n    {\"name\": \"lemon\", \"attributes\": {\"color\": \"yellow\", \"taste\": \"sour\"}},\n]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Luckily, this can be easily done with the <code class="docutils literal notranslate"><span class="pre">map_</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">map_</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="s2">&quot;attributes.taste&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;sweet&#39;, &#39;sweet&#39;, &#39;sour&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 24;
+                var nbb_unformatted_code = "py_.map_(fruits, \"attributes.taste\")";
+                var nbb_formatted_code = "py_.map_(fruits, \"attributes.taste\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+</div>
+<div class="section" id="work-with-functions">
+<h2><span class="section-number">3.4.4. </span>Work with Functions<a class="headerlink" href="#work-with-functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="execute-a-function-n-times">
+<h3><span class="section-number">3.4.4.1. </span>Execute a Function n Times<a class="headerlink" href="#execute-a-function-n-times" title="Permalink to this headline">¶</a></h3>
+<p>You can execute a function n times using the <code class="docutils literal notranslate"><span class="pre">times</span></code> method. This method is a good alternative to a for loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;I have just bought some apple&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;I have just bought some apple&#39;,
+ &#39;I have just bought some apple&#39;,
+ &#39;I have just bought some apple&#39;,
+ &#39;I have just bought some apple&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 25;
+                var nbb_unformatted_code = "py_.times(4, lambda: \"I have just bought some apple\")";
+                var nbb_formatted_code = "py_.times(4, lambda: \"I have just bought some apple\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">times</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;I have just bought </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> apple&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;I have just bought 0 apple&#39;,
+ &#39;I have just bought 1 apple&#39;,
+ &#39;I have just bought 2 apple&#39;,
+ &#39;I have just bought 3 apple&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 26;
+                var nbb_unformatted_code = "py_.times(4, lambda i: f\"I have just bought {i} apple\")";
+                var nbb_formatted_code = "py_.times(4, lambda i: f\"I have just bought {i} apple\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+</div>
+<div class="section" id="chaining">
+<h2><span class="section-number">3.4.5. </span>Chaining<a class="headerlink" href="#chaining" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pydashs-methods">
+<h3><span class="section-number">3.4.5.1. </span>Pydash’s Methods<a class="headerlink" href="#pydashs-methods" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you might want to apply several methods to an object. Instead of writing several lines of code, can you apply all methods at once?</p>
+<p>That is when method chaining comes in handy. To apply method chaining in an object, use the <code class="docutils literal notranslate"><span class="pre">chain</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grapes&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 27;
+                var nbb_unformatted_code = "fruits = [\"apple\", \"orange\", \"grapes\"]";
+                var nbb_formatted_code = "fruits = [\"apple\", \"orange\", \"grapes\"]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">py_</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span><span class="o">.</span><span class="n">without</span><span class="p">(</span><span class="s2">&quot;grapes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reject</span><span class="p">(</span><span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pydash.chaining.Chain at 0x7f027895d1f0&gt;
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 32;
+                var nbb_unformatted_code = "(\n    py_.chain(fruits)\n    .without(\"grapes\")\n    .reject(lambda fruit: fruit.startswith(\"a\"))\n)";
+                var nbb_formatted_code = "(py_.chain(fruits).without(\"grapes\").reject(lambda fruit: fruit.startswith(\"a\")))";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Note that running the code above will not give us the value.</p>
+<p>Only when we add .value() to the end of the chain, the final value is computed:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">py_</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">without</span><span class="p">(</span><span class="s2">&quot;grapes&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">reject</span><span class="p">(</span><span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;orange&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 33;
+                var nbb_unformatted_code = "(py_.chain(fruits).without(\"grapes\").reject(lambda fruit: fruit.startswith(\"a\")).value())";
+                var nbb_formatted_code = "(\n    py_.chain(fruits)\n    .without(\"grapes\")\n    .reject(lambda fruit: fruit.startswith(\"a\"))\n    .value()\n)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>This is called <a class="reference external" href="https://www.tutorialspoint.com/functional_programming/functional_programming_lazy_evaluation.htm">lazy evaluation</a>. Lazy evaluation holds the evaluation of an expression until its value is needed, which avoids repeated evaluation.</p>
+</div>
+<div class="section" id="customized-methods">
+<h3><span class="section-number">3.4.5.2. </span>Customized Methods<a class="headerlink" href="#customized-methods" title="Permalink to this headline">¶</a></h3>
+<p>If you want to use your own methods instead of pydash’s methods, use the <code class="docutils literal notranslate"><span class="pre">map</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">fruit</span><span class="p">):</span>
+    <span class="n">prices</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;grapes&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">prices</span><span class="p">[</span><span class="n">fruit</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 29;
+                var nbb_unformatted_code = "def get_price(fruit):\n    prices = {\"apple\": 2, \"orange\": 2, \"grapes\": 4}\n    return prices[fruit]";
+                var nbb_formatted_code = "def get_price(fruit):\n    prices = {\"apple\": 2, \"orange\": 2, \"grapes\": 4}\n    return prices[fruit]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_price</span> <span class="o">=</span> <span class="n">py_</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">get_price</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">total_price</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 30;
+                var nbb_unformatted_code = "total_price = py_.chain(fruits).map(get_price).sum()\ntotal_price.value()";
+                var nbb_formatted_code = "total_price = py_.chain(fruits).map(get_price).sum()\ntotal_price.value()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+</div>
+<div class="section" id="planting-a-value">
+<h3><span class="section-number">3.4.5.3. </span>Planting a Value<a class="headerlink" href="#planting-a-value" title="Permalink to this headline">¶</a></h3>
+<p>To replace the initial value of a chain with another value, use the <code class="docutils literal notranslate"><span class="pre">plant</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_price</span><span class="o">.</span><span class="n">plant</span><span class="p">([</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 31;
+                var nbb_unformatted_code = "total_price.plant([\"apple\", \"orange\"]).value()";
+                var nbb_formatted_code = "total_price.plant([\"apple\", \"orange\"]).value()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Cool! We replace <code class="docutils literal notranslate"><span class="pre">['apple',</span> <span class="pre">'orange',</span> <span class="pre">'grapes']</span></code> with <code class="docutils literal notranslate"><span class="pre">['apple',</span> <span class="pre">'orange']</span></code> while using the same chain!</p>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./Chapter2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="functools.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title"><span class="section-number">3.3. </span>Functools</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="operator.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title"><span class="section-number">3.5. </span>Operator</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Khuyen Tran<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
