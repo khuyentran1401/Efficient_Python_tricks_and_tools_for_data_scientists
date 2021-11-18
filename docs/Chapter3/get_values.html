@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>4.2. Get Values &#8212; Effective Python for Data Scientists</title>
+    <title>4.2. Get Certain Values From a DataFrame &#8212; Effective Python for Data Scientists</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4.3. Testing" href="testing.html" />
-    <link rel="prev" title="4.1. Change Values" href="change_values.html" />
+    <link rel="next" title="4.3. Work with Datetime" href="date_time.html" />
+    <link rel="prev" title="4.1. Transform Columns" href="transform_columns.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -247,18 +247,58 @@
   </label>
   <ul class="current">
    <li class="toctree-l2">
-    <a class="reference internal" href="change_values.html">
-     4.1. Change Values
+    <a class="reference internal" href="transform_columns.html">
+     4.1. Transform Columns
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     4.2. Get Values
+     4.2. Get Certain Values From a DataFrame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="date_time.html">
+     4.3. Work with Datetime
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="create_dataframe.html">
+     4.4. Create a New DataFrame Using Existing DataFrame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="combine_dataframes.html">
+     4.5. Combine Multiple DataFrames
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="filter.html">
+     4.6. Filter Rows or Columns of a DataFrame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="data_types.html">
+     4.8. Manipulate a DataFrame Using Data Types
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="sort_dataframe.html">
+     4.9. Sort Rows or Columns of a DataFrame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="string.html">
+     4.10. Work with String
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="style_dataframe.html">
+     4.11. Style a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="testing.html">
-     4.3. Testing
+     4.12. Test
     </a>
    </li>
   </ul>
@@ -538,73 +578,28 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dataframe-columns-str-startswith-find-dataframes-columns-that-start-with-a-pattern">
-   4.2.1. DataFrame.columns.str.startswith: Find DataFrame’s Columns that Start With a Pattern
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pandas-series-dt-access-datetime-properties-of-a-pandas-series">
-   4.2.2. pandas.Series.dt: Access Datetime Properties of a pandas Series
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pd-series-between-select-rows-in-a-pandas-series-containing-values-between-2-numbers">
-   4.2.3. pd.Series.between: Select Rows in a Pandas Series Containing Values Between 2 Numbers
+   4.2.1. pd.Series.between: Select Rows in a Pandas Series Containing Values Between 2 Numbers
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas">
-   4.2.4. DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#select-dtypes-return-a-subset-of-a-dataframe-including-excluding-columns-based-on-their-dtype">
-   4.2.5. select_dtypes: Return a Subset of a DataFrame Including/Excluding Columns Based on Their dtype
+   4.2.2. DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series">
-   4.2.6. pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series
+   4.2.3. pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas">
-   4.2.7. DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pandas-clip-exclude-outliers">
-   4.2.8. pandas.clip: Exclude Outliers
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#get-rows-within-a-year-range">
-   4.2.9. Get Rows within a Year Range
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pandas-reindex-replace-the-values-of-the-missing-dates-with-0">
-   4.2.10. pandas.reindex: Replace the Values of the Missing Dates with 0
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#select-dataframe-rows-before-or-after-a-specific-date">
-   4.2.11. Select DataFrame Rows Before or After a Specific Date
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-   4.2.12. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable">
-   4.2.13. pandas.Categorical: Turn a List of Strings into a Categorical Variable
+   4.2.4. DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#df-to-dict-turn-a-dataframe-into-a-dictionary">
-   4.2.14. df.to_dict: Turn a DataFrame into a Dictionary
+   4.2.5. df.to_dict: Turn a DataFrame into a Dictionary
   </a>
  </li>
 </ul>
@@ -618,142 +613,18 @@
         
               <div>
                 
-  <div class="section" id="get-values">
-<h1><span class="section-number">4.2. </span>Get Values<a class="headerlink" href="#get-values" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="get-certain-values-from-a-dataframe">
+<h1><span class="section-number">4.2. </span>Get Certain Values From a DataFrame<a class="headerlink" href="#get-certain-values-from-a-dataframe" title="Permalink to this headline">¶</a></h1>
 <p>This section contains some methods to get specific values of a pandas DataFrame or a pandas Series.</p>
-<div class="section" id="dataframe-columns-str-startswith-find-dataframes-columns-that-start-with-a-pattern">
-<h2><span class="section-number">4.2.1. </span>DataFrame.columns.str.startswith: Find DataFrame’s Columns that Start With a Pattern<a class="headerlink" href="#dataframe-columns-str-startswith-find-dataframes-columns-that-start-with-a-pattern" title="Permalink to this headline">¶</a></h2>
-<p>To find pandas DataFrame whose columns start with a pattern, use <code class="docutils literal notranslate"><span class="pre">df.columns.str.startswith</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;pricel&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-                    <span class="s1">&#39;price2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-                    <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2021</span><span class="p">]})</span>
-
-<span class="n">mask</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">mask</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>pricel</th>
-      <th>price2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-</div>
-<div class="section" id="pandas-series-dt-access-datetime-properties-of-a-pandas-series">
-<h2><span class="section-number">4.2.2. </span>pandas.Series.dt: Access Datetime Properties of a pandas Series<a class="headerlink" href="#pandas-series-dt-access-datetime-properties-of-a-pandas-series" title="Permalink to this headline">¶</a></h2>
-<p>The easiest way to access datetime properties of pandas Series values is to use <code class="docutils literal notranslate"><span class="pre">pandas.Series.dt</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2021/05/13 15:00&quot;</span><span class="p">,</span> <span class="s2">&quot;2022-6-20 14:00&quot;</span><span class="p">],</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
-
-<span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    2021
-1    2022
-Name: date, dtype: int64
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "df = pd.DataFrame({'date': ['2021/05/13 15:00', '2022-6-20 14:00'],\n\t\t   'values': [1, 3]})\n\ndf['date'] = pd.to_datetime(df['date'])\n\ndf['date'].dt.year";
-                var nbb_formatted_code = "df = pd.DataFrame({\"date\": [\"2021/05/13 15:00\", \"2022-6-20 14:00\"], \"values\": [1, 3]})\n\ndf[\"date\"] = pd.to_datetime(df[\"date\"])\n\ndf[\"date\"].dt.year";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">time</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    15:00:00
-1    14:00:00
-Name: date, dtype: object
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "df['date'].dt.time";
-                var nbb_formatted_code = "df[\"date\"].dt.time";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
 <div class="section" id="pd-series-between-select-rows-in-a-pandas-series-containing-values-between-2-numbers">
-<h2><span class="section-number">4.2.3. </span>pd.Series.between: Select Rows in a Pandas Series Containing Values Between 2 Numbers<a class="headerlink" href="#pd-series-between-select-rows-in-a-pandas-series-containing-values-between-2-numbers" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.1. </span>pd.Series.between: Select Rows in a Pandas Series Containing Values Between 2 Numbers<a class="headerlink" href="#pd-series-between-select-rows-in-a-pandas-series-containing-values-between-2-numbers" title="Permalink to this headline">¶</a></h2>
 <p>To get the values that are smaller than the upper bound and larger than the lower bound, use the <code class="docutils literal notranslate"><span class="pre">pandas.Series.between</span></code> method.</p>
 <p>In the code below, I obtained the values between 0 and 10 using <code class="docutils literal notranslate"><span class="pre">between</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
 <span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
 </pre></div>
@@ -767,31 +638,17 @@ Name: date, dtype: object
 dtype: int64
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "s = pd.Series([5, 2, 15, 13, 6, 10])\n\ns[s.between(0, 10)]";
-                var nbb_formatted_code = "s = pd.Series([5, 2, 15, 13, 6, 10])\n\ns[s.between(0, 10)]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </div>
 <div class="section" id="dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas">
-<h2><span class="section-number">4.2.4. </span>DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas<a class="headerlink" href="#dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.2. </span>DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas<a class="headerlink" href="#dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas" title="Permalink to this headline">¶</a></h2>
 <p>If you want to find the average of the previous n data points (simple moving average) with pandas, use <code class="docutils literal notranslate"><span class="pre">df.rolling(time_period).mean()</span></code>.</p>
 <p>The code below shows how to find the simple moving average of the previous 3 data-points.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
@@ -859,22 +716,7 @@ dtype: int64
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 8;
-                var nbb_unformatted_code = "from datetime import date\n\ndf = pd.DataFrame({'date': [date(2021, 1, 20), date(2021, 1, 21), date(2021, 1, 22),\n                            date(2021, 1, 23), date(2021, 1, 24)],\n                    'value': [1, 2, 3, 4, 5]}).set_index('date')\n\ndf";
-                var nbb_formatted_code = "from datetime import date\n\ndf = pd.DataFrame(\n    {\n        \"date\": [\n            date(2021, 1, 20),\n            date(2021, 1, 21),\n            date(2021, 1, 22),\n            date(2021, 1, 23),\n            date(2021, 1, 24),\n        ],\n        \"value\": [1, 2, 3, 4, 5],\n    }\n).set_index(\"date\")\n\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -949,120 +791,15 @@ dtype: int64
             </script></div>
 </div>
 </div>
-<div class="section" id="select-dtypes-return-a-subset-of-a-dataframe-including-excluding-columns-based-on-their-dtype">
-<h2><span class="section-number">4.2.5. </span>select_dtypes: Return a Subset of a DataFrame Including/Excluding Columns Based on Their dtype<a class="headerlink" href="#select-dtypes-return-a-subset-of-a-dataframe-including-excluding-columns-based-on-their-dtype" title="Permalink to this headline">¶</a></h2>
-<p>You might want to apply different kinds of processing to categorical and numerical features. Instead of manually choosing categorical features or numerical features, you can automatically get them by using <code class="docutils literal notranslate"><span class="pre">df.select_dtypes('data_type')</span></code>.</p>
-<p>In the example below, you can either include or exclude certain data types using <code class="docutils literal notranslate"><span class="pre">exclude</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]})</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 3 entries, 0 to 2
-Data columns (total 3 columns):
- #   Column  Non-Null Count  Dtype  
----  ------  --------------  -----  
- 0   col1    3 non-null      object 
- 1   col2    3 non-null      int64  
- 2   col3    3 non-null      float64
-dtypes: float64(1), int64(1), object(1)
-memory usage: 200.0+ bytes
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 12;
-                var nbb_unformatted_code = "df = pd.DataFrame({\"col1\": [\"a\", \"b\", \"c\"], \"col2\": [1, 2, 3], \"col3\": [0.1, 0.2, 0.3]})\n\ndf.info()";
-                var nbb_formatted_code = "df = pd.DataFrame({\"col1\": [\"a\", \"b\", \"c\"], \"col2\": [1, 2, 3], \"col3\": [0.1, 0.2, 0.3]})\n\ndf.info()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;int64&quot;</span><span class="p">,</span> <span class="s2">&quot;float64&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col2</th>
-      <th>col3</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>0.1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>0.2</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>0.3</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 14;
-                var nbb_unformatted_code = "df.select_dtypes(include=[\"int64\", \"float64\"])";
-                var nbb_formatted_code = "df.select_dtypes(include=[\"int64\", \"float64\"])";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
 <div class="section" id="pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series">
-<h2><span class="section-number">4.2.6. </span>pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series<a class="headerlink" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.3. </span>pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series<a class="headerlink" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series" title="Permalink to this headline">¶</a></h2>
 <p>If you want to find the percentage change between the current and a prior element in a pandas Series, use the <code class="docutils literal notranslate"><span class="pre">pct_change</span></code> method.</p>
 <p>In the example below, 35 is 75% larger than 20, and 10 is 71.4% smaller than 35.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">df</span>
 </pre></div>
 </div>
@@ -1108,22 +845,7 @@ memory usage: 200.0+ bytes
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "df = pd.DataFrame({'a': [20, 35, 10], 'b': [1, 2, 3]})\ndf";
-                var nbb_formatted_code = "df = pd.DataFrame({\"a\": [20, 35, 10], \"b\": [1, 2, 3]})\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1157,11 +879,13 @@ Name: a, dtype: float64
 </div>
 </div>
 <div class="section" id="dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas">
-<h2><span class="section-number">4.2.7. </span>DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas<a class="headerlink" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.4. </span>DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas<a class="headerlink" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the difference between rows within a column, use <code class="docutils literal notranslate"><span class="pre">DataFrame.diff()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
 <span class="n">diff</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
 <span class="n">diff</span>
 </pre></div>
@@ -1213,22 +937,7 @@ Name: a, dtype: float64
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 18;
-                var nbb_unformatted_code = "df = pd.DataFrame({\"a\": [1, 2, 3, 4], \"b\": [2, 3, 4, 6]})\ndiff = df.diff()\ndiff";
-                var nbb_formatted_code = "df = pd.DataFrame({\"a\": [1, 2, 3, 4], \"b\": [2, 3, 4, 6]})\ndiff = df.diff()\ndiff";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
 <p>This will leave the first index null. You can shift the rows up to match the first difference with the first index using <code class="docutils literal notranslate"><span class="pre">DataFrame.shift(-1)</span></code>.</p>
 <div class="cell docutils container">
@@ -1367,773 +1076,8 @@ Name: a, dtype: float64
             </script></div>
 </div>
 </div>
-<div class="section" id="pandas-clip-exclude-outliers">
-<h2><span class="section-number">4.2.8. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">¶</a></h2>
-<p>Outliers are unusual values in your dataset, and they can distort statistical analyses.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;col0&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col0</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-3</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>-1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 25;
-                var nbb_unformatted_code = "data = {\"col0\": [9, -3, 0, -1, 5]}\ndf = pd.DataFrame(data)\ndf ";
-                var nbb_formatted_code = "data = {\"col0\": [9, -3, 0, -1, 5]}\ndf = pd.DataFrame(data)\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>If you want to trim values that the outliers, one of the methods is to use <code class="docutils literal notranslate"><span class="pre">df.clip</span></code>.</p>
-<p>Below is how to use the 0.5-quantile as the lower threshold and .95-quantile as the upper threshold</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lower</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">col0</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="n">upper</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">col0</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.95</span><span class="p">)</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">upper</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col0</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>8.2</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>-2.6</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>-1.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 26;
-                var nbb_unformatted_code = "lower = df.col0.quantile(0.05)\nupper = df.col0.quantile(0.95)\n\ndf.clip(lower=lower, upper=upper)";
-                var nbb_formatted_code = "lower = df.col0.quantile(0.05)\nupper = df.col0.quantile(0.95)\n\ndf.clip(lower=lower, upper=upper)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
-<div class="section" id="get-rows-within-a-year-range">
-<h2><span class="section-number">4.2.9. </span>Get Rows within a Year Range<a class="headerlink" href="#get-rows-within-a-year-range" title="Permalink to this headline">¶</a></h2>
-<p>If you want to get all data starting in a particular year and exclude the previous years, simply use <code class="docutils literal notranslate"><span class="pre">df.loc['year':]</span></code> like below. This works when the index of your <code class="docutils literal notranslate"><span class="pre">pd.Dataframe</span></code> is <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
-        <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
-
-<span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>val</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-10-01</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2019-10-01</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2020-10-01</th>
-      <td>3</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 27;
-                var nbb_unformatted_code = "from datetime import datetime \ndf = pd.DataFrame({'date': [datetime(2018, 10, 1),\n                            datetime(2019, 10, 1),\n                            datetime(2020, 10, 1)],\n                    'val': [1, 2, 3]}).set_index('date')\n\ndf";
-                var nbb_formatted_code = "from datetime import datetime\n\ndf = pd.DataFrame(\n    {\n        \"date\": [datetime(2018, 10, 1), datetime(2019, 10, 1), datetime(2020, 10, 1)],\n        \"val\": [1, 2, 3],\n    }\n).set_index(\"date\")\n\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2019&quot;</span><span class="p">:]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>val</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2019-10-01</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2020-10-01</th>
-      <td>3</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 28;
-                var nbb_unformatted_code = "df.loc['2019':]";
-                var nbb_formatted_code = "df.loc[\"2019\":]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
-<div class="section" id="pandas-reindex-replace-the-values-of-the-missing-dates-with-0">
-<h2><span class="section-number">4.2.10. </span>pandas.reindex: Replace the Values of the Missing Dates with 0<a class="headerlink" href="#pandas-reindex-replace-the-values-of-the-missing-dates-with-0" title="Permalink to this headline">¶</a></h2>
-<p>Have you ever got a time series with missing dates? This can cause a problem since many time series methods require a fixed frequency index.</p>
-<p>To fix this issue, you can replace the values of the missing dates with 0 using <code class="docutils literal notranslate"><span class="pre">pd.date_range</span></code> and <code class="docutils literal notranslate"><span class="pre">pd.reindex</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;2021-07-20&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-07-23&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-07-25&quot;</span><span class="p">])</span>
-<span class="n">s</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">s</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-07-20    1
-2021-07-23    2
-2021-07-25    3
-dtype: int64
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 30;
-                var nbb_unformatted_code = "s = pd.Series([1, 2, 3], index=[\"2021-07-20\", \"2021-07-23\", \"2021-07-25\"])\ns.index = pd.to_datetime(s.index)\ns";
-                var nbb_formatted_code = "s = pd.Series([1, 2, 3], index=[\"2021-07-20\", \"2021-07-23\", \"2021-07-25\"])\ns.index = pd.to_datetime(s.index)\ns";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get dates ranging from 2021/7/20 to 2021/7/25</span>
-<span class="n">new_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2021-07-20&quot;</span><span class="p">,</span> <span class="s2">&quot;2021-07-25&quot;</span><span class="p">)</span>
-
-<span class="c1"># Conform Series to new index</span>
-<span class="n">new_s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">new_index</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">new_s</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2021-07-20    1
-2021-07-21    0
-2021-07-22    0
-2021-07-23    2
-2021-07-24    0
-2021-07-25    3
-Freq: D, dtype: int64
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 31;
-                var nbb_unformatted_code = "# Get dates ranging from 2021/7/20 to 2021/7/25\nnew_index = pd.date_range('2021-07-20', '2021-07-25')\n\n# Conform Series to new index\nnew_s = s.reindex(new_index, fill_value=0)\nnew_s ";
-                var nbb_formatted_code = "# Get dates ranging from 2021/7/20 to 2021/7/25\nnew_index = pd.date_range(\"2021-07-20\", \"2021-07-25\")\n\n# Conform Series to new index\nnew_s = s.reindex(new_index, fill_value=0)\nnew_s";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
-<div class="section" id="select-dataframe-rows-before-or-after-a-specific-date">
-<h2><span class="section-number">4.2.11. </span>Select DataFrame Rows Before or After a Specific Date<a class="headerlink" href="#select-dataframe-rows-before-or-after-a-specific-date" title="Permalink to this headline">¶</a></h2>
-<p>If you want to get the rows whose dates are before or after a specific date, use the comparison operator and a date string.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2021-7-19&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2021-7-23&quot;</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))}</span>
-<span class="p">)</span>
-<span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2021-07-19</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2021-07-20</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2021-07-21</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2021-07-22</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2021-07-23</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 32;
-                var nbb_unformatted_code = "df = pd.DataFrame(\n    {\"date\": pd.date_range(start=\"2021-7-19\", end=\"2021-7-23\"), \"value\": list(range(5))}\n)\ndf";
-                var nbb_formatted_code = "df = pd.DataFrame(\n    {\"date\": pd.date_range(start=\"2021-7-19\", end=\"2021-7-23\"), \"value\": list(range(5))}\n)\ndf";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">date</span> <span class="o">&lt;=</span> <span class="s2">&quot;2021-07-21&quot;</span><span class="p">]</span>
-<span class="n">filtered_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>date</th>
-      <th>value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2021-07-19</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2021-07-20</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2021-07-21</td>
-      <td>2</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 33;
-                var nbb_unformatted_code = "filtered_df = df[df.date <= \"2021-07-21\"]\nfiltered_df";
-                var nbb_formatted_code = "filtered_df = df[df.date <= \"2021-07-21\"]\nfiltered_df";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
-<div class="section" id="dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-<h2><span class="section-number">4.2.12. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">¶</a></h2>
-<p>If you want to get a random sample of items from each category in a column, use <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby.sample</span></code>.This method is useful when you want to get a subset of a DataFrame while keeping all categories in a column.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]})</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col1</th>
-      <th>col2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>a</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>b</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>c</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>d</td>
-      <td>9</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 35;
-                var nbb_unformatted_code = "df = pd.DataFrame({\"col1\": [\"a\", \"a\", \"b\", \"c\", \"c\", \"d\"], \"col2\": [4, 5, 6, 7, 8, 9]})\ndf.groupby(\"col1\").sample(n=1)";
-                var nbb_formatted_code = "df = pd.DataFrame({\"col1\": [\"a\", \"a\", \"b\", \"c\", \"c\", \"d\"], \"col2\": [4, 5, 6, 7, 8, 9]})\ndf.groupby(\"col1\").sample(n=1)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>To get 2 items from each category, use <code class="docutils literal notranslate"><span class="pre">n=2</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col1</th>
-      <th>col2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>a</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>a</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>b</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>b</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>c</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>c</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>d</td>
-      <td>12</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>d</td>
-      <td>11</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 37;
-                var nbb_unformatted_code = "df = pd.DataFrame({\"col1\": [\"a\", \"a\", \"b\", \"b\", \"b\", \"c\", \"c\", \"d\", \"d\"], \"col2\": [4, 5, 6, 7, 8, 9, 10, 11, 12]})\ndf.groupby(\"col1\").sample(n=2)";
-                var nbb_formatted_code = "df = pd.DataFrame(\n    {\n        \"col1\": [\"a\", \"a\", \"b\", \"b\", \"b\", \"c\", \"c\", \"d\", \"d\"],\n        \"col2\": [4, 5, 6, 7, 8, 9, 10, 11, 12],\n    }\n)\ndf.groupby(\"col1\").sample(n=2)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
-<div class="section" id="pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable">
-<h2><span class="section-number">4.2.13. </span>pandas.Categorical: Turn a List of Strings into a Categorical Variable<a class="headerlink" href="#pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable" title="Permalink to this headline">¶</a></h2>
-<p>If you want to create a categorical variable, use <code class="docutils literal notranslate"><span class="pre">pandas.Categorical</span></code>. This variable takes on a limited number of possible values and can be ordered. In the code below, I use <code class="docutils literal notranslate"><span class="pre">pd.Categorical</span></code> to create a list of ordered categories.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-
-<span class="n">size</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">([</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">],</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">])</span>
-<span class="n">size</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;M&#39;, &#39;S&#39;, &#39;M&#39;, &#39;L&#39;]
-Categories (3, object): [&#39;S&#39; &lt; &#39;M&#39; &lt; &#39;L&#39;]
-</pre></div>
-</div>
-</div>
-</div>
-<p>Note that the parameters <code class="docutils literal notranslate"><span class="pre">categories</span> <span class="pre">=</span> <span class="pre">['S',</span> <span class="pre">'M',</span> <span class="pre">'L']</span></code> and <code class="docutils literal notranslate"><span class="pre">ordered=True</span></code> tell pandas that <code class="docutils literal notranslate"><span class="pre">'S'</span> <span class="pre">&lt;</span> <span class="pre">'M'</span> <span class="pre">&lt;</span> <span class="pre">'L'</span></code>. This means we can get the smallest value in the list:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">size</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;S&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Or sort the DataFrame by the column that contains categorical variables:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">size</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-
-<span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>size</th>
-      <th>val</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>S</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>M</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>M</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>L</td>
-      <td>6</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-</div>
 <div class="section" id="df-to-dict-turn-a-dataframe-into-a-dictionary">
-<h2><span class="section-number">4.2.14. </span>df.to_dict: Turn a DataFrame into a Dictionary<a class="headerlink" href="#df-to-dict-turn-a-dataframe-into-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5. </span>df.to_dict: Turn a DataFrame into a Dictionary<a class="headerlink" href="#df-to-dict-turn-a-dataframe-into-a-dictionary" title="Permalink to this headline">¶</a></h2>
 <p>To turn a DataFrame into a Python dictionary, use <code class="docutils literal notranslate"><span class="pre">df.to_dict()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2199,7 +1143,7 @@ Categories (3, object): [&#39;S&#39; &lt; &#39;M&#39; &lt; &#39;L&#39;]
 <p>However, if you prefer to get a list of dictionaries whose elements are rows, use <code class="docutils literal notranslate"><span class="pre">df.to_dict(orient='records')</span></code> instead.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2259,19 +1203,19 @@ Categories (3, object): [&#39;S&#39; &lt; &#39;M&#39; &lt; &#39;L&#39;]
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="change_values.html" title="previous page">
+        <a class="left-prev" href="transform_columns.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title"><span class="section-number">4.1. </span>Change Values</p>
+                <p class="prevnext-title"><span class="section-number">4.1. </span>Transform Columns</p>
             </div>
         </a>
     </div>
      <div id="next">
-        <a class="right-next" href="testing.html" title="next page">
+        <a class="right-next" href="date_time.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title"><span class="section-number">4.3. </span>Testing</p>
+                <p class="prevnext-title"><span class="section-number">4.3. </span>Work with Datetime</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
