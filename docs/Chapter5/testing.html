@@ -607,6 +607,11 @@
    6.12.6. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
+   6.12.7. DeepDiff Find Deep Differences of Python Objects
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1094,6 +1099,129 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
             </script></div>
 </div>
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
+</div>
+<div class="section" id="deepdiff-find-deep-differences-of-python-objects">
+<h2><span class="section-number">6.12.7. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepdiff
+</pre></div>
+</div>
+</div>
+</div>
+<p>When testing the outputs of your functions, it can be frustrated to see your tests fail because of something you don’t care too much about such as:</p>
+<ul class="simple">
+<li><p>order of items in a list</p></li>
+<li><p>different ways to specify the same thing such as abbreviation</p></li>
+<li><p>exact value up to the last decimal point, etc</p></li>
+</ul>
+<p>Is there a way that you can exclude certain parts of the object from the comparison? That is when DeepDiff comes in handy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepdiff</span> <span class="kn">import</span> <span class="n">DeepDiff</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>DeepDiff can output a meaningful comparison like below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">price1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+<span class="n">price2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
+
+<span class="n">DeepDiff</span><span class="p">(</span><span class="n">price1</span><span class="p">,</span> <span class="n">price2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;values_changed&#39;: {&quot;root[&#39;banana&#39;][0]&quot;: {&#39;new_value&#39;: 2, &#39;old_value&#39;: 3},
+  &quot;root[&#39;banana&#39;][1]&quot;: {&#39;new_value&#39;: 3, &#39;old_value&#39;: 2}}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>With DeepDiff, you also have full control of which characteristics of the Python object DeepDiff should ignore. In the example below, since the order is ignored <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">2]</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3]</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ignore orders </span>
+
+<span class="n">DeepDiff</span><span class="p">(</span><span class="n">price1</span><span class="p">,</span> <span class="n">price2</span><span class="p">,</span> <span class="n">ignore_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can also exclude certain part of our object from the comparison. In the code below, we ignore <code class="docutils literal notranslate"><span class="pre">ml</span></code> and <code class="docutils literal notranslate"><span class="pre">machine</span> <span class="pre">learning</span></code> since <code class="docutils literal notranslate"><span class="pre">ml</span></code> is a abbreviation of <code class="docutils literal notranslate"><span class="pre">machine</span> <span class="pre">learning</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experience1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;machine learning&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="n">experience2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ml&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+
+<span class="n">DeepDiff</span><span class="p">(</span>
+    <span class="n">experience1</span><span class="p">,</span>
+    <span class="n">experience2</span><span class="p">,</span>
+    <span class="n">exclude_paths</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;root[&#39;ml&#39;]&quot;</span><span class="p">,</span> <span class="s2">&quot;root[&#39;machine learning&#39;]&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 25;
+                var nbb_unformatted_code = "experience1 = {\"machine learning\": 2, \"python\": 3}\nexperience2 = {\"ml\": 2, \"python\": 3}\n\nDeepDiff(\n    experience1,\n    experience2,\n    exclude_paths={\"root['ml']\", \"root['machine learning']\"},\n)";
+                var nbb_formatted_code = "experience1 = {\"machine learning\": 2, \"python\": 3}\nexperience2 = {\"ml\": 2, \"python\": 3}\n\nDeepDiff(\n    experience1,\n    experience2,\n    exclude_paths={\"root['ml']\", \"root['machine learning']\"},\n)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Cmpare 2 numbers up to a specific decimal point:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num1</span> <span class="o">=</span> <span class="mf">0.258</span>
+<span class="n">num2</span> <span class="o">=</span> <span class="mf">0.259</span>
+
+<span class="n">DeepDiff</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">significant_digits</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 34;
+                var nbb_unformatted_code = "num1 = 0.258\nnum2 = 0.259\n\nDeepDiff(num1, num2, significant_digits=2)";
+                var nbb_formatted_code = "num1 = 0.258\nnum2 = 0.259\n\nDeepDiff(num1, num2, significant_digits=2)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </div>
 </div>
 
