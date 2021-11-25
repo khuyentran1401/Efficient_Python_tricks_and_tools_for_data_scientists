@@ -588,13 +588,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assign-name-to-pandas-aggregation">
+   4.4.3. Assign Name to Pandas Aggregation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-   4.4.3. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
+   4.4.4. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-   4.4.4. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
+   4.4.5. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
   </a>
  </li>
 </ul>
@@ -730,8 +735,82 @@
 </div></div></div>
 </div>
 </div>
+<div class="section" id="assign-name-to-pandas-aggregation">
+<h2><span class="section-number">4.4.3. </span>Assign Name to Pandas Aggregation<a class="headerlink" href="#assign-name-to-pandas-aggregation" title="Permalink to this headline">¶</a></h2>
+<p>By default, aggregating a column returns the name of that column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">],</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      price
+size       
+L       5.0
+M       4.0
+S       2.5
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to assign a new name to an aggregation, add <code class="docutils literal notranslate"><span class="pre">name</span> <span class="pre">=</span> <span class="pre">(column,</span> <span class="pre">agg_method)</span></code> to <code class="docutils literal notranslate"><span class="pre">agg</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_price</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean_price</th>
+    </tr>
+    <tr>
+      <th>size</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>L</th>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>S</th>
+      <td>2.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
 <div class="section" id="pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-<h2><span class="section-number">4.4.3. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.4. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">¶</a></h2>
 <p>A pivot table is useful to summarize and analyze the patterns in your data. If you want to turn your DataFrame into a pivot table, use <code class="docutils literal notranslate"><span class="pre">pandas.pivot_table</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -887,7 +966,7 @@
 </div>
 </div>
 <div class="section" id="dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-<h2><span class="section-number">4.4.4. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.5. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get a random sample of items from each category in a column, use <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby.sample</span></code>.This method is useful when you want to get a subset of a DataFrame while keeping all categories in a column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
