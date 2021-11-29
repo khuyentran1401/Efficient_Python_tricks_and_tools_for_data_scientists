@@ -617,6 +617,11 @@
    6.13.7. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
+   6.13.8. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1227,6 +1232,59 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
+</div>
+<div class="section" id="pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
+<h2><span class="section-number">6.13.8. </span>pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar<a class="headerlink" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-code docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-sugar 
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can be frustrating to wait for a lot of tests to run before knowing the status of the tests. If you want to see the failures and errors instantly with a progress bar, use pytest-sugar.</p>
+<p>pytest-sugar is a plugin for pytest. The code below shows how the ouputs will look like when running pytest.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest pytest_sugar_example
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, sugar-0.9.4
+<span class=" -Color -Color-Bold">collecting ... </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_benchmark_example.py <span class=" -Color -Color-Green">✓</span>                  <span class=" -Color -Color-Green">1% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▏         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_fixture.py <span class=" -Color -Color-Green">✓</span>                            <span class=" -Color -Color-Green">2% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▎         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_parametrize.py <span class=" -Color -Color-Green">✓✓</span>                       <span class=" -Color -Color-Green">4% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▍         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_repeat_example.py <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">23% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██▍       </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">42% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████▎     </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">62% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████▎   </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">81% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████████▏ </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓100% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████████</span>
+
+<span class=" -Color -Color-Yellow">---------------------------------------------------- benchmark: 1 tests ---------------------------------------------------</span>
+Name (time in ns)          Min         Max      Mean   StdDev    Median     IQR  Outliers  OPS (Mops/s)  Rounds  Iterations
+<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
+test_concat         <span class=" -Color -Color-Bold">  302.8003  3,012.5000  328.2844  97.9087  321.5999  8.2495</span>  866;2220<span class=" -Color -Color-Bold">        3.0461</span>   90868          20
+<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+
+Results (2.63s):
+<span class=" -Color -Color-Green">     104 passed</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
 </div>
 </div>
 
