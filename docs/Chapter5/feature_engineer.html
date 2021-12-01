@@ -587,6 +587,11 @@
    6.2.1. Drop Correlated Features
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
+   6.2.2. Similarity Encoding for Dirty Categories Using dirty_cat
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -806,6 +811,287 @@
             </script></div>
 </div>
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
+</div>
+<div class="section" id="similarity-encoding-for-dirty-categories-using-dirty-cat">
+<h2><span class="section-number">6.2.2. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-cat
+</pre></div>
+</div>
+</div>
+</div>
+<p>To capture the similarities among dirty categories when encoding categorical variables, use dirty_cat’s <code class="docutils literal notranslate"><span class="pre">SimilarityEncoder</span></code> .</p>
+<p>To understand how <code class="docutils literal notranslate"><span class="pre">SimilarityEncoder</span></code> works, let’s start with the employee_salaries dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dirty_cat.datasets</span> <span class="kn">import</span> <span class="n">fetch_employee_salaries</span>
+<span class="kn">from</span> <span class="nn">dirty_cat</span> <span class="kn">import</span> <span class="n">SimilarityEncoder</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">fetch_employee_salaries</span><span class="p">()</span><span class="o">.</span><span class="n">X</span>
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>gender</th>
+      <th>department</th>
+      <th>department_name</th>
+      <th>division</th>
+      <th>assignment_category</th>
+      <th>employee_position_title</th>
+      <th>underfilled_job_title</th>
+      <th>date_first_hired</th>
+      <th>year_first_hired</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>F</td>
+      <td>POL</td>
+      <td>Department of Police</td>
+      <td>MSB Information Mgmt and Tech Division Records...</td>
+      <td>Fulltime-Regular</td>
+      <td>Office Services Coordinator</td>
+      <td>NaN</td>
+      <td>09/22/1986</td>
+      <td>1986</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>M</td>
+      <td>POL</td>
+      <td>Department of Police</td>
+      <td>ISB Major Crimes Division Fugitive Section</td>
+      <td>Fulltime-Regular</td>
+      <td>Master Police Officer</td>
+      <td>NaN</td>
+      <td>09/12/1988</td>
+      <td>1988</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>F</td>
+      <td>HHS</td>
+      <td>Department of Health and Human Services</td>
+      <td>Adult Protective and Case Management Services</td>
+      <td>Fulltime-Regular</td>
+      <td>Social Worker IV</td>
+      <td>NaN</td>
+      <td>11/19/1989</td>
+      <td>1989</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>M</td>
+      <td>COR</td>
+      <td>Correction and Rehabilitation</td>
+      <td>PRRS Facility and Security</td>
+      <td>Fulltime-Regular</td>
+      <td>Resident Supervisor II</td>
+      <td>NaN</td>
+      <td>05/05/2014</td>
+      <td>2014</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>M</td>
+      <td>HCA</td>
+      <td>Department of Housing and Community Affairs</td>
+      <td>Affordable Housing Programs</td>
+      <td>Fulltime-Regular</td>
+      <td>Planning Specialist III</td>
+      <td>NaN</td>
+      <td>03/05/2007</td>
+      <td>2007</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>M</td>
+      <td>POL</td>
+      <td>Department of Police</td>
+      <td>PSB 6th District Special Assignment Team</td>
+      <td>Fulltime-Regular</td>
+      <td>Police Officer III</td>
+      <td>NaN</td>
+      <td>07/16/2007</td>
+      <td>2007</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>F</td>
+      <td>FRS</td>
+      <td>Fire and Rescue Services</td>
+      <td>EMS Billing</td>
+      <td>Fulltime-Regular</td>
+      <td>Accountant/Auditor II</td>
+      <td>NaN</td>
+      <td>06/27/2016</td>
+      <td>2016</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>M</td>
+      <td>HHS</td>
+      <td>Department of Health and Human Services</td>
+      <td>Head Start</td>
+      <td>Fulltime-Regular</td>
+      <td>Administrative Specialist II</td>
+      <td>NaN</td>
+      <td>11/17/2014</td>
+      <td>2014</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>M</td>
+      <td>FRS</td>
+      <td>Fire and Rescue Services</td>
+      <td>Recruit Training</td>
+      <td>Fulltime-Regular</td>
+      <td>Firefighter/Rescuer III</td>
+      <td>Firefighter/Rescuer I (Recruit)</td>
+      <td>12/12/2016</td>
+      <td>2016</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>F</td>
+      <td>POL</td>
+      <td>Department of Police</td>
+      <td>FSB Traffic Division Automated Traffic Enforce...</td>
+      <td>Fulltime-Regular</td>
+      <td>Police Aide</td>
+      <td>NaN</td>
+      <td>02/05/2007</td>
+      <td>2007</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dirty_column</span> <span class="o">=</span> <span class="s2">&quot;employee_position_title&quot;</span>
+<span class="n">X_dirty</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">dirty_column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_dirty</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Office Services Coordinator&#39;, &#39;Master Police Officer&#39;,
+       &#39;Social Worker IV&#39;, &#39;Resident Supervisor II&#39;,
+       &#39;Planning Specialist III&#39;, &#39;Police Officer III&#39;,
+       &#39;Accountant/Auditor II&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that titles such as ‘Master Police Officer’ and ‘Police Officer III’ are similar. We can use <code class="docutils literal notranslate"><span class="pre">SimilaryEncoder</span></code> to encode these categories while capturing their similarities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">enc</span> <span class="o">=</span> <span class="n">SimilarityEncoder</span><span class="p">(</span><span class="n">similarity</span><span class="o">=</span><span class="s2">&quot;ngram&quot;</span><span class="p">)</span>
+<span class="n">X_enc</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_dirty</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_enc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.05882353, 0.03125   , 0.02739726, 0.19008264, 1.        ,
+        0.01351351, 0.05555556, 0.20535714, 0.08088235, 0.032     ],
+       [0.008     , 0.02083333, 0.056     , 1.        , 0.19008264,
+        0.02325581, 0.23076923, 0.56      , 0.01574803, 0.02777778],
+       [0.03738318, 0.07317073, 0.05405405, 0.02777778, 0.032     ,
+        0.0733945 , 0.        , 0.0625    , 0.06542056, 1.        ],
+       [0.11206897, 0.07142857, 0.09756098, 0.01574803, 0.08088235,
+        0.07142857, 0.03125   , 0.08108108, 1.        , 0.06542056],
+       [0.04761905, 0.3539823 , 0.06976744, 0.02325581, 0.01351351,
+        1.        , 0.02      , 0.09821429, 0.07142857, 0.0733945 ],
+       [0.0733945 , 0.05343511, 0.14953271, 0.56      , 0.20535714,
+        0.09821429, 0.26086957, 1.        , 0.08108108, 0.0625    ],
+       [1.        , 0.05      , 0.06451613, 0.008     , 0.05882353,
+        0.04761905, 0.01052632, 0.0733945 , 0.11206897, 0.03738318],
+       [0.05      , 1.        , 0.03378378, 0.02083333, 0.03125   ,
+        0.3539823 , 0.02631579, 0.05343511, 0.07142857, 0.07317073],
+       [0.06451613, 0.03378378, 1.        , 0.056     , 0.02739726,
+        0.06976744, 0.        , 0.14953271, 0.09756098, 0.05405405],
+       [0.01052632, 0.02631579, 0.        , 0.23076923, 0.05555556,
+        0.02      , 1.        , 0.26086957, 0.03125   , 0.        ]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cool! Let’s create a heatmap to understand the correlation between the encoded features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
+
+<span class="k">def</span> <span class="nf">plot_similarity</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+  
+    <span class="n">normalized_features</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    
+    <span class="c1"># Create correction matrix</span>
+    <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">normalized_features</span><span class="p">,</span> <span class="n">normalized_features</span><span class="p">)</span>
+    
+    <span class="c1"># Plot</span>
+    <span class="n">figsize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;YlOrRd&quot;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+        
+    <span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Similarity&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">encode_and_plot</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+  
+    <span class="n">enc</span> <span class="o">=</span> <span class="n">SimilarityEncoder</span><span class="p">(</span><span class="n">similarity</span><span class="o">=</span><span class="s2">&quot;ngram&quot;</span><span class="p">)</span> <span class="c1"># Encode</span>
+    <span class="n">X_enc</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">plot_similarity</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">X_enc</span><span class="p">)</span> <span class="c1"># Plot</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encode_and_plot</span><span class="p">(</span><span class="n">X_dirty</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/feature_engineer_21_0.png" src="../_images/feature_engineer_21_0.png" />
+</div>
+</div>
+<p>As we can see from the matrix above,</p>
+<ul class="simple">
+<li><p>The similarity between the same strings such as ‘Office Services Coordinator’ and ‘Office Services Coordinator’ is 1</p></li>
+<li><p>The similarity between somewhat similar strings such as ‘Office Services Coordinator’ and ‘Master Police Officer’ is 0.41</p></li>
+<li><p>The similarity between two very different strings such as ‘Social Worker IV’ and ‘Polic Aide’ is 0.028</p></li>
+</ul>
+<p><a class="reference external" href="https://dirty-cat.github.io/">Link to dirty-cat</a>.</p>
+<p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
 </div>
 </div>
 
