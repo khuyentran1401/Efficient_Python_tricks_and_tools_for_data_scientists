@@ -336,58 +336,63 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/feature_engineer.html">
+     6.2. Feature Engineer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/get_data.html">
-     6.2. Get Data
+     6.3. Get Data
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/manage_data.html">
-     6.3. Manage Data
+     6.4. Manage Data
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/machine_learning.html">
-     6.4. Machine Learning
+     6.5. Machine Learning
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/natural_language_processing.html">
-     6.5. Natural Language Processing
+     6.6. Natural Language Processing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/time_series.html">
-     6.6. Time Series
+     6.7. Time Series
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/sharing_downloading.html">
-     6.7. Sharing and Downloading
+     6.8. Sharing and Downloading
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/speed_up_code.html">
-     6.8. Tools to Speed Up Code
+     6.9. Tools to Speed Up Code
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/visualization.html">
-     6.9. Visualization
+     6.10. Visualization
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/best_python_practice_tools.html">
-     6.10. Tools for Best Python Practices
+     6.11. Tools for Best Python Practices
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/better_pandas.html">
-     6.11. Better Pandas
+     6.12. Better Pandas
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/testing.html">
-     6.12. Testing
+     6.13. Testing
     </a>
    </li>
   </ul>
@@ -600,6 +605,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
    4.4.5. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
+   4.4.6. pandas.melt: Unpivot a DataFrame
   </a>
  </li>
 </ul>
@@ -1120,6 +1130,137 @@ S       2.5
                 }
             }, 500);
             </script></div>
+</div>
+</div>
+<div class="section" id="pandas-melt-unpivot-a-dataframe">
+<h2><span class="section-number">4.4.6. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>If you want to unpivot a DataFrame from wide to long format, use pandas.melt.</p>
+<p>For example, you can use pandas.melt to turn multiple columns (<code class="docutils literal notranslate"><span class="pre">Aldi</span></code>, <code class="docutils literal notranslate"><span class="pre">Walmart</span></code>, <code class="docutils literal notranslate"><span class="pre">Costco</span></code>) into values of one column (<code class="docutils literal notranslate"><span class="pre">store</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">],</span> <span class="s2">&quot;Aldi&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;Costco&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fruit</th>
+      <th>Aldi</th>
+      <th>Walmart</th>
+      <th>Costco</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>apple</td>
+      <td>1</td>
+      <td>3</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>orange</td>
+      <td>2</td>
+      <td>4</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;fruit&quot;</span><span class="p">],</span> <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Costco&quot;</span><span class="p">],</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;store&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fruit</th>
+      <th>store</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>apple</td>
+      <td>Aldi</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>orange</td>
+      <td>Aldi</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>apple</td>
+      <td>Walmart</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>orange</td>
+      <td>Walmart</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>apple</td>
+      <td>Costco</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>orange</td>
+      <td>Costco</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </div>
 </div>
