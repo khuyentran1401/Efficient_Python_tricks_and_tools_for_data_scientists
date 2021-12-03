@@ -336,58 +336,63 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter5/feature_engineer.html">
+     6.2. Feature Engineer
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/get_data.html">
-     6.2. Get Data
+     6.3. Get Data
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/manage_data.html">
-     6.3. Manage Data
+     6.4. Manage Data
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/machine_learning.html">
-     6.4. Machine Learning
+     6.5. Machine Learning
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/natural_language_processing.html">
-     6.5. Natural Language Processing
+     6.6. Natural Language Processing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/time_series.html">
-     6.6. Time Series
+     6.7. Time Series
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/sharing_downloading.html">
-     6.7. Sharing and Downloading
+     6.8. Sharing and Downloading
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/speed_up_code.html">
-     6.8. Tools to Speed Up Code
+     6.9. Tools to Speed Up Code
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/visualization.html">
-     6.9. Visualization
+     6.10. Visualization
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/best_python_practice_tools.html">
-     6.10. Tools for Best Python Practices
+     6.11. Tools for Best Python Practices
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/better_pandas.html">
-     6.11. Better Pandas
+     6.12. Better Pandas
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/testing.html">
-     6.12. Testing
+     6.13. Testing
     </a>
    </li>
   </ul>
@@ -587,6 +592,11 @@
    7.6.2. pip-autoremove: Remove a Package and Its Unused Dependencies
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipreqs-generate-requirements-txt-file-for-any-project-based-on-imports">
+   7.6.3. pipreqs: Generate requirements.txt File for Any Project Based on Imports
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -724,6 +734,71 @@ Uninstalling missingno-0.5.0:
 </div>
 <p>By using pip-autoremove, pandas-profiling and its unused dependencies are removed!</p>
 <p><a class="reference external" href="https://github.com/invl/pip-autoremove">Link to pip-autoremove</a>.</p>
+</div>
+<div class="section" id="pipreqs-generate-requirements-txt-file-for-any-project-based-on-imports">
+<h2><span class="section-number">7.6.3. </span>pipreqs: Generate requirements.txt File for Any Project Based on Imports<a class="headerlink" href="#pipreqs-generate-requirements-txt-file-for-any-project-based-on-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pipreqs
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">freeze</span></code> saves all packages in the environment, including ones that you don’t use in your current project. To generate a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> based on imports, use pipreqs.</p>
+<p>For example, to save all packages in your current project to a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipreqs . 
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pipreqs . 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Successfully saved requirements file in ./requirements.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>Your <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> should look like below:</p>
+<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>numpy==1.21.4
+pandas==1.3.4
+pyinstrument==4.0.3
+typer==0.4.0
+</pre></div>
+</div>
+<p>Usage of pipreqs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Usage:
+    pipreqs <span class="o">[</span>options<span class="o">]</span> <span class="o">[</span>&lt;path&gt;<span class="o">]</span>
+
+Arguments:
+    &lt;path&gt;                The path to the directory containing the application files <span class="k">for</span> which a requirements file
+                          should be generated <span class="o">(</span>defaults to the current working directory<span class="o">)</span>
+
+Options:
+    --use-local           Use ONLY <span class="nb">local</span> package info instead of querying PyPI
+    --pypi-server &lt;url&gt;   Use custom PyPi server
+    --proxy &lt;url&gt;         Use Proxy, parameter will be passed to requests library. You can also just <span class="nb">set</span> the
+                          environments parameter <span class="k">in</span> your terminal:
+                          $ <span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://10.10.1.10:3128&quot;</span>
+                          $ <span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;https://10.10.1.10:1080&quot;</span>
+    --debug               Print debug information
+    --ignore &lt;dirs&gt;...    Ignore extra directories, each separated by a comma
+    --no-follow-links     Do not follow symbolic links <span class="k">in</span> the project
+    --encoding &lt;charset&gt;  Use encoding parameter <span class="k">for</span> file open
+    --savepath &lt;file&gt;     Save the list of requirements <span class="k">in</span> the given file
+    --print               Output the list of requirements <span class="k">in</span> the standard output
+    --force               Overwrite existing requirements.txt
+    --diff &lt;file&gt;         Compare modules <span class="k">in</span> requirements.txt to project imports
+    --clean &lt;file&gt;        Clean up requirements.txt by removing modules that are not imported <span class="k">in</span> project
+    --mode &lt;scheme&gt;       Enables dynamic versioning with &lt;compat&gt;, &lt;gt&gt; or &lt;non-pin&gt; schemes
+                          &lt;compat&gt; <span class="p">|</span> e.g. Flask~<span class="o">=</span><span class="m">1</span>.1.2
+                          &lt;gt&gt;     <span class="p">|</span> e.g. Flask&gt;<span class="o">=</span><span class="m">1</span>.1.2
+                          &lt;no-pin&gt; <span class="p">|</span> e.g. Flask
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/bndr/pipreqs/">Link to pipreqs</a>.</p>
 </div>
 </div>
 
