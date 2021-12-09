@@ -278,27 +278,27 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/data_types.html">
-     4.9. Manipulate a DataFrame Using Data Types
+     4.7. Manipulate a DataFrame Using Data Types
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/sort_dataframe.html">
-     4.10. Sort Rows or Columns of a DataFrame
+     4.8. Sort Rows or Columns of a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/string.html">
-     4.11. Work with String
+     4.9. Work with String
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/style_dataframe.html">
-     4.12. Style a DataFrame
+     4.10. Style a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/testing.html">
-     4.13. Test
+     4.11. Test
     </a>
    </li>
   </ul>
@@ -945,7 +945,7 @@
 <h2><span class="section-number">3.4.3. </span>Work with List of Dictionaries<a class="headerlink" href="#work-with-list-of-dictionaries" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="find-item-index-using-a-function">
 <h3><span class="section-number">3.4.3.1. </span>Find Item Index Using a Function<a class="headerlink" href="#find-item-index-using-a-function" title="Permalink to this headline">¶</a></h3>
-<p>To get the index of an element in a list using a function, use the <code class="docutils literal notranslate"><span class="pre">find_index</span></code> method:</p>
+<p><code class="docutils literal notranslate"><span class="pre">list.index(element)</span></code> allows you to get the index of the specified element in a list. However, you cannot get the index using a function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
@@ -956,28 +956,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 16;
-                var nbb_unformatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
-                var nbb_formatted_code = "fruits = [\n    {\"name\": \"apple\", \"price\": 2},\n    {\"name\": \"orange\", \"price\": 2},\n    {\"name\": \"grapes\", \"price\": 4},\n]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filter_fruits</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span>
-<span class="n">py_</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">filter_fruits</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span><span class="o">.</span><span class="n">index</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span>  <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -985,22 +967,41 @@
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 17;
-                var nbb_unformatted_code = "filter_fruits = lambda fruit: fruit[\"name\"] == \"apple\"\npy_.find_index(fruits, filter_fruits)";
-                var nbb_formatted_code = "filter_fruits = lambda fruit: fruit[\"name\"] == \"apple\"\npy_.find_index(fruits, filter_fruits)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filter_fruits</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span>
+
+<span class="n">fruits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filter_fruits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">b01bf8b7ae1a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">filter_fruits</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fruit</span><span class="p">:</span> <span class="n">fruit</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">fruits</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">filter_fruits</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: &lt;function &lt;lambda&gt; at 0x7f9880491310&gt; is not in list
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get the index of an element in a list using a function, use the <code class="docutils literal notranslate"><span class="pre">find_index</span></code> method instead:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">find_index</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">filter_fruits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="find-objects-with-matching-style">
