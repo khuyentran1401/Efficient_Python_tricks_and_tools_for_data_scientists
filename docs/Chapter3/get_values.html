@@ -278,27 +278,27 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="data_types.html">
-     4.8. Manipulate a DataFrame Using Data Types
+     4.7. Manipulate a DataFrame Using Data Types
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sort_dataframe.html">
-     4.9. Sort Rows or Columns of a DataFrame
+     4.8. Sort Rows or Columns of a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="string.html">
-     4.10. Work with String
+     4.9. Work with String
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="style_dataframe.html">
-     4.11. Style a DataFrame
+     4.10. Style a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="testing.html">
-     4.12. Test
+     4.11. Test
     </a>
    </li>
   </ul>
@@ -593,28 +593,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas">
-   4.2.2. DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series">
-   4.2.3. pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series
+   4.2.2. pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas">
-   4.2.4. DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas
+   4.2.3. DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#df-to-dict-turn-a-dataframe-into-a-dictionary">
-   4.2.5. df.to_dict: Turn a DataFrame into a Dictionary
+   4.2.4. df.to_dict: Turn a DataFrame into a Dictionary
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-count-and-percentage-of-a-value-in-a-column">
-   4.2.6. Get Count and Percentage of a Value in a Column
+   4.2.5. Get Count and Percentage of a Value in a Column
   </a>
  </li>
 </ul>
@@ -656,158 +651,8 @@ dtype: int64
 </div>
 </div>
 </div>
-<div class="section" id="dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas">
-<h2><span class="section-number">4.2.2. </span>DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas<a class="headerlink" href="#dataframe-rolling-find-the-average-of-the-previous-n-datapoints-using-pandas" title="Permalink to this headline">¶</a></h2>
-<p>If you want to find the average of the previous n data points (simple moving average) with pandas, use <code class="docutils literal notranslate"><span class="pre">df.rolling(time_period).mean()</span></code>.</p>
-<p>The code below shows how to find the simple moving average of the previous 3 data-points.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
-            <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
-            <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
-            <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
-            <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span>
-
-<span class="n">df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>value</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2021-01-20</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2021-01-21</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2021-01-22</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>2021-01-23</th>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>2021-01-24</th>
-      <td>5</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>value</th>
-    </tr>
-    <tr>
-      <th>date</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2021-01-20</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-01-21</th>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2021-01-22</th>
-      <td>2.0</td>
-    </tr>
-    <tr>
-      <th>2021-01-23</th>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>2021-01-24</th>
-      <td>4.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 10;
-                var nbb_unformatted_code = "df.rolling(3).mean()";
-                var nbb_formatted_code = "df.rolling(3).mean()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-</div>
 <div class="section" id="pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series">
-<h2><span class="section-number">4.2.3. </span>pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series<a class="headerlink" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.2. </span>pandas.Series.pct_change: Find The Percentage Change Between The Current and a Prior Element in a pandas Series<a class="headerlink" href="#pandas-series-pct-change-find-the-percentage-change-between-the-current-and-a-prior-element-in-a-pandas-series" title="Permalink to this headline">¶</a></h2>
 <p>If you want to find the percentage change between the current and a prior element in a pandas Series, use the <code class="docutils literal notranslate"><span class="pre">pct_change</span></code> method.</p>
 <p>In the example below, 35 is 75% larger than 20, and 10 is 71.4% smaller than 35.</p>
 <div class="cell docutils container">
@@ -894,7 +739,7 @@ Name: a, dtype: float64
 </div>
 </div>
 <div class="section" id="dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas">
-<h2><span class="section-number">4.2.4. </span>DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas<a class="headerlink" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.3. </span>DataFrame.diff and DataFrame.shift: Take the Difference Between Rows Within a Column in pandas<a class="headerlink" href="#dataframe-diff-and-dataframe-shift-take-the-difference-between-rows-within-a-column-in-pandas" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the difference between rows within a column, use <code class="docutils literal notranslate"><span class="pre">DataFrame.diff()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1092,7 +937,7 @@ Name: a, dtype: float64
 </div>
 </div>
 <div class="section" id="df-to-dict-turn-a-dataframe-into-a-dictionary">
-<h2><span class="section-number">4.2.5. </span>df.to_dict: Turn a DataFrame into a Dictionary<a class="headerlink" href="#df-to-dict-turn-a-dataframe-into-a-dictionary" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.4. </span>df.to_dict: Turn a DataFrame into a Dictionary<a class="headerlink" href="#df-to-dict-turn-a-dataframe-into-a-dictionary" title="Permalink to this headline">¶</a></h2>
 <p>To turn a DataFrame into a Python dictionary, use <code class="docutils literal notranslate"><span class="pre">df.to_dict()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1187,7 +1032,7 @@ Name: a, dtype: float64
 </div>
 </div>
 <div class="section" id="get-count-and-percentage-of-a-value-in-a-column">
-<h2><span class="section-number">4.2.6. </span>Get Count and Percentage of a Value in a Column<a class="headerlink" href="#get-count-and-percentage-of-a-value-in-a-column" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.2.5. </span>Get Count and Percentage of a Value in a Column<a class="headerlink" href="#get-count-and-percentage-of-a-value-in-a-column" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the count of each value in a column, use <code class="docutils literal notranslate"><span class="pre">value_counts</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
