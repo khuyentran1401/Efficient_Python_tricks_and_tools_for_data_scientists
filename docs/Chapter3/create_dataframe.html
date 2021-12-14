@@ -278,27 +278,27 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="data_types.html">
-     4.8. Manipulate a DataFrame Using Data Types
+     4.7. Manipulate a DataFrame Using Data Types
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sort_dataframe.html">
-     4.9. Sort Rows or Columns of a DataFrame
+     4.8. Sort Rows or Columns of a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="string.html">
-     4.10. Work with String
+     4.9. Work with String
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="style_dataframe.html">
-     4.11. Style a DataFrame
+     4.10. Style a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="testing.html">
-     4.12. Test
+     4.11. Test
     </a>
    </li>
   </ul>
@@ -615,6 +615,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
    4.4.6. pandas.melt: Unpivot a DataFrame
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
+   4.4.7. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
 </ul>
@@ -1266,6 +1271,48 @@ S       2.5
   </tbody>
 </table>
 </div></div></div>
+</div>
+</div>
+<div class="section" id="pandas-crosstab-create-a-cross-tabulation">
+<h2><span class="section-number">4.4.7. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">¶</a></h2>
+<p>Cross tabulation allows you to analyze the relationship between multiple variables. To turn a pandas DataFrame into a cross tabulation, use <code class="docutils literal notranslate"><span class="pre">pandas.crosstab</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">network</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Khuyen&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Josh&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Lauren&quot;</span><span class="p">,</span> <span class="s2">&quot;Thinh&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Lauren&quot;</span><span class="p">,</span> <span class="s2">&quot;Khuyen&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Khuyen&quot;</span><span class="p">,</span> <span class="s2">&quot;Josh&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Create a dataframe of the network</span>
+<span class="n">friends1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person1&quot;</span><span class="p">,</span> <span class="s2">&quot;person2&quot;</span><span class="p">])</span>
+
+<span class="c1"># Reverse the order of the columns</span>
+<span class="n">friends2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person2&quot;</span><span class="p">,</span> <span class="s2">&quot;person1&quot;</span><span class="p">])</span>
+
+<span class="c1"># Create a symmetric dataframe</span>
+<span class="n">friends</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">friends1</span><span class="p">,</span> <span class="n">friends2</span><span class="p">])</span>
+
+<span class="c1"># Create a cross tabulation </span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">friends</span><span class="o">.</span><span class="n">person1</span><span class="p">,</span> <span class="n">friends</span><span class="o">.</span><span class="n">person2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>person2  Ben  Josh  Khuyen  Lauren  Thinh
+person1                                  
+Ben        0     1       1       0      0
+Josh       1     0       1       0      0
+Khuyen     1     1       0       1      0
+Lauren     0     0       1       0      1
+Thinh      0     0       0       1      0
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
