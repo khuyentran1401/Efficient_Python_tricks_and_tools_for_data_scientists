@@ -278,27 +278,27 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/data_types.html">
-     4.8. Manipulate a DataFrame Using Data Types
+     4.7. Manipulate a DataFrame Using Data Types
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/sort_dataframe.html">
-     4.9. Sort Rows or Columns of a DataFrame
+     4.8. Sort Rows or Columns of a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/string.html">
-     4.10. Work with String
+     4.9. Work with String
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/style_dataframe.html">
-     4.11. Style a DataFrame
+     4.10. Style a DataFrame
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/testing.html">
-     4.12. Test
+     4.11. Test
     </a>
    </li>
   </ul>
@@ -625,6 +625,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
    6.13.8. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
+   6.13.9. hypothesis: Property-based Testing in Python
   </a>
  </li>
 </ul>
@@ -1290,6 +1295,79 @@ Results (2.63s):
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
+</div>
+<div class="section" id="hypothesis-property-based-testing-in-python">
+<h2><span class="section-number">6.13.9. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-code docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to test some properties or assumptions, it can be cumbersome to write a wide range of scenarios. To automatically run your tests against a wide range of scenarios and find edge cases in your code that you would otherwise have missed, use hypothesis.</p>
+<p>In the code below, I test if the addition of two floats is commutative. The test fails when either <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> is <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_hypothesis.py </span>
+
+<span class="kn">from</span> <span class="nn">hypothesis</span> <span class="kn">import</span> <span class="n">given</span>
+<span class="kn">from</span> <span class="nn">hypothesis.strategies</span> <span class="kn">import</span> <span class="n">floats</span>
+
+
+
+<span class="nd">@given</span><span class="p">(</span><span class="n">floats</span><span class="p">(),</span> <span class="n">floats</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">test_floats_are_commutative</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest test_hypothesis.py
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest test_hypothesis.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, sugar-0.9.4
+<span class=" -Color -Color-Bold">collecting ... </span>
+
+――――――――――――――――――――――――― test_floats_are_commutative ――――――――――――――――――――――――――
+
+    <span class=" -Color -Color-White">@given</span>(floats(), floats())
+&gt;   def test_floats_are_commutative(x, y):
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_hypothesis.py</span>:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+x = 0.0, y = nan
+
+    <span class=" -Color -Color-White">@given</span>(floats(), floats())
+    def test_floats_are_commutative(x, y):
+&gt;       assert x + y == y + x
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (0.0 + nan) == (nan + 0.0)</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">test_hypothesis.py</span>:8: AssertionError
+---------------------------------- Hypothesis ----------------------------------
+Falsifying example: test_floats_are_commutative(
+    x=0.0, y=nan,  # Saw 1 signaling NaN
+)
+
+ test_hypothesis.py <span class=" -Color -Color-Red">⨯</span>                                            <span class=" -Color -Color-Red">100% </span><span class=" -Color -Color-Red -Color-Red-BGBlack">██████████</span>
+=========================== short test summary info ============================
+FAILED test_hypothesis.py::test_floats_are_commutative - assert (0.0 + nan) =...
+
+Results (0.38s):
+<span class=" -Color -Color-Red">       1 failed</span>
+         - test_hypothesis.py:6 <span class=" -Color -Color-Red">test_floats_are_commutative</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </div>
 </div>
 
