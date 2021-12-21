@@ -613,13 +613,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#size-compute-the-size-of-each-group">
+   4.4.6. size: Compute the Size of Each Group
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
-   4.4.6. pandas.melt: Unpivot a DataFrame
+   4.4.7. pandas.melt: Unpivot a DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
-   4.4.7. pandas.crosstab: Create a Cross Tabulation
+   4.4.8. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
 </ul>
@@ -1142,8 +1147,90 @@ S       2.5
             </script></div>
 </div>
 </div>
+<div class="section" id="size-compute-the-size-of-each-group">
+<h2><span class="section-number">4.4.6. </span>size: Compute the Size of Each Group<a class="headerlink" href="#size-compute-the-size-of-each-group" title="Permalink to this headline">¶</a></h2>
+<p>If you want to get the count of elements in one column, use <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">]}</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;col1&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col2</th>
+    </tr>
+    <tr>
+      <th>col1</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>a</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>b</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>c</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>d</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>If you want to get the size of groups composed of 2 or more columns, use <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and <code class="docutils literal notranslate"><span class="pre">size</span></code> instead.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="s1">&#39;col2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>col1  col2
+a     S       1
+b     M       1
+      S       1
+c     L       2
+d     L       1
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="pandas-melt-unpivot-a-dataframe">
-<h2><span class="section-number">4.4.6. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.7. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">¶</a></h2>
 <p>If you want to unpivot a DataFrame from wide to long format, use pandas.melt.</p>
 <p>For example, you can use pandas.melt to turn multiple columns (<code class="docutils literal notranslate"><span class="pre">Aldi</span></code>, <code class="docutils literal notranslate"><span class="pre">Walmart</span></code>, <code class="docutils literal notranslate"><span class="pre">Costco</span></code>) into values of one column (<code class="docutils literal notranslate"><span class="pre">store</span></code>).</p>
 <div class="cell docutils container">
@@ -1274,7 +1361,7 @@ S       2.5
 </div>
 </div>
 <div class="section" id="pandas-crosstab-create-a-cross-tabulation">
-<h2><span class="section-number">4.4.7. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.8. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">¶</a></h2>
 <p>Cross tabulation allows you to analyze the relationship between multiple variables. To turn a pandas DataFrame into a cross tabulation, use <code class="docutils literal notranslate"><span class="pre">pandas.crosstab</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
