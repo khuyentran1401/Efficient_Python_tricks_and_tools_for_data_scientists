@@ -594,8 +594,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#df-merge-merge-dataframe-based-on-columns">
+   4.5.2. df.merge: Merge DataFrame Based on Columns
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#specify-suffixes-when-using-df-merge">
-   4.5.2. Specify Suffixes When Using df.merge()
+   4.5.3. Specify Suffixes When Using df.merge()
   </a>
  </li>
 </ul>
@@ -730,8 +735,196 @@
             </script></div>
 </div>
 </div>
+<div class="section" id="df-merge-merge-dataframe-based-on-columns">
+<h2><span class="section-number">4.5.2. </span>df.merge: Merge DataFrame Based on Columns<a class="headerlink" href="#df-merge-merge-dataframe-based-on-columns" title="Permalink to this headline">¶</a></h2>
+<p>If you want to merge on DataFrame with another DataFrame based on the similarity between 2 columns, use <code class="docutils literal notranslate"><span class="pre">df.merge</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;key1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;key2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]})</span>
+
+<span class="n">df1</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key1</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>b</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>b</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>a</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key2</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>b</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>c</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;key1&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;key2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key1</th>
+      <th>value_x</th>
+      <th>key2</th>
+      <th>value_y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>1</td>
+      <td>a</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>a</td>
+      <td>2</td>
+      <td>a</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>a</td>
+      <td>5</td>
+      <td>a</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>b</td>
+      <td>3</td>
+      <td>b</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>b</td>
+      <td>4</td>
+      <td>b</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
 <div class="section" id="specify-suffixes-when-using-df-merge">
-<h2><span class="section-number">4.5.2. </span>Specify Suffixes When Using df.merge()<a class="headerlink" href="#specify-suffixes-when-using-df-merge" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.5.3. </span>Specify Suffixes When Using df.merge()<a class="headerlink" href="#specify-suffixes-when-using-df-merge" title="Permalink to this headline">¶</a></h2>
 <p>If you are merging 2 dataframes that have the same features using <code class="docutils literal notranslate"><span class="pre">df.merge()</span></code>, it might be confusing to know which dataframe <code class="docutils literal notranslate"><span class="pre">a_x</span></code> or <code class="docutils literal notranslate"><span class="pre">a_y</span></code> belongs to.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
