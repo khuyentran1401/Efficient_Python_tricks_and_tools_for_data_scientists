@@ -589,43 +589,48 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dataframe-copy-make-a-copy-of-a-dataframe">
+   4.4.1. DataFrame.copy(): Make a Copy of a DataFrame
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-dataframe-agg-aggregate-over-columns-or-rows-using-multiple-operations">
-   4.4.1. pandas.DataFrame.agg: Aggregate over Columns or Rows Using Multiple Operations
+   4.4.2. pandas.DataFrame.agg: Aggregate over Columns or Rows Using Multiple Operations
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-dataframe-agg-apply-different-aggregations-to-different-columns">
-   4.4.2. pandas.DataFrame.agg: Apply Different Aggregations to Different Columns
+   4.4.3. pandas.DataFrame.agg: Apply Different Aggregations to Different Columns
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#assign-name-to-a-pandas-aggregation">
-   4.4.3. Assign Name to a Pandas Aggregation
+   4.4.4. Assign Name to a Pandas Aggregation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-   4.4.4. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
+   4.4.5. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-   4.4.5. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
+   4.4.6. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#size-compute-the-size-of-each-group">
-   4.4.6. size: Compute the Size of Each Group
+   4.4.7. size: Compute the Size of Each Group
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
-   4.4.7. pandas.melt: Unpivot a DataFrame
+   4.4.8. pandas.melt: Unpivot a DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
-   4.4.8. pandas.crosstab: Create a Cross Tabulation
+   4.4.9. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
 </ul>
@@ -642,8 +647,106 @@
   <div class="section" id="create-a-new-dataframe-using-existing-dataframe">
 <h1><span class="section-number">4.4. </span>Create a New DataFrame Using Existing DataFrame<a class="headerlink" href="#create-a-new-dataframe-using-existing-dataframe" title="Permalink to this headline">¶</a></h1>
 <p>This section covers some pandas methods to use an existing DataFrame to create a new DataFrame with different functionalities.</p>
+<div class="section" id="dataframe-copy-make-a-copy-of-a-dataframe">
+<h2><span class="section-number">4.4.1. </span>DataFrame.copy(): Make a Copy of a DataFrame<a class="headerlink" href="#dataframe-copy-make-a-copy-of-a-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>Have you ever tried to make a copy of a DataFrame using <code class="docutils literal notranslate"><span class="pre">=</span></code>? You will not get a copy but a reference to the original DataFrame. Thus, changing the new DataFrame will also change the original DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">df</span>
+<span class="n">df2</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2
+0     7     4
+1     8     5
+2     9     6
+</pre></div>
+</div>
+</div>
+</div>
+<p>A better way to make a copy is to use <code class="docutils literal notranslate"><span class="pre">df.copy()</span></code>. Now, changing the copy will not affect the original DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+
+<span class="c1"># Create a copy of the original DataFrame</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Change the value of the copy</span>
+<span class="n">df3</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="c1"># Check if the original DataFrame has been changed</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2
+0     1     4
+1     2     5
+2     3     6
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="pandas-dataframe-agg-aggregate-over-columns-or-rows-using-multiple-operations">
-<h2><span class="section-number">4.4.1. </span>pandas.DataFrame.agg: Aggregate over Columns or Rows Using Multiple Operations<a class="headerlink" href="#pandas-dataframe-agg-aggregate-over-columns-or-rows-using-multiple-operations" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.2. </span>pandas.DataFrame.agg: Aggregate over Columns or Rows Using Multiple Operations<a class="headerlink" href="#pandas-dataframe-agg-aggregate-over-columns-or-rows-using-multiple-operations" title="Permalink to this headline">¶</a></h2>
 <p>If you want to aggregate over columns or rows using one or more operations, try <code class="docutils literal notranslate"><span class="pre">pd.DataFrame.agg</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -700,7 +803,7 @@
 </div>
 </div>
 <div class="section" id="pandas-dataframe-agg-apply-different-aggregations-to-different-columns">
-<h2><span class="section-number">4.4.2. </span>pandas.DataFrame.agg: Apply Different Aggregations to Different Columns<a class="headerlink" href="#pandas-dataframe-agg-apply-different-aggregations-to-different-columns" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.3. </span>pandas.DataFrame.agg: Apply Different Aggregations to Different Columns<a class="headerlink" href="#pandas-dataframe-agg-apply-different-aggregations-to-different-columns" title="Permalink to this headline">¶</a></h2>
 <p>If you want to apply different aggregations to different columns, insert a dictionary of column and aggregation methods to the <code class="docutils literal notranslate"><span class="pre">pd.DataFrame.agg</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -762,7 +865,7 @@
 </div>
 </div>
 <div class="section" id="assign-name-to-a-pandas-aggregation">
-<h2><span class="section-number">4.4.3. </span>Assign Name to a Pandas Aggregation<a class="headerlink" href="#assign-name-to-a-pandas-aggregation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.4. </span>Assign Name to a Pandas Aggregation<a class="headerlink" href="#assign-name-to-a-pandas-aggregation" title="Permalink to this headline">¶</a></h2>
 <p>By default, aggregating a column returns the name of that column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -836,7 +939,7 @@ S       2.5
 </div>
 </div>
 <div class="section" id="pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-<h2><span class="section-number">4.4.4. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.5. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">¶</a></h2>
 <p>A pivot table is useful to summarize and analyze the patterns in your data. If you want to turn your DataFrame into a pivot table, use <code class="docutils literal notranslate"><span class="pre">pandas.pivot_table</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -992,7 +1095,7 @@ S       2.5
 </div>
 </div>
 <div class="section" id="dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-<h2><span class="section-number">4.4.5. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.6. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get a random sample of items from each category in a column, use <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby.sample</span></code>.This method is useful when you want to get a subset of a DataFrame while keeping all categories in a column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1149,7 +1252,7 @@ S       2.5
 </div>
 </div>
 <div class="section" id="size-compute-the-size-of-each-group">
-<h2><span class="section-number">4.4.6. </span>size: Compute the Size of Each Group<a class="headerlink" href="#size-compute-the-size-of-each-group" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.7. </span>size: Compute the Size of Each Group<a class="headerlink" href="#size-compute-the-size-of-each-group" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the count of elements in one column, use <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1231,7 +1334,7 @@ dtype: int64
 </div>
 </div>
 <div class="section" id="pandas-melt-unpivot-a-dataframe">
-<h2><span class="section-number">4.4.7. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.8. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">¶</a></h2>
 <p>If you want to unpivot a DataFrame from wide to long format, use pandas.melt.</p>
 <p>For example, you can use pandas.melt to turn multiple columns (<code class="docutils literal notranslate"><span class="pre">Aldi</span></code>, <code class="docutils literal notranslate"><span class="pre">Walmart</span></code>, <code class="docutils literal notranslate"><span class="pre">Costco</span></code>) into values of one column (<code class="docutils literal notranslate"><span class="pre">store</span></code>).</p>
 <div class="cell docutils container">
@@ -1362,7 +1465,7 @@ dtype: int64
 </div>
 </div>
 <div class="section" id="pandas-crosstab-create-a-cross-tabulation">
-<h2><span class="section-number">4.4.8. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.4.9. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">¶</a></h2>
 <p>Cross tabulation allows you to analyze the relationship between multiple variables. To turn a pandas DataFrame into a cross tabulation, use <code class="docutils literal notranslate"><span class="pre">pandas.crosstab</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
