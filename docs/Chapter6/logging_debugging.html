@@ -613,6 +613,11 @@
    7.4.5. heartrate — Visualize the Execution of a Python Program in Real-Time
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logging-in-pandas-pipelines">
+   7.4.6. Logging in Pandas Pipelines
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -955,6 +960,69 @@ Opening in existing browser session.
 <p>You should see something similar to the below when opening the browser:</p>
 <p><img alt="image" src="../_images/heartrate.png" /></p>
 <p><a class="reference external" href="https://github.com/alexmojaki/heartrate">Link to heartrate</a>.</p>
+</div>
+<div class="section" id="logging-in-pandas-pipelines">
+<h2><span class="section-number">7.4.6. </span>Logging in Pandas Pipelines<a class="headerlink" href="#logging-in-pandas-pipelines" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install scikit-lego
+</pre></div>
+</div>
+</div>
+</div>
+<p>When using pandas pipe, you might want to check whether each pipeline transforms your pandas DataFrame correctly. To automatically log the information of a pandas DataFrame after each pipeline, use the decorator <code class="docutils literal notranslate"><span class="pre">sklego.pandas_utils.log_step</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">from</span> <span class="nn">sklego.pandas_utils</span> <span class="kn">import</span> <span class="n">log_step</span> 
+<span class="kn">import</span> <span class="nn">logging</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To use <code class="docutils literal notranslate"><span class="pre">log_step</span></code>, simply use it as a decorator for functions being applied to your DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@log_step</span><span class="p">(</span><span class="n">print_fn</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_copy</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+
+<span class="nd">@log_step</span><span class="p">(</span><span class="n">print_fn</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">drop_column</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;col2&quot;</span><span class="p">]]</span>
+
+
+<span class="nd">@log_step</span><span class="p">(</span><span class="n">print_fn</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">encode_cat_variables</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">make_copy</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">drop_column</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">encode_cat_variables</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:root:[make_copy(df)] time=0:00:00.000239 n_obs=3, n_col=2
+INFO:root:[drop_column(df)] time=0:00:00.002117 n_obs=3, n_col=1
+INFO:root:[encode_cat_variables(df)] time=0:00:00.003217 n_obs=3, n_col=1
+</pre></div>
+</div>
+</div>
+</div>
+<p>Find more ways to customize your logging <a class="reference external" href="https://scikit-lego.netlify.app/pandas_pipeline.html#Logging-in-method-chaining">here</a></p>
 </div>
 </div>
 
