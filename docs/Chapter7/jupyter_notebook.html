@@ -610,6 +610,11 @@
    8.1.4. watermark: Get Information About Your Hardware and the Packages Being Used within Your Notebook
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generate-requirements-txt-file-for-jupyter-notebooks-based-on-imports">
+   8.1.5. Generate requirements.txt File for Jupyter Notebooks Based on Imports
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -737,6 +742,65 @@ numpy  : 1.19.5
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/rasbt/watermark#installation-and-updating">Link to watermark</a>.</p>
+</div>
+<div class="section" id="generate-requirements-txt-file-for-jupyter-notebooks-based-on-imports">
+<h2><span class="section-number">8.1.5. </span>Generate requirements.txt File for Jupyter Notebooks Based on Imports<a class="headerlink" href="#generate-requirements-txt-file-for-jupyter-notebooks-based-on-imports" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pipreqsnb
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">freeze</span></code> saves all packages in the environment, including ones that you don’t use in your current project. To generate a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> based on imports in  your Jupyter Notebooks, use pipreqsnb.</p>
+<p>For example, to save all packages in your current project to a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pipreqsnb . 
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pipreqsnb . 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pipreqs  .
+INFO: Successfully saved requirements file in ./requirements.txt
+</pre></div>
+</div>
+</div>
+</div>
+<p>Your <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> should look like below:</p>
+<div class="highlight-txt notranslate"><div class="highlight"><pre><span></span>pandas==1.3.4
+numpy==1.20.3
+ipython==7.30.1
+scikit_learn==1.0.2
+</pre></div>
+</div>
+<p>Usage of pipreqsnb:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Usage:
+    pipreqsnb <span class="o">[</span>options<span class="o">]</span> &lt;path&gt; 
+
+Options:
+    --use-local           Use ONLY <span class="nb">local</span> package info instead of querying PyPI
+    --pypi-server &lt;url&gt;   Use custom PyPi server
+    --proxy &lt;url&gt;         Use Proxy, parameter will be passed to requests library. You can also just <span class="nb">set</span> the
+                          environments parameter <span class="k">in</span> your terminal:
+                          $ <span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://10.10.1.10:3128&quot;</span>
+                          $ <span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;https://10.10.1.10:1080&quot;</span>
+    --debug               Print debug information
+    --ignore &lt;dirs&gt;...    Ignore extra directories <span class="o">(</span>sepparated by comma no space<span class="o">)</span>
+    --encoding &lt;charset&gt;  Use encoding parameter <span class="k">for</span> file open
+    --savepath &lt;file&gt;     Save the list of requirements <span class="k">in</span> the given file
+    --print               Output the list of requirements <span class="k">in</span> the standard output
+    --force               Overwrite existing requirements.txt
+    --diff &lt;file&gt;         Compare modules <span class="k">in</span> requirements.txt to project imports.
+    --clean &lt;file&gt;        Clean up requirements.txt by removing modules that are not imported <span class="k">in</span> project.
+    --no-pin              Omit version of output packages.
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/ivanlen/pipreqsnb">Link to pipreqsnb</a></p>
+<p>To generate requirements.txt for Python scripts, use <a class="reference external" href="https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter6/env_management.html#pipreqs-generate-requirements-txt-file-for-any-project-based-on-imports">pipreqs</a> instead.</p>
 </div>
 </div>
 
