@@ -358,42 +358,42 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/natural_language_processing.html">
-     6.6. Natural Language Processing
+     6.7. Natural Language Processing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/time_series.html">
-     6.7. Time Series
+     6.8. Time Series
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/sharing_downloading.html">
-     6.8. Sharing and Downloading
+     6.9. Sharing and Downloading
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/speed_up_code.html">
-     6.9. Tools to Speed Up Code
+     6.10. Tools to Speed Up Code
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/visualization.html">
-     6.10. Visualization
+     6.11. Visualization
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/best_python_practice_tools.html">
-     6.11. Tools for Best Python Practices
+     6.12. Tools for Best Python Practices
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/better_pandas.html">
-     6.12. Better Pandas
+     6.13. Better Pandas
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter5/testing.html">
-     6.13. Testing
+     6.14. Testing
     </a>
    </li>
   </ul>
@@ -614,18 +614,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#split-a-string-into-multiple-rows">
+   4.1.5. Split a String into Multiple Rows
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-cut-bin-a-dataframes-values-into-discrete-intervals">
-   4.1.5. pandas.cut: Bin a DataFrame’s values into Discrete Intervals
+   4.1.6. pandas.cut: Bin a DataFrame’s values into Discrete Intervals
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">
-   4.1.6. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value
+   4.1.7. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-clip-exclude-outliers">
-   4.1.7. pandas.clip: Exclude Outliers
+   4.1.8. pandas.clip: Exclude Outliers
   </a>
  </li>
 </ul>
@@ -920,8 +925,161 @@ dtype: int64
             </script></div>
 </div>
 </div>
+<div class="section" id="split-a-string-into-multiple-rows">
+<h2><span class="section-number">4.1.5. </span>Split a String into Multiple Rows<a class="headerlink" href="#split-a-string-into-multiple-rows" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you might have a column whose values are strings representing different items such as <code class="docutils literal notranslate"><span class="pre">&quot;1,</span> <span class="pre">2&quot;</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1,2&quot;</span><span class="p">,</span> <span class="s2">&quot;4,5&quot;</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">]})</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1,2</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4,5</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To turn each string into a list, use <code class="docutils literal notranslate"><span class="pre">Series.str.split()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split by comma</span>
+<span class="n">df</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[1, 2]</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[4, 5]</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Now you can split elements in the list into multiple rows using <code class="docutils literal notranslate"><span class="pre">explode</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5</td>
+      <td>13</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
 <div class="section" id="pandas-cut-bin-a-dataframes-values-into-discrete-intervals">
-<h2><span class="section-number">4.1.5. </span>pandas.cut: Bin a DataFrame’s values into Discrete Intervals<a class="headerlink" href="#pandas-cut-bin-a-dataframes-values-into-discrete-intervals" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.6. </span>pandas.cut: Bin a DataFrame’s values into Discrete Intervals<a class="headerlink" href="#pandas-cut-bin-a-dataframes-values-into-discrete-intervals" title="Permalink to this headline">¶</a></h2>
 <p>If you want to bin your Dataframe’s values into discrete intervals, use <code class="docutils literal notranslate"><span class="pre">pd.cut</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -996,7 +1154,7 @@ dtype: int64
 </div>
 </div>
 <div class="section" id="forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">
-<h2><span class="section-number">4.1.6. </span>Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value<a class="headerlink" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.7. </span>Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value<a class="headerlink" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value" title="Permalink to this headline">¶</a></h2>
 <p>If you want to use the previous value in a column or a row to fill the current missing value in a pandas DataFrame, use <code class="docutils literal notranslate"><span class="pre">df.fillna(method=’ffill’)</span></code>. <code class="docutils literal notranslate"><span class="pre">ffill</span></code> stands for forward fill.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1126,7 +1284,7 @@ dtype: int64
 </div>
 </div>
 <div class="section" id="pandas-clip-exclude-outliers">
-<h2><span class="section-number">4.1.7. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.1.8. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">¶</a></h2>
 <p>Outliers are unusual values in your dataset, and they can distort statistical analyses.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
