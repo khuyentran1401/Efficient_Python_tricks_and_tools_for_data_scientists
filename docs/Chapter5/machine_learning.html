@@ -52,7 +52,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.7. Natural Language Processing" href="natural_language_processing.html" />
+    <link rel="next" title="6.8. Natural Language Processing" href="natural_language_processing.html" />
     <link rel="prev" title="6.4. Manage Data" href="manage_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -358,42 +358,42 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="natural_language_processing.html">
-     6.7. Natural Language Processing
+     6.8. Natural Language Processing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="time_series.html">
-     6.8. Time Series
+     6.9. Time Series
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sharing_downloading.html">
-     6.9. Sharing and Downloading
+     6.10. Sharing and Downloading
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="speed_up_code.html">
-     6.10. Tools to Speed Up Code
+     6.11. Tools to Speed Up Code
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="visualization.html">
-     6.11. Visualization
+     6.12. Visualization
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="best_python_practice_tools.html">
-     6.12. Tools for Best Python Practices
+     6.13. Tools for Best Python Practices
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="better_pandas.html">
-     6.13. Better Pandas
+     6.14. Better Pandas
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="testing.html">
-     6.14. Testing
+     6.15. Testing
     </a>
    </li>
   </ul>
@@ -628,6 +628,11 @@
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#visualize-feature-importances-with-yellowbrick">
    6.6. Visualize Feature Importances with Yellowbrick
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers">
+   6.7. Mlxtend: Plot Decision Regions of Your ML Classifiers
   </a>
  </li>
 </ul>
@@ -1255,6 +1260,61 @@ significant.
 <p><a class="reference external" href="https://www.scikit-yb.org/en/latest/index.html">Link to Yellowbrick</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/introduction-to-yellowbrick-a-python-library-to-explain-the-prediction-of-your-machine-learning-d63ecee10ecc">My full article about Yellowbrick</a>.</p>
 </div>
+<div class="section" id="mlxtend-plot-decision-regions-of-your-ml-classifiers">
+<h1><span class="section-number">6.7. </span>Mlxtend: Plot Decision Regions of Your ML Classifiers<a class="headerlink" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers" title="Permalink to this headline">¶</a></h1>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install mlxtend  
+</pre></div>
+</div>
+</div>
+</div>
+<p>How does your machine learning classifier decide which class a sample belongs to? Plotting a decision region can give you some insights into your ML classifier’s decision.</p>
+<p>An easy way to plot decision regions is to use mlxtend’s <code class="docutils literal notranslate"><span class="pre">plot_decision_regions</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">mlxtend.classifier</span> <span class="kn">import</span> <span class="n">EnsembleVoteClassifier</span>
+<span class="kn">from</span> <span class="nn">mlxtend.data</span> <span class="kn">import</span> <span class="n">iris_data</span>
+<span class="kn">from</span> <span class="nn">mlxtend.plotting</span> <span class="kn">import</span> <span class="n">plot_decision_regions</span>
+
+<span class="c1"># Initializing Classifiers</span>
+<span class="n">clf1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf2</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">clf3</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">eclf</span> <span class="o">=</span> <span class="n">EnsembleVoteClassifier</span><span class="p">(</span><span class="n">clfs</span><span class="o">=</span><span class="p">[</span><span class="n">clf1</span><span class="p">,</span> <span class="n">clf2</span><span class="p">,</span> <span class="n">clf3</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">voting</span><span class="o">=</span><span class="s1">&#39;soft&#39;</span><span class="p">)</span>
+
+<span class="c1"># Loading some example data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris_data</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+
+<span class="c1"># Plotting Decision Regions</span>
+<span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">clf</span><span class="p">,</span> <span class="n">lab</span><span class="p">,</span> <span class="n">grd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">clf1</span><span class="p">,</span> <span class="n">clf2</span><span class="p">,</span> <span class="n">clf3</span><span class="p">,</span> <span class="n">eclf</span><span class="p">],</span>
+                         <span class="p">[</span><span class="s1">&#39;Logistic Regression&#39;</span><span class="p">,</span> <span class="s1">&#39;Random Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;RBF kernel SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;Ensemble&#39;</span><span class="p">],</span>
+                         <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">2</span><span class="p">)):</span>
+    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="n">grd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">grd</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">lab</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine_learning_48_0.png" src="../_images/machine_learning_48_0.png" />
+</div>
+</div>
+<p>Mlxtend (machine learning extensions) is a Python library of useful tools for the day-to-day data science tasks.</p>
+<p>Find other useful functionalities of Mlxtend <a class="reference external" href="https://github.com/rasbt/mlxtend">here</a>.</p>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1298,7 +1358,7 @@ significant.
         <a class="right-next" href="natural_language_processing.html" title="next page">
             <div class="prevnext-info">
                 <p class="prevnext-label">next</p>
-                <p class="prevnext-title"><span class="section-number">6.7. </span>Natural Language Processing</p>
+                <p class="prevnext-title"><span class="section-number">6.8. </span>Natural Language Processing</p>
             </div>
             <i class="prevnext-label fas fa-angle-right"></i>
         </a>
