@@ -598,6 +598,11 @@
    4.10.1. Highlight your pandas DataFrame
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-markdown-print-a-dataframe-in-markdown-format">
+   4.10.2. to_markdown: Print a DataFrame in Markdown Format
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -718,6 +723,80 @@
                 }
             }, 500);
             </script></div>
+</div>
+</div>
+<div class="section" id="to-markdown-print-a-dataframe-in-markdown-format">
+<h2><span class="section-number">4.10.2. </span>to_markdown: Print a DataFrame in Markdown Format<a class="headerlink" href="#to-markdown-print-a-dataframe-in-markdown-format" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you might want to include a table in a markdown, such as GitHub README. If you want to print a DataFrame in markdown format, use <code class="docutils literal notranslate"><span class="pre">to_markdown()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|    |   a |   b |
+|---:|----:|----:|
+|  0 |   1 |   5 |
+|  1 |   2 |   6 |
+|  2 |   3 |   7 |
+|  3 |   4 |   8 |
+</pre></div>
+</div>
+</div>
+</div>
+<p>Copy and paste the output above in Jupyter Notebook’s markdown cell will give you an output like below:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:right head"><p></p></th>
+<th class="text-align:right head"><p>a</p></th>
+<th class="text-align:right head"><p>b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:right"><p>0</p></td>
+<td class="text-align:right"><p>1</p></td>
+<td class="text-align:right"><p>5</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:right"><p>1</p></td>
+<td class="text-align:right"><p>2</p></td>
+<td class="text-align:right"><p>6</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:right"><p>2</p></td>
+<td class="text-align:right"><p>3</p></td>
+<td class="text-align:right"><p>7</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:right"><p>3</p></td>
+<td class="text-align:right"><p>4</p></td>
+<td class="text-align:right"><p>8</p></td>
+</tr>
+</tbody>
+</table>
+<p>You can also output markdown with a tabulate option:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(</span><span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;grid&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+-----+-----+
+|    |   a |   b |
++====+=====+=====+
+|  0 |   1 |   5 |
++----+-----+-----+
+|  1 |   2 |   6 |
++----+-----+-----+
+|  2 |   3 |   7 |
++----+-----+-----+
+|  3 |   4 |   8 |
++----+-----+-----+
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
