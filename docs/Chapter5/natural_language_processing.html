@@ -643,6 +643,11 @@
    6.6.10. Word Ninja: Slice Your Lumped-Together Words
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#textstat-calculate-statistics-from-text">
+   6.6.11. textstat: Calculate Statistics From Text
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1518,6 +1523,122 @@ Name: text, dtype: object
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/keredson/wordninja">Link to wordninja</a>.</p>
+</div>
+<div class="section" id="textstat-calculate-statistics-from-text">
+<h2><span class="section-number">6.6.11. </span>textstat: Calculate Statistics From Text<a class="headerlink" href="#textstat-calculate-statistics-from-text" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install textstat
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to get some important statistics from text such as readability score or reading time, use textstat.</p>
+<p>To get the readability score, use <code class="docutils literal notranslate"><span class="pre">automated_readability_index</span></code>. The ARI (Automated Readability Index) approximates the grade label needed to comprehend the text. If the ARI is 10.8 then the grade level needed to comprehend the text is 10th to 11th grade</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">textstat</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 4;
+                var nbb_unformatted_code = "import textstat ";
+                var nbb_formatted_code = "import textstat";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The working memory system is a form of conscious learning. But not all learning is conscious. Psychologists have long marveled at children’s ability to acquire perfect pronunciation in their first language or recognize faces.&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 7;
+                var nbb_unformatted_code = "text = \"The working memory system is a form of conscious learning. But not all learning is conscious. Psychologists have long marveled at children\u2019s ability to acquire perfect pronunciation in their first language or recognize faces.\"";
+                var nbb_formatted_code = "text = \"The working memory system is a form of conscious learning. But not all learning is conscious. Psychologists have long marveled at children\u2019s ability to acquire perfect pronunciation in their first language or recognize faces.\"";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">textstat</span><span class="o">.</span><span class="n">automated_readability_index</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10.8
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 8;
+                var nbb_unformatted_code = "textstat.automated_readability_index(text)";
+                var nbb_formatted_code = "textstat.automated_readability_index(text)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>To measure the reading time in seconds, use <code class="docutils literal notranslate"><span class="pre">reading_time</span></code>. The reading time of the text above is 2.82s.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">textstat</span><span class="o">.</span><span class="n">reading_time</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ms_per_char</span><span class="o">=</span><span class="mf">14.69</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.82
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 9;
+                var nbb_unformatted_code = "textstat.reading_time(text, ms_per_char=14.69)";
+                var nbb_formatted_code = "textstat.reading_time(text, ms_per_char=14.69)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/shivam5992/textstat">Link to textstat</a>.</p>
 </div>
 </div>
 
