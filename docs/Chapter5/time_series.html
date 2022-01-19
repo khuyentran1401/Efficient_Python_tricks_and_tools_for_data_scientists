@@ -618,6 +618,11 @@
    6.7.5. traces: A Python Library for Unevenly-Spaced Time Series Analysis
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#workalendar-handle-working-day-computation-in-python">
+   6.7.6. Workalendar: Handle Working-Day Computation in Python
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1083,6 +1088,118 @@ Only day: 18
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/datascopeanalytics/traces">Link to traces</a></p>
+</div>
+<div class="section" id="workalendar-handle-working-day-computation-in-python">
+<h2><span class="section-number">6.7.6. </span>Workalendar: Handle Working-Day Computation in Python<a class="headerlink" href="#workalendar-handle-working-day-computation-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install workalendar
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to handle calendars, holidays, and working-day-related computations, use Workalendar. Workalendar supports nearly 100 languages over the world.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span> 
+<span class="kn">from</span> <span class="nn">workalendar.usa</span> <span class="kn">import</span> <span class="n">UnitedStates</span>
+<span class="kn">from</span> <span class="nn">workalendar.asia</span> <span class="kn">import</span> <span class="n">Japan</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all holidays in the US</span>
+
+<span class="n">US_cal</span> <span class="o">=</span> <span class="n">UnitedStates</span><span class="p">()</span>
+<span class="n">US_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2022</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2021, 12, 31), &#39;New year (Observed)&#39;),
+ (datetime.date(2022, 1, 1), &#39;New year&#39;),
+ (datetime.date(2022, 1, 17), &#39;Birthday of Martin Luther King, Jr.&#39;),
+ (datetime.date(2022, 2, 21), &quot;Washington&#39;s Birthday&quot;),
+ (datetime.date(2022, 5, 30), &#39;Memorial Day&#39;),
+ (datetime.date(2022, 7, 4), &#39;Independence Day&#39;),
+ (datetime.date(2022, 9, 5), &#39;Labor Day&#39;),
+ (datetime.date(2022, 10, 10), &#39;Columbus Day&#39;),
+ (datetime.date(2022, 11, 11), &#39;Veterans Day&#39;),
+ (datetime.date(2022, 11, 24), &#39;Thanksgiving Day&#39;),
+ (datetime.date(2022, 12, 25), &#39;Christmas Day&#39;),
+ (datetime.date(2022, 12, 26), &#39;Christmas Day (Observed)&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">))</span> <span class="c1"># Saturday</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span> <span class="c1"># Thanksgiving Day</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate working days between 2022/1/19 and 2022/5/15</span>
+<span class="n">US_cal</span><span class="o">.</span><span class="n">get_working_days_delta</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>81
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get holidays in Japan</span>
+<span class="n">JA_cal</span> <span class="o">=</span> <span class="n">Japan</span><span class="p">()</span>
+<span class="n">JA_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2022</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2022, 1, 1), &#39;New year&#39;),
+ (datetime.date(2022, 1, 10), &#39;Coming of Age Day&#39;),
+ (datetime.date(2022, 2, 11), &#39;Foundation Day&#39;),
+ (datetime.date(2022, 2, 23), &quot;The Emperor&#39;s Birthday&quot;),
+ (datetime.date(2022, 3, 21), &#39;Vernal Equinox Day&#39;),
+ (datetime.date(2022, 4, 29), &#39;Showa Day&#39;),
+ (datetime.date(2022, 5, 3), &#39;Constitution Memorial Day&#39;),
+ (datetime.date(2022, 5, 4), &#39;Greenery Day&#39;),
+ (datetime.date(2022, 5, 5), &quot;Children&#39;s Day&quot;),
+ (datetime.date(2022, 7, 18), &#39;Marine Day&#39;),
+ (datetime.date(2022, 8, 11), &#39;Mountain Day&#39;),
+ (datetime.date(2022, 9, 19), &#39;Respect-for-the-Aged Day&#39;),
+ (datetime.date(2022, 9, 23), &#39;Autumnal Equinox Day&#39;),
+ (datetime.date(2022, 10, 10), &#39;Sports Day&#39;),
+ (datetime.date(2022, 11, 3), &#39;Culture Day&#39;),
+ (datetime.date(2022, 11, 23), &#39;Labour Thanksgiving Day&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
