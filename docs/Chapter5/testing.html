@@ -72,8 +72,6 @@
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
-      <img src="../_static/data_simplified_icon.png" class="logo" alt="logo">
-      
       
       <h1 class="site-logo" id="site-title">Effective Python for Data Scientists</h1>
       
@@ -274,7 +272,7 @@
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter3/filter.html">
-     4.6. Filter Rows or Columns of a DataFrame
+     4.6. Filter Rows or Columns
     </a>
    </li>
    <li class="toctree-l2">
@@ -636,6 +634,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
    6.13.9. hypothesis: Property-based Testing in Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
+   6.13.10. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
 </ul>
@@ -1375,6 +1378,143 @@ Results (0.38s):
 </div>
 <p>Now I can rewrite my code to make it more robust against these edge cases.</p>
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
+</div>
+<div class="section" id="deepchecks-check-category-mismatch-between-train-and-test-set">
+<h2><span class="section-number">6.13.10. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, it is important to know if your test set contains the same categories in the train set. If you want to check the category mismatch between the train and test set, use Deepchecks’s <code class="docutils literal notranslate"><span class="pre">CategoryMismatchTrainTest</span></code>.</p>
+<p>In the example below, the result shows that there are 2 new categories in the test set. They are ‘d’ and ‘e’.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.checks.integrity.new_category</span> <span class="kn">import</span> <span class="n">CategoryMismatchTrainTest</span>
+<span class="kn">from</span> <span class="nn">deepchecks.base</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 18;
+                var nbb_unformatted_code = "from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest\nfrom deepchecks.base import Dataset\nimport pandas as pd";
+                var nbb_formatted_code = "from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest\nfrom deepchecks.base import Dataset\nimport pandas as pd";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]})</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">cat_features</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">])</span>
+<span class="n">test_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">cat_features</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 19;
+                var nbb_unformatted_code = "train = pd.DataFrame({'col1': ['a', 'b', 'c']})\ntest = pd.DataFrame({'col1': ['c', 'd', 'e']})\n\ntrain_ds = Dataset(train, cat_features=['col1'])\ntest_ds = Dataset(test, cat_features=['col1'])";
+                var nbb_formatted_code = "train = pd.DataFrame({\"col1\": [\"a\", \"b\", \"c\"]})\ntest = pd.DataFrame({\"col1\": [\"c\", \"d\", \"e\"]})\n\ntrain_ds = Dataset(train, cat_features=[\"col1\"])\ntest_ds = Dataset(test, cat_features=[\"col1\"])";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CategoryMismatchTrainTest</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">test_ds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><h4>Category Mismatch Train Test</h4><p>Find new categories in the test set.</p><h5>Additional Outputs</h5><style type="text/css">
+#T_1a4e2_ table {
+  text-align: left;
+  white-space: pre-wrap;
+}
+#T_1a4e2_ thead {
+  text-align: left;
+  white-space: pre-wrap;
+}
+#T_1a4e2_ tbody {
+  text-align: left;
+  white-space: pre-wrap;
+}
+#T_1a4e2_ th {
+  text-align: left;
+  white-space: pre-wrap;
+}
+#T_1a4e2_ td {
+  text-align: left;
+  white-space: pre-wrap;
+}
+</style>
+<table id="T_1a4e2_">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >Number of new categories</th>
+      <th class="col_heading level0 col1" >Percent of new categories in sample</th>
+      <th class="col_heading level0 col2" >New categories examples</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Column</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+      <th class="blank col2" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_1a4e2_level0_row0" class="row_heading level0 row0" >col1</th>
+      <td id="T_1a4e2_row0_col0" class="data row0 col0" >2</td>
+      <td id="T_1a4e2_row0_col1" class="data row0 col1" >66.67%</td>
+      <td id="T_1a4e2_row0_col2" class="data row0 col2" >['d', 'e']</td>
+    </tr>
+  </tbody>
+</table>
+</div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "CategoryMismatchTrainTest().run(train_ds, test_ds)";
+                var nbb_formatted_code = "CategoryMismatchTrainTest().run(train_ds, test_ds)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </div>
 </div>
 
