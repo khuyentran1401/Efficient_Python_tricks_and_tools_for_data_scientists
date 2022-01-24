@@ -246,8 +246,8 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter3/transform_columns.html">
-     4.1. Transform Columns
+    <a class="reference internal" href="../Chapter3/change_values.html">
+     4.1. Change Values
     </a>
    </li>
    <li class="toctree-l2">
@@ -1192,7 +1192,7 @@ Categorical columns: [&#39;col2&#39;]
 </div>
 </div>
 </div>
-<p>If you want to easily create and extract elements from a URL using Python, try yarl. In the code below, I use yarl to extract different elements of the URL <a class="reference external" href="https://github.com/search?q=data+science">https://github.com/search?q=data+science</a>.</p>
+<p>If you want to easily extract elements from a URL using Python, try yarl. In the code below, I use yarl to extract different elements of the URL <a class="reference external" href="https://github.com/search?q=data+science">https://github.com/search?q=data+science</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yarl</span> <span class="kn">import</span> <span class="n">URL</span> 
@@ -1244,6 +1244,131 @@ Categorical columns: [&#39;col2&#39;]
 </pre></div>
 </div>
 </div>
+</div>
+<p>With yarl, you can also build a URL using information such as scheme, host, port, path, query, fragment, etc.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a URL</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+    <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">&quot;github.com&quot;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="s2">&quot;/search&quot;</span><span class="p">,</span>
+    <span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="s2">&quot;data science&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://github.com/search?p=2&amp;q=data+science
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 39;
+                var nbb_unformatted_code = "# Create a URL\n\nurl = URL.build(\n    scheme=\"https\",\n    host=\"github.com\",\n    path=\"/search\",\n    query={\"p\": 2, \"q\": \"data science\"},\n)\n\nprint(url)";
+                var nbb_formatted_code = "# Create a URL\n\nurl = URL.build(\n    scheme=\"https\",\n    host=\"github.com\",\n    path=\"/search\",\n    query={\"p\": 2, \"q\": \"data science\"},\n)\n\nprint(url)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace the query</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">with_query</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://github.com/search?q=python
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 40;
+                var nbb_unformatted_code = "# Replace the query\n\nprint(url.with_query({\"q\": \"python\"}))";
+                var nbb_formatted_code = "# Replace the query\n\nprint(url.with_query({\"q\": \"python\"}))";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace the path</span>
+
+<span class="n">new_path</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">with_path</span><span class="p">(</span><span class="s2">&quot;khuyentran1401/Data-science&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://github.com/khuyentran1401/Data-science
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 42;
+                var nbb_unformatted_code = "# Replace the path\n\nnew_path = url.with_path(\"khuyentran1401/Data-science\")\nprint(new_path)";
+                var nbb_formatted_code = "# Replace the path\n\nnew_path = url.with_path(\"khuyentran1401/Data-science\")\nprint(new_path)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update the fragment</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">new_path</span><span class="o">.</span><span class="n">with_fragment</span><span class="p">(</span><span class="s2">&quot;contents&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>https://github.com/khuyentran1401/Data-science#contents
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 38;
+                var nbb_unformatted_code = "# Replace the fragment\n\nprint(new_path.with_fragment(\"contents\"))";
+                var nbb_formatted_code = "# Replace the fragment\n\nprint(new_path.with_fragment(\"contents\"))";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/aio-libs/yarl">Link to yarl</a>.</p>
 </div>
