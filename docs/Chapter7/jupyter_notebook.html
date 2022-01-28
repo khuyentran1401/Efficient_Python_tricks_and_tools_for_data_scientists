@@ -248,8 +248,8 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter3/transform_columns.html">
-     4.1. Transform Columns
+    <a class="reference internal" href="../Chapter3/change_values.html">
+     4.1. Change Values
     </a>
    </li>
    <li class="toctree-l2">
@@ -618,6 +618,11 @@
    8.1.5. Generate requirements.txt File for Jupyter Notebooks Based on Imports
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ipytest-unit-tests-in-ipython-notebooks">
+   8.1.6. ipytest: Unit Tests in IPython Notebooks
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -804,6 +809,181 @@ Options:
 </div>
 <p><a class="reference external" href="https://github.com/ivanlen/pipreqsnb">Link to pipreqsnb</a></p>
 <p>To generate requirements.txt for Python scripts, use <a class="reference external" href="https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter6/env_management.html#pipreqs-generate-requirements-txt-file-for-any-project-based-on-imports">pipreqs</a> instead.</p>
+</div>
+<div class="section" id="ipytest-unit-tests-in-ipython-notebooks">
+<h2><span class="section-number">8.1.6. </span>ipytest: Unit Tests in IPython Notebooks<a class="headerlink" href="#ipytest-unit-tests-in-ipython-notebooks" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install ipytest
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is important to create unit tests for your functions to make sure they work as you expected, even the experimental code in your Jupyter Notebook. However, it can be difficult to create unit tests in a notebook.</p>
+<p>Luckily, ipytest allows you to run pytest inside the notebook environment. To use ipytest, simply add <code class="docutils literal notranslate"><span class="pre">%%ipytest</span> <span class="pre">-qq</span></code> inside the cell you want to run pytest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ipytest</span>
+
+<span class="n">ipytest</span><span class="o">.</span><span class="n">autoconfig</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 13;
+                var nbb_unformatted_code = "import ipytest\nimport pytest \n\nipytest.autoconfig()";
+                var nbb_formatted_code = "import ipytest\nimport pytest\n\nipytest.autoconfig()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply_by_two</span><span class="p">(</span><span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">num</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 10;
+                var nbb_unformatted_code = "def multiply_by_two(nums: list):\n    return [num*2 for num in nums]";
+                var nbb_formatted_code = "def multiply_by_two(nums: list):\n    return [num * 2 for num in nums]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">ipytest</span> -qq
+
+def test_multiply_by_two():
+    assert multiply_by_two([1, 2]) == [2, 4]
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "%%ipytest -qq\n\ndef test_multiply_by_two():\n    assert multiply_by_two([1, 2]) == [2, 4]";
+                var nbb_formatted_code = "%%ipytest -qq\n\ndef test_multiply_by_two():\n    assert multiply_by_two([1, 2]) == [2, 4]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.                                                                                            [100%]</span>
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 11;
+                var nbb_unformatted_code = "%%ipytest -qq\n\ndef test_multiply_by_two():\n    assert multiply_by_two([1, 2]) == [2, 4]";
+                var nbb_formatted_code = "%%ipytest -qq\n\ndef test_multiply_by_two():\n    assert multiply_by_two([1, 2]) == [2, 4]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>You can also combine ipytest and <a class="reference external" href="https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/testing.html">other pytest plugins</a> to improve your tests.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">ipytest</span> -qq
+
+test = [([1, 2], [2, 4]),
+       ([float(&#39;nan&#39;)], [float(&#39;nan&#39;)])]
+
+@pytest.mark.parametrize(&#39;sample, expected&#39;, test)
+def test_multiply_by_two(sample, expected):
+    assert multiply_by_two(sample) == expected
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "%%ipytest -qq\n\ntest = [([1, 2], [2, 4]),\n       ([float('nan')], [float('nan')])]\n\n@pytest.mark.parametrize('sample, expected', test)\ndef test_multiply_by_two(sample, expected):\n    assert multiply_by_two(sample) == expected";
+                var nbb_formatted_code = "%%ipytest -qq\n\ntest = [([1, 2], [2, 4]),\n       ([float('nan')], [float('nan')])]\n\n@pytest.mark.parametrize('sample, expected', test)\ndef test_multiply_by_two(sample, expected):\n    assert multiply_by_two(sample) == expected";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.</span><span class=" -Color -Color-Red">F                                                                                           [100%]</span>
+============================================= FAILURES =============================================
+<span class=" -Color -Color-Bold -Color-Bold-Red">_____________________________ test_multiply_by_two[sample1-expected1] ______________________________</span>
+
+sample = [nan], expected = [nan]
+
+    <span class=" -Color -Color-White">@pytest</span>.mark.parametrize(<span class=" -Color -Color-Yellow">&#39;sample, expected&#39;</span>, test)
+    def test_multiply_by_two(sample, expected):
+&gt;       assert multiply_by_two(sample) == expected
+<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert [nan] == [nan]</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E         At index 0 diff: nan != nan</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E         Full diff:</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">E           [nan]</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Red">&lt;ipython-input-15-56d7928444c9&gt;</span>:6: AssertionError
+===================================== short test summary info ======================================
+FAILED tmp8euxz6qn.py::test_multiply_by_two[sample1-expected1] - assert [nan] == [nan]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "%%ipytest -qq\n\ntest = [([1, 2], [2, 4]),\n       ([float('nan')], [float('nan')])]\n\n@pytest.mark.parametrize('sample, expected', test)\ndef test_multiply_by_two(sample, expected):\n    assert multiply_by_two(sample) == expected";
+                var nbb_formatted_code = "%%ipytest -qq\n\ntest = [([1, 2], [2, 4]),\n       ([float('nan')], [float('nan')])]\n\n@pytest.mark.parametrize('sample, expected', test)\ndef test_multiply_by_two(sample, expected):\n    assert multiply_by_two(sample) == expected";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/chmp/ipytest">Link to ipytest</a>.</p>
 </div>
 </div>
 
