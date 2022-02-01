@@ -246,8 +246,8 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter3/transform_columns.html">
-     4.1. Transform Columns
+    <a class="reference internal" href="../Chapter3/change_values.html">
+     4.1. Change Values
     </a>
    </li>
    <li class="toctree-l2">
@@ -1070,27 +1070,26 @@ That could be done with the <code class="docutils literal notranslate"><span cla
 </div>
 <div class="section" id="get-nested-object-value">
 <h3><span class="section-number">3.4.3.3. </span>Get Nested Object Value<a class="headerlink" href="#get-nested-object-value" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes your list of dictionaries can be nested like below. How can you get the taste attribute of apple ?</p>
+<p>Sometimes your list of dictionaries can be nested like below. How can you get the second price of each <code class="docutils literal notranslate"><span class="pre">apple</span></code>?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sweet&quot;</span><span class="p">}},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lemon&quot;</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;taste&quot;</span><span class="p">:</span> <span class="s2">&quot;sour&quot;</span><span class="p">}},</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">}},</span>
+    <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">}},</span>
 <span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Luckily, this can be easily done with the <code class="docutils literal notranslate"><span class="pre">map_</span></code> method:</p>
+<p>That is when the <code class="docutils literal notranslate"><span class="pre">map_</span></code> method comes in handy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">map_</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="s2">&quot;attributes.taste&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">py_</span><span class="o">.</span><span class="n">map_</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="s1">&#39;apple.price[1]&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;sweet&#39;, &#39;sweet&#39;, &#39;sour&#39;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 3]
 </pre></div>
 </div>
 </div>
