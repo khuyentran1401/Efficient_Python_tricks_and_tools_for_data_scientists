@@ -646,6 +646,11 @@
    6.6.11. textstat: Calculate Statistics From Text
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#checklist-create-data-to-test-your-nlp-model">
+   6.6.12. Checklist: Create Data to Test Your NLP Model
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1637,6 +1642,55 @@ Name: text, dtype: object
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/shivam5992/textstat">Link to textstat</a>.</p>
+</div>
+<div class="section" id="checklist-create-data-to-test-your-nlp-model">
+<h2><span class="section-number">6.6.12. </span>Checklist: Create Data to Test Your NLP Model<a class="headerlink" href="#checklist-create-data-to-test-your-nlp-model" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install checklist torch
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can be time-consuming to create data to test edge cases of your NLP model. If you want to quickly create data to test your NLP models, use Checklist.</p>
+<p>In the code below, I use Checklist’s <code class="docutils literal notranslate"><span class="pre">Editor</span></code> to create multiple examples of negation in one line of code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">checklist</span>
+<span class="kn">from</span> <span class="nn">checklist.editor</span> <span class="kn">import</span> <span class="n">Editor</span>
+
+<span class="n">editor</span> <span class="o">=</span> <span class="n">Editor</span><span class="p">()</span>
+<span class="n">editor</span><span class="o">.</span><span class="n">template</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{mask}</span><span class="s2"> is not {a:pos} option.&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;good&quot;</span><span class="p">,</span> <span class="s2">&quot;cool&quot;</span><span class="p">],</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;that is not a good option.&#39;,
+ &#39;War is not a cool option.&#39;,
+ &#39;Windows is not a good option.&#39;,
+ &#39;Facebook is not a cool option.&#39;,
+ &#39;Sleep is not a cool option.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">editor</span><span class="o">.</span><span class="n">template</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{mask}</span><span class="s2"> is not {a:neg} option.&quot;</span><span class="p">,</span> <span class="n">neg</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bad&quot;</span><span class="p">,</span> <span class="s2">&quot;awful&quot;</span><span class="p">],</span> <span class="n">nsamples</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;There is not a bad option.&#39;,
+ &#39;Closure is not an awful option.&#39;,
+ &#39;TPP is not a bad option.&#39;,
+ &#39;Security is not an awful option.&#39;,
+ &#39;Change is not an awful option.&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/marcotcr/checklist">Link to Checklist</a>.</p>
 </div>
 </div>
 
