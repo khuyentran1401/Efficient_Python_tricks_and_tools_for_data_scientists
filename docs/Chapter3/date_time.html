@@ -626,6 +626,11 @@
    4.3.7. Select DataFrame Rows Before or After a Specific Date
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resample-resample-time-series-data">
+   4.3.8. resample: Resample Time-Series Data
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1319,6 +1324,48 @@ Freq: D, dtype: int64
                 }
             }, 500);
             </script></div>
+</div>
+</div>
+<div class="section" id="resample-resample-time-series-data">
+<h2><span class="section-number">4.3.8. </span>resample: Resample Time-Series Data<a class="headerlink" href="#resample-resample-time-series-data" title="Permalink to this headline">¶</a></h2>
+<p>If you want to change the frequency of time-series data,  use <code class="docutils literal notranslate"><span class="pre">resample</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">resample</span></code> to show the records every two days instead of every day.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2022-02-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2022-02-6&quot;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">s</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-02-01    1
+2022-02-02    1
+2022-02-03    0
+2022-02-04    2
+2022-02-05    4
+2022-02-06    9
+Freq: D, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;2D&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-02-01     2
+2022-02-03     2
+2022-02-05    13
+Freq: 2D, dtype: int64
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
