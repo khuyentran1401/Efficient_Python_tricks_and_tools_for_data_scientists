@@ -619,8 +619,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">
+   7.4.6. snoop : Smart Print to Debug your Python Function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#logging-in-pandas-pipelines">
-   7.4.6. Logging in Pandas Pipelines
+   7.4.7. Logging in Pandas Pipelines
   </a>
  </li>
 </ul>
@@ -966,8 +971,80 @@ Opening in existing browser session.
 <p><img alt="image" src="../_images/heartrate.png" /></p>
 <p><a class="reference external" href="https://github.com/alexmojaki/heartrate">Link to heartrate</a>.</p>
 </div>
+<div class="section" id="snoop-smart-print-to-debug-your-python-function">
+<h2><span class="section-number">7.4.6. </span>snoop : Smart Print to Debug your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to figure out what is happening in your code without adding many print statements, try snoop.</p>
+<p>To use snoop, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;snoop</span></code> decorator to a function you want to understand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">snoop</span> 
+
+<span class="nd">@snoop</span>
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The factorial of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10:19:00.73 &gt;&gt;&gt; Call to factorial in File &quot;&lt;ipython-input-2-57aff36d5f6d&gt;&quot;, line 4
+10:19:00.73 ...... x = 5
+10:19:00.73    4 | def factorial(x):
+10:19:00.73    5 |     if x == 1:
+10:19:00.73    8 |         return (x * factorial(x-1))
+    10:19:00.74 &gt;&gt;&gt; Call to factorial in File &quot;&lt;ipython-input-2-57aff36d5f6d&gt;&quot;, line 4
+    10:19:00.74 ...... x = 4
+    10:19:00.74    4 | def factorial(x):
+    10:19:00.74    5 |     if x == 1:
+    10:19:00.74    8 |         return (x * factorial(x-1))
+        10:19:00.74 &gt;&gt;&gt; Call to factorial in File &quot;&lt;ipython-input-2-57aff36d5f6d&gt;&quot;, line 4
+        10:19:00.74 ...... x = 3
+        10:19:00.74    4 | def factorial(x):
+        10:19:00.74    5 |     if x == 1:
+        10:19:00.75    8 |         return (x * factorial(x-1))
+            10:19:00.75 &gt;&gt;&gt; Call to factorial in File &quot;&lt;ipython-input-2-57aff36d5f6d&gt;&quot;, line 4
+            10:19:00.75 ...... x = 2
+            10:19:00.75    4 | def factorial(x):
+            10:19:00.75    5 |     if x == 1:
+            10:19:00.75    8 |         return (x * factorial(x-1))
+                10:19:00.75 &gt;&gt;&gt; Call to factorial in File &quot;&lt;ipython-input-2-57aff36d5f6d&gt;&quot;, line 4
+                10:19:00.75 ...... x = 1
+                10:19:00.75    4 | def factorial(x):
+                10:19:00.76    5 |     if x == 1:
+                10:19:00.76    6 |         return 1
+                10:19:00.76 &lt;&lt;&lt; Return value from factorial: 1
+            10:19:00.76    8 |         return (x * factorial(x-1))
+            10:19:00.77 &lt;&lt;&lt; Return value from factorial: 2
+        10:19:00.77    8 |         return (x * factorial(x-1))
+        10:19:00.77 &lt;&lt;&lt; Return value from factorial: 6
+    10:19:00.77    8 |         return (x * factorial(x-1))
+    10:19:00.77 &lt;&lt;&lt; Return value from factorial: 24
+10:19:00.78    8 |         return (x * factorial(x-1))
+10:19:00.78 &lt;&lt;&lt; Return value from factorial: 120
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 5 is 120
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="logging-in-pandas-pipelines">
-<h2><span class="section-number">7.4.6. </span>Logging in Pandas Pipelines<a class="headerlink" href="#logging-in-pandas-pipelines" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">7.4.7. </span>Logging in Pandas Pipelines<a class="headerlink" href="#logging-in-pandas-pipelines" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install scikit-lego
