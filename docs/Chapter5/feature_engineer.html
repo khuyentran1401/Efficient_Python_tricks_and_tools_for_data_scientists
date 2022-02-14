@@ -599,8 +599,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">
+   6.2.2. Return a DataFrame When Using a scikit-learn’s Transformer
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
-   6.2.2. Similarity Encoding for Dirty Categories Using dirty_cat
+   6.2.3. Similarity Encoding for Dirty Categories Using dirty_cat
   </a>
  </li>
 </ul>
@@ -823,8 +828,95 @@
 </div>
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </div>
+<div class="section" id="return-a-dataframe-when-using-a-scikit-learn-s-transformer">
+<h2><span class="section-number">6.2.2. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature_engine 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Applying a scikit-learn’s transformer on your DataFrame will return a NumPy array.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">feature_engine.wrappers</span> <span class="kn">import</span> <span class="n">SklearnTransformerWrapper</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.22474487, -1.22474487],
+       [ 0.        ,  0.        ],
+       [ 1.22474487,  1.22474487]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to return a pandas DataFrame instead, use feature-engine’s <code class="docutils literal notranslate"><span class="pre">SklearnTransformerWrapper</span></code> along with your scikit-learn’s tranformer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">SklearnTransformerWrapper</span><span class="p">(</span><span class="n">transformer</span><span class="o">=</span><span class="n">StandardScaler</span><span class="p">())</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.224745</td>
+      <td>-1.224745</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.224745</td>
+      <td>1.224745</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
+</div>
 <div class="section" id="similarity-encoding-for-dirty-categories-using-dirty-cat">
-<h2><span class="section-number">6.2.2. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.3. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-cat
@@ -1092,7 +1184,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/feature_engineer_21_0.png" src="../_images/feature_engineer_21_0.png" />
+<img alt="../_images/feature_engineer_29_0.png" src="../_images/feature_engineer_29_0.png" />
 </div>
 </div>
 <p>As we can see from the matrix above,</p>
