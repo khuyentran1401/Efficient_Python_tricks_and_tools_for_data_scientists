@@ -614,8 +614,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#all-select-rows-with-all-nan-values">
+   4.6.5. all: Select Rows with All NaN Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-clip-exclude-outliers">
-   4.6.5. pandas.clip: Exclude Outliers
+   4.6.6. pandas.clip: Exclude Outliers
   </a>
  </li>
 </ul>
@@ -1239,8 +1244,44 @@ Name: type, dtype: int64
 </div></div></div>
 </div>
 </div>
+<div class="section" id="all-select-rows-with-all-nan-values">
+<h2><span class="section-number">4.6.5. </span>all: Select Rows with All NaN Values<a class="headerlink" href="#all-select-rows-with-all-nan-values" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">DataFrame.all</span></code> is useful when you want to evaluate whether all values of a row or a column are <code class="docutils literal notranslate"><span class="pre">True</span></code>. If you want to get the rows whose all values are NaN, use both <code class="docutils literal notranslate"><span class="pre">isna</span></code> and <code class="docutils literal notranslate"><span class="pre">all(axis=1)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)]})</span>
+<span class="n">is_all_nan</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">is_all_nan</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    False
+1    False
+2     True
+dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_all_nan</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    a   b
+2 NaN NaN
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="pandas-clip-exclude-outliers">
-<h2><span class="section-number">4.6.5. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.6.6. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">¶</a></h2>
 <p>Outliers are unusual values in your dataset, and they can distort statistical analyses.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
