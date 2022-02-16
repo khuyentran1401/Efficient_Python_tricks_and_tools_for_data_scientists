@@ -625,6 +625,11 @@
    8.1.6. ipytest: Unit Tests in IPython Notebooks
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">
+   8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -657,12 +662,12 @@
 <p>If you want to use latex to display math equations in Jupyter Notebook, use the display module in the IPython library.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span><span class="p">,</span> <span class="n">Latex</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">b</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The equation is:&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">Math</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;y= </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s1">x+</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">))</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Math</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y= </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">x+</span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -731,8 +736,8 @@ Architecture: 64bit
 <p>We can also use watermark to show the versions of the libraries being used:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">sklearn</span>
 </pre></div>
 </div>
@@ -827,7 +832,7 @@ Options:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ipytest</span>
-<span class="kn">import</span> <span class="nn">pytest</span>  
+<span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="n">ipytest</span><span class="o">.</span><span class="n">autoconfig</span><span class="p">()</span>
 </pre></div>
@@ -837,7 +842,7 @@ Options:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply_by_two</span><span class="p">(</span><span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">num</span><span class="o">*</span><span class="mi">2</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">num</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -894,6 +899,102 @@ FAILED tmpospmc1tm.py::test_multiply_by_two[sample1-expected1] - assert [nan] ==
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/chmp/ipytest">Link to ipytest</a>.</p>
+</div>
+<div class="section" id="nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">
+<h2><span class="section-number">8.1.7. </span>nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks<a class="headerlink" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install nbqa 
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to check the quality of the code in your Jupyter Notebook and automatically format it, use nbQA. With nbQA, you can run isort, black, flake8, and more on your Jupyter Notebooks.</p>
+<p>Imagine the notebook <code class="docutils literal notranslate"><span class="pre">example_notebook.ipnb</span></code> looks like the below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Format the code:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ nbqa black example_notebook.ipynb
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nbqa black example_notebook.ipynb
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>reformatted example_notebook.ipynb
+All done! ✨ 🍰 ✨
+1 file reformatted.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check style and quality of the code:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ nbqa flake8 example_notebook.ipynb
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nbqa flake8 example_notebook.ipynb
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>example_notebook.ipynb:cell_1:1:1: F401 &#39;pandas as pd&#39; imported but unused
+example_notebook.ipynb:cell_1:3:1: F401 &#39;numpy as np&#39; imported but unused
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sort the imports in the notebook:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ nbqa isort example_notebook.ipynb
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nbqa isort example_notebook.ipynb
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fixing /home/khuyen/book/book/Chapter7/example_notebook.ipynb
+</pre></div>
+</div>
+</div>
+</div>
+<p>Your notebook after running all of the commands above will look like the below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>After reding the suggestions of flake8, we can also remove two unused packages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now the notebook looks much cleaner!</p>
+<p>You can also automatically run nbQA every time you commit a Jupyter Notebook using <a class="reference external" href="https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5">pre-commit</a>.</p>
+<p>Here is how you can add nbQA to your pre-commit pipeline:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># pre-commit-config.yaml</span>
+<span class="nt">repos</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">repo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/nbQA-dev/nbQA</span>
+  <span class="nt">rev</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.10.0</span>
+  <span class="nt">hooks</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nbqa-flake8</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nbqa-isort</span>
+    <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">nbqa-black</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://nbqa.readthedocs.io/en/latest/readme.html">Link to nbQA</a>.</p>
 </div>
 </div>
 
