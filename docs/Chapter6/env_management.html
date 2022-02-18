@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -618,6 +623,11 @@
    7.7.5. Compare Dependencies of Two Requirements Files
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#poetry-python-tool-for-dependency-management-and-packaging">
+   7.7.6. Poetry: Python Tool for Dependency Management and Packaging
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -904,6 +914,172 @@ Name  Version
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/alsur/compare-requirements">Link to compare-requirements</a>.</p>
+</div>
+<div class="section" id="poetry-python-tool-for-dependency-management-and-packaging">
+<h2><span class="section-number">7.7.6. </span>Poetry: Python Tool for Dependency Management and Packaging<a class="headerlink" href="#poetry-python-tool-for-dependency-management-and-packaging" title="Permalink to this headline">¶</a></h2>
+<p>Have you ever updated a dependency of your project to a new version, and your code suddenly broke? That could be due to the incompatibility of the current dependencies and the new dependency. Wouldn’t it be nice if you can check the compatibility between dependencies before installing new ones? That is when Poetry comes in handy.</p>
+<p>To understand how Poetry works, start with initializing Poetry:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ poetry init
+</pre></div>
+</div>
+<p>Next, install the latest versions of pandas and NumPy using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ poetry add pandas numpy
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry add pandas numpy
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using version <span class=" -Color -Color-Bold">^1.4.1</span> for <span class=" -Color -Color-Cyan">pandas</span>
+Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class=" -Color -Color-Cyan">numpy</span>
+
+<span class=" -Color -Color-Blue">Updating dependencies</span>
+<span class=" -Color -Color-Blue">Resolving dependencies...</span> <span class=" -Color -Color-Faint">(0.3s)</span>
+
+<span class=" -Color -Color-Blue">Writing lock file</span>
+
+<span class=" -Color -Color-Bold">Package operations</span>: <span class=" -Color -Color-Blue">5</span> installs, <span class=" -Color -Color-Blue">0</span> updates, <span class=" -Color -Color-Blue">0</span> removals
+
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Bold">1.16.0</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Bold">1.16.0</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Green">1.16.0</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">numpy</span> (<span class=" -Color -Color-Bold">1.22.2</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">numpy</span> (<span class=" -Color -Color-Bold">1.22.2</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Green">2.8.2</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Green">2021.3</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Green">2.8.2</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Green">2021.3</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">numpy</span> (<span class=" -Color -Color-Green">1.22.2</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Green">2.8.2</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Green">2021.3</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Bold">1.4.1</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Installing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Bold">1.4.1</span>): <span class=" -Color -Color-Blue">Installing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Installing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Green">1.4.1</span>)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now your <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file should look like this:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># pyproject.toml</span>
+<span class="p p-Indicator">[</span><span class="nv">tool.poetry.dependencies</span><span class="p p-Indicator">]</span>
+<span class="l l-Scalar l-Scalar-Plain">python = &quot;^3.8&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">pandas = &quot;^1.4.1&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">numpy = &quot;^1.22.2&quot;</span>
+</pre></div>
+</div>
+<p>You decide to use the earlier version of NumPy so you run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ poetry add <span class="s1">&#39;numpy&lt;1.18&#39;</span>
+</pre></div>
+</div>
+<p>Since pandas==1.4.1 requires numpy&gt;=1.18.5, numpy&lt;1.18 is not installed. Thus, you avoid installing dependencies that are not compatible with the current dependencies.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry add <span class="s1">&#39;numpy&lt;1.18&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">Updating dependencies</span>
+<span class=" -Color -Color-Blue">Resolving dependencies...</span> <span class=" -Color -Color-Faint">(0.1s)</span>
+
+  <span class=" -Color -Color-Bold -Color-Bold-Red">SolverProblemError</span>
+
+  <span class=" -Color -Color-Bold">Because pandas (1.4.1) depends on numpy (&gt;=1.18.5)</span>
+<span class=" -Color -Color-Bold">   and no versions of pandas match &gt;1.4.1,&lt;2.0.0, pandas (&gt;=1.4.1,&lt;2.0.0) requires numpy (&gt;=1.18.5).</span>
+<span class=" -Color -Color-Bold">  So, because chapter6 depends on both pandas (^1.4.1) and numpy (&lt;1.18), version solving failed.</span>
+
+  at <span class=" -Color -Color-Green">~/.poetry/lib/poetry/puzzle/solver.py</span>:<span class=" -Color -Color-Bold">241</span> in <span class=" -Color -Color-Cyan">_solve</span>
+      <span class=" -Color -Color-Faint">237│</span>             packages <span class=" -Color -Color-Faint">= </span>result<span class=" -Color -Color-Faint">.</span>packages
+      <span class=" -Color -Color-Faint">238│</span>         <span class=" -Color -Color-Bold -Color-Bold-Magenta">except </span>OverrideNeeded <span class=" -Color -Color-Bold -Color-Bold-Magenta">as </span>e<span class=" -Color -Color-Faint">:</span>
+      <span class=" -Color -Color-Faint">239│</span>             <span class=" -Color -Color-Bold -Color-Bold-Magenta">return </span><span class=" -Color -Color-Bold">self</span><span class=" -Color -Color-Faint">.</span>solve_in_compatibility_mode<span class=" -Color -Color-Faint">(</span>e<span class=" -Color -Color-Faint">.</span>overrides<span class=" -Color -Color-Faint">, </span>use_latest<span class=" -Color -Color-Faint">=</span>use_latest<span class=" -Color -Color-Faint">)</span>
+      <span class=" -Color -Color-Faint">240│</span> <span class=" -Color -Color-Faint">        </span><span class=" -Color -Color-Bold -Color-Bold-Magenta">except </span>SolveFailure <span class=" -Color -Color-Bold -Color-Bold-Magenta">as </span>e<span class=" -Color -Color-Faint">:</span>
+    <span class=" -Color -Color-Bold -Color-Bold-Red">→</span> <span class=" -Color -Color-Bold">241</span><span class=" -Color -Color-Faint">│</span>             <span class=" -Color -Color-Bold -Color-Bold-Magenta">raise </span>SolverProblemError<span class=" -Color -Color-Faint">(</span>e<span class=" -Color -Color-Faint">)</span>
+      <span class=" -Color -Color-Faint">242│</span> 
+      <span class=" -Color -Color-Faint">243│</span>         results <span class=" -Color -Color-Faint">= </span><span class=" -Color -Color-Bold">dict</span><span class=" -Color -Color-Faint">(</span>
+      <span class=" -Color -Color-Faint">244│</span>             depth_first_search<span class=" -Color -Color-Faint">(</span>
+      <span class=" -Color -Color-Faint">245│</span>                 PackageNode<span class=" -Color -Color-Faint">(</span><span class=" -Color -Color-Bold">self</span><span class=" -Color -Color-Faint">.</span>_package<span class=" -Color -Color-Faint">, </span>packages<span class=" -Color -Color-Faint">), </span>aggregate_package_nodes
+</pre></div>
+</div>
+</div>
+</div>
+<p>To view what sub-dependencies of a dependency, type:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ poetry show pandas  
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry show pandas  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">name</span>         : <span class=" -Color -Color-Cyan">pandas</span>
+<span class=" -Color -Color-Blue">version</span>      : <span class=" -Color -Color-Bold">1.4.1</span>
+<span class=" -Color -Color-Blue">description</span>  : Powerful data structures for data analysis, time series, and
+            statistics
+
+<span class=" -Color -Color-Blue">dependencies</span>
+ - <span class=" -Color -Color-Cyan">numpy</span> <span class=" -Color -Color-Bold">&gt;=1.18.5</span>
+ - <span class=" -Color -Color-Cyan">numpy</span> <span class=" -Color -Color-Bold">&gt;=1.19.2</span>
+ - <span class=" -Color -Color-Cyan">numpy</span> <span class=" -Color -Color-Bold">&gt;=1.20.0</span>
+ - <span class=" -Color -Color-Cyan">numpy</span> <span class=" -Color -Color-Bold">&gt;=1.21.0</span>
+ - <span class=" -Color -Color-Cyan">python-dateutil</span> <span class=" -Color -Color-Bold">&gt;=2.8.1</span>
+ - <span class=" -Color -Color-Cyan">pytz</span> <span class=" -Color -Color-Bold">&gt;=2020.1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another cool thing about Poetry is that when you remove a dependency, it also removes sub-dependencies that are no longer needed in your project.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ poetry remove pandas 
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry remove pandas 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">Updating dependencies</span>
+<span class=" -Color -Color-Blue">Resolving dependencies...</span> <span class=" -Color -Color-Faint">(0.1s)</span>
+
+<span class=" -Color -Color-Blue">Writing lock file</span>
+
+<span class=" -Color -Color-Bold">Package operations</span>: <span class=" -Color -Color-Blue">0</span> installs, <span class=" -Color -Color-Blue">0</span> updates, <span class=" -Color -Color-Blue">4</span> removals
+
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Bold">1.4.1</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Bold">1.4.1</span>): <span class=" -Color -Color-Blue">Removing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Removing <span class=" -Color -Color-Cyan">pandas</span> (<span class=" -Color -Color-Green">1.4.1</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Bold">2.8.2</span>): <span class=" -Color -Color-Blue">Removing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Removing <span class=" -Color -Color-Cyan">python-dateutil</span> (<span class=" -Color -Color-Green">2.8.2</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Bold">2021.3</span>): <span class=" -Color -Color-Blue">Removing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Removing <span class=" -Color -Color-Cyan">pytz</span> (<span class=" -Color -Color-Green">2021.3</span>)
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Bold">1.16.0</span>): <span class=" -Color -Color-Blue">Pending...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Blue">•</span> Removing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Bold">1.16.0</span>): <span class=" -Color -Color-Blue">Removing...</span>
+  <span class=" -Color -Color-Bold -Color-Bold-Green">•</span> Removing <span class=" -Color -Color-Cyan">six</span> (<span class=" -Color -Color-Green">1.16.0</span>)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://python-poetry.org/docs">Link to Poetry</a>.</p>
+<p><a class="reference external" href="https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f?gi=f5490e76b74">My full article on how to publish your Python package to PyPI using Poetry</a></p>
 </div>
 </div>
 
