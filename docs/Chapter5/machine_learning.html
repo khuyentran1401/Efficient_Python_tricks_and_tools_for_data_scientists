@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -604,18 +609,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#decompose-high-dimensional-data-into-two-or-three-dimensions">
-   6.5.3. Decompose high dimensional data into two or three dimensions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#squared-false-get-rmse-from-sklearns-mean-squared-error-method">
-   6.5.4. squared=False: Get RMSE from Sklearn’s mean_squared_error method
+   6.5.3. squared=False: Get RMSE from Sklearn’s mean_squared_error method
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#modelkit-build-production-ml-systems-in-python">
-   6.5.5. modelkit: Build Production ML Systems in Python
+   6.5.4. modelkit: Build Production ML Systems in Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#decompose-high-dimensional-data-into-two-or-three-dimensions">
+   6.5.5. Decompose high dimensional data into two or three dimensions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -675,23 +680,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 13;
-                var nbb_unformatted_code = "import numpy as np\nimport pandas as pd \nfrom statsmodels.tsa.arima_process import ArmaProcess\nimport causalimpact \nfrom causalimpact import CausalImpact\n\n# Generate random sample\n\nnp.random.seed(0)\nar = np.r_[1, 0.9]\nma = np.array([1])\narma_process = ArmaProcess(ar, ma)\n\nX = 50 + arma_process.generate_sample(nsample=1000)\ny = 1.6 * X + np.random.normal(size=1000)\n\n# There is a change starting from index 800\ny[800:] += 10";
-                var nbb_formatted_code = "import numpy as np\nimport pandas as pd\nfrom statsmodels.tsa.arima_process import ArmaProcess\nimport causalimpact\nfrom causalimpact import CausalImpact\n\n# Generate random sample\n\nnp.random.seed(0)\nar = np.r_[1, 0.9]\nma = np.array([1])\narma_process = ArmaProcess(ar, ma)\n\nX = 50 + arma_process.generate_sample(nsample=1000)\ny = 1.6 * X + np.random.normal(size=1000)\n\n# There is a change starting from index 800\ny[800:] += 10";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -701,23 +689,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 14;
-                var nbb_unformatted_code = "data = pd.DataFrame({'y': y, 'X': X}, columns=['y', 'X'])\npre_period = [0, 799]\npost_period = [800, 999]";
-                var nbb_formatted_code = "data = pd.DataFrame({\"y\": y, \"X\": X}, columns=[\"y\", \"X\"])\npre_period = [0, 799]\npost_period = [800, 999]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -732,14 +703,14 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Posterior Inference {Causal Impact}
                           Average            Cumulative
 Actual                    90.03              18006.16
-Prediction (s.d.)         79.97 (0.3)        15994.43 (60.49)
-95% CI                    [79.39, 80.58]     [15878.12, 16115.23]
+Prediction (s.d.)         79.97 (0.3)        15994.43 (60.93)
+95% CI                    [79.36, 80.55]     [15871.15, 16110.0]
 
-Absolute effect (s.d.)    10.06 (0.3)        2011.72 (60.49)
-95% CI                    [9.45, 10.64]      [1890.93, 2128.03]
+Absolute effect (s.d.)    10.06 (0.3)        2011.72 (60.93)
+95% CI                    [9.48, 10.68]      [1896.16, 2135.01]
 
 Relative effect (s.d.)    12.58% (0.38%)     12.58% (0.38%)
-95% CI                    [11.82%, 13.3%]    [11.82%, 13.3%]
+95% CI                    [11.86%, 13.35%]   [11.86%, 13.35%]
 
 Posterior tail-area probability p: 0.0
 Posterior prob. of a causal effect: 100.0%
@@ -751,11 +722,11 @@ Analysis report {CausalImpact}
 During the post-intervention period, the response variable had
 an average value of approx. 90.03. By contrast, in the absence of an
 intervention, we would have expected an average response of 79.97.
-The 95% interval of this counterfactual prediction is [79.39, 80.58].
+The 95% interval of this counterfactual prediction is [79.36, 80.55].
 Subtracting this prediction from the observed response yields
 an estimate of the causal effect the intervention had on the
 response variable. This effect is 10.06 with a 95% interval of
-[9.45, 10.64]. For a discussion of the significance of this effect,
+[9.48, 10.68]. For a discussion of the significance of this effect,
 see below.
 
 
@@ -763,12 +734,12 @@ Summing up the individual data points during the post-intervention
 period (which can only sometimes be meaningfully interpreted), the
 response variable had an overall value of 18006.16.
 By contrast, had the intervention not taken place, we would have expected
-a sum of 15994.43. The 95% interval of this prediction is [15878.12, 16115.23].
+a sum of 15994.43. The 95% interval of this prediction is [15871.15, 16110.0].
 
 
 The above results are given in terms of absolute numbers. In relative
 terms, the response variable showed an increase of +12.58%. The 95%
-interval of this percentage is [11.82%, 13.3%].
+interval of this percentage is [11.86%, 13.35%].
 
 
 This means that the positive effect observed during the intervention
@@ -786,28 +757,12 @@ significant.
 </pre></div>
 </div>
 <img alt="../_images/machine_learning_6_1.png" src="../_images/machine_learning_6_1.png" />
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "ci = CausalImpact(data, pre_period, post_period)\nprint(ci.summary())\nprint(ci.summary(output='report'))\nci.plot()";
-                var nbb_formatted_code = "ci = CausalImpact(data, pre_period, post_period)\nprint(ci.summary())\nprint(ci.summary(output=\"report\"))\nci.plot()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </div>
 <div class="section" id="pipeline-gridsearchcv-prevent-data-leakage-when-scaling-the-data">
 <h2><span class="section-number">6.5.2. </span>Pipeline + GridSearchCV: Prevent Data Leakage when Scaling the Data<a class="headerlink" href="#pipeline-gridsearchcv-prevent-data-leakage-when-scaling-the-data" title="Permalink to this headline">¶</a></h2>
-<p>Scaling the data before using GridSearchCV can lead to data leakage since the scaling tells some information about the entire data. To prevent this, assemble both the scaler and machine learning models in a pipeline then use it as the estimator for GridSearchCV. Above is an example.</p>
-<p>The estimator is now the entire pipeline instead of just the machine learning model.</p>
+<p>Scaling the data before using GridSearchCV can lead to data leakage since the scaling tells some information about the entire data. To prevent this, assemble both the scaler and machine learning models in a pipeline then use it as the estimator for GridSearchCV.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
@@ -857,102 +812,10 @@ significant.
             }, 500);
             </script></div>
 </div>
-</div>
-<div class="section" id="decompose-high-dimensional-data-into-two-or-three-dimensions">
-<h2><span class="section-number">6.5.3. </span>Decompose high dimensional data into two or three dimensions<a class="headerlink" href="#decompose-high-dimensional-data-into-two-or-three-dimensions" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install yellowbrick
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to decompose high dimensional data into two or three dimensions to visualize it, what should you do? A common technique is PCA. Even though PCA is useful, I always find it complicated to create a PCA plot until I found Yellowbrick.</p>
-<p>I really recommend using this tool if you want to visualize PCA in a few lines of code</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yellowbrick.datasets</span> <span class="kn">import</span> <span class="n">load_credit</span>
-<span class="kn">from</span> <span class="nn">yellowbrick.features</span> <span class="kn">import</span> <span class="n">PCA</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 17;
-                var nbb_unformatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
-                var nbb_formatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
-<span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;account in defaut&quot;</span><span class="p">,</span> <span class="s2">&quot;current with bills&quot;</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 18;
-                var nbb_unformatted_code = "X, y = load_credit()\nclasses = ['account in defaut', 'current with bills']";
-                var nbb_formatted_code = "X, y = load_credit()\nclasses = [\"account in defaut\", \"current with bills\"]";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
-<span class="n">visualizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/machine_learning_15_0.png" src="../_images/machine_learning_15_0.png" />
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Principal Component Plot&#39;}, xlabel=&#39;$PC_1$&#39;, ylabel=&#39;$PC_2$&#39;&gt;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 19;
-                var nbb_unformatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
-                var nbb_formatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p><a class="reference external" href="https://www.scikit-yb.org/en/latest/">Link to Yellowbrick</a></p>
+<p>The estimator is now the entire pipeline instead of just the machine learning model.</p>
 </div>
 <div class="section" id="squared-false-get-rmse-from-sklearns-mean-squared-error-method">
-<h2><span class="section-number">6.5.4. </span>squared=False: Get RMSE from Sklearn’s mean_squared_error method<a class="headerlink" href="#squared-false-get-rmse-from-sklearns-mean-squared-error-method" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.5.3. </span>squared=False: Get RMSE from Sklearn’s mean_squared_error method<a class="headerlink" href="#squared-false-get-rmse-from-sklearns-mean-squared-error-method" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the root mean squared error using sklearn, pass <code class="docutils literal notranslate"><span class="pre">squared=False</span></code> to sklearn’s <code class="docutils literal notranslate"><span class="pre">mean_squared_error</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -988,7 +851,7 @@ significant.
 </div>
 </div>
 <div class="section" id="modelkit-build-production-ml-systems-in-python">
-<h2><span class="section-number">6.5.5. </span>modelkit: Build Production ML Systems in Python<a class="headerlink" href="#modelkit-build-production-ml-systems-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.5.4. </span>modelkit: Build Production ML Systems in Python<a class="headerlink" href="#modelkit-build-production-ml-systems-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install modelkit textblob 
@@ -1211,6 +1074,99 @@ significant.
 </div>
 <p><a class="reference external" href="https://github.com/Cornerstone-OnDemand/modelkit/">Link to modelkit</a>.</p>
 </div>
+<div class="section" id="decompose-high-dimensional-data-into-two-or-three-dimensions">
+<h2><span class="section-number">6.5.5. </span>Decompose high dimensional data into two or three dimensions<a class="headerlink" href="#decompose-high-dimensional-data-into-two-or-three-dimensions" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install yellowbrick
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to decompose high dimensional data into two or three dimensions to visualize it, what should you do? A common technique is PCA. Even though PCA is useful, it can be complicated to create a PCA plot.</p>
+<p>Lucikily, Yellowbrick allows you visualize PCA in a few lines of code</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yellowbrick.datasets</span> <span class="kn">import</span> <span class="n">load_credit</span>
+<span class="kn">from</span> <span class="nn">yellowbrick.features</span> <span class="kn">import</span> <span class="n">PCA</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 17;
+                var nbb_unformatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
+                var nbb_formatted_code = "from yellowbrick.datasets import load_credit\nfrom yellowbrick.features import PCA";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
+<span class="n">classes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;account in defaut&quot;</span><span class="p">,</span> <span class="s2">&quot;current with bills&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 18;
+                var nbb_unformatted_code = "X, y = load_credit()\nclasses = ['account in defaut', 'current with bills']";
+                var nbb_formatted_code = "X, y = load_credit()\nclasses = [\"account in defaut\", \"current with bills\"]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">visualizer</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="n">classes</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine_learning_37_0.png" src="../_images/machine_learning_37_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Principal Component Plot&#39;}, xlabel=&#39;$PC_1$&#39;, ylabel=&#39;$PC_2$&#39;&gt;
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 19;
+                var nbb_unformatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
+                var nbb_formatted_code = "visualizer = PCA(scale=True, classes=classes)\nvisualizer.fit_transform(X, y)\nvisualizer.show()";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://www.scikit-yb.org/en/latest/">Link to Yellowbrick</a></p>
+</div>
 <div class="section" id="visualize-feature-importances-with-yellowbrick">
 <h2><span class="section-number">6.5.6. </span>Visualize Feature Importances with Yellowbrick<a class="headerlink" href="#visualize-feature-importances-with-yellowbrick" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
@@ -1245,7 +1201,7 @@ significant.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine_learning_42_0.png" src="../_images/machine_learning_42_0.png" />
+<img alt="../_images/machine_learning_43_0.png" src="../_images/machine_learning_43_0.png" />
 </div>
 </div>
 <p>From the plot above, it seems like the light is the most important feature to DecisionTreeClassifier, followed by CO2, temperature.</p>
@@ -1301,7 +1257,7 @@ significant.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine_learning_48_0.png" src="../_images/machine_learning_48_0.png" />
+<img alt="../_images/machine_learning_49_0.png" src="../_images/machine_learning_49_0.png" />
 </div>
 </div>
 <p>Mlxtend (machine learning extensions) is a Python library of useful tools for the day-to-day data science tasks.</p>
