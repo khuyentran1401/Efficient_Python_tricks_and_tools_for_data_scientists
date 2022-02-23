@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -594,18 +599,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">
-   6.13.1. snoop : Smart Print to Debug Your Python Function
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-benchmark-a-pytest-fixture-to-benchmark-your-code">
-   6.13.2. pytest benchmark: A Pytest Fixture to Benchmark Your Code
+   6.13.1. pytest benchmark: A Pytest Fixture to Benchmark Your Code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-mark-parametrize-test-your-functions-with-multiple-inputs">
-   6.13.3. pytest.mark.parametrize: Test Your Functions with Multiple Inputs
+   6.13.2. pytest.mark.parametrize: Test Your Functions with Multiple Inputs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytest-parametrize-twice-test-all-possible-combinations-of-two-sets-of-parameters">
+   6.13.3. pytest parametrize twice: Test All Possible Combinations of Two Sets of Parameters
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -619,28 +624,33 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
+   6.13.6. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">
+   6.13.7. snoop : Smart Print to Debug Your Python Function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">
-   6.13.6. Pandera: a Python Library to Validate Your Pandas DataFrame
+   6.13.8. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
-   6.13.7. DeepDiff Find Deep Differences of Python Objects
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
-   6.13.8. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+   6.13.9. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.9. hypothesis: Property-based Testing in Python
+   6.13.10. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.10. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.11. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
 </ul>
@@ -656,63 +666,8 @@
                 
   <div class="section" id="testing">
 <h1><span class="section-number">6.13. </span>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="snoop-smart-print-to-debug-your-python-function">
-<h2><span class="section-number">6.13.1. </span>snoop : Smart Print to Debug Your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to figure out what is happening in your code without adding many print statements, try snoop.</p>
-<p>To use snoop, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;snoop</span></code> decorator to a function you want to understand.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">snoop</span> 
-
-<span class="nd">@snoop</span>
-<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The factorial of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1"> is </span><span class="si">{</span><span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
-12:46:29.30 ...... x = 2
-12:46:29.30    4 | def factorial(x: int):
-12:46:29.30    5 |     if x == 1:
-12:46:29.30    8 |         return (x * factorial(x-1))
-    12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
-    12:46:29.30 ...... x = 1
-    12:46:29.30    4 | def factorial(x: int):
-    12:46:29.31    5 |     if x == 1:
-    12:46:29.31    6 |         return 1
-    12:46:29.31 &lt;&lt;&lt; Return value from factorial: 1
-12:46:29.31    8 |         return (x * factorial(x-1))
-12:46:29.31 &lt;&lt;&lt; Return value from factorial: 2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 2 is 2
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://towardsdatascience.com/3-tools-to-track-and-visualize-the-execution-of-your-python-code-666a153e435e">Link to my article about snoop</a>.</p>
-</div>
 <div class="section" id="pytest-benchmark-a-pytest-fixture-to-benchmark-your-code">
-<h2><span class="section-number">6.13.2. </span>pytest benchmark: A Pytest Fixture to Benchmark Your Code<a class="headerlink" href="#pytest-benchmark-a-pytest-fixture-to-benchmark-your-code" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.1. </span>pytest benchmark: A Pytest Fixture to Benchmark Your Code<a class="headerlink" href="#pytest-benchmark-a-pytest-fixture-to-benchmark-your-code" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-benchmark
@@ -786,7 +741,7 @@ Legend:
 <p><a class="reference external" href="https://github.com/ionelmc/pytest-benchmark">Link to pytest-benchmark</a>.</p>
 </div>
 <div class="section" id="pytest-mark-parametrize-test-your-functions-with-multiple-inputs">
-<h2><span class="section-number">6.13.3. </span>pytest.mark.parametrize: Test Your Functions with Multiple Inputs<a class="headerlink" href="#pytest-mark-parametrize-test-your-functions-with-multiple-inputs" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.2. </span>pytest.mark.parametrize: Test Your Functions with Multiple Inputs<a class="headerlink" href="#pytest-mark-parametrize-test-your-functions-with-multiple-inputs" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest 
@@ -845,6 +800,79 @@ pytest_parametrize.py <span class=" -Color -Color-Green">..                     
 </div>
 <p>Sweet! 2 tests passed when running pytest.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/pytest-for-data-scientists-2990319e55e6?sk=2d3a81903b154db0c7ca832b9f29fee8">Link to my article about pytest</a>.</p>
+</div>
+<div class="section" id="pytest-parametrize-twice-test-all-possible-combinations-of-two-sets-of-parameters">
+<h2><span class="section-number">6.13.3. </span>pytest parametrize twice: Test All Possible Combinations of Two Sets of Parameters<a class="headerlink" href="#pytest-parametrize-twice-test-all-possible-combinations-of-two-sets-of-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest 
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to test the combinations of two sets of parameters, writing all possible combinations can be time-consuming and is difficult to read.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">perc_difference</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n2</span> <span class="o">-</span> <span class="n">n1</span><span class="p">)</span><span class="o">/</span><span class="n">n1</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Test the combinations of operations and inputs</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;operation, n1, n2&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="n">average</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">average</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="n">perc_difference</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">perc_difference</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operation</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can save your time by using <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> twice instead.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_combination.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">perc_difference</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n2</span> <span class="o">-</span> <span class="n">n1</span><span class="p">)</span><span class="o">/</span><span class="n">n1</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Test the combinations of operations and inputs</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">average</span><span class="p">,</span> <span class="n">perc_difference</span><span class="p">])</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;n1, n2&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operation</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On your terminal, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest -v pytest_combination.py
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest -v pytest_combination.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
+cachedir: .pytest_cache
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, typeguard-2.13.3
+collected 4 items                                                              
+
+pytest_combination.py::test_is_float[1-2-average] <span class=" -Color -Color-Green">PASSED                 [ 25%]</span>
+pytest_combination.py::test_is_float[1-2-perc_difference] <span class=" -Color -Color-Green">PASSED         [ 50%]</span>
+pytest_combination.py::test_is_float[2-3-average] <span class=" -Color -Color-Green">PASSED                 [ 75%]</span>
+pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -Color-Green">PASSED         [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">4 passed</span><span class=" -Color -Color-Green"> in 0.27s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the output above, we can see that all possible combinations of the given operations and inputs are tested.</p>
 </div>
 <div class="section" id="pytest-fixtures-use-the-same-data-for-different-tests">
 <h2><span class="section-number">6.13.4. </span>Pytest Fixtures: Use The Same Data for Different Tests<a class="headerlink" href="#pytest-fixtures-use-the-same-data-for-different-tests" title="Permalink to this headline">¶</a></h2>
@@ -967,8 +995,116 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 </div>
 <p><a class="reference external" href="https://github.com/pytest-dev/pytest-repeat">Link to pytest-repeat</a></p>
 </div>
+<div class="section" id="pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
+<h2><span class="section-number">6.13.6. </span>pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar<a class="headerlink" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-sugar 
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can be frustrating to wait for a lot of tests to run before knowing the status of the tests. If you want to see the failures and errors instantly with a progress bar, use pytest-sugar.</p>
+<p>pytest-sugar is a plugin for pytest. The code below shows how the outputs will look like when running pytest.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest pytest_sugar_example
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, sugar-0.9.4
+<span class=" -Color -Color-Bold">collecting ... </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_benchmark_example.py <span class=" -Color -Color-Green">✓</span>                  <span class=" -Color -Color-Green">1% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▏         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_fixture.py <span class=" -Color -Color-Green">✓</span>                            <span class=" -Color -Color-Green">2% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▎         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_parametrize.py <span class=" -Color -Color-Green">✓✓</span>                       <span class=" -Color -Color-Green">4% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▍         </span>
+ <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_repeat_example.py <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">23% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██▍       </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">42% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████▎     </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">62% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████▎   </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">81% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████████▏ </span>
+                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓100% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████████</span>
+
+<span class=" -Color -Color-Yellow">---------------------------------------------------- benchmark: 1 tests ---------------------------------------------------</span>
+Name (time in ns)          Min         Max      Mean   StdDev    Median     IQR  Outliers  OPS (Mops/s)  Rounds  Iterations
+<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
+test_concat         <span class=" -Color -Color-Bold">  302.8003  3,012.5000  328.2844  97.9087  321.5999  8.2495</span>  866;2220<span class=" -Color -Color-Bold">        3.0461</span>   90868          20
+<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+
+Results (2.63s):
+<span class=" -Color -Color-Green">     104 passed</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
+</div>
+<div class="section" id="snoop-smart-print-to-debug-your-python-function">
+<h2><span class="section-number">6.13.7. </span>snoop : Smart Print to Debug Your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to figure out what is happening in your code without adding many print statements, try snoop.</p>
+<p>To use snoop, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;snoop</span></code> decorator to a function you want to understand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">snoop</span> 
+
+<span class="nd">@snoop</span>
+<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The factorial of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1"> is </span><span class="si">{</span><span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
+12:46:29.30 ...... x = 2
+12:46:29.30    4 | def factorial(x: int):
+12:46:29.30    5 |     if x == 1:
+12:46:29.30    8 |         return (x * factorial(x-1))
+    12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
+    12:46:29.30 ...... x = 1
+    12:46:29.30    4 | def factorial(x: int):
+    12:46:29.31    5 |     if x == 1:
+    12:46:29.31    6 |         return 1
+    12:46:29.31 &lt;&lt;&lt; Return value from factorial: 1
+12:46:29.31    8 |         return (x * factorial(x-1))
+12:46:29.31 &lt;&lt;&lt; Return value from factorial: 2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 2 is 2
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://towardsdatascience.com/3-tools-to-track-and-visualize-the-execution-of-your-python-code-666a153e435e">Link to my article about snoop</a>.</p>
+</div>
 <div class="section" id="pandera-a-python-library-to-validate-your-pandas-dataframe">
-<h2><span class="section-number">6.13.6. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.8. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandera
@@ -1132,7 +1268,7 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </div>
 <div class="section" id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.13.7. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.9. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepdiff
@@ -1254,61 +1390,8 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 </div>
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </div>
-<div class="section" id="pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
-<h2><span class="section-number">6.13.8. </span>pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar<a class="headerlink" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-sugar 
-</pre></div>
-</div>
-</div>
-</div>
-<p>It can be frustrating to wait for a lot of tests to run before knowing the status of the tests. If you want to see the failures and errors instantly with a progress bar, use pytest-sugar.</p>
-<p>pytest-sugar is a plugin for pytest. The code below shows how the outputs will look like when running pytest.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest
-</pre></div>
-</div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest pytest_sugar_example
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, sugar-0.9.4
-<span class=" -Color -Color-Bold">collecting ... </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_benchmark_example.py <span class=" -Color -Color-Green">✓</span>                  <span class=" -Color -Color-Green">1% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▏         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_fixture.py <span class=" -Color -Color-Green">✓</span>                            <span class=" -Color -Color-Green">2% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▎         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_parametrize.py <span class=" -Color -Color-Green">✓✓</span>                       <span class=" -Color -Color-Green">4% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▍         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_repeat_example.py <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">23% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██▍       </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">42% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████▎     </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">62% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████▎   </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">81% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████████▏ </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓100% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████████</span>
-
-<span class=" -Color -Color-Yellow">---------------------------------------------------- benchmark: 1 tests ---------------------------------------------------</span>
-Name (time in ns)          Min         Max      Mean   StdDev    Median     IQR  Outliers  OPS (Mops/s)  Rounds  Iterations
-<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
-test_concat         <span class=" -Color -Color-Bold">  302.8003  3,012.5000  328.2844  97.9087  321.5999  8.2495</span>  866;2220<span class=" -Color -Color-Bold">        3.0461</span>   90868          20
-<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
-
-Legend:
-  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
-  OPS: Operations Per Second, computed as 1 / Mean
-
-Results (2.63s):
-<span class=" -Color -Color-Green">     104 passed</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
-</div>
 <div class="section" id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.9. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.10. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
@@ -1382,7 +1465,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </div>
 <div class="section" id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.10. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.11. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
