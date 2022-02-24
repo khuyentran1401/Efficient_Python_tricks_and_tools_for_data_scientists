@@ -593,6 +593,24 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-classes-vs-normal-classes">
+   3.6.1. Data Classes vs Normal Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">
+   3.6.2. frozen=True: Make Your Data Classes Read-Only
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -603,6 +621,8 @@
                 
   <div class="section" id="data-classes">
 <h1><span class="section-number">3.6. </span>Data Classes<a class="headerlink" href="#data-classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="data-classes-vs-normal-classes">
+<h2><span class="section-number">3.6.1. </span>Data Classes vs Normal Classes<a class="headerlink" href="#data-classes-vs-normal-classes" title="Permalink to this headline">¶</a></h2>
 <p>If you want to use classes to store data, use the dataclass module. This module is available in Python 3.7+.</p>
 <p>With dataclass, you can create a class with attributes, type hints, and a nice representation of the data in a few lines of code. To use dataclass, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;dataclass</span></code> decorator on top of a class.</p>
 <div class="cell docutils container">
@@ -653,6 +673,46 @@
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dog(color=black age=9)
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="frozen-true-make-your-data-classes-read-only">
+<h2><span class="section-number">3.6.2. </span>frozen=True: Make Your Data Classes Read-Only<a class="headerlink" href="#frozen-true-make-your-data-classes-read-only" title="Permalink to this headline">¶</a></h2>
+<p>If you don’t want anybody to adjust the attributes of a class, use <code class="docutils literal notranslate"><span class="pre">&#64;dataclass(frozen=True)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DataClassDog</span><span class="p">:</span>
+    <span class="n">color</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now changing the attribute <code class="docutils literal notranslate"><span class="pre">color</span></code> of  the <code class="docutils literal notranslate"><span class="pre">DataClassDog</span></code>’s instance will throw an error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pepper</span> <span class="o">=</span> <span class="n">DataClassDog</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">pepper</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;golden&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FrozenInstanceError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">0</span><span class="n">d6f339835b8</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">pepper</span> <span class="o">=</span> <span class="n">DataClassDog</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">pepper</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;golden&#39;</span>
+
+<span class="nn">&lt;string&gt;</span> in <span class="ni">__setattr__</span><span class="nt">(self, name, value)</span>
+
+<span class="ne">FrozenInstanceError</span>: cannot assign to field &#39;color&#39;
+</pre></div>
+</div>
 </div>
 </div>
 </div>
