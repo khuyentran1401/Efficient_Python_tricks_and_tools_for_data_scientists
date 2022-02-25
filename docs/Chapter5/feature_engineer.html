@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -606,6 +611,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
    6.2.3. Similarity Encoding for Dirty Categories Using dirty_cat
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
+   6.2.4. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
 </ul>
@@ -1195,6 +1205,428 @@
 </ul>
 <p><a class="reference external" href="https://dirty-cat.github.io/">Link to dirty-cat</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
+</div>
+<div class="section" id="snorkel-programmatically-build-training-data-in-python">
+<h2><span class="section-number">6.2.4. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snorkel
+</pre></div>
+</div>
+</div>
+</div>
+<p>Imagine you try to determine whether a job posting is fake or not. You come up with some assumptions about a fake job posting, such as:</p>
+<ul class="simple">
+<li><p>If a job posting has few to no descriptions about the requirements, it is likely to be fake.</p></li>
+<li><p>If a job posting does not include any company profile or logo, it is likely to be fake.</p></li>
+<li><p>If the job posting requires some sort of education or experience, it is likely to be real.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span>
+    <span class="s2">&quot;https://github.com/khuyentran1401/Data-science/blob/master/feature_engineering/snorkel_example/train_fake_jobs.pkl?raw=true&quot;</span>
+<span class="p">)</span>
+<span class="n">train_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>job_id</th>
+      <th>title</th>
+      <th>location</th>
+      <th>department</th>
+      <th>salary_range</th>
+      <th>company_profile</th>
+      <th>description</th>
+      <th>requirements</th>
+      <th>benefits</th>
+      <th>telecommuting</th>
+      <th>has_company_logo</th>
+      <th>has_questions</th>
+      <th>employment_type</th>
+      <th>required_experience</th>
+      <th>required_education</th>
+      <th>industry</th>
+      <th>function</th>
+      <th>fraudulent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>12276</th>
+      <td>12277</td>
+      <td>Big Data Analyst</td>
+      <td>GB, WSM, London</td>
+      <td>Product Ops</td>
+      <td>NaN</td>
+      <td>Founded in 2010 by a team from Google’s London...</td>
+      <td>Qubit: Cutting Edge Big Data EngineeringQubit ...</td>
+      <td>What you'll need: A background in consulting, ...</td>
+      <td>Plenty of perks:As well as the opportunity to ...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Full-time</td>
+      <td>Associate</td>
+      <td>Bachelor's Degree</td>
+      <td>Internet</td>
+      <td>Product Management</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>14680</th>
+      <td>14681</td>
+      <td>Instructional Advocate</td>
+      <td>US, GA, Savannah</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>We are an after-school program committed to as...</td>
+      <td>21st Century Community Learning Centers is an ...</td>
+      <td>Bachelor's Degree or an Associate's Degree; or...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Part-time</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Education</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16518</th>
+      <td>16519</td>
+      <td>Software Developer</td>
+      <td>US, FL, Gainesville</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>352 Inc. is a full-service digital agency crea...</td>
+      <td>We partner with great clients to build smart s...</td>
+      <td>3-5 years of great c# work Experience in mvc o...</td>
+      <td>What You’ll GetFreedom: We trust you to do you...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Full-time</td>
+      <td>Mid-Senior level</td>
+      <td>NaN</td>
+      <td>Computer Software</td>
+      <td>Information Technology</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15478</th>
+      <td>15479</td>
+      <td>Internship in India</td>
+      <td>IN, , Bangalore</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td></td>
+      <td>London is a fast paced city of culture, divers...</td>
+      <td></td>
+      <td>As specialists in delivering high quality and ...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>16348</th>
+      <td>16349</td>
+      <td>Web Developer Backend Microservices (m/f)</td>
+      <td>DE, BE, 10969</td>
+      <td>Engineering</td>
+      <td>NaN</td>
+      <td>airfy prägt sicheres und einfach zu bedienende...</td>
+      <td>Design and develop a microservice platform for...</td>
+      <td>Senior level experience with web backends, esp...</td>
+      <td>Flat hierarchies and a productive work environ...</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Full-time</td>
+      <td>Associate</td>
+      <td>Bachelor's Degree</td>
+      <td>Internet</td>
+      <td>Engineering</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "import pandas as pd \nimport warnings\nwarnings.simplefilter(action='ignore', category=FutureWarning)\n\n\ntrain_df = pd.read_pickle(\n    \"https://github.com/khuyentran1401/Data-science/blob/master/feature_engineering/snorkel_example/train_fake_jobs.pkl?raw=true\"\n)\ntrain_df.head(5)";
+                var nbb_formatted_code = "import pandas as pd\nimport warnings\n\nwarnings.simplefilter(action=\"ignore\", category=FutureWarning)\n\n\ntrain_df = pd.read_pickle(\n    \"https://github.com/khuyentran1401/Data-science/blob/master/feature_engineering/snorkel_example/train_fake_jobs.pkl?raw=true\"\n)\ntrain_df.head(5)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>How do you test which of these features are the most accurate in predicting fraud?</p>
+<p>That is when Snorkel comes in handy. Snorkel is an open-source Python library for programmatically building training datasets without manual labeling.</p>
+<p>To learn how Snorkel works, start with giving a meaningful name to each value:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">snorkel.labeling</span> <span class="kn">import</span> <span class="n">labeling_function</span><span class="p">,</span> <span class="n">PandasLFApplier</span><span class="p">,</span> <span class="n">LFAnalysis</span>
+
+<span class="n">FAKE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">REAL</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ABSTAIN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 15;
+                var nbb_unformatted_code = "from snorkel.labeling import labeling_function, PandasLFApplier, LFAnalysis\n\nFAKE = 1\nREAL = 0\nABSTAIN = -1";
+                var nbb_formatted_code = "from snorkel.labeling import labeling_function, PandasLFApplier, LFAnalysis\n\nFAKE = 1\nREAL = 0\nABSTAIN = -1";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>We assume that:</p>
+<ul class="simple">
+<li><p>Fake companies don’t have company profiles or logos</p></li>
+<li><p>Fake companies are found in a lot of fake job postings</p></li>
+<li><p>Real job postings often requires a certain level of experience and education</p></li>
+</ul>
+<p>Let’s test those assumptions using Snorkel’s <code class="docutils literal notranslate"><span class="pre">labeling_function</span></code> decorator. The <code class="docutils literal notranslate"><span class="pre">labeling_function</span></code> decorator allows us to quickly label instances in a dataset using functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">no_company_profile</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FAKE</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">company_profile</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">no_company_logo</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FAKE</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">has_company_logo</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">required_experience</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">REAL</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">required_experience</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">required_education</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">REAL</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">required_education</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 29;
+                var nbb_unformatted_code = "@labeling_function()\ndef no_company_profile(x: pd.Series):\n    return FAKE if x.company_profile == \"\" else ABSTAIN\n\n\n@labeling_function()\ndef no_company_logo(x: pd.Series):\n    return FAKE if x.has_company_logo == 0 else ABSTAIN\n\n@labeling_function()\ndef required_experience(x: pd.Series):\n    return REAL if x.required_experience else ABSTAIN\n\n\n@labeling_function()\ndef required_education(x: pd.Series):\n    return REAL if x.required_education else ABSTAIN";
+                var nbb_formatted_code = "@labeling_function()\ndef no_company_profile(x: pd.Series):\n    return FAKE if x.company_profile == \"\" else ABSTAIN\n\n\n@labeling_function()\ndef no_company_logo(x: pd.Series):\n    return FAKE if x.has_company_logo == 0 else ABSTAIN\n\n\n@labeling_function()\ndef required_experience(x: pd.Series):\n    return REAL if x.required_experience else ABSTAIN\n\n\n@labeling_function()\ndef required_education(x: pd.Series):\n    return REAL if x.required_education else ABSTAIN";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ABSTAIN</span></code> or <code class="docutils literal notranslate"><span class="pre">-1</span></code> tells Snorkel not to make any conclusion about the instance that doesn’t satisfy the condition.</p>
+<p>Next, we will use each of these labeling functions to label our training dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lfs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">no_company_profile</span><span class="p">,</span>
+    <span class="n">no_company_logo</span><span class="p">,</span>
+    <span class="n">required_experience</span><span class="p">,</span>
+    <span class="n">required_education</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">applier</span> <span class="o">=</span> <span class="n">PandasLFApplier</span><span class="p">(</span><span class="n">lfs</span><span class="o">=</span><span class="n">lfs</span><span class="p">)</span>
+<span class="n">L_train</span> <span class="o">=</span> <span class="n">applier</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">train_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████████████████████████████████████████| 13410/13410 [00:02&lt;00:00, 5849.25it/s]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 30;
+                var nbb_unformatted_code = "lfs = [\n    no_company_profile,\n    no_company_logo,\n    required_experience,\n    required_education,\n]\n\napplier = PandasLFApplier(lfs=lfs)\nL_train = applier.apply(df=train_df)";
+                var nbb_formatted_code = "lfs = [\n    no_company_profile,\n    no_company_logo,\n    required_experience,\n    required_education,\n]\n\napplier = PandasLFApplier(lfs=lfs)\nL_train = applier.apply(df=train_df)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Now that we have created the labels using each labeling function, we can use <code class="docutils literal notranslate"><span class="pre">LFAnalysis</span></code> to determine the accuracy of these labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">LFAnalysis</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="n">L_train</span><span class="p">,</span> <span class="n">lfs</span><span class="o">=</span><span class="n">lfs</span><span class="p">)</span><span class="o">.</span><span class="n">lf_summary</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="n">train_df</span><span class="o">.</span><span class="n">fraudulent</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>j</th>
+      <th>Polarity</th>
+      <th>Coverage</th>
+      <th>Overlaps</th>
+      <th>Conflicts</th>
+      <th>Correct</th>
+      <th>Incorrect</th>
+      <th>Emp. Acc.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>no_company_profile</th>
+      <td>0</td>
+      <td>[1]</td>
+      <td>0.186204</td>
+      <td>0.186204</td>
+      <td>0.186204</td>
+      <td>459</td>
+      <td>2038</td>
+      <td>0.183821</td>
+    </tr>
+    <tr>
+      <th>no_company_logo</th>
+      <td>1</td>
+      <td>[1]</td>
+      <td>0.205742</td>
+      <td>0.205742</td>
+      <td>0.205742</td>
+      <td>459</td>
+      <td>2300</td>
+      <td>0.166365</td>
+    </tr>
+    <tr>
+      <th>required_experience</th>
+      <td>2</td>
+      <td>[0]</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.244295</td>
+      <td>12741</td>
+      <td>669</td>
+      <td>0.950112</td>
+    </tr>
+    <tr>
+      <th>required_education</th>
+      <td>3</td>
+      <td>[0]</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.244295</td>
+      <td>12741</td>
+      <td>669</td>
+      <td>0.950112</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 31;
+                var nbb_unformatted_code = "LFAnalysis(L=L_train, lfs=lfs).lf_summary(Y=train_df.fraudulent.values)";
+                var nbb_formatted_code = "LFAnalysis(L=L_train, lfs=lfs).lf_summary(Y=train_df.fraudulent.values)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>Details of the statistics in the table above:</p>
+<ul class="simple">
+<li><p><strong>Polarity</strong>: The set of unique labels this LF outputs (excluding abstains)</p></li>
+<li><p><strong>Coverage</strong>: The fraction of the dataset that is labeled</p></li>
+<li><p><strong>Overlaps</strong>: The fraction of the dataset where this LF and at least one other LF agree</p></li>
+<li><p><strong>Conflicts</strong>: The fraction of the dataset where this LF and at least one other LF disagree</p></li>
+<li><p><strong>Correct</strong>: The number of data points this LF labels correctly</p></li>
+<li><p><strong>Incorrect</strong>: The number of data points this LF labels incorrectly</p></li>
+<li><p><strong>Empirical</strong> Accuracy: The empirical accuracy of this LF</p></li>
+</ul>
+<p><a class="reference external" href="https://www.snorkel.org/">Link to Snorkel</a>.</p>
+<p><a class="reference external" href="https://towardsdatascience.com/snorkel-programmatically-build-training-data-in-python-712fc39649fe">My full article about Snorkel</a>.</p>
 </div>
 </div>
 
