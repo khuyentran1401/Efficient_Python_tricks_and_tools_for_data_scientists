@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -603,6 +608,11 @@
    4.9.2. DataFrame.columns.str.startswith: Find DataFrame’s Columns that Start With a Pattern
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#find-rows-containing-one-of-the-substrings-in-a-list">
+   4.9.3. Find Rows Containing One of the Substrings in a List
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -728,6 +738,44 @@ dtype: object
   </tbody>
 </table>
 </div></div></div>
+</div>
+</div>
+<div class="section" id="find-rows-containing-one-of-the-substrings-in-a-list">
+<h2><span class="section-number">4.9.3. </span>Find Rows Containing One of the Substrings in a List<a class="headerlink" href="#find-rows-containing-one-of-the-substrings-in-a-list" title="Permalink to this headline">¶</a></h2>
+<p>If you want to find rows that contain one of the substrings in a list, join that list using <code class="docutils literal notranslate"><span class="pre">|</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;bunny&#39;</span><span class="p">,</span> <span class="s1">&#39;monkey&#39;</span><span class="p">,</span> <span class="s1">&#39;funny&#39;</span><span class="p">,</span> <span class="s1">&#39;flower&#39;</span><span class="p">])</span>
+
+<span class="n">sub_str</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;ey&#39;</span><span class="p">]</span>
+<span class="n">join_str</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sub_str</span><span class="p">)</span>
+<span class="n">join_str</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ny|ey&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>… then use <code class="docutils literal notranslate"><span class="pre">str.contains</span></code>. Now you only get the strings that end with “ny” or “ey”:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">join_str</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0     bunny
+1    monkey
+2     funny
+dtype: object
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 </div>
