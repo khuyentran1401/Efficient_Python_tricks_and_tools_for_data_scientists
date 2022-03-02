@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -626,6 +631,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#logging-in-pandas-pipelines">
    7.4.7. Logging in Pandas Pipelines
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#add-progress-bar-to-your-list-comprehension">
+   7.4.8. Add Progress Bar to Your List Comprehension
   </a>
  </li>
 </ul>
@@ -1105,6 +1115,65 @@ INFO:root:[encode_cat_variables(df)] time=0:00:00.003217 n_obs=3, n_col=1
 </div>
 </div>
 <p>Find more ways to customize your logging <a class="reference external" href="https://scikit-lego.netlify.app/pandas_pipeline.html#Logging-in-method-chaining">here</a></p>
+</div>
+<div class="section" id="add-progress-bar-to-your-list-comprehension">
+<h2><span class="section-number">7.4.8. </span>Add Progress Bar to Your List Comprehension<a class="headerlink" href="#add-progress-bar-to-your-list-comprehension" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install tqdm
+</pre></div>
+</div>
+</div>
+</div>
+<p>If your for loop or list comprehension takes a long time to run, you might want to know which element is being processed. You can add clarity to your for-loop by using tqdm. Using tqdm with an iterable will show a progress bar.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+
+<span class="k">def</span> <span class="nf">lower</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing </span><span class="si">{</span><span class="n">word</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+<span class="n">words</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">([</span><span class="s2">&quot;Duck&quot;</span><span class="p">,</span> <span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;Flower&quot;</span><span class="p">,</span> <span class="s2">&quot;fan&quot;</span><span class="p">])</span>
+
+<span class="p">[</span><span class="n">lower</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "78436b84b937422894a28a9e2e75cc0e", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing Duck
+Processing dog
+Processing Flower
+Processing fan
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;duck&#39;, &#39;dog&#39;, &#39;flower&#39;, &#39;fan&#39;]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 17;
+                var nbb_unformatted_code = "from tqdm.notebook import tqdm\nfrom time import sleep\n\n\ndef lower(word):\n    sleep(1)\n    print(f\"Processing {word}\")\n    return word.lower()\n\n\nwords = tqdm([\"Duck\", \"dog\", \"Flower\", \"fan\"])\n\n[lower(word) for word in words]";
+                var nbb_formatted_code = "from tqdm.notebook import tqdm\nfrom time import sleep\n\n\ndef lower(word):\n    sleep(1)\n    print(f\"Processing {word}\")\n    return word.lower()\n\n\nwords = tqdm([\"Duck\", \"dog\", \"Flower\", \"fan\"])\n\n[lower(word) for word in words]";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/tqdm/tqdm">Link to tqdm</a>.</p>
 </div>
 </div>
 
