@@ -608,6 +608,11 @@
    3.6.2. frozen=True: Make Your Data Classes Read-Only
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compare-between-two-data-classes">
+   3.6.3. Compare Between Two Data Classes
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -711,6 +716,60 @@
 <span class="nn">&lt;string&gt;</span> in <span class="ni">__setattr__</span><span class="nt">(self, name, value)</span>
 
 <span class="ne">FrozenInstanceError</span>: cannot assign to field &#39;color&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="compare-between-two-data-classes">
+<h2><span class="section-number">3.6.3. </span>Compare Between Two Data Classes<a class="headerlink" href="#compare-between-two-data-classes" title="Permalink to this headline">¶</a></h2>
+<p>Normally, you need to implement the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method so that you can compare between two classes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+    
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">type</span> 
+        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
+
+<span class="n">pepper</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Dachshund&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">bim</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Dachshund&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">pepper</span> <span class="o">==</span> <span class="n">bim</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>dataclasses automatically implements the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method for you. With dataclasses, you can compare between 2 classes by only specifying their attributes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DataClassDog</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pepper</span> <span class="o">=</span> <span class="n">DataClassDog</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Dachshund&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">bim</span> <span class="o">=</span> <span class="n">DataClassDog</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Dachshund&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">pepper</span> <span class="o">==</span> <span class="n">bim</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
