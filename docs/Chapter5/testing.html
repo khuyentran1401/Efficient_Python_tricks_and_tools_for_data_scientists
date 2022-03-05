@@ -629,28 +629,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">
-   6.13.7. snoop : Smart Print to Debug Your Python Function
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">
-   6.13.8. Pandera: a Python Library to Validate Your Pandas DataFrame
+   6.13.7. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
-   6.13.9. DeepDiff Find Deep Differences of Python Objects
+   6.13.8. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.10. hypothesis: Property-based Testing in Python
+   6.13.9. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.11. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.10. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
 </ul>
@@ -1048,63 +1043,8 @@ Results (2.63s):
 </div>
 <p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
 </div>
-<div class="section" id="snoop-smart-print-to-debug-your-python-function">
-<h2><span class="section-number">6.13.7. </span>snoop : Smart Print to Debug Your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
-</pre></div>
-</div>
-</div>
-</div>
-<p>If you want to figure out what is happening in your code without adding many print statements, try snoop.</p>
-<p>To use snoop, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;snoop</span></code> decorator to a function you want to understand.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">snoop</span> 
-
-<span class="nd">@snoop</span>
-<span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">1</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The factorial of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1"> is </span><span class="si">{</span><span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
-12:46:29.30 ...... x = 2
-12:46:29.30    4 | def factorial(x: int):
-12:46:29.30    5 |     if x == 1:
-12:46:29.30    8 |         return (x * factorial(x-1))
-    12:46:29.30 &gt;&gt;&gt; Call to factorial in File &quot;/tmp/ipykernel_72663/20705592.py&quot;, line 4
-    12:46:29.30 ...... x = 1
-    12:46:29.30    4 | def factorial(x: int):
-    12:46:29.31    5 |     if x == 1:
-    12:46:29.31    6 |         return 1
-    12:46:29.31 &lt;&lt;&lt; Return value from factorial: 1
-12:46:29.31    8 |         return (x * factorial(x-1))
-12:46:29.31 &lt;&lt;&lt; Return value from factorial: 2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 2 is 2
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://towardsdatascience.com/3-tools-to-track-and-visualize-the-execution-of-your-python-code-666a153e435e">Link to my article about snoop</a>.</p>
-</div>
 <div class="section" id="pandera-a-python-library-to-validate-your-pandas-dataframe">
-<h2><span class="section-number">6.13.8. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.7. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandera
@@ -1268,7 +1208,7 @@ Results (2.63s):
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </div>
 <div class="section" id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.13.9. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.8. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepdiff
@@ -1391,7 +1331,7 @@ Results (2.63s):
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </div>
 <div class="section" id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.10. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.9. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
@@ -1465,7 +1405,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </div>
 <div class="section" id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.11. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.10. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
