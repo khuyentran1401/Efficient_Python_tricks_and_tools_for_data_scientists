@@ -231,8 +231,13 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
     </a>
    </li>
   </ul>
@@ -608,6 +613,11 @@
    7.2.3. knockknock: Receive an Email When Your Code Finishes Executing
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#makefile-organize-your-command-line">
+   7.2.4. Makefile: Organize Your Command Line
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -668,6 +678,69 @@
 </pre></div>
 </div>
 <p>You can even have it send to your slack channel so everybody in your team can see. See the docs of this library <a class="reference external" href="https://github.com/huggingface/knockknock">here</a>.</p>
+</div>
+<div class="section" id="makefile-organize-your-command-line">
+<h2><span class="section-number">7.2.4. </span>Makefile: Organize Your Command Line<a class="headerlink" href="#makefile-organize-your-command-line" title="Permalink to this headline">¶</a></h2>
+<p>Do you use often use a sequence of commands to do a repetitive task? Wouldn’t it be nice if you can call a sequence of commands using only one short command? That is when Makefile comes in handy.</p>
+<p>In the code below, I use Makefile to automate the workflow to set up an environment.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span># Makefile
+
+activate:
+  @echo &quot;Activating virtual env&quot;
+  poetry shell
+  
+install: 
+  @echo &quot;Installing...&quot;
+  poetry install
+
+pull_data:
+  @echo &quot;Pulling data...&quot;
+  dvc pull
+</pre></div>
+</div>
+<p>If you run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make activate
+</pre></div>
+</div>
+<p>you should see something like below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Activating virtual env
+poetry shell
+</pre></div>
+</div>
+<p>You can run <code class="docutils literal notranslate"><span class="pre">activate</span></code>, <code class="docutils literal notranslate"><span class="pre">install</span></code>, and <code class="docutils literal notranslate"><span class="pre">pull_data</span></code> at the same time by putting all of those commands under <code class="docutils literal notranslate"><span class="pre">install_all</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span># Makefile
+
+activate:
+  @echo &quot;Activating virtual env&quot;
+  poetry shell
+  
+install: 
+  @echo &quot;Installing...&quot;
+  poetry install
+
+pull_data:
+  @echo &quot;Pulling data...&quot;
+  dvc pull
+
+install_all: 
+  install activate pull_data
+</pre></div>
+</div>
+<p>Now you can run the entire setup workflow by running only one command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ make install_all
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Installing...
+poetry shell
+Activating environment
+poetry install
+Pulling data...
+dvc pull
+</pre></div>
+</div>
+<p>I used Makefile to simplify the setup of my <a class="reference external" href="https://github.com/khuyentran1401/customer_segmentation">customer_segmentation project</a>.</p>
+<p>You can learn more about Makefile <a class="reference external" href="https://opensource.com/article/18/8/what-how-makefile">here</a>.</p>
 </div>
 </div>
 
