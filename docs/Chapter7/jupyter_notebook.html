@@ -233,8 +233,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -630,6 +640,11 @@
    8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#debug-your-jupyter-notebook-s-code-with-snoop">
+   8.1.8. Debug Your Jupyter Notebook’s Code with snoop
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -995,6 +1010,78 @@ example_notebook.ipynb:cell_1:3:1: F401 &#39;numpy as np&#39; imported but unuse
 </pre></div>
 </div>
 <p><a class="reference external" href="https://nbqa.readthedocs.io/en/latest/readme.html">Link to nbQA</a>.</p>
+</div>
+<div class="section" id="debug-your-jupyter-notebook-s-code-with-snoop">
+<h2><span class="section-number">8.1.8. </span>Debug Your Jupyter Notebook’s Code with snoop<a class="headerlink" href="#debug-your-jupyter-notebook-s-code-with-snoop" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snoop
+</pre></div>
+</div>
+</div>
+</div>
+<p>Have you ever tried to print multiple attributes of a Python object in your Jupyter Notebook to debug it? Wouldn’t it be nice if you can automatically print all of those attributes using one magic command? That is when snoop comes in handy.</p>
+<p>To use snoop, start with loading the library then add <code class="docutils literal notranslate"><span class="pre">%%snoop</span></code> at the beginning of the cell you want to debug.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> snoop
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">snoop</span> 
+
+arr = np.random.randint(2, 10, (3, 2))
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>07:56:34.03    2 | arr = np.random.randint(2, 10, (3, 2))
+07:56:34.03 ...... arr = array([[9, 7],
+07:56:34.03                     [4, 2],
+07:56:34.03                     [9, 5]])
+07:56:34.03 ...... arr.shape = (3, 2)
+07:56:34.03 ...... arr.dtype = dtype(&#39;int64&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">snoop</span> 
+
+df = pd.DataFrame(arr, columns=[&quot;a&quot;, &quot;b&quot;])
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>07:47:48.22 ...... arr = array([[2, 7],
+07:47:48.22                     [5, 8],
+07:47:48.22                     [2, 4]])
+07:47:48.22 ...... arr.shape = (3, 2)
+07:47:48.22 ...... arr.dtype = dtype(&#39;int64&#39;)
+07:47:48.22 ...... df =    a  b
+07:47:48.22             0  2  7
+07:47:48.22             1  5  8
+07:47:48.22             2  2  4
+07:47:48.22 ...... df.shape = (3, 2)
+07:47:48.22    2 | df = pd.DataFrame(arr, columns=[&quot;a&quot;, &quot;b&quot;])
+</pre></div>
+</div>
+</div>
+</div>
+<p>snoop also supports debugging in a Python script.</p>
+<p><a class="reference external" href="https://github.com/alexmojaki/snoop">Link to snoop</a></p>
 </div>
 </div>
 
