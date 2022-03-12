@@ -231,8 +231,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -609,13 +619,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extract-holiday-from-date-column">
-   6.7.4. Extract holiday from date column
+  <a class="reference internal nav-link" href="#traces-a-python-library-for-unevenly-spaced-time-series-analysis">
+   6.7.4. traces: A Python Library for Unevenly-Spaced Time Series Analysis
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#traces-a-python-library-for-unevenly-spaced-time-series-analysis">
-   6.7.5. traces: A Python Library for Unevenly-Spaced Time Series Analysis
+  <a class="reference internal nav-link" href="#extract-holiday-from-date-column">
+   6.7.5. Extract holiday from date column
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -636,6 +646,8 @@
                 
   <div class="section" id="time-series">
 <h1><span class="section-number">6.7. </span>Time Series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h1>
+<p>This section shows some tools to work with datetime and time series.</p>
+<p><img alt="" src="../_images/datetime.png" /></p>
 <div class="section" id="datefinder-automatically-find-dates-and-time-in-a-python-string">
 <h2><span class="section-number">6.7.1. </span>datefinder: Automatically Find Dates and Time in a Python String<a class="headerlink" href="#datefinder-automatically-find-dates-and-time-in-a-python-string" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
@@ -827,7 +839,7 @@ Only day: 18
 </div>
 </div>
 </div>
-<p>If you want to convert a string type to a datetime type, the common way is to use strptime(date_string, format). But it is quite inconvenient to to specify the structure of your datetime string, such as ‘ %Y-%m-%d %H:%M:%S’.</p>
+<p>If you want to convert a string type to a datetime type, the common way is to use <code class="docutils literal notranslate"><span class="pre">strptime(date_string,</span> <span class="pre">format)</span></code>. But it is quite inconvenient to specify the structure of your datetime string, such as ‘ %Y-%m-%d %H:%M:%S’.</p>
 <p>There is a tool that helps you convert the string to datetime automatically called maya. You just need to parse the string and maya will figure out the structure of your string.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -888,110 +900,10 @@ Only day: 18
             }, 500);
             </script></div>
 </div>
-<p>Check out the doc for more ways of manipulating your date string faster <a class="reference external" href="https://github.com/timofurrer/maya">here</a>.</p>
-</div>
-<div class="section" id="extract-holiday-from-date-column">
-<h2><span class="section-number">6.7.4. </span>Extract holiday from date column<a class="headerlink" href="#extract-holiday-from-date-column" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install holidays
-</pre></div>
-</div>
-</div>
-</div>
-<p>You have a date column and you think the holidays might affect the target of your data. Is there an easy way to extract the holidays from the date? Yes, that is when holidays package comes in handy.</p>
-<p>Holidays package provides a dictionary of holidays for different countries. The code below is to confirm whether 2020-07-04 is a US holiday and extract the name of the holiday.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-<span class="kn">import</span> <span class="nn">holidays</span>
-
-<span class="n">us_holidays</span> <span class="o">=</span> <span class="n">holidays</span><span class="o">.</span><span class="n">UnitedStates</span><span class="p">()</span>
-
-<span class="s2">&quot;2014-07-04&quot;</span> <span class="ow">in</span> <span class="n">us_holidays</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 52;
-                var nbb_unformatted_code = "from datetime import date \nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n'2014-07-04' in us_holidays";
-                var nbb_formatted_code = "from datetime import date\nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n\"2014-07-04\" in us_holidays";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>The great thing about this package is that you can write the date in whatever way you want and the package is still able to detect which date you are talking about.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014-7-4&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 53;
-                var nbb_unformatted_code = "us_holidays.get('2014-7-4')";
-                var nbb_formatted_code = "us_holidays.get(\"2014-7-4\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014/7/4&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 54;
-                var nbb_unformatted_code = "us_holidays.get('2014/7/4')";
-                var nbb_formatted_code = "us_holidays.get(\"2014/7/4\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p>You can also add more holidays if you think that the library is lacking some holidays. Try <a class="reference external" href="https://pypi.org/project/holidays/">this</a> out if you are looking for something similar.</p>
+<p><a class="reference external" href="https://github.com/timofurrer/maya">Link to maya</a>.</p>
 </div>
 <div class="section" id="traces-a-python-library-for-unevenly-spaced-time-series-analysis">
-<h2><span class="section-number">6.7.5. </span>traces: A Python Library for Unevenly-Spaced Time Series Analysis<a class="headerlink" href="#traces-a-python-library-for-unevenly-spaced-time-series-analysis" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.7.4. </span>traces: A Python Library for Unevenly-Spaced Time Series Analysis<a class="headerlink" href="#traces-a-python-library-for-unevenly-spaced-time-series-analysis" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install traces
@@ -1088,6 +1000,106 @@ Only day: 18
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/datascopeanalytics/traces">Link to traces</a></p>
+</div>
+<div class="section" id="extract-holiday-from-date-column">
+<h2><span class="section-number">6.7.5. </span>Extract holiday from date column<a class="headerlink" href="#extract-holiday-from-date-column" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install holidays
+</pre></div>
+</div>
+</div>
+</div>
+<p>You have a date column and you think the holidays might affect the target of your data. Is there an easy way to extract the holidays from the date? That is when holidays package comes in handy.</p>
+<p>Holidays package provides a dictionary of holidays for different countries. The code below is to confirm whether 2020-07-04 is a US holiday and extract the name of the holiday.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">import</span> <span class="nn">holidays</span>
+
+<span class="n">us_holidays</span> <span class="o">=</span> <span class="n">holidays</span><span class="o">.</span><span class="n">UnitedStates</span><span class="p">()</span>
+
+<span class="s2">&quot;2014-07-04&quot;</span> <span class="ow">in</span> <span class="n">us_holidays</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 52;
+                var nbb_unformatted_code = "from datetime import date \nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n'2014-07-04' in us_holidays";
+                var nbb_formatted_code = "from datetime import date\nimport holidays\n\nus_holidays = holidays.UnitedStates()\n\n\"2014-07-04\" in us_holidays";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>The great thing about this package is that you can write the date in whatever way you want and the package is still able to detect which date you are talking about.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014-7-4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 53;
+                var nbb_unformatted_code = "us_holidays.get('2014-7-4')";
+                var nbb_formatted_code = "us_holidays.get(\"2014-7-4\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014/7/4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Independence Day&#39;
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 54;
+                var nbb_unformatted_code = "us_holidays.get('2014/7/4')";
+                var nbb_formatted_code = "us_holidays.get(\"2014/7/4\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://pypi.org/project/holidays/">Link to holidays</a>.</p>
 </div>
 <div class="section" id="workalendar-handle-working-day-computation-in-python">
 <h2><span class="section-number">6.7.6. </span>Workalendar: Handle Working-Day Computation in Python<a class="headerlink" href="#workalendar-handle-working-day-computation-in-python" title="Permalink to this headline">¶</a></h2>
