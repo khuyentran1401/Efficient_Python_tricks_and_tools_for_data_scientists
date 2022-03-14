@@ -240,6 +240,11 @@
      3.7. Typing
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -631,6 +636,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers">
    6.5.7. Mlxtend: Plot Decision Regions of Your ML Classifiers
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deepchecks-weights-biases">
+   6.5.8. Deepchecks + Weights &amp; Biases:
   </a>
  </li>
 </ul>
@@ -1262,6 +1272,134 @@ significant.
 </div>
 <p>Mlxtend (machine learning extensions) is a Python library of useful tools for the day-to-day data science tasks.</p>
 <p>Find other useful functionalities of Mlxtend <a class="reference external" href="https://github.com/rasbt/mlxtend">here</a>.</p>
+</div>
+<div class="section" id="deepchecks-weights-biases">
+<h2><span class="section-number">6.5.8. </span>Deepchecks + Weights &amp; Biases:<a class="headerlink" href="#deepchecks-weights-biases" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U deepchecks wandb scikit-learn 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Weight and Biases is a tool to track and monitor your ML experiments. deepchecks is a tool that allows you to create test suites for your ML models &amp; data with ease.</p>
+<p>The checks in a suite includes:</p>
+<ul class="simple">
+<li><p>model performance</p></li>
+<li><p>data integrity</p></li>
+<li><p>distribution mismatches
+and more.</p></li>
+</ul>
+<p>Now you can track deepchecks suite’s results with Weights &amp; Biases.</p>
+<p>To learn how to use this integration, start with loading a dataset and splitting it into train and test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span> 
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">deepchecks</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load Data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">label_col</span> <span class="o">=</span> <span class="s1">&#39;target&#39;</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">label_col</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_train</span><span class="p">,</span> <span class="n">df_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">label_col</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, build a ML model using the training data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rf_clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">()</span>
+<span class="n">rf_clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_train</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">label_col</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">df_train</span><span class="p">[</span><span class="n">label_col</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RandomForestClassifier()
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create deepchecks’ Dataset objects with train and test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_train</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">df_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label_col</span><span class="p">,</span> <span class="n">cat_features</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">ds_test</span> <span class="o">=</span>  <span class="n">Dataset</span><span class="p">(</span><span class="n">df_test</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="n">label_col</span><span class="p">,</span> <span class="n">cat_features</span><span class="o">=</span><span class="p">[])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a test suite using our ML model and datasets and run it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.suites</span> <span class="kn">import</span> <span class="n">full_suite</span>
+
+<span class="n">suite</span> <span class="o">=</span> <span class="n">full_suite</span><span class="p">()</span>
+<span class="n">suite_result</span> <span class="o">=</span> <span class="n">suite</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_test</span><span class="p">,</span> <span class="n">rf_clf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+<p>Export all results to Weights &amp; Biases:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">wandb</span>
+<span class="n">wandb</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">wandb</span>: Currently logged in as: <span class=" -Color -Color-Yellow">khuyentran1401</span> (use `wandb login --relogin` to force relogin)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">suite_result</span><span class="o">.</span><span class="n">to_wandb</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">Tracking run with wandb version 0.12.11</div><div class="output text_html">Run data is saved locally in <code>/home/khuyen/book/book/Chapter5/wandb/run-20220314_094658-1yf63l3g</code></div><div class="output text_html">Syncing run <strong><a href="https://wandb.ai/khuyentran1401/deepchecks/runs/1yf63l3g" target="_blank">mud-mousse-2</a></strong> to <a href="https://wandb.ai/khuyentran1401/deepchecks" target="_blank">Weights & Biases</a> (<a href="https://wandb.me/run" target="_blank">docs</a>)<br/></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "", "version_major": 2, "version_minor": 0}
+</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output text_html">Waiting for W&B process to finish... <strong style="color:green">(success).</strong></div><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html">Synced <strong style="color:#cdcd00">mud-mousse-2</strong>: <a href="https://wandb.ai/khuyentran1401/deepchecks/runs/1yf63l3g" target="_blank">https://wandb.ai/khuyentran1401/deepchecks/runs/1yf63l3g</a><br/>Synced 4 W&B file(s), 109 media file(s), 90 artifact file(s) and 0 other file(s)</div><div class="output text_html">Find logs at: <code>./wandb/run-20220314_094658-1yf63l3g/logs</code></div></div>
+</div>
+<p>And this is how the test suite will look like in W&amp;B.</p>
+<p><img alt="" src="../_images/deepchecks_wandb.gif" /></p>
+<p><a class="reference external" href="https://towardsdatascience.com/introduction-to-weight-biases-track-and-visualize-your-machine-learning-experiments-in-3-lines-9c9553b0f99d">My article about Weights &amp; Biases</a></p>
+<p><a class="reference external" href="https://deepchecks.com/">Link to deepchecks</a></p>
 </div>
 </div>
 
