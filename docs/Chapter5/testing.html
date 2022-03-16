@@ -193,6 +193,11 @@
      2.10. Code Speed
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/good_practices.html">
+     2.11. Good Python Practices
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -238,6 +243,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
      3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -614,38 +624,43 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#assign-ids-to-test-cases">
+   6.13.4. Assign IDs to Test Cases
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-fixtures-use-the-same-data-for-different-tests">
-   6.13.4. Pytest Fixtures: Use The Same Data for Different Tests
+   6.13.5. Pytest Fixtures: Use The Same Data for Different Tests
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-repeat">
-   6.13.5. Pytest repeat
+   6.13.6. Pytest repeat
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
-   6.13.6. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+   6.13.7. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">
-   6.13.7. Pandera: a Python Library to Validate Your Pandas DataFrame
+   6.13.8. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
-   6.13.8. DeepDiff Find Deep Differences of Python Objects
+   6.13.9. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.9. hypothesis: Property-based Testing in Python
+   6.13.10. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.10. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.11. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
 </ul>
@@ -869,8 +884,102 @@ pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -
 </div>
 <p>From the output above, we can see that all possible combinations of the given operations and inputs are tested.</p>
 </div>
+<div class="section" id="assign-ids-to-test-cases">
+<h2><span class="section-number">6.13.4. </span>Assign IDs to Test Cases<a class="headerlink" href="#assign-ids-to-test-cases" title="Permalink to this headline">¶</a></h2>
+<p>When using pytest parametrize, it can be difficult to understand the role of each test case.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_without_ids.py</span>
+
+<span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
+
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="nd">@mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="s2">&quot;n1, n2&quot;</span><span class="p">,</span>
+    <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest -v pytest_without_ids.py 
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest -v pytest_without_ids.py 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
+cachedir: .pytest_cache
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, cases-3.6.10, typeguard-2.13.3
+collected 3 items                                                              
+
+pytest_without_ids.py::test_is_float[-1--2] <span class=" -Color -Color-Green">PASSED                       [ 33%]</span>
+pytest_without_ids.py::test_is_float[2-3] <span class=" -Color -Color-Green">PASSED                         [ 66%]</span>
+pytest_without_ids.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED                         [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.26s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can add <code class="docutils literal notranslate"><span class="pre">ids</span></code> to pytest parametrize to assign a name to each test case.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_ids.py</span>
+
+<span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="nd">@mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="s2">&quot;n1, n2&quot;</span><span class="p">,</span>
+    <span class="p">[(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span>
+    <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;neg and neg&quot;</span><span class="p">,</span> <span class="s2">&quot;pos and pos&quot;</span><span class="p">,</span> <span class="s2">&quot;zero and zero&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest -v pytest_ids.py 
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest -v pytest_ids.py 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
+cachedir: .pytest_cache
+benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
+rootdir: /home/khuyen/book/book/Chapter5
+plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, cases-3.6.10, typeguard-2.13.3
+collected 3 items                                                              
+
+pytest_ids.py::test_is_float[neg and neg] <span class=" -Color -Color-Green">PASSED                         [ 33%]</span>
+pytest_ids.py::test_is_float[pos and pos] <span class=" -Color -Color-Green">PASSED                         [ 66%]</span>
+pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">PASSED                       [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.27s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that instead of <code class="docutils literal notranslate"><span class="pre">[-1--2]</span></code>, the first test case is shown as <code class="docutils literal notranslate"><span class="pre">neg</span> <span class="pre">and</span> <span class="pre">neg</span></code>. This makes it easier for others to understand the roles of your test cases.</p>
+</div>
 <div class="section" id="pytest-fixtures-use-the-same-data-for-different-tests">
-<h2><span class="section-number">6.13.4. </span>Pytest Fixtures: Use The Same Data for Different Tests<a class="headerlink" href="#pytest-fixtures-use-the-same-data-for-different-tests" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.5. </span>Pytest Fixtures: Use The Same Data for Different Tests<a class="headerlink" href="#pytest-fixtures-use-the-same-data-for-different-tests" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest 
@@ -927,7 +1036,7 @@ pytest_fixture.py <span class=" -Color -Color-Green">.                          
 </div>
 </div>
 <div class="section" id="pytest-repeat">
-<h2><span class="section-number">6.13.5. </span>Pytest repeat<a class="headerlink" href="#pytest-repeat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.6. </span>Pytest repeat<a class="headerlink" href="#pytest-repeat" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-repeat
@@ -991,7 +1100,7 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 <p><a class="reference external" href="https://github.com/pytest-dev/pytest-repeat">Link to pytest-repeat</a></p>
 </div>
 <div class="section" id="pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">
-<h2><span class="section-number">6.13.6. </span>pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar<a class="headerlink" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.7. </span>pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar<a class="headerlink" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pytest-sugar 
@@ -1044,7 +1153,7 @@ Results (2.63s):
 <p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
 </div>
 <div class="section" id="pandera-a-python-library-to-validate-your-pandas-dataframe">
-<h2><span class="section-number">6.13.7. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.8. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandera
@@ -1208,7 +1317,7 @@ Results (2.63s):
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </div>
 <div class="section" id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.13.8. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.9. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepdiff
@@ -1331,7 +1440,7 @@ Results (2.63s):
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </div>
 <div class="section" id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.9. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.10. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
@@ -1405,7 +1514,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </div>
 <div class="section" id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.10. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.13.11. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
