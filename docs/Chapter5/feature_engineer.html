@@ -193,6 +193,11 @@
      2.10. Code Speed
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/good_practices.html">
+     2.11. Good Python Practices
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -238,6 +243,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
      3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -599,23 +609,28 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#split-data-in-a-stratified-fashion-in-scikit-learn">
+   6.2.1. Split Data in a Stratified Fashion in scikit-learn
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#drop-correlated-features">
-   6.2.1. Drop Correlated Features
+   6.2.2. Drop Correlated Features
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-   6.2.2. Return a DataFrame When Using a scikit-learn’s Transformer
+   6.2.3. Return a DataFrame When Using a scikit-learn’s Transformer
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
-   6.2.3. Similarity Encoding for Dirty Categories Using dirty_cat
+   6.2.4. Similarity Encoding for Dirty Categories Using dirty_cat
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
-   6.2.4. Snorkel — Programmatically Build Training Data in Python
+   6.2.5. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
 </ul>
@@ -632,8 +647,96 @@
   <div class="section" id="feature-engineer">
 <h1><span class="section-number">6.2. </span>Feature Engineer<a class="headerlink" href="#feature-engineer" title="Permalink to this headline">¶</a></h1>
 <p>This section covers some libraries for feature engineering.</p>
+<div class="section" id="split-data-in-a-stratified-fashion-in-scikit-learn">
+<h2><span class="section-number">6.2.1. </span>Split Data in a Stratified Fashion in scikit-learn<a class="headerlink" href="#split-data-in-a-stratified-fashion-in-scikit-learn" title="Permalink to this headline">¶</a></h2>
+<p>Normally, after using scikit-learn’s <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>, the proportion of values in the sample will be different from the proportion of values in the entire dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([50, 50, 50])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get count of each class in the train set</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([37, 34, 41])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get count of each class in the test set</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([13, 16,  9])
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to keep the proportion of classes in the sample the same as the proportion of classes in the entire dataset, add <code class="docutils literal notranslate"><span class="pre">stratify=y</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([37, 37, 38])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([13, 13, 12])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="drop-correlated-features">
-<h2><span class="section-number">6.2.1. </span>Drop Correlated Features<a class="headerlink" href="#drop-correlated-features" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.2. </span>Drop Correlated Features<a class="headerlink" href="#drop-correlated-features" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature_engine 
@@ -839,7 +942,7 @@
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </div>
 <div class="section" id="return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-<h2><span class="section-number">6.2.2. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.3. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature_engine 
@@ -926,7 +1029,7 @@
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </div>
 <div class="section" id="similarity-encoding-for-dirty-categories-using-dirty-cat">
-<h2><span class="section-number">6.2.3. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.4. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-cat
@@ -1194,7 +1297,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/feature_engineer_29_0.png" src="../_images/feature_engineer_29_0.png" />
+<img alt="../_images/feature_engineer_39_0.png" src="../_images/feature_engineer_39_0.png" />
 </div>
 </div>
 <p>As we can see from the matrix above,</p>
@@ -1207,7 +1310,7 @@
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
 </div>
 <div class="section" id="snorkel-programmatically-build-training-data-in-python">
-<h2><span class="section-number">6.2.4. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.5. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snorkel
@@ -1642,13 +1745,13 @@
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3810jvsc74a57bd081fd2c32c01ae2ba49907a34c36447a670709039fbd002790bd1125f246cf4a2",
+            kernelName: "python3",
             path: "./Chapter5"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3810jvsc74a57bd081fd2c32c01ae2ba49907a34c36447a670709039fbd002790bd1125f246cf4a2'</script>
+    <script>kernelName = 'python3'</script>
 
               </div>
               
