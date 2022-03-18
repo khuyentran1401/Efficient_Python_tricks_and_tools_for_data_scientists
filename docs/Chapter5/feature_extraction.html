@@ -193,6 +193,11 @@
      2.10. Code Speed
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/good_practices.html">
+     2.11. Good Python Practices
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -231,8 +236,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/dataclasses.html">
+     3.6. Data Classes
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.6. Typing
+     3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -616,6 +631,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#yarl-create-and-extract-elements-from-a-url-using-python">
    6.1.5. yarl: Create and Extract Elements from a URL Using Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pigeon-quickly-annotate-your-data-on-jupyter-notebook">
+   6.1.6. Pigeon: Quickly Annotate Your Data on Jupyter Notebook
   </a>
  </li>
 </ul>
@@ -1373,6 +1393,83 @@ Categorical columns: [&#39;col2&#39;]
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/aio-libs/yarl">Link to yarl</a>.</p>
+</div>
+<div class="section" id="pigeon-quickly-annotate-your-data-on-jupyter-notebook">
+<h2><span class="section-number">6.1.6. </span>Pigeon: Quickly Annotate Your Data on Jupyter Notebook<a class="headerlink" href="#pigeon-quickly-annotate-your-data-on-jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pigeon-jupyter
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, your training data is unlabeled. If you want to quickly annotate your data within your Jupyter Notebook, use Pigeon. With, Pigeon, you can label data by simply clicking the label.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pigeon</span> <span class="kn">import</span> <span class="n">annotate</span>
+
+<span class="n">annotations</span> <span class="o">=</span> <span class="n">annotate</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;The service is terrible&quot;</span><span class="p">,</span> <span class="s2">&quot;I will definitely come here again&quot;</span><span class="p">],</span>
+    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="s2">&quot;negative&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "78fde3372c0445f7b4476828b6d6ca01", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "a7df2bb28f9449d7a3e89cba480fe964", "version_major": 2, "version_minor": 0}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "87902bf2dfdd4b07af97a87ec4267cc4", "version_major": 2, "version_minor": 0}
+</script><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 9;
+                var nbb_unformatted_code = "from pigeon import annotate\n\nannotations = annotate(\n  ['The service is terrible', 'I will definitely come here again'],\n  options=['positive', 'negative']\n)";
+                var nbb_formatted_code = "from pigeon import annotate\n\nannotations = annotate(\n    [\"The service is terrible\", \"I will definitely come here again\"],\n    options=[\"positive\", \"negative\"],\n)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><img alt="" src="../_images/pigeon_demo.gif" /></p>
+<p>After labeling all your data, you can get the examples along with their labels by calling <code class="docutils literal notranslate"><span class="pre">annotations</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annotations</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;The service is terrible&#39;, &#39;negative&#39;),
+ (&#39;I will definitely come here again&#39;, &#39;positive&#39;)]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 8;
+                var nbb_unformatted_code = "annotations";
+                var nbb_formatted_code = "annotations";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/agermanidis/pigeon">Link to Pigeon</a></p>
 </div>
 </div>
 
