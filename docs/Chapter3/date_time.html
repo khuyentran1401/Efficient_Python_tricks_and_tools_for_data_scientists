@@ -193,6 +193,11 @@
      2.10. Code Speed
     </a>
    </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter1/good_practices.html">
+     2.11. Good Python Practices
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1 has-children">
@@ -238,6 +243,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
      3.7. Typing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../Chapter2/pathlib.html">
+     3.8. pathlib
     </a>
    </li>
   </ul>
@@ -614,28 +624,33 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandas-grouper-group-values-based-on-a-specific-frequency">
+   4.3.4. pandas Grouper: Group Values Based on a Specific Frequency
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-series-dt-access-datetime-properties-of-a-pandas-series">
-   4.3.4. pandas.Series.dt: Access Datetime Properties of a pandas Series
+   4.3.5. pandas.Series.dt: Access Datetime Properties of a pandas Series
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-rows-within-a-year-range">
-   4.3.5. Get Rows within a Year Range
+   4.3.6. Get Rows within a Year Range
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-reindex-replace-the-values-of-the-missing-dates-with-0">
-   4.3.6. pandas.reindex: Replace the Values of the Missing Dates with 0
+   4.3.7. pandas.reindex: Replace the Values of the Missing Dates with 0
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#select-dataframe-rows-before-or-after-a-specific-date">
-   4.3.7. Select DataFrame Rows Before or After a Specific Date
+   4.3.8. Select DataFrame Rows Before or After a Specific Date
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#resample-resample-time-series-data">
-   4.3.8. resample: Resample Time-Series Data
+   4.3.9. resample: Resample Time-Series Data
   </a>
  </li>
 </ul>
@@ -917,8 +932,113 @@ memory usage: 176.0 bytes
 </div></div></div>
 </div>
 </div>
+<div class="section" id="pandas-grouper-group-values-based-on-a-specific-frequency">
+<h2><span class="section-number">4.3.4. </span>pandas Grouper: Group Values Based on a Specific Frequency<a class="headerlink" href="#pandas-grouper-group-values-based-on-a-specific-frequency" title="Permalink to this headline">¶</a></h2>
+<p>Imagine you are given a DataFrame with a date column. If you want to group your DataFrame by a specific frequency, use <code class="docutils literal notranslate"><span class="pre">pd.Grouper</span></code>. A <code class="docutils literal notranslate"><span class="pre">Grouper</span></code> allows you to customize your groupby instruction.</p>
+<p>In the code below, I set <code class="docutils literal notranslate"><span class="pre">freq=1W</span></code> to group my DataFrame by weeks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;3-15-22&quot;</span><span class="p">,</span> <span class="s2">&quot;3-16-22&quot;</span><span class="p">,</span> <span class="s2">&quot;3-22-22&quot;</span><span class="p">],</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">])</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2022-03-15</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2022-03-16</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2022-03-22</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Grouper</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;1W&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>price</th>
+    </tr>
+    <tr>
+      <th>date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022-03-20</th>
+      <td>2.5</td>
+    </tr>
+    <tr>
+      <th>2022-03-27</th>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
 <div class="section" id="pandas-series-dt-access-datetime-properties-of-a-pandas-series">
-<h2><span class="section-number">4.3.4. </span>pandas.Series.dt: Access Datetime Properties of a pandas Series<a class="headerlink" href="#pandas-series-dt-access-datetime-properties-of-a-pandas-series" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.5. </span>pandas.Series.dt: Access Datetime Properties of a pandas Series<a class="headerlink" href="#pandas-series-dt-access-datetime-properties-of-a-pandas-series" title="Permalink to this headline">¶</a></h2>
 <p>The easiest way to access datetime properties of pandas Series values is to use <code class="docutils literal notranslate"><span class="pre">pandas.Series.dt</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -956,7 +1076,7 @@ Name: date, dtype: object
 </div>
 </div>
 <div class="section" id="get-rows-within-a-year-range">
-<h2><span class="section-number">4.3.5. </span>Get Rows within a Year Range<a class="headerlink" href="#get-rows-within-a-year-range" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.6. </span>Get Rows within a Year Range<a class="headerlink" href="#get-rows-within-a-year-range" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get all data starting in a particular year and exclude the previous years, simply use <code class="docutils literal notranslate"><span class="pre">df.loc['year':]</span></code> like below. This works when the index of your <code class="docutils literal notranslate"><span class="pre">pd.Dataframe</span></code> is <code class="docutils literal notranslate"><span class="pre">DatetimeIndex</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1064,7 +1184,7 @@ Name: date, dtype: object
 </div>
 </div>
 <div class="section" id="pandas-reindex-replace-the-values-of-the-missing-dates-with-0">
-<h2><span class="section-number">4.3.6. </span>pandas.reindex: Replace the Values of the Missing Dates with 0<a class="headerlink" href="#pandas-reindex-replace-the-values-of-the-missing-dates-with-0" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.7. </span>pandas.reindex: Replace the Values of the Missing Dates with 0<a class="headerlink" href="#pandas-reindex-replace-the-values-of-the-missing-dates-with-0" title="Permalink to this headline">¶</a></h2>
 <p>Have you ever got a time series with missing dates? This can cause a problem since many time series methods require a fixed frequency index.</p>
 <p>To fix this issue, you can replace the values of the missing dates with 0 using <code class="docutils literal notranslate"><span class="pre">pd.date_range</span></code> and <code class="docutils literal notranslate"><span class="pre">pd.reindex</span></code>.</p>
 <div class="cell docutils container">
@@ -1111,7 +1231,7 @@ Freq: D, dtype: int64
 </div>
 </div>
 <div class="section" id="select-dataframe-rows-before-or-after-a-specific-date">
-<h2><span class="section-number">4.3.7. </span>Select DataFrame Rows Before or After a Specific Date<a class="headerlink" href="#select-dataframe-rows-before-or-after-a-specific-date" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.8. </span>Select DataFrame Rows Before or After a Specific Date<a class="headerlink" href="#select-dataframe-rows-before-or-after-a-specific-date" title="Permalink to this headline">¶</a></h2>
 <p>If you want to get the rows whose dates are before or after a specific date, use the comparison operator and a date string.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1229,7 +1349,7 @@ Freq: D, dtype: int64
 </div>
 </div>
 <div class="section" id="resample-resample-time-series-data">
-<h2><span class="section-number">4.3.8. </span>resample: Resample Time-Series Data<a class="headerlink" href="#resample-resample-time-series-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">4.3.9. </span>resample: Resample Time-Series Data<a class="headerlink" href="#resample-resample-time-series-data" title="Permalink to this headline">¶</a></h2>
 <p>If you want to change the frequency of time-series data,  use <code class="docutils literal notranslate"><span class="pre">resample</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">resample</span></code> to show the records every two days instead of every day.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
