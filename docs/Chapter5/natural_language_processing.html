@@ -698,8 +698,13 @@ commentsRunWhenDOMLoaded(addUtterances);
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rapidfuzz-rapid-string-matching-in-python">
+   6.6.12. RapidFuzz: Rapid String Matching in Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#checklist-create-data-to-test-your-nlp-model">
-   6.6.12. Checklist: Create Data to Test Your NLP Model
+   6.6.13. Checklist: Create Data to Test Your NLP Model
   </a>
  </li>
 </ul>
@@ -1694,8 +1699,65 @@ Name: text, dtype: object
 </div>
 <p><a class="reference external" href="https://github.com/shivam5992/textstat">Link to textstat</a>.</p>
 </div>
+<div class="section" id="rapidfuzz-rapid-string-matching-in-python">
+<h2><span class="section-number">6.6.12. </span>RapidFuzz: Rapid String Matching in Python<a class="headerlink" href="#rapidfuzz-rapid-string-matching-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install rapidfuzz
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to find strings that are similar to another string above a certain threshold, use RapidFuzz. RapidFuzz is a Python library that allows you to quickly match strings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rapidfuzz</span> <span class="kn">import</span> <span class="n">fuzz</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calculates the normalized Indel distance between 2 strings</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="s2">&quot;Let&#39;s meet at 10 am tomorrow&quot;</span><span class="p">,</span> <span class="s2">&quot;Let&#39;s meet at 10 am tommorrow&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>98.24561403508771
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="s2">&quot;here you go&quot;</span><span class="p">,</span> <span class="s2">&quot;you go here&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>54.54545454545454
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sort the words in the strings and calculates the fuzz.ratio between them</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fuzz</span><span class="o">.</span><span class="n">token_sort_ratio</span><span class="p">(</span><span class="s2">&quot;here you go&quot;</span><span class="p">,</span> <span class="s2">&quot;you go here&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100.0
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/maxbachmann/RapidFuzz">Link to RapidFuzz</a>.</p>
+</div>
 <div class="section" id="checklist-create-data-to-test-your-nlp-model">
-<h2><span class="section-number">6.6.12. </span>Checklist: Create Data to Test Your NLP Model<a class="headerlink" href="#checklist-create-data-to-test-your-nlp-model" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.6.13. </span>Checklist: Create Data to Test Your NLP Model<a class="headerlink" href="#checklist-create-data-to-test-your-nlp-model" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install checklist torch
