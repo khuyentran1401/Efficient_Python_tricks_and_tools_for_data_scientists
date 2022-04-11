@@ -657,6 +657,11 @@ commentsRunWhenDOMLoaded(addUtterances);
    3.6.3. Compare Between Two Data Classes
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">
+   3.6.4. Post-init: Add Init Method to a Data Class
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -814,6 +819,49 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="post-init-add-init-method-to-a-data-class">
+<h2><span class="section-number">3.6.4. </span>Post-init: Add Init Method to a Data Class<a class="headerlink" href="#post-init-add-init-method-to-a-data-class" title="Permalink to this headline">¶</a></h2>
+<p>With a data class, you don’t need an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method to assign values to its attributes. However, sometimes you might want to use an <code class="docutils literal notranslate"><span class="pre">___init__</span></code> method to initialize certain attributes. That is when data class’s <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> comes in handy.</p>
+<p>In the code below, I use <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> to initialize the attribute <code class="docutils literal notranslate"><span class="pre">info</span></code> using the attributes <code class="docutils literal notranslate"><span class="pre">names</span></code> and <code class="docutils literal notranslate"><span class="pre">ages</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="n">names</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Dogs</span><span class="p">:</span>
+    <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">ages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dog</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ages</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Bim&#39;</span><span class="p">,</span> <span class="s1">&#39;Pepper&#39;</span><span class="p">]</span>
+<span class="n">ages</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">dogs</span> <span class="o">=</span> <span class="n">Dogs</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">ages</span><span class="p">)</span>
+<span class="n">dogs</span><span class="o">.</span><span class="n">info</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Dog(names=&#39;Bim&#39;, age=5), Dog(names=&#39;Pepper&#39;, age=6)]
 </pre></div>
 </div>
 </div>
