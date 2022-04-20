@@ -673,13 +673,18 @@ commentsRunWhenDOMLoaded(addUtterances);
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#validation-curve-determine-if-an-estimator-is-underfitting-over-overfitting">
+   6.5.7. Validation Curve: Determine if an Estimator is Underfitting over Overfitting
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers">
-   6.5.7. Mlxtend: Plot Decision Regions of Your ML Classifiers
+   6.5.8. Mlxtend: Plot Decision Regions of Your ML Classifiers
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-weights-biases-test-and-track-your-ml-model-and-data">
-   6.5.8. Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data
+   6.5.9. Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data
   </a>
  </li>
 </ul>
@@ -1254,11 +1259,63 @@ significant.
 </div>
 </div>
 <p>From the plot above, it seems like the light is the most important feature to DecisionTreeClassifier, followed by CO2, temperature.</p>
+</div>
+<div class="section" id="validation-curve-determine-if-an-estimator-is-underfitting-over-overfitting">
+<h2><span class="section-number">6.5.7. </span>Validation Curve: Determine if an Estimator is Underfitting over Overfitting<a class="headerlink" href="#validation-curve-determine-if-an-estimator-is-underfitting-over-overfitting" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install yellowbrick
+</pre></div>
+</div>
+</div>
+</div>
+<p>To determine if the estimator is underfitting or overfitting for different values of a hyperparameter, use Yellowbrick’s validation curve.</p>
+<p>The validation curve helps us to find the hyperparameter where the estimator is neither underfitting nor overfitting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yellowbrick.datasets.loaders</span> <span class="kn">import</span> <span class="n">load_occupancy</span>
+<span class="kn">from</span> <span class="nn">yellowbrick.model_selection</span> <span class="kn">import</span> <span class="n">validation_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_occupancy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DecisionTreeClassifier()
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the code below, we choose the range of <code class="docutils literal notranslate"><span class="pre">max_depth</span></code> to be from 1 to 11.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">viz</span> <span class="o">=</span> <span class="n">validation_curve</span><span class="p">(</span>
+    <span class="n">DecisionTreeClassifier</span><span class="p">(),</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">param_name</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">,</span>
+    <span class="n">param_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">cv</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine_learning_51_0.png" src="../_images/machine_learning_51_0.png" />
+</div>
+</div>
+<p>As we can see from the plot above, although the number of max depth above 2 results in the higher training score, it also results in the lower cross-validation score. This is because the decision tree becomes more overfitting the deeper it is.</p>
+<p>Thus, the sweet spot will be where the cross-validation score neither increases nor decreases, which is 2.</p>
 <p><a class="reference external" href="https://www.scikit-yb.org/en/latest/index.html">Link to Yellowbrick</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/introduction-to-yellowbrick-a-python-library-to-explain-the-prediction-of-your-machine-learning-d63ecee10ecc">My full article about Yellowbrick</a>.</p>
 </div>
 <div class="section" id="mlxtend-plot-decision-regions-of-your-ml-classifiers">
-<h2><span class="section-number">6.5.7. </span>Mlxtend: Plot Decision Regions of Your ML Classifiers<a class="headerlink" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.5.8. </span>Mlxtend: Plot Decision Regions of Your ML Classifiers<a class="headerlink" href="#mlxtend-plot-decision-regions-of-your-ml-classifiers" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install mlxtend  
@@ -1306,14 +1363,14 @@ significant.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/machine_learning_49_0.png" src="../_images/machine_learning_49_0.png" />
+<img alt="../_images/machine_learning_57_0.png" src="../_images/machine_learning_57_0.png" />
 </div>
 </div>
 <p>Mlxtend (machine learning extensions) is a Python library of useful tools for the day-to-day data science tasks.</p>
 <p>Find other useful functionalities of Mlxtend <a class="reference external" href="https://github.com/rasbt/mlxtend">here</a>.</p>
 </div>
 <div class="section" id="deepchecks-weights-biases-test-and-track-your-ml-model-and-data">
-<h2><span class="section-number">6.5.8. </span>Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data<a class="headerlink" href="#deepchecks-weights-biases-test-and-track-your-ml-model-and-data" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.5.9. </span>Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data<a class="headerlink" href="#deepchecks-weights-biases-test-and-track-your-ml-model-and-data" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U deepchecks wandb scikit-learn 
