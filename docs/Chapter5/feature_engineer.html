@@ -653,18 +653,23 @@ commentsRunWhenDOMLoaded(addUtterances);
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">
+   6.2.3. Encode Rare Labels with Feature-engine
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-   6.2.3. Return a DataFrame When Using a scikit-learn’s Transformer
+   6.2.4. Return a DataFrame When Using a scikit-learn’s Transformer
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
-   6.2.4. Similarity Encoding for Dirty Categories Using dirty_cat
+   6.2.5. Similarity Encoding for Dirty Categories Using dirty_cat
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
-   6.2.5. Snorkel — Programmatically Build Training Data in Python
+   6.2.6. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
 </ul>
@@ -975,8 +980,355 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </div>
+<div class="section" id="encode-rare-labels-with-feature-engine">
+<h2><span class="section-number">6.2.3. </span>Encode Rare Labels with Feature-engine<a class="headerlink" href="#encode-rare-labels-with-feature-engine" title="Permalink to this headline">¶</a></h2>
+<p>When dealing with features with high cardinality, you might want to mark the rare categories as “Other”. Feature-engine’s <code class="docutils literal notranslate"><span class="pre">RareLabelEncoder</span></code> makes it easy for you to do so.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">RareLabelEncoder</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s1">&#39;dating_profile&#39;</span><span class="p">)[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>body_type</th>
+      <th>diet</th>
+      <th>drinks</th>
+      <th>drugs</th>
+      <th>education</th>
+      <th>essay0</th>
+      <th>essay1</th>
+      <th>essay2</th>
+      <th>essay3</th>
+      <th>essay4</th>
+      <th>...</th>
+      <th>location</th>
+      <th>offspring</th>
+      <th>orientation</th>
+      <th>pets</th>
+      <th>religion</th>
+      <th>sex</th>
+      <th>sign</th>
+      <th>smokes</th>
+      <th>speaks</th>
+      <th>status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a little extra</td>
+      <td>strictly anything</td>
+      <td>socially</td>
+      <td>never</td>
+      <td>working on college/university</td>
+      <td>about me:&lt;br /&gt;\n&lt;br /&gt;\ni would love to think...</td>
+      <td>currently working as an international agent fo...</td>
+      <td>making people laugh.&lt;br /&gt;\nranting about a go...</td>
+      <td>the way i look. i am a six foot half asian, ha...</td>
+      <td>books:&lt;br /&gt;\nabsurdistan, the republic, of mi...</td>
+      <td>...</td>
+      <td>south san francisco, california</td>
+      <td>doesn&amp;rsquo;t have kids, but might want them</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>agnosticism and very serious about it</td>
+      <td>m</td>
+      <td>gemini</td>
+      <td>sometimes</td>
+      <td>english</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>average</td>
+      <td>mostly other</td>
+      <td>often</td>
+      <td>sometimes</td>
+      <td>working on space camp</td>
+      <td>i am a chef: this is what that means.&lt;br /&gt;\n1...</td>
+      <td>dedicating everyday to being an unbelievable b...</td>
+      <td>being silly. having ridiculous amonts of fun w...</td>
+      <td>None</td>
+      <td>i am die hard christopher moore fan. i don't r...</td>
+      <td>...</td>
+      <td>oakland, california</td>
+      <td>doesn&amp;rsquo;t have kids, but might want them</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>agnosticism but not too serious about it</td>
+      <td>m</td>
+      <td>cancer</td>
+      <td>no</td>
+      <td>english (fluently), spanish (poorly), french (...</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>thin</td>
+      <td>anything</td>
+      <td>socially</td>
+      <td>None</td>
+      <td>graduated from masters program</td>
+      <td>i'm not ashamed of much, but writing public te...</td>
+      <td>i make nerdy software for musicians, artists, ...</td>
+      <td>improvising in different contexts. alternating...</td>
+      <td>my large jaw and large glasses are the physica...</td>
+      <td>okay this is where the cultural matrix gets so...</td>
+      <td>...</td>
+      <td>san francisco, california</td>
+      <td>None</td>
+      <td>straight</td>
+      <td>has cats</td>
+      <td>None</td>
+      <td>m</td>
+      <td>pisces but it doesn&amp;rsquo;t matter</td>
+      <td>no</td>
+      <td>english, french, c++</td>
+      <td>available</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>thin</td>
+      <td>vegetarian</td>
+      <td>socially</td>
+      <td>None</td>
+      <td>working on college/university</td>
+      <td>i work in a library and go to school. . .</td>
+      <td>reading things written by old dead people</td>
+      <td>playing synthesizers and organizing books acco...</td>
+      <td>socially awkward but i do my best</td>
+      <td>bataille, celine, beckett. . .&lt;br /&gt;\nlynch, j...</td>
+      <td>...</td>
+      <td>berkeley, california</td>
+      <td>doesn&amp;rsquo;t want kids</td>
+      <td>straight</td>
+      <td>likes cats</td>
+      <td>None</td>
+      <td>m</td>
+      <td>pisces</td>
+      <td>no</td>
+      <td>english, german (poorly)</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>athletic</td>
+      <td>None</td>
+      <td>socially</td>
+      <td>never</td>
+      <td>graduated from college/university</td>
+      <td>hey how's it going? currently vague on the pro...</td>
+      <td>work work work work + play</td>
+      <td>creating imagery to look at:&lt;br /&gt;\nhttp://bag...</td>
+      <td>i smile a lot and my inquisitive nature</td>
+      <td>music: bands, rappers, musicians&lt;br /&gt;\nat the...</td>
+      <td>...</td>
+      <td>san francisco, california</td>
+      <td>None</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>None</td>
+      <td>m</td>
+      <td>aquarius</td>
+      <td>no</td>
+      <td>english</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>average</td>
+      <td>mostly anything</td>
+      <td>socially</td>
+      <td>None</td>
+      <td>graduated from college/university</td>
+      <td>i'm an australian living in san francisco, but...</td>
+      <td>building awesome stuff. figuring out what's im...</td>
+      <td>imagining random shit. laughing at aforementio...</td>
+      <td>i have a big smile. i also get asked if i'm we...</td>
+      <td>books: to kill a mockingbird, lord of the ring...</td>
+      <td>...</td>
+      <td>san francisco, california</td>
+      <td>doesn&amp;rsquo;t have kids, but might want them</td>
+      <td>straight</td>
+      <td>likes cats</td>
+      <td>atheism</td>
+      <td>m</td>
+      <td>taurus</td>
+      <td>no</td>
+      <td>english (fluently), chinese (okay)</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>fit</td>
+      <td>strictly anything</td>
+      <td>socially</td>
+      <td>never</td>
+      <td>graduated from college/university</td>
+      <td>life is about the little things. i love to lau...</td>
+      <td>digging up buried treasure</td>
+      <td>frolicking&lt;br /&gt;\nwitty banter&lt;br /&gt;\nusing my...</td>
+      <td>i am the last unicorn</td>
+      <td>i like books. ones with pictures. reading them...</td>
+      <td>...</td>
+      <td>san francisco, california</td>
+      <td>None</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>None</td>
+      <td>f</td>
+      <td>virgo</td>
+      <td>None</td>
+      <td>english</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>average</td>
+      <td>mostly anything</td>
+      <td>socially</td>
+      <td>never</td>
+      <td>graduated from college/university</td>
+      <td>None</td>
+      <td>writing. meeting new people, spending time wit...</td>
+      <td>remembering people's birthdays, sending cards,...</td>
+      <td>i'm rather approachable (a byproduct of being ...</td>
+      <td>i like: alphabetized lists, aquariums, autobio...</td>
+      <td>...</td>
+      <td>san francisco, california</td>
+      <td>doesn&amp;rsquo;t have kids, but wants them</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>christianity</td>
+      <td>f</td>
+      <td>sagittarius</td>
+      <td>no</td>
+      <td>english, spanish (okay)</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>None</td>
+      <td>strictly anything</td>
+      <td>socially</td>
+      <td>None</td>
+      <td>graduated from college/university</td>
+      <td>None</td>
+      <td>oh goodness. at the moment i have 4 jobs, so i...</td>
+      <td>None</td>
+      <td>i'm freakishly blonde and have the same name a...</td>
+      <td>i am always willing to try new foods and am no...</td>
+      <td>...</td>
+      <td>belvedere tiburon, california</td>
+      <td>doesn&amp;rsquo;t have kids</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>christianity but not too serious about it</td>
+      <td>f</td>
+      <td>gemini but it doesn&amp;rsquo;t matter</td>
+      <td>when drinking</td>
+      <td>english</td>
+      <td>single</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>athletic</td>
+      <td>mostly anything</td>
+      <td>not at all</td>
+      <td>never</td>
+      <td>working on two-year college</td>
+      <td>my names jake.&lt;br /&gt;\ni'm a creative guy and i...</td>
+      <td>i have an apartment. i like to explore and che...</td>
+      <td>i'm good at finding creative solutions to prob...</td>
+      <td>i'm short</td>
+      <td>i like some tv. i love summer heights high and...</td>
+      <td>...</td>
+      <td>san mateo, california</td>
+      <td>None</td>
+      <td>straight</td>
+      <td>likes dogs and likes cats</td>
+      <td>atheism and laughing about it</td>
+      <td>m</td>
+      <td>cancer but it doesn&amp;rsquo;t matter</td>
+      <td>no</td>
+      <td>english (fluently)</td>
+      <td>single</td>
+    </tr>
+  </tbody>
+</table>
+<p>10 rows × 30 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">processed</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the code below,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code> species the minimum frequency below which a category is considered rare.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">replace_with</span></code> species the value to be used to replace rare categories.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">variables</span></code> specify the list of categorical variables that will be encoded.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">RareLabelEncoder</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;education&quot;</span><span class="p">],</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;Other&quot;</span><span class="p">)</span>
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the rare categories in the column <code class="docutils literal notranslate"><span class="pre">education</span></code> are replaced with “Other”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">encoded</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>46107                                Other
+45677       graduated from masters program
+57928    graduated from college/university
+53127        working on college/university
+33300                                Other
+33648       graduated from masters program
+59701                                Other
+57013       graduated from masters program
+46428    graduated from college/university
+57123    graduated from college/university
+Name: education, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
+</div>
 <div class="section" id="return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-<h2><span class="section-number">6.2.3. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.4. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature_engine 
@@ -1063,7 +1415,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </div>
 <div class="section" id="similarity-encoding-for-dirty-categories-using-dirty-cat">
-<h2><span class="section-number">6.2.4. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.5. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-cat
@@ -1331,7 +1683,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/feature_engineer_39_0.png" src="../_images/feature_engineer_39_0.png" />
+<img alt="../_images/feature_engineer_48_0.png" src="../_images/feature_engineer_48_0.png" />
 </div>
 </div>
 <p>As we can see from the matrix above,</p>
@@ -1344,7 +1696,7 @@ commentsRunWhenDOMLoaded(addUtterances);
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
 </div>
 <div class="section" id="snorkel-programmatically-build-training-data-in-python">
-<h2><span class="section-number">6.2.5. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.6. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snorkel
