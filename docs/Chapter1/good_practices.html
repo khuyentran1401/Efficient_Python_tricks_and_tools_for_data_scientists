@@ -652,38 +652,43 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#avoid-duplication-in-your-code">
+   2.10.3. Avoid Duplication in Your Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#underscore-ignore-values-that-will-not-be-used">
-   2.10.3. Underscore(_): Ignore Values That Will Not Be Used
+   2.10.4. Underscore(_): Ignore Values That Will Not Be Used
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#underscore-ignore-the-index-in-python-for-loops">
-   2.10.4. Underscore “_”: Ignore The Index in Python For Loops
+   2.10.5. Underscore “_”: Ignore The Index in Python For Loops
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-pass-statement">
-   2.10.5. Python Pass Statement
+   2.10.6. Python Pass Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#stop-using-operator-to-create-a-copy-of-a-python-list-use-copy-method-instead">
-   2.10.6. Stop using = operator to create a copy of a Python list. Use copy method instead
+   2.10.7. Stop using = operator to create a copy of a Python list. Use copy method instead
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepcopy-copy-a-nested-object">
-   2.10.7. deepcopy: Copy a Nested Object
+   2.10.8. deepcopy: Copy a Nested Object
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-side-effects-when-using-list-in-a-function">
-   2.10.8. Avoid Side Effects When Using List in a Function
+   2.10.9. Avoid Side Effects When Using List in a Function
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#enumerate-get-counter-and-value-while-looping">
-   2.10.9. Enumerate: Get Counter and Value While Looping
+   2.10.10. Enumerate: Get Counter and Value While Looping
   </a>
  </li>
 </ul>
@@ -717,38 +722,43 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#avoid-duplication-in-your-code">
+   2.10.3. Avoid Duplication in Your Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#underscore-ignore-values-that-will-not-be-used">
-   2.10.3. Underscore(_): Ignore Values That Will Not Be Used
+   2.10.4. Underscore(_): Ignore Values That Will Not Be Used
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#underscore-ignore-the-index-in-python-for-loops">
-   2.10.4. Underscore “_”: Ignore The Index in Python For Loops
+   2.10.5. Underscore “_”: Ignore The Index in Python For Loops
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-pass-statement">
-   2.10.5. Python Pass Statement
+   2.10.6. Python Pass Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#stop-using-operator-to-create-a-copy-of-a-python-list-use-copy-method-instead">
-   2.10.6. Stop using = operator to create a copy of a Python list. Use copy method instead
+   2.10.7. Stop using = operator to create a copy of a Python list. Use copy method instead
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepcopy-copy-a-nested-object">
-   2.10.7. deepcopy: Copy a Nested Object
+   2.10.8. deepcopy: Copy a Nested Object
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-side-effects-when-using-list-in-a-function">
-   2.10.8. Avoid Side Effects When Using List in a Function
+   2.10.9. Avoid Side Effects When Using List in a Function
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#enumerate-get-counter-and-value-while-looping">
-   2.10.9. Enumerate: Get Counter and Value While Looping
+   2.10.10. Enumerate: Get Counter and Value While Looping
   </a>
  </li>
 </ul>
@@ -808,8 +818,38 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
+<div class="section" id="avoid-duplication-in-your-code">
+<h2><span class="section-number">2.10.3. </span>Avoid Duplication in Your Code<a class="headerlink" href="#avoid-duplication-in-your-code" title="Permalink to this headline">¶</a></h2>
+<p>While writing code, we should avoid duplication because:</p>
+<ul class="simple">
+<li><p>It is redundant</p></li>
+<li><p>If we make a change to one piece of code, we need to remember to make the same change to another piece of code. Otherwise, we will introduce bugs into our code.</p></li>
+</ul>
+<p>In the code below, we use the filter <code class="docutils literal notranslate"><span class="pre">X['date']</span> <span class="pre">&gt;</span> <span class="pre">date(2021,</span> <span class="pre">2,</span> <span class="pre">8)</span></code> twice. To avoid duplication, we can assign the filter to a variable, then use that variable to filter other arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+									<span class="s1">&#39;val1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;val2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]})</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="c1"># Instead of this</span>
+<span class="n">subset_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span>
+<span class="n">subset_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)]</span>
+
+<span class="c1"># Do this</span>
+<span class="n">filt</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">subset_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">filt</span><span class="p">]</span>
+<span class="n">subset_y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">filt</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 <div class="section" id="underscore-ignore-values-that-will-not-be-used">
-<h2><span class="section-number">2.10.3. </span>Underscore(_): Ignore Values That Will Not Be Used<a class="headerlink" href="#underscore-ignore-values-that-will-not-be-used" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.4. </span>Underscore(_): Ignore Values That Will Not Be Used<a class="headerlink" href="#underscore-ignore-values-that-will-not-be-used" title="Permalink to this headline">¶</a></h2>
 <p>When assigning the values returned from a function, you might want to ignore some values that are not used in future code. If so, assign those values to underscores <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -829,7 +869,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="section" id="underscore-ignore-the-index-in-python-for-loops">
-<h2><span class="section-number">2.10.4. </span>Underscore “_”: Ignore The Index in Python For Loops<a class="headerlink" href="#underscore-ignore-the-index-in-python-for-loops" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.5. </span>Underscore “_”: Ignore The Index in Python For Loops<a class="headerlink" href="#underscore-ignore-the-index-in-python-for-loops" title="Permalink to this headline">¶</a></h2>
 <p>If you want to repeat a loop a specific number of times but don’t care about the index, you can use <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -850,7 +890,7 @@ Hello
 </div>
 </div>
 <div class="section" id="python-pass-statement">
-<h2><span class="section-number">2.10.5. </span>Python Pass Statement<a class="headerlink" href="#python-pass-statement" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.6. </span>Python Pass Statement<a class="headerlink" href="#python-pass-statement" title="Permalink to this headline">¶</a></h2>
 <p>If you want to create code that does a particular thing but don’t know how to write that code yet, put that code in a function then use <code class="docutils literal notranslate"><span class="pre">pass</span></code>.</p>
 <p>Once you have finished writing the code in a high level, start to go back to the functions and replace <code class="docutils literal notranslate"><span class="pre">pass</span></code> with the code for that function. This will prevent your thoughts from being disrupted.</p>
 <div class="cell docutils container">
@@ -874,7 +914,7 @@ Hello
 </div>
 </div>
 <div class="section" id="stop-using-operator-to-create-a-copy-of-a-python-list-use-copy-method-instead">
-<h2><span class="section-number">2.10.6. </span>Stop using = operator to create a copy of a Python list. Use copy method instead<a class="headerlink" href="#stop-using-operator-to-create-a-copy-of-a-python-list-use-copy-method-instead" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.7. </span>Stop using = operator to create a copy of a Python list. Use copy method instead<a class="headerlink" href="#stop-using-operator-to-create-a-copy-of-a-python-list-use-copy-method-instead" title="Permalink to this headline">¶</a></h2>
 <p>When you create a copy of a Python list using the <code class="docutils literal notranslate"><span class="pre">=</span></code> operator, a change in the new list will lead to the change in the old list. It is because both lists point to the same object.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -945,7 +985,7 @@ Hello
 </div>
 </div>
 <div class="section" id="deepcopy-copy-a-nested-object">
-<h2><span class="section-number">2.10.7. </span>deepcopy: Copy a Nested Object<a class="headerlink" href="#deepcopy-copy-a-nested-object" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.8. </span>deepcopy: Copy a Nested Object<a class="headerlink" href="#deepcopy-copy-a-nested-object" title="Permalink to this headline">¶</a></h2>
 <p>If you want to create a copy of a nested object, use <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code>. While <code class="docutils literal notranslate"><span class="pre">copy</span></code> creates a shallow copy of the original object, <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> creates a deep copy of the original object. This means that if you change the nested children of a shallow copy, the original object will also change. However, if you change the nested children of a deep copy, the original object will not change.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1020,7 +1060,7 @@ Hello
 </div>
 </div>
 <div class="section" id="avoid-side-effects-when-using-list-in-a-function">
-<h2><span class="section-number">2.10.8. </span>Avoid Side Effects When Using List in a Function<a class="headerlink" href="#avoid-side-effects-when-using-list-in-a-function" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.9. </span>Avoid Side Effects When Using List in a Function<a class="headerlink" href="#avoid-side-effects-when-using-list-in-a-function" title="Permalink to this headline">¶</a></h2>
 <p>When using a Python list as an argument in a function, you might inadvertently change its value.</p>
 <p>For example, in the code below, using the <code class="docutils literal notranslate"><span class="pre">append</span></code> method ends up changing the values of the original list.</p>
 <div class="cell docutils container">
@@ -1079,7 +1119,7 @@ Hello
 </div>
 </div>
 <div class="section" id="enumerate-get-counter-and-value-while-looping">
-<h2><span class="section-number">2.10.9. </span>Enumerate: Get Counter and Value While Looping<a class="headerlink" href="#enumerate-get-counter-and-value-while-looping" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">2.10.10. </span>Enumerate: Get Counter and Value While Looping<a class="headerlink" href="#enumerate-get-counter-and-value-while-looping" title="Permalink to this headline">¶</a></h2>
 <p>Are you using <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">i</span> <span class="pre">in</span> <span class="pre">range(len(array))</span></code> to access both the index and the value of the array? If so, use <code class="docutils literal notranslate"><span class="pre">enumerate</span></code> instead. It produces the same result but it is much cleaner.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
