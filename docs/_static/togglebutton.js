@@ -25,7 +25,7 @@ var initToggleItems = () => {
       }
       // This is the button that will be added to each item to trigger the toggle
       var collapseButton = `
-        <button type="button" id="${buttonID}" class="toggle-button" data-target="${toggleID}" data-button="${buttonID}" data-toggle-hint="${toggleHintShow}" aria-label="Click to toggle content">
+        <button type="button" id="${buttonID}" class="toggle-button" data-target="${toggleID}" data-button="${buttonID}", data-toggle-hint="${toggleHintShow}">
             ${toggleChevron}
         </button>`;
 
@@ -50,9 +50,9 @@ var initToggleItems = () => {
       // Define the structure of the details block and insert it as a sibling
       var detailsBlock = `
         <details class="toggle-details">
-            <summary class="toggle-details__summary">
+            <summary>
               ${toggleChevron}
-              <span class="toggle-details__summary-text">${toggleHintShow}</span>
+              <span>${toggleHintShow}</span>
             </summary>
         </details>`;
       item.insertAdjacentHTML("beforebegin", detailsBlock);
