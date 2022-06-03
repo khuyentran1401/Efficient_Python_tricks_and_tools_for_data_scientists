@@ -663,18 +663,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">
+   6.2.4. Encode Categorical Data Using Frequency
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-   6.2.4. Return a DataFrame When Using a scikit-learn’s Transformer
+   6.2.5. Return a DataFrame When Using a scikit-learn’s Transformer
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
-   6.2.5. Similarity Encoding for Dirty Categories Using dirty_cat
+   6.2.6. Similarity Encoding for Dirty Categories Using dirty_cat
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
-   6.2.6. Snorkel — Programmatically Build Training Data in Python
+   6.2.7. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
 </ul>
@@ -713,18 +718,23 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">
+   6.2.4. Encode Categorical Data Using Frequency
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-   6.2.4. Return a DataFrame When Using a scikit-learn’s Transformer
+   6.2.5. Return a DataFrame When Using a scikit-learn’s Transformer
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">
-   6.2.5. Similarity Encoding for Dirty Categories Using dirty_cat
+   6.2.6. Similarity Encoding for Dirty Categories Using dirty_cat
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
-   6.2.6. Snorkel — Programmatically Build Training Data in Python
+   6.2.7. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
 </ul>
@@ -1380,8 +1390,464 @@ Name: education, dtype: object
 </div>
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
+<section id="encode-categorical-data-using-frequency">
+<h2><span class="section-number">6.2.4. </span>Encode Categorical Data Using Frequency<a class="headerlink" href="#encode-categorical-data-using-frequency" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature-engine
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, count or frequency can be useful features for your model. If you want to replace categories by either the count or the percentage of observations per category, use feature_engine’s <code class="docutils literal notranslate"><span class="pre">CountFrequencyEncoder</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">CountFrequencyEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;diamonds&quot;</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>carat</th>
+      <th>cut</th>
+      <th>color</th>
+      <th>clarity</th>
+      <th>depth</th>
+      <th>table</th>
+      <th>price</th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>441</th>
+      <td>0.89</td>
+      <td>Premium</td>
+      <td>H</td>
+      <td>SI2</td>
+      <td>60.2</td>
+      <td>59.0</td>
+      <td>2815</td>
+      <td>6.26</td>
+      <td>6.23</td>
+      <td>3.76</td>
+    </tr>
+    <tr>
+      <th>50332</th>
+      <td>0.70</td>
+      <td>Very Good</td>
+      <td>D</td>
+      <td>SI1</td>
+      <td>64.0</td>
+      <td>53.0</td>
+      <td>2242</td>
+      <td>5.57</td>
+      <td>5.61</td>
+      <td>3.58</td>
+    </tr>
+    <tr>
+      <th>35652</th>
+      <td>0.31</td>
+      <td>Ideal</td>
+      <td>G</td>
+      <td>VVS2</td>
+      <td>62.7</td>
+      <td>57.0</td>
+      <td>907</td>
+      <td>4.33</td>
+      <td>4.31</td>
+      <td>2.71</td>
+    </tr>
+    <tr>
+      <th>9439</th>
+      <td>0.90</td>
+      <td>Very Good</td>
+      <td>H</td>
+      <td>VS1</td>
+      <td>62.3</td>
+      <td>59.0</td>
+      <td>4592</td>
+      <td>6.12</td>
+      <td>6.17</td>
+      <td>3.83</td>
+    </tr>
+    <tr>
+      <th>15824</th>
+      <td>1.01</td>
+      <td>Good</td>
+      <td>F</td>
+      <td>VS2</td>
+      <td>60.6</td>
+      <td>62.0</td>
+      <td>6332</td>
+      <td>6.52</td>
+      <td>6.49</td>
+      <td>3.94</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>45891</th>
+      <td>0.52</td>
+      <td>Premium</td>
+      <td>F</td>
+      <td>VS2</td>
+      <td>60.7</td>
+      <td>59.0</td>
+      <td>1720</td>
+      <td>5.18</td>
+      <td>5.14</td>
+      <td>3.13</td>
+    </tr>
+    <tr>
+      <th>52416</th>
+      <td>0.70</td>
+      <td>Good</td>
+      <td>D</td>
+      <td>SI1</td>
+      <td>63.6</td>
+      <td>60.0</td>
+      <td>2512</td>
+      <td>5.59</td>
+      <td>5.51</td>
+      <td>3.51</td>
+    </tr>
+    <tr>
+      <th>42613</th>
+      <td>0.32</td>
+      <td>Premium</td>
+      <td>I</td>
+      <td>VS1</td>
+      <td>61.3</td>
+      <td>58.0</td>
+      <td>505</td>
+      <td>4.35</td>
+      <td>4.39</td>
+      <td>2.68</td>
+    </tr>
+    <tr>
+      <th>43567</th>
+      <td>0.41</td>
+      <td>Ideal</td>
+      <td>G</td>
+      <td>IF</td>
+      <td>61.0</td>
+      <td>57.0</td>
+      <td>1431</td>
+      <td>4.81</td>
+      <td>4.79</td>
+      <td>2.93</td>
+    </tr>
+    <tr>
+      <th>2732</th>
+      <td>0.91</td>
+      <td>Ideal</td>
+      <td>F</td>
+      <td>SI2</td>
+      <td>61.1</td>
+      <td>55.0</td>
+      <td>3246</td>
+      <td>6.24</td>
+      <td>6.19</td>
+      <td>3.80</td>
+    </tr>
+  </tbody>
+</table>
+<p>40455 rows × 10 columns</p>
+</div></div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 35;
+                var nbb_unformatted_code = "import seaborn as sns\nfrom feature_engine.encoding import CountFrequencyEncoder\nfrom sklearn.model_selection import train_test_split\n\ndata = sns.load_dataset(\"diamonds\")\n\nX_train, X_test, y_train, y_test = train_test_split(data, data[\"price\"], random_state=0)\nX_train";
+                var nbb_formatted_code = "import seaborn as sns\nfrom feature_engine.encoding import CountFrequencyEncoder\nfrom sklearn.model_selection import train_test_split\n\ndata = sns.load_dataset(\"diamonds\")\n\nX_train, X_test, y_train, y_test = train_test_split(data, data[\"price\"], random_state=0)\nX_train";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p>In the code below, I encode <code class="docutils literal notranslate"><span class="pre">color</span></code> and <code class="docutils literal notranslate"><span class="pre">clarity</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># initiate an encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">CountFrequencyEncoder</span><span class="p">(</span>
+    <span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;clarity&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># fit the encoder</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># process the data</span>
+<span class="n">p_train</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">p_test</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 36;
+                var nbb_unformatted_code = "# initiate an encoder\nencoder = CountFrequencyEncoder(\n    encoding_method=\"frequency\", variables=[\"color\", \"clarity\"]\n)\n\n# fit the encoder\nencoder.fit(X_train)\n\n# process the data\np_train = encoder.transform(X_train)\np_test = encoder.transform(X_test)";
+                var nbb_formatted_code = "# initiate an encoder\nencoder = CountFrequencyEncoder(\n    encoding_method=\"frequency\", variables=[\"color\", \"clarity\"]\n)\n\n# fit the encoder\nencoder.fit(X_train)\n\n# process the data\np_train = encoder.transform(X_train)\np_test = encoder.transform(X_test)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_test</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>carat</th>
+      <th>cut</th>
+      <th>color</th>
+      <th>clarity</th>
+      <th>depth</th>
+      <th>table</th>
+      <th>price</th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10176</th>
+      <td>1.10</td>
+      <td>Ideal</td>
+      <td>0.152762</td>
+      <td>0.170436</td>
+      <td>62.0</td>
+      <td>55.0</td>
+      <td>4733</td>
+      <td>6.61</td>
+      <td>6.65</td>
+      <td>4.11</td>
+    </tr>
+    <tr>
+      <th>16083</th>
+      <td>1.29</td>
+      <td>Ideal</td>
+      <td>0.152762</td>
+      <td>0.242022</td>
+      <td>62.6</td>
+      <td>56.0</td>
+      <td>6424</td>
+      <td>6.96</td>
+      <td>6.93</td>
+      <td>4.35</td>
+    </tr>
+    <tr>
+      <th>13420</th>
+      <td>1.20</td>
+      <td>Premium</td>
+      <td>0.100531</td>
+      <td>0.242022</td>
+      <td>61.1</td>
+      <td>58.0</td>
+      <td>5510</td>
+      <td>6.88</td>
+      <td>6.80</td>
+      <td>4.18</td>
+    </tr>
+    <tr>
+      <th>20407</th>
+      <td>1.50</td>
+      <td>Ideal</td>
+      <td>0.179409</td>
+      <td>0.242022</td>
+      <td>60.9</td>
+      <td>56.0</td>
+      <td>8770</td>
+      <td>7.43</td>
+      <td>7.36</td>
+      <td>4.50</td>
+    </tr>
+    <tr>
+      <th>8909</th>
+      <td>0.90</td>
+      <td>Very Good</td>
+      <td>0.179409</td>
+      <td>0.227314</td>
+      <td>61.7</td>
+      <td>57.0</td>
+      <td>4493</td>
+      <td>6.17</td>
+      <td>6.21</td>
+      <td>3.82</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>52283</th>
+      <td>0.59</td>
+      <td>Very Good</td>
+      <td>0.182005</td>
+      <td>0.094401</td>
+      <td>61.7</td>
+      <td>59.0</td>
+      <td>2494</td>
+      <td>5.37</td>
+      <td>5.36</td>
+      <td>3.31</td>
+    </tr>
+    <tr>
+      <th>10789</th>
+      <td>1.00</td>
+      <td>Fair</td>
+      <td>0.152762</td>
+      <td>0.227314</td>
+      <td>64.8</td>
+      <td>62.0</td>
+      <td>4861</td>
+      <td>6.22</td>
+      <td>6.13</td>
+      <td>4.00</td>
+    </tr>
+    <tr>
+      <th>1190</th>
+      <td>0.70</td>
+      <td>Very Good</td>
+      <td>0.179409</td>
+      <td>0.094401</td>
+      <td>63.2</td>
+      <td>58.0</td>
+      <td>2932</td>
+      <td>5.66</td>
+      <td>5.60</td>
+      <td>3.56</td>
+    </tr>
+    <tr>
+      <th>3583</th>
+      <td>0.59</td>
+      <td>Ideal</td>
+      <td>0.182005</td>
+      <td>0.067384</td>
+      <td>60.7</td>
+      <td>57.0</td>
+      <td>3422</td>
+      <td>5.41</td>
+      <td>5.45</td>
+      <td>3.29</td>
+    </tr>
+    <tr>
+      <th>40845</th>
+      <td>0.46</td>
+      <td>Premium</td>
+      <td>0.182005</td>
+      <td>0.227314</td>
+      <td>61.5</td>
+      <td>60.0</td>
+      <td>1173</td>
+      <td>4.95</td>
+      <td>4.91</td>
+      <td>3.03</td>
+    </tr>
+  </tbody>
+</table>
+<p>13485 rows × 10 columns</p>
+</div></div><script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 37;
+                var nbb_unformatted_code = "p_test";
+                var nbb_formatted_code = "p_test";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
+</section>
 <section id="return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-<h2><span class="section-number">6.2.4. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.5. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install feature_engine 
@@ -1468,7 +1934,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
 <section id="similarity-encoding-for-dirty-categories-using-dirty-cat">
-<h2><span class="section-number">6.2.5. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.6. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-cat
@@ -1736,7 +2202,7 @@ Name: education, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/feature_engineer_48_0.png" src="../_images/feature_engineer_48_0.png" />
+<img alt="../_images/feature_engineer_56_0.png" src="../_images/feature_engineer_56_0.png" />
 </div>
 </div>
 <p>As we can see from the matrix above,</p>
@@ -1749,7 +2215,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
 </section>
 <section id="snorkel-programmatically-build-training-data-in-python">
-<h2><span class="section-number">6.2.6. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.2.7. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install snorkel
