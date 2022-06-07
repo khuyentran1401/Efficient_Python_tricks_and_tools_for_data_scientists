@@ -652,6 +652,11 @@ const thebe_selector_output = ".output, .cell_output"
    3.8.1. typing.Callable: Specify an Input is of Type Function
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-python-class-as-a-type-hint">
+   3.8.2. Use Python Class as a Type Hint
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -675,6 +680,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typing-callable-specify-an-input-is-of-type-function">
    3.8.1. typing.Callable: Specify an Input is of Type Function
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#use-python-class-as-a-type-hint">
+   3.8.2. Use Python Class as a Type Hint
   </a>
  </li>
 </ul>
@@ -728,6 +738,69 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">Success: no issues found in 1 source file</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="use-python-class-as-a-type-hint">
+<h2><span class="section-number">3.8.2. </span>Use Python Class as a Type Hint<a class="headerlink" href="#use-python-class-as-a-type-hint" title="Permalink to this headline">¶</a></h2>
+<p>In the code below, <code class="docutils literal notranslate"><span class="pre">Orange</span></code> and <code class="docutils literal notranslate"><span class="pre">Apple</span></code> are subclasses of <code class="docutils literal notranslate"><span class="pre">Fruit</span></code>. How do we use type hint to specify that <code class="docutils literal notranslate"><span class="pre">fruit_type</span></code> in <code class="docutils literal notranslate"><span class="pre">make_fruit</span></code> should be a subclass of <code class="docutils literal notranslate"><span class="pre">Fruit</span></code>?</p>
+<p>Using a parent class as a type hint will give you a type error when using mypy.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># type_example_wrong.py</span>
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taste</span> <span class="o">=</span> <span class="n">taste</span> 
+
+<span class="k">class</span> <span class="nc">Orange</span><span class="p">(</span><span class="n">Fruit</span><span class="p">):</span>
+    <span class="o">...</span> 
+
+<span class="k">class</span> <span class="nc">Apple</span><span class="p">(</span><span class="n">Fruit</span><span class="p">):</span>
+    <span class="o">...</span> 
+
+<span class="k">def</span> <span class="nf">make_fruit</span><span class="p">(</span><span class="n">fruit_type</span><span class="p">:</span> <span class="n">Fruit</span><span class="p">,</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fruit_type</span><span class="p">(</span><span class="n">taste</span><span class="o">=</span><span class="n">taste</span><span class="p">)</span>
+
+<span class="n">orange</span> <span class="o">=</span> <span class="n">make_fruit</span><span class="p">(</span><span class="n">Orange</span><span class="p">,</span> <span class="s2">&quot;sour&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mypy type_example_wrong.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type_example_wrong.py:12: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span> not callable
+type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;make_fruit&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Type[Orange]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">Found 2 errors in 1 file (checked 1 source file)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">typing.Type</span></code> instead.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span> 
+
+<span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">taste</span> <span class="o">=</span> <span class="n">taste</span> 
+
+<span class="k">class</span> <span class="nc">Orange</span><span class="p">(</span><span class="n">Fruit</span><span class="p">):</span>
+    <span class="o">...</span> 
+
+<span class="k">class</span> <span class="nc">Apple</span><span class="p">(</span><span class="n">Fruit</span><span class="p">):</span>
+    <span class="o">...</span> 
+
+<span class="k">def</span> <span class="nf">make_fruit</span><span class="p">(</span><span class="n">fruit_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Fruit</span><span class="p">],</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fruit_type</span><span class="p">(</span><span class="n">taste</span><span class="o">=</span><span class="n">taste</span><span class="p">)</span>
+
+<span class="n">orange</span> <span class="o">=</span> <span class="n">make_fruit</span><span class="p">(</span><span class="n">Orange</span><span class="p">,</span> <span class="s2">&quot;sour&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mypy type_example_right.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">Success: no issues found in 1 source file</span>
 </pre></div>
