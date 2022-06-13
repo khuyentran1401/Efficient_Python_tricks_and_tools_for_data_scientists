@@ -658,13 +658,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kedro-pipeline-create-pipeline-for-your-data-science-projects-in-python">
-   6.11.3. kedro Pipeline: Create Pipeline for Your Data Science Projects in Python
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python">
-   6.11.4. docopt: Create Beautiful Command-line Interfaces for Documentation in Python
+   6.11.3. docopt: Create Beautiful Command-line Interfaces for Documentation in Python
   </a>
  </li>
 </ul>
@@ -698,13 +693,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#kedro-pipeline-create-pipeline-for-your-data-science-projects-in-python">
-   6.11.3. kedro Pipeline: Create Pipeline for Your Data Science Projects in Python
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python">
-   6.11.4. docopt: Create Beautiful Command-line Interfaces for Documentation in Python
+   6.11.3. docopt: Create Beautiful Command-line Interfaces for Documentation in Python
   </a>
  </li>
 </ul>
@@ -812,67 +802,8 @@ Drop features: [&#39;iid&#39;, &#39;id&#39;, &#39;idg&#39;, &#39;wave&#39;]
 </div>
 <p><a class="reference external" href="https://github.com/theskumar/python-dotenv">Link to python-dotenv</a></p>
 </section>
-<section id="kedro-pipeline-create-pipeline-for-your-data-science-projects-in-python">
-<h2><span class="section-number">6.11.3. </span>kedro Pipeline: Create Pipeline for Your Data Science Projects in Python<a class="headerlink" href="#kedro-pipeline-create-pipeline-for-your-data-science-projects-in-python" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install kedro
-</pre></div>
-</div>
-</div>
-</div>
-<p>When writing code for a data science project, it can be difficult to understand the workflow of the code. Is there a way that you can create different components based on their functions then combine them together in one pipeline?</p>
-<p>That is when kedro comes in handy. In the code below, each node is one component of the pipeline. We can specify the input and output of the node. Then combine them together using <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">DataCatalog</span></code> is the input data. Structuring your code this way makes it easier for you and others to follow your code logic.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kedro.pipeline</span> <span class="kn">import</span> <span class="n">node</span><span class="p">,</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">kedro.io</span> <span class="kn">import</span> <span class="n">DataCatalog</span><span class="p">,</span> <span class="n">MemoryDataSet</span>
-<span class="kn">from</span> <span class="nn">kedro.runner</span> <span class="kn">import</span> <span class="n">SequentialRunner</span>
-
-<span class="c1"># Prepare a data catalog</span>
-<span class="n">data_catalog</span> <span class="o">=</span> <span class="n">DataCatalog</span><span class="p">({</span><span class="s2">&quot;data.csv&quot;</span><span class="p">:</span> <span class="n">MemoryDataSet</span><span class="p">()})</span>
-
-<span class="c1"># Prepare first node</span>
-<span class="k">def</span> <span class="nf">process_data</span><span class="p">():</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;processed data&quot;</span>
-
-<span class="n">process_data_node</span> <span class="o">=</span> <span class="n">node</span><span class="p">(</span>
-    <span class="n">func</span><span class="o">=</span><span class="n">process_data</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="s2">&quot;processed_data&quot;</span>
-<span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Training model using </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s2">&quot;</span>
-
-<span class="n">train_model_node</span> <span class="o">=</span> <span class="n">node</span><span class="p">(</span>
-    <span class="n">func</span><span class="o">=</span><span class="n">train_model</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="s2">&quot;processed_data&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="s2">&quot;trained_model&quot;</span>
-<span class="p">)</span>
-
-<span class="c1"># Assemble nodes into a pipeline</span>
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span><span class="n">process_data_node</span><span class="p">,</span> <span class="n">train_model_node</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a runner to run the pipeline</span>
-<span class="n">runner</span> <span class="o">=</span> <span class="n">SequentialRunner</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">data_catalog</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;trained_model&#39;: &#39;Training model using processed data&#39;}
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://towardsdatascience.com/kedro-a-python-framework-for-reproducible-data-science-project-4d44977d4f04">Link to my article about Kedro</a></p>
-<p><a class="reference external" href="https://kedro.readthedocs.io/en/stable/02_get_started/03_hello_kedro.html">Link to Kedro</a></p>
-</section>
 <section id="docopt-create-beautiful-command-line-interfaces-for-documentation-in-python">
-<h2><span class="section-number">6.11.4. </span>docopt: Create Beautiful Command-line Interfaces for Documentation in Python<a class="headerlink" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">6.11.3. </span>docopt: Create Beautiful Command-line Interfaces for Documentation in Python<a class="headerlink" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python" title="Permalink to this headline">¶</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install docopt 
