@@ -698,8 +698,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-if-two-numpy-arrays-are-equal">
+   5.1.11. Check if Two NumPy Arrays Are Equal
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision">
-   5.1.11. NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision
+   5.1.12. NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision
   </a>
  </li>
 </ul>
@@ -773,8 +778,13 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-if-two-numpy-arrays-are-equal">
+   5.1.11. Check if Two NumPy Arrays Are Equal
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision">
-   5.1.11. NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision
+   5.1.12. NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision
   </a>
  </li>
 </ul>
@@ -1297,66 +1307,84 @@ const thebe_selector_output = ".output, .cell_output"
             </script></div>
 </div>
 </section>
-<section id="numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision">
-<h2><span class="section-number">5.1.11. </span>NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision<a class="headerlink" href="#numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision" title="Permalink to this headline">¶</a></h2>
-<p>Sometimes, you might only want to check if two arrays are equal up to a certain precision. If so, use <code class="docutils literal notranslate"><span class="pre">numpy.testing.assert_almost_equal</span></code>.</p>
+<section id="check-if-two-numpy-arrays-are-equal">
+<h2><span class="section-number">5.1.11. </span>Check if Two NumPy Arrays Are Equal<a class="headerlink" href="#check-if-two-numpy-arrays-are-equal" title="Permalink to this headline">¶</a></h2>
+<p>If you try to check whether two arrays are equal, using an assert statement will give you an error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_almost_equal</span><span class="p">,</span> <span class="n">assert_array_equal</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_array_equal</span>
 
-<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.222</span><span class="p">,</span> <span class="mf">2.222</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.222</span><span class="p">,</span> <span class="mf">4.222</span><span class="p">]])</span>
-<span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.221</span><span class="p">,</span> <span class="mf">2.221</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.221</span><span class="p">,</span> <span class="mf">4.221</span><span class="p">]])</span>
-<span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">arr1</span> <span class="o">==</span> <span class="n">arr2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="nn">/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb Cell 48&#39;</span> in <span class="ni">&lt;cell line: 6&gt;</span><span class="nt">()</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb#ch0000052?line=3&#39;</span><span class="o">&gt;</span><span class="mi">4</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">arr1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb#ch0000052?line=4&#39;</span><span class="o">&gt;</span><span class="mi">5</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">arr2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb#ch0000052?line=5&#39;</span><span class="o">&gt;</span><span class="mi">6</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">assert</span> <span class="n">arr1</span> <span class="o">==</span> <span class="n">arr2</span>
 
-<span class="n">assert_array_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="ne">ValueError</span>: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">assert_array_equal</span></code> instead. <code class="docutils literal notranslate"><span class="pre">assert_array_equal</span></code> also shows you which elements are different between two arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assert_array_equal</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span> <span class="n">arr2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">AssertionError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_58623</span><span class="o">/</span><span class="mf">1850860365.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> 
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">assert_array_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="nn">/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb Cell 49&#39;</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter4/Numpy.ipynb#ch0000053?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">assert_array_equal</span><span class="p">(</span><span class="n">arr1</span><span class="p">,</span><span class="n">arr2</span><span class="p">)</span>
 
     <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">1</span> <span class="n">frame</span><span class="p">]</span>
 
-<span class="nn">~/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py</span> in <span class="ni">assert_array_compare</span><span class="nt">(comparison, x, y, err_msg, verbose, header, precision, equal_nan, equal_inf)</span>
-<span class="g g-Whitespace">    </span><span class="mi">842</span>                                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">843</span>                                 <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">),</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">844</span>             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">845</span>     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">846</span>         <span class="kn">import</span> <span class="nn">traceback</span>
+<span class="nn">File ~/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py:844,</span> in <span class="ni">assert_array_compare</span><span class="nt">(comparison, x, y, err_msg, verbose, header, precision, equal_nan, equal_inf)</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=839&#39;</span><span class="o">&gt;</span><span class="mi">840</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>         <span class="n">err_msg</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remarks</span><span class="p">)</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=840&#39;</span><span class="o">&gt;</span><span class="mi">841</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>         <span class="n">msg</span> <span class="o">=</span> <span class="n">build_err_msg</span><span class="p">([</span><span class="n">ox</span><span class="p">,</span> <span class="n">oy</span><span class="p">],</span> <span class="n">err_msg</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=841&#39;</span><span class="o">&gt;</span><span class="mi">842</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>                             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=842&#39;</span><span class="o">&gt;</span><span class="mi">843</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>                             <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">),</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
+<span class="o">--&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=843&#39;</span><span class="o">&gt;</span><span class="mi">844</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>         <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=844&#39;</span><span class="o">&gt;</span><span class="mi">845</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+    <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;file:///Users/khuyen/book/venv/lib/python3.8/site-packages/numpy/testing/_private/utils.py?line=845&#39;</span><span class="o">&gt;</span><span class="mi">846</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>     <span class="kn">import</span> <span class="nn">traceback</span>
 
 <span class="ne">AssertionError</span>: 
 <span class="n">Arrays</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">equal</span>
 
-<span class="n">Mismatched</span> <span class="n">elements</span><span class="p">:</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">4</span> <span class="p">(</span><span class="mi">100</span><span class="o">%</span><span class="p">)</span>
-<span class="n">Max</span> <span class="n">absolute</span> <span class="n">difference</span><span class="p">:</span> <span class="mf">0.001</span>
-<span class="n">Max</span> <span class="n">relative</span> <span class="n">difference</span><span class="p">:</span> <span class="mf">0.000819</span>
- <span class="n">x</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">1.222</span><span class="p">,</span> <span class="mf">2.222</span><span class="p">],</span>
-       <span class="p">[</span><span class="mf">3.222</span><span class="p">,</span> <span class="mf">4.222</span><span class="p">]])</span>
- <span class="n">y</span><span class="p">:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">1.221</span><span class="p">,</span> <span class="mf">2.221</span><span class="p">],</span>
-       <span class="p">[</span><span class="mf">3.221</span><span class="p">,</span> <span class="mf">4.221</span><span class="p">]])</span>
+<span class="n">Mismatched</span> <span class="n">elements</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span> <span class="p">(</span><span class="mf">33.3</span><span class="o">%</span><span class="p">)</span>
+<span class="n">Max</span> <span class="n">absolute</span> <span class="n">difference</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">Max</span> <span class="n">relative</span> <span class="n">difference</span><span class="p">:</span> <span class="mf">0.25</span>
+ <span class="n">x</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+ <span class="n">y</span><span class="p">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 30;
-                var nbb_unformatted_code = "from numpy.testing import assert_almost_equal, assert_array_equal\n\na = np.array([[1.222, 2.222], [3.222, 4.222]])\ntest = np.array([[1.221, 2.221], [3.221, 4.221]])\nassert_almost_equal(a, test, decimal=2)\n\nassert_array_equal(a, test)";
-                var nbb_formatted_code = "from numpy.testing import assert_almost_equal, assert_array_equal\n\na = np.array([[1.222, 2.222], [3.222, 4.222]])\ntest = np.array([[1.221, 2.221], [3.221, 4.221]])\nassert_almost_equal(a, test, decimal=2)\n\nassert_array_equal(a, test)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
+</div>
+</section>
+<section id="numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision">
+<h2><span class="section-number">5.1.12. </span>NumPy.testing.assert_almost_equal: Check if Two Arrays Are Equal up to a Certain Precision<a class="headerlink" href="#numpy-testing-assert-almost-equal-check-if-two-arrays-are-equal-up-to-a-certain-precision" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes, you might only want to check if two arrays are equal up to a certain precision. If so, use <code class="docutils literal notranslate"><span class="pre">numpy.testing.assert_almost_equal</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="kn">import</span> <span class="n">assert_almost_equal</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.222</span><span class="p">,</span> <span class="mf">2.222</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.222</span><span class="p">,</span> <span class="mf">4.222</span><span class="p">]])</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.221</span><span class="p">,</span> <span class="mf">2.221</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.221</span><span class="p">,</span> <span class="mf">4.221</span><span class="p">]])</span>
+<span class="n">assert_almost_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">decimal</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
