@@ -692,6 +692,11 @@ const thebe_selector_output = ".output, .cell_output"
    4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">
+   4.1.10. Encode Categorical Values in a Pandas DataFrame
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -755,6 +760,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#replace-the-missing-values-with-the-most-frequent-categories-in-a-column">
    4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">
+   4.1.10. Encode Categorical Values in a Pandas DataFrame
   </a>
  </li>
 </ul>
@@ -1625,6 +1635,35 @@ dtype: object
   </tbody>
 </table>
 </div></div></div>
+</div>
+</section>
+<section id="encode-categorical-values-in-a-pandas-dataframe">
+<h2><span class="section-number">4.1.10. </span>Encode Categorical Values in a Pandas DataFrame<a class="headerlink" href="#encode-categorical-values-in-a-pandas-dataframe" title="Permalink to this headline">¶</a></h2>
+<p>There are multiple ways for you to encode a categorical column in a pandas DataFrame. If you simply want to convert each value in a column to a number, use <code class="docutils literal notranslate"><span class="pre">cat.codes</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+
+<span class="c1"># Convert col1 to a category</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+
+<span class="c1"># Encode col1</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;encoded_col1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  col1  encoded_col1
+0    a             0
+1    b             1
+2    b             1
+3    c             2
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
