@@ -841,6 +841,11 @@ title="Print to PDF"
    6.13.13. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
+   6.13.14. Check Conflicting Labels with Deepchecks
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -923,6 +928,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
    6.13.13. Deepchecks: Check Category Mismatch Between Train and Test Set
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
+   6.13.14. Check Conflicting Labels with Deepchecks
   </a>
  </li>
 </ul>
@@ -1960,6 +1970,94 @@ Results (0.38s):
             </script></div>
 </div>
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
+</section>
+<section id="check-conflicting-labels-with-deepchecks">
+<h2><span class="section-number">6.13.14. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
+<p>Sometimes, your data might have identical samples with different labels. This might be because the data was mislabeled.</p>
+<p>It is good to identify these conflicting labels in your data before using the data to train your ML model. To check conflicting labels in your data, use deepchecks.</p>
+<p>In the example below, deepchecks identified that samples 0 and 1 have the same features but different labels.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">from</span> <span class="nn">deepchecks.tabular</span> <span class="kn">import</span> <span class="n">Dataset</span> 
+<span class="kn">from</span> <span class="nn">deepchecks.tabular.checks</span> <span class="kn">import</span> <span class="n">ConflictingLabels</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;value1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> 
+    <span class="s2">&quot;value2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
+    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="n">df</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>value1</th>
+      <th>value2</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>b</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>4</td>
+      <td>c</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
+<span class="n">ConflictingLabels</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>deepchecks - WARNING - It is recommended to initialize Dataset with categorical features by doing &quot;Dataset(df, cat_features=categorical_list)&quot;. No categorical features were passed, therefore heuristically inferring categorical features in the data. 2 categorical features were inferred.: value1, value2
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "45a91a2e0d4c40f788c2454b4c560720", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
 </section>
 </section>
 
