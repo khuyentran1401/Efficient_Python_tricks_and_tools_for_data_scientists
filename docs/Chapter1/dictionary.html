@@ -811,6 +811,11 @@ title="Print to PDF"
    2.5.7. Reverse a Dictionary with Dictionary Comprehension
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#merge-two-dictionaries-using-the-union-operator-in-python-3-9">
+   2.5.8. Merge Two Dictionaries Using the Union Operator in Python 3.9
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -863,6 +868,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#reverse-a-dictionary-with-dictionary-comprehension">
    2.5.7. Reverse a Dictionary with Dictionary Comprehension
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#merge-two-dictionaries-using-the-union-operator-in-python-3-9">
+   2.5.8. Merge Two Dictionaries Using the Union Operator in Python 3.9
   </a>
  </li>
 </ul>
@@ -1236,6 +1246,68 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;red&#39;: &#39;apple&#39;, &#39;green&#39;: &#39;pepper&#39;, &#39;yellow&#39;: &#39;onion&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="merge-two-dictionaries-using-the-union-operator-in-python-3-9">
+<h2><span class="section-number">2.5.8. </span>Merge Two Dictionaries Using the Union Operator in Python 3.9<a class="headerlink" href="#merge-two-dictionaries-using-the-union-operator-in-python-3-9" title="Permalink to this headline">#</a></h2>
+<p>Before Python 3.9, there are two common ways to merge two dictionaries. The first way is to use <code class="docutils literal notranslate"><span class="pre">update</span></code>. This approach works but the original dictionary will be changed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">birth_year</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Ben&quot;</span><span class="p">:</span> <span class="mi">1997</span><span class="p">}</span>
+<span class="n">new_birth_year</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Michael&quot;</span><span class="p">:</span> <span class="mi">1993</span><span class="p">,</span> <span class="s1">&#39;Lauren&#39;</span><span class="p">:</span> <span class="mi">1999</span><span class="p">}</span>
+
+<span class="n">birth_year</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_birth_year</span><span class="p">)</span>
+<span class="n">birth_year</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Ben&#39;: 1997, &#39;Michael&#39;: 1993, &#39;Lauren&#39;: 1999}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The second approach is to use <code class="docutils literal notranslate"><span class="pre">**</span></code>, but this approach looks a little bit cumbersome.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">birth_year</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Ben&quot;</span><span class="p">:</span> <span class="mi">1997</span><span class="p">}</span>
+<span class="n">new_birth_year</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Michael&quot;</span><span class="p">:</span> <span class="mi">1993</span><span class="p">,</span> <span class="s1">&#39;Lauren&#39;</span><span class="p">:</span> <span class="mi">1999</span><span class="p">}</span>
+<span class="p">{</span><span class="o">**</span><span class="n">birth_year</span><span class="p">,</span> <span class="o">**</span><span class="n">new_birth_year</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Ben&#39;: 1997, &#39;Michael&#39;: 1993, &#39;Lauren&#39;: 1999}
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Python 3.9 and above, you can use the operator <code class="docutils literal notranslate"><span class="pre">|</span></code> to merge two dictionaries</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">birth_year</span> <span class="o">|</span> <span class="n">new_birth_year</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Ben&#39;: 1997, &#39;Michael&#39;: 1993, &#39;Lauren&#39;: 1999}
+</pre></div>
+</div>
+</div>
+</div>
+<p>To update a dictionary in place, use <code class="docutils literal notranslate"><span class="pre">|=</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">birth_year</span> <span class="o">|=</span> <span class="n">new_birth_year</span>
+<span class="n">birth_year</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Ben&#39;: 1997, &#39;Michael&#39;: 1993, &#39;Lauren&#39;: 1999}
 </pre></div>
 </div>
 </div>
