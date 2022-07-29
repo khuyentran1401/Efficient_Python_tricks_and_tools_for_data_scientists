@@ -836,6 +836,11 @@ title="Print to PDF"
    2.10.12. A Function Should Only Do One Task
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
+   2.10.13. Avoid Using Flags as a Function’s Parameters
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -913,6 +918,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-function-should-only-do-one-task">
    2.10.12. A Function Should Only Do One Task
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
+   2.10.13. Avoid Using Flags as a Function’s Parameters
   </a>
  </li>
 </ul>
@@ -1516,6 +1526,34 @@ Hello
   </tbody>
 </table>
 </div></div></div>
+</div>
+</section>
+<section id="avoid-using-flags-as-a-function-s-parameters">
+<h2><span class="section-number">2.10.13. </span>Avoid Using Flags as a Function’s Parameters<a class="headerlink" href="#avoid-using-flags-as-a-function-s-parameters" title="Permalink to this headline">#</a></h2>
+<p>A function should only do one thing. If flags are used as a function’s parameters, the function is doing more than one thing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">is_csv</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_csv</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<p>When you find yourself using flags as a way to run different code, consider splitting your function into different functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_csv_data</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_pickle_data</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
