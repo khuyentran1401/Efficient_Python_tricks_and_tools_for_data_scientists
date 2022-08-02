@@ -807,33 +807,38 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-the-n-largest-values-for-each-category-in-a-dataframe">
+   4.4.7. Get the N Largest Values for Each Category in a DataFrame
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#assign-name-to-a-pandas-aggregation">
-   4.4.7. Assign Name to a Pandas Aggregation
+   4.4.8. Assign Name to a Pandas Aggregation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-   4.4.8. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
+   4.4.9. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-   4.4.9. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
+   4.4.10. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#size-compute-the-size-of-each-group">
-   4.4.10. size: Compute the Size of Each Group
+   4.4.11. size: Compute the Size of Each Group
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
-   4.4.11. pandas.melt: Unpivot a DataFrame
+   4.4.12. pandas.melt: Unpivot a DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
-   4.4.12. pandas.crosstab: Create a Cross Tabulation
+   4.4.13. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
 </ul>
@@ -886,33 +891,38 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-the-n-largest-values-for-each-category-in-a-dataframe">
+   4.4.7. Get the N Largest Values for Each Category in a DataFrame
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#assign-name-to-a-pandas-aggregation">
-   4.4.7. Assign Name to a Pandas Aggregation
+   4.4.8. Assign Name to a Pandas Aggregation
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-   4.4.8. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
+   4.4.9. pandas.pivot_table: Turn Your DataFrame Into a Pivot Table
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-   4.4.9. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
+   4.4.10. DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#size-compute-the-size-of-each-group">
-   4.4.10. size: Compute the Size of Each Group
+   4.4.11. size: Compute the Size of Each Group
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-melt-unpivot-a-dataframe">
-   4.4.11. pandas.melt: Unpivot a DataFrame
+   4.4.12. pandas.melt: Unpivot a DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
-   4.4.12. pandas.crosstab: Create a Cross Tabulation
+   4.4.13. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
 </ul>
@@ -1483,8 +1493,71 @@ title="Print to PDF"
 </div></div></div>
 </div>
 </section>
+<section id="get-the-n-largest-values-for-each-category-in-a-dataframe">
+<h2><span class="section-number">4.4.7. </span>Get the N Largest Values for Each Category in a DataFrame<a class="headerlink" href="#get-the-n-largest-values-for-each-category-in-a-dataframe" title="Permalink to this headline">#</a></h2>
+<p>If you want to get the <code class="docutils literal notranslate"><span class="pre">n</span></code> largest values for each category in a pandas DataFrame, use the combination of <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and <code class="docutils literal notranslate"><span class="pre">nlargest</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+
+<span class="c1"># Get n largest values for each type</span>
+<span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">df_</span><span class="p">:</span> <span class="n">df_</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>type</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>a</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>b</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>b</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="assign-name-to-a-pandas-aggregation">
-<h2><span class="section-number">4.4.7. </span>Assign Name to a Pandas Aggregation<a class="headerlink" href="#assign-name-to-a-pandas-aggregation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.8. </span>Assign Name to a Pandas Aggregation<a class="headerlink" href="#assign-name-to-a-pandas-aggregation" title="Permalink to this headline">#</a></h2>
 <p>By default, aggregating a column returns the name of that column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1558,7 +1631,7 @@ S       2.5
 </div>
 </section>
 <section id="pandas-pivot-table-turn-your-dataframe-into-a-pivot-table">
-<h2><span class="section-number">4.4.8. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.9. </span>pandas.pivot_table: Turn Your DataFrame Into a Pivot Table<a class="headerlink" href="#pandas-pivot-table-turn-your-dataframe-into-a-pivot-table" title="Permalink to this headline">#</a></h2>
 <p>A pivot table is useful to summarize and analyze the patterns in your data. If you want to turn your DataFrame into a pivot table, use <code class="docutils literal notranslate"><span class="pre">pandas.pivot_table</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1714,7 +1787,7 @@ S       2.5
 </div>
 </section>
 <section id="dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column">
-<h2><span class="section-number">4.4.9. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.10. </span>DataFrame.groupby.sample: Get a Random Sample of Items from Each Category in a Column<a class="headerlink" href="#dataframe-groupby-sample-get-a-random-sample-of-items-from-each-category-in-a-column" title="Permalink to this headline">#</a></h2>
 <p>If you want to get a random sample of items from each category in a column, use <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame.groupby.sample</span></code>.This method is useful when you want to get a subset of a DataFrame while keeping all categories in a column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1871,7 +1944,7 @@ S       2.5
 </div>
 </section>
 <section id="size-compute-the-size-of-each-group">
-<h2><span class="section-number">4.4.10. </span>size: Compute the Size of Each Group<a class="headerlink" href="#size-compute-the-size-of-each-group" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.11. </span>size: Compute the Size of Each Group<a class="headerlink" href="#size-compute-the-size-of-each-group" title="Permalink to this headline">#</a></h2>
 <p>If you want to get the count of elements in one column, use <code class="docutils literal notranslate"><span class="pre">groupby</span></code> and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1953,7 +2026,7 @@ dtype: int64
 </div>
 </section>
 <section id="pandas-melt-unpivot-a-dataframe">
-<h2><span class="section-number">4.4.11. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.12. </span>pandas.melt: Unpivot a DataFrame<a class="headerlink" href="#pandas-melt-unpivot-a-dataframe" title="Permalink to this headline">#</a></h2>
 <p>If you want to unpivot a DataFrame from wide to long format, use pandas.melt.</p>
 <p>For example, you can use pandas.melt to turn multiple columns (<code class="docutils literal notranslate"><span class="pre">Aldi</span></code>, <code class="docutils literal notranslate"><span class="pre">Walmart</span></code>, <code class="docutils literal notranslate"><span class="pre">Costco</span></code>) into values of one column (<code class="docutils literal notranslate"><span class="pre">store</span></code>).</p>
 <div class="cell docutils container">
@@ -2084,7 +2157,7 @@ dtype: int64
 </div>
 </section>
 <section id="pandas-crosstab-create-a-cross-tabulation">
-<h2><span class="section-number">4.4.12. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.13. </span>pandas.crosstab: Create a Cross Tabulation<a class="headerlink" href="#pandas-crosstab-create-a-cross-tabulation" title="Permalink to this headline">#</a></h2>
 <p>Cross tabulation allows you to analyze the relationship between multiple variables. To turn a pandas DataFrame into a cross tabulation, use <code class="docutils literal notranslate"><span class="pre">pandas.crosstab</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
