@@ -781,6 +781,11 @@ title="Print to PDF"
    3.9.1. Create a New Directory and File
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-access-to-files-from-home-directory">
+   3.9.2. Get Access to Files from Home Directory
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -803,6 +808,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#create-a-new-directory-and-file">
    3.9.1. Create a New Directory and File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#get-access-to-files-from-home-directory">
+   3.9.2. Get Access to Files from Home Directory
   </a>
  </li>
 </ul>
@@ -865,6 +875,53 @@ title="Print to PDF"
 └── new_file.txt
 
 0 directories, 1 file
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="get-access-to-files-from-home-directory">
+<h2><span class="section-number">3.9.2. </span>Get Access to Files from Home Directory<a class="headerlink" href="#get-access-to-files-from-home-directory" title="Permalink to this headline">#</a></h2>
+<p>If you want to get the path to folders/files from the home directory, use <code class="docutils literal notranslate"><span class="pre">Path.home()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
+
+<span class="n">docs</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s1">&#39;Documents&#39;</span>
+<span class="n">pictures</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s1">&#39;Pictures&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pictures</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyen/Documents
+/Users/khuyen/Pictures
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you can use pathlib’s methods to manipulate the folders/files in the obtained path.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new file inside Documents</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">docs</span> <span class="o">/</span> <span class="s1">&#39;new_file.txt&#39;</span>
+<span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>tree /Users/khuyen/Documents <span class="p">|</span> grep new_file.txt 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>├── new_file.txt
 </pre></div>
 </div>
 </div>
