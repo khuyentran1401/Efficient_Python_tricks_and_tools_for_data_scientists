@@ -786,6 +786,11 @@ title="Print to PDF"
    3.3.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
+   3.3.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -813,6 +818,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument">
    3.3.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
+   3.3.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
   </a>
  </li>
 </ul>
@@ -953,6 +963,35 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>List is processed
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
+<h2><span class="section-number">3.3.3. </span>functools.reduce: Apply Function Cumulatively to the Items of Iterable<a class="headerlink" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable" title="Permalink to this headline">#</a></h2>
+<p>If you want to apply a function of two arguments cumulatively to the items of iterable from left to right, use functools’s reduce. This method reduces the iterable to a single value.</p>
+<p>In the code below, <code class="docutils literal notranslate"><span class="pre">3</span></code> is the result of the function <code class="docutils literal notranslate"><span class="pre">add_nums(2,</span> <span class="pre">1)</span></code>. <code class="docutils literal notranslate"><span class="pre">3</span></code> is then used as the first argument of the function <code class="docutils literal notranslate"><span class="pre">add_nums(3,</span> <span class="pre">2)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+
+
+<span class="k">def</span> <span class="nf">add_nums</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">num1</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">num2</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">res</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">add_nums</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 + 1 = 3
+3 + 2 = 5
+5 + 3 = 8
+8
 </pre></div>
 </div>
 </div>
