@@ -866,6 +866,11 @@ title="Print to PDF"
    6.6.17. Expanding English Contractions in Text
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">
+   6.6.18. PRegEx: Write Human-Readable Regular Expressions
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -968,6 +973,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#expanding-english-contractions-in-text">
    6.6.17. Expanding English Contractions in Text
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">
+   6.6.18. PRegEx: Write Human-Readable Regular Expressions
   </a>
  </li>
 </ul>
@@ -2462,6 +2472,56 @@ Name: text, dtype: object
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;I am not sure, but I would like to do it&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pregex-write-human-readable-regular-expressions">
+<h2><span class="section-number">6.6.18. </span>PRegEx: Write Human-Readable Regular Expressions<a class="headerlink" href="#pregex-write-human-readable-regular-expressions" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pregex
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Red">ERROR: Ignored the following versions that require a different python version: 1.0.0 Requires-Python &gt;=3.9; 1.0.1 Requires-Python &gt;=3.9; 1.0.2 Requires-Python &gt;=3.9; 1.0.3 Requires-Python &gt;=3.9; 1.0.4 Requires-Python &gt;=3.9; 1.0.5 Requires-Python &gt;=3.9; 1.0.6 Requires-Python &gt;=3.9; 1.1.0 Requires-Python &gt;=3.9; 1.1.1 Requires-Python &gt;=3.9; 1.2.0 Requires-Python &gt;=3.9; 1.2.1 Requires-Python &gt;=3.9; 1.3.0 Requires-Python &gt;=3.9; 1.4.0 Requires-Python &gt;=3.9; 1.4.1 Requires-Python &gt;=3.9; 1.4.2 Requires-Python &gt;=3.9; 1.4.3 Requires-Python &gt;=3.9; 1.4.4 Requires-Python &gt;=3.9; 1.5.0 Requires-Python &gt;=3.9; 1.5.1 Requires-Python &gt;=3.9; 1.5.2 Requires-Python &gt;=3.9; 1.5.3 Requires-Python &gt;=3.9; 1.5.4 Requires-Python &gt;=3.9; 2.0.0 Requires-Python &gt;=3.9; 2.0.1 Requires-Python &gt;=3.9</span>
+<span class=" -Color -Color-Red">ERROR: Could not find a version that satisfies the requirement pregex (from versions: none)</span>
+<span class=" -Color -Color-Red">ERROR: No matching distribution found for pregex</span>
+
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip available: <span class=" -Color -Color-Red">22.1.2</span> -&gt; <span class=" -Color -Color-Green">22.2.2</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pregex.classes</span> <span class="kn">import</span> <span class="n">AnyButWhitespace</span>
+<span class="kn">from</span> <span class="nn">pregex.quantifiers</span> <span class="kn">import</span> <span class="n">AtLeastOnce</span>
+<span class="kn">from</span> <span class="nn">pregex.operators</span> <span class="kn">import</span> <span class="n">Either</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;You can find me through GitHub https://github.com/khuyentran1401&quot;</span>
+
+<span class="n">pre</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;https://&quot;</span>
+    <span class="o">+</span> <span class="n">AtLeastOnce</span><span class="p">(</span><span class="n">AnyButWhitespace</span><span class="p">())</span>
+    <span class="o">+</span> <span class="n">Either</span><span class="p">(</span><span class="s2">&quot;.com&quot;</span><span class="p">,</span> <span class="s2">&quot;.org&quot;</span><span class="p">)</span>
+    <span class="o">+</span> <span class="n">AtLeastOnce</span><span class="p">(</span><span class="n">AnyButWhitespace</span><span class="p">())</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/natural_language_processing.ipynb Cell 150</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/natural_language_processing.ipynb#ch0000150?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">pregex.classes</span> <span class="kn">import</span> <span class="n">AnyButWhitespace</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/natural_language_processing.ipynb#ch0000150?line=1&#39;</span><span class="o">&gt;</span><span class="mi">2</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">pregex.quantifiers</span> <span class="kn">import</span> <span class="n">AtLeastOnce</span>
+      <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/natural_language_processing.ipynb#ch0000150?line=2&#39;</span><span class="o">&gt;</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">pregex.operators</span> <span class="kn">import</span> <span class="n">Either</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pregex.classes&#39;
 </pre></div>
 </div>
 </div>

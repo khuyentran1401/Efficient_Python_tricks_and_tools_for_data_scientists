@@ -796,6 +796,11 @@ title="Print to PDF"
    7.1.3. Pipe: Use Inflix Notation in Python
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">
+   7.1.4. PRegEx: Write Human-Readable Regular Expressions
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -828,6 +833,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pipe-use-inflix-notation-in-python">
    7.1.3. Pipe: Use Inflix Notation in Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">
+   7.1.4. PRegEx: Write Human-Readable Regular Expressions
   </a>
  </li>
 </ul>
@@ -1101,6 +1111,62 @@ title="Print to PDF"
 </div>
 <p><a class="reference external" href="https://towardsdatascience.com/write-clean-python-code-using-pipes-1239a0f3abf5">Link to my article on pipe</a>.</p>
 <p><a class="reference external" href="https://github.com/JulienPalard/Pipe">Link to pipe</a>.</p>
+</section>
+<section id="pregex-write-human-readable-regular-expressions">
+<h2><span class="section-number">7.1.4. </span>PRegEx: Write Human-Readable Regular Expressions<a class="headerlink" href="#pregex-write-human-readable-regular-expressions" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pregex
+</pre></div>
+</div>
+</div>
+</div>
+<p>RegEx is useful for extracting words with matching patterns. However, it can be difficult to read and create. PregEx allows you to write a more human-readable RegEx.</p>
+<p>In the code below, I use PregEx to extract URLs from text.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pregex.core.classes</span> <span class="kn">import</span> <span class="n">AnyButWhitespace</span>
+<span class="kn">from</span> <span class="nn">pregex.core.quantifiers</span> <span class="kn">import</span> <span class="n">OneOrMore</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">pregex.core.operators</span> <span class="kn">import</span> <span class="n">Either</span>
+
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;You can find me through my website mathdatasimplified.com/ or GitHub https://github.com/khuyentran1401&quot;</span>
+
+<span class="n">any_but_space</span> <span class="o">=</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">AnyButWhitespace</span><span class="p">())</span>
+<span class="n">optional_scheme</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;https://&quot;</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">Either</span><span class="p">(</span><span class="s2">&quot;.com&quot;</span><span class="p">,</span> <span class="s2">&quot;.org&quot;</span><span class="p">)</span>
+
+<span class="n">pre</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">optional_scheme</span>
+    <span class="o">+</span> <span class="n">any_but_space</span>
+    <span class="o">+</span> <span class="n">domain</span>
+    <span class="o">+</span> <span class="n">any_but_space</span>
+<span class="p">)</span>
+
+<span class="n">pre</span><span class="o">.</span><span class="n">get_pattern</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;(?:https:\\/\\/)?\\S+(?:\\.com|\\.org)\\S+&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pre</span><span class="o">.</span><span class="n">get_matches</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;mathdatasimplified.com/&#39;, &#39;https://github.com/khuyentran1401&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://towardsdatascience.com/pregex-write-human-readable-regular-expressions-in-python-9c87d1b1335">Full article about PregEx</a>.</p>
+<p><a class="reference external" href="https://github.com/manoss96/pregex">Link to PregEx</a>.</p>
 </section>
 </section>
 
