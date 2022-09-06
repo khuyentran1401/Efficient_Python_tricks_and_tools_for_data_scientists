@@ -791,6 +791,11 @@ title="Print to PDF"
    3.8.2. Use Python Class as a Type Hint
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-annotated-add-metadata-to-your-typehint">
+   3.8.3. typing.Annotated: Add Metadata to Your Typehint
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -818,6 +823,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#use-python-class-as-a-type-hint">
    3.8.2. Use Python Class as a Type Hint
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-annotated-add-metadata-to-your-typehint">
+   3.8.3. typing.Annotated: Add Metadata to Your Typehint
   </a>
  </li>
 </ul>
@@ -941,6 +951,35 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 </div>
 </div>
 </div>
+</section>
+<section id="typing-annotated-add-metadata-to-your-typehint">
+<h2><span class="section-number">3.8.3. </span>typing.Annotated: Add Metadata to Your Typehint<a class="headerlink" href="#typing-annotated-add-metadata-to-your-typehint" title="Permalink to this headline">#</a></h2>
+<p>If you want to add metadata to your typehint such as units of measurement, use <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_annotated.py </span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
+
+
+<span class="k">def</span> <span class="nf">get_height_in_feet</span><span class="p">(</span><span class="n">height</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;meters&quot;</span><span class="p">]):</span>
+    <span class="k">return</span> <span class="n">height</span> <span class="o">*</span> <span class="mf">3.28084</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">get_height_in_feet</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mf">1.6</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Annotated[T,</span> <span class="pre">x]</span></code> allows static typechecking such as mypy to check <code class="docutils literal notranslate"><span class="pre">T</span></code> while safely ignoring <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mypy typing_annotated.py 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">Success: no issues found in 1 source file</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This method is available for Python 3.9 and above.</p>
 </section>
 </section>
 
