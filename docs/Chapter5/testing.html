@@ -837,28 +837,33 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">
+   6.13.12. pytest-picked: Run the Tests Related to the Unstaged Files in Git
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">
-   6.13.12. Pandera: a Python Library to Validate Your Pandas DataFrame
+   6.13.13. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
-   6.13.13. DeepDiff Find Deep Differences of Python Objects
+   6.13.14. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.14. hypothesis: Property-based Testing in Python
+   6.13.15. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.15. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.16. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
-   6.13.16. Check Conflicting Labels with Deepchecks
+   6.13.17. Check Conflicting Labels with Deepchecks
   </a>
  </li>
 </ul>
@@ -936,28 +941,33 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">
+   6.13.12. pytest-picked: Run the Tests Related to the Unstaged Files in Git
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">
-   6.13.12. Pandera: a Python Library to Validate Your Pandas DataFrame
+   6.13.13. Pandera: a Python Library to Validate Your Pandas DataFrame
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">
-   6.13.13. DeepDiff Find Deep Differences of Python Objects
+   6.13.14. DeepDiff Find Deep Differences of Python Objects
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.14. hypothesis: Property-based Testing in Python
+   6.13.15. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.15. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.16. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
-   6.13.16. Check Conflicting Labels with Deepchecks
+   6.13.17. Check Conflicting Labels with Deepchecks
   </a>
  </li>
 </ul>
@@ -1595,8 +1605,61 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 </div>
 <p><a class="reference external" href="https://smarie.github.io/python-pytest-steps/">Link to pytest_steps</a>.</p>
 </section>
+<section id="pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">
+<h2><span class="section-number">6.13.12. </span>pytest-picked: Run the Tests Related to the Unstaged Files in Git<a class="headerlink" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git" title="Permalink to this headline">#</a></h2>
+<p>It can be time-consuming to run all tests in your project. Wouldn’t it be nice if you can run only the tests related to the unstaged files in Git? That is when pytest-picked comes in handy.</p>
+<p>In the code below, only tests in the file <code class="docutils literal notranslate"><span class="pre">test_picked.py</span></code> are executed because it is an unstaged file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_picked.py</span>
+<span class="k">def</span> <span class="nf">plus_one</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+<span class="k">def</span> <span class="nf">test_plus_one</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">plus_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ git status
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>On branch master
+Your branch is up to date with &#39;origin/master&#39;.
+
+Untracked files:
+  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+	<span class=" -Color -Color-Red">test_picked.py</span>
+
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest --picked
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Changed test files... 1. [&#39;test_picked.py&#39;]
+Changed test folders... 0. []
+<span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.8.9, pytest-7.1.2, pluggy-1.0.0
+rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: anyio-3.6.1, picked-0.4.6
+<span class=" -Color -Color-Bold">collecting ... </span>
+<span class=" -Color -Color-Bold">collected 1 item                                                               </span>
+
+test_picked.py <span class=" -Color -Color-Green">.                                                         [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/anapaulagomes/pytest-picked">Link to pytest-picked</a>.</p>
+</section>
 <section id="pandera-a-python-library-to-validate-your-pandas-dataframe">
-<h2><span class="section-number">6.13.12. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.13. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandera
@@ -1760,7 +1823,7 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </section>
 <section id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.13.13. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.14. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepdiff
@@ -1883,7 +1946,7 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </section>
 <section id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.14. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.15. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
@@ -1952,7 +2015,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </section>
 <section id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.15. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.16. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
@@ -2089,7 +2152,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
 <section id="check-conflicting-labels-with-deepchecks">
-<h2><span class="section-number">6.13.16. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.17. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
 <p>Sometimes, your data might have identical samples with different labels. This might be because the data was mislabeled.</p>
 <p>It is good to identify these conflicting labels in your data before using the data to train your ML model. To check conflicting labels in your data, use deepchecks.</p>
 <p>In the example below, deepchecks identified that samples 0 and 1 have the same features but different labels.</p>
