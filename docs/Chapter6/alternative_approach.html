@@ -806,6 +806,11 @@ title="Print to PDF"
    7.1.4. PRegEx: Write Human-Readable Regular Expressions
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">
+   7.1.5. Dictdiffer: Find the Differences Between Two Dictionaries
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -843,6 +848,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">
    7.1.4. PRegEx: Write Human-Readable Regular Expressions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">
+   7.1.5. Dictdiffer: Find the Differences Between Two Dictionaries
   </a>
  </li>
 </ul>
@@ -1172,6 +1182,114 @@ title="Print to PDF"
 </div>
 <p><a class="reference external" href="https://towardsdatascience.com/pregex-write-human-readable-regular-expressions-in-python-9c87d1b1335">Full article about PregEx</a>.</p>
 <p><a class="reference external" href="https://github.com/manoss96/pregex">Link to PregEx</a>.</p>
+</section>
+<section id="dictdiffer-find-the-differences-between-two-dictionaries">
+<h2><span class="section-number">7.1.5. </span>Dictdiffer: Find the Differences Between Two Dictionaries<a class="headerlink" href="#dictdiffer-find-the-differences-between-two-dictionaries" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dictdiffer
+</pre></div>
+</div>
+</div>
+</div>
+<p>When comparing two complicated dictionaries, it is useful to have a tool that finds the differences between the two. Dictdiffer allows you to do exactly that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dictdiffer</span> <span class="kn">import</span> <span class="n">diff</span><span class="p">,</span> <span class="n">swap</span>
+
+<span class="n">user1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> 
+    <span class="s2">&quot;fav_foods&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ice cream&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">user2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Josh&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="s2">&quot;fav_foods&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ice cream&quot;</span><span class="p">,</span> <span class="s2">&quot;chicken&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 32;
+                var nbb_unformatted_code = "from dictdiffer import diff, swap\n\nuser1 = {\n    \"name\": \"Ben\", \n    \"age\": 25, \n    \"fav_foods\": [\"ice cream\"],\n}\n\nuser2 = {\n    \"name\": \"Josh\",\n    \"age\": 25,\n    \"fav_foods\": [\"ice cream\", \"chicken\"],\n}";
+                var nbb_formatted_code = "from dictdiffer import diff, swap\n\nuser1 = {\n    \"name\": \"Ben\",\n    \"age\": 25,\n    \"fav_foods\": [\"ice cream\"],\n}\n\nuser2 = {\n    \"name\": \"Josh\",\n    \"age\": 25,\n    \"fav_foods\": [\"ice cream\", \"chicken\"],\n}";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># find the difference between two dictionaries</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">user1</span><span class="p">,</span> <span class="n">user2</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;change&#39;, &#39;name&#39;, (&#39;Ben&#39;, &#39;Josh&#39;)), (&#39;add&#39;, &#39;fav_foods&#39;, [(1, &#39;chicken&#39;)])]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 33;
+                var nbb_unformatted_code = "# find the difference between two dictionaries\nresult = diff(user1, user2)\nlist(result)";
+                var nbb_formatted_code = "# find the difference between two dictionaries\nresult = diff(user1, user2)\nlist(result)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># swap the diff result</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">user1</span><span class="p">,</span> <span class="n">user2</span><span class="p">)</span>
+<span class="n">swapped</span> <span class="o">=</span> <span class="n">swap</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">swapped</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;change&#39;, &#39;name&#39;, (&#39;Josh&#39;, &#39;Ben&#39;)),
+ (&#39;remove&#39;, &#39;fav_foods&#39;, [(1, &#39;chicken&#39;)])]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 34;
+                var nbb_unformatted_code = "# swap the diff result\nresult = diff(user1, user2)\nswapped = swap(result)\nlist(swapped)";
+                var nbb_formatted_code = "# swap the diff result\nresult = diff(user1, user2)\nswapped = swap(result)\nlist(swapped)";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/inveniosoftware/dictdiffer">Link to Dictdiffer</a>.</p>
 </section>
 </section>
 
