@@ -270,42 +270,42 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/itertools.html">
-     3.2. Itertools
+     3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/functools.html">
-     3.3. Functools
+     3.8. Functools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pydash.html">
-     3.4. Pydash
+     3.9. Pydash
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/sympy.html">
-     3.5. SymPy
+     3.10. SymPy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/operator.html">
-     3.6. Operator
+     3.11. Operator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/dataclasses.html">
-     3.7. Data Classes
+     3.12. Data Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.8. Typing
+     3.13. Typing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pathlib.html">
-     3.9. pathlib
+     3.14. pathlib
     </a>
    </li>
   </ul>
@@ -807,13 +807,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter-a-pandas-dataframe-based-on-index-s-name">
+   4.7.5. Filter a pandas DataFrame Based on Index’s Name
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#all-select-rows-with-all-nan-values">
-   4.7.5. all: Select Rows with All NaN Values
+   4.7.6. all: Select Rows with All NaN Values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-clip-exclude-outliers">
-   4.7.6. pandas.clip: Exclude Outliers
+   4.7.7. pandas.clip: Exclude Outliers
   </a>
  </li>
 </ul>
@@ -856,13 +861,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#filter-a-pandas-dataframe-based-on-index-s-name">
+   4.7.5. Filter a pandas DataFrame Based on Index’s Name
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#all-select-rows-with-all-nan-values">
-   4.7.5. all: Select Rows with All NaN Values
+   4.7.6. all: Select Rows with All NaN Values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-clip-exclude-outliers">
-   4.7.6. pandas.clip: Exclude Outliers
+   4.7.7. pandas.clip: Exclude Outliers
   </a>
  </li>
 </ul>
@@ -1485,8 +1495,158 @@ Name: type, dtype: int64
 </div></div></div>
 </div>
 </section>
+<section id="filter-a-pandas-dataframe-based-on-index-s-name">
+<h2><span class="section-number">4.7.5. </span>Filter a pandas DataFrame Based on Index’s Name<a class="headerlink" href="#filter-a-pandas-dataframe-based-on-index-s-name" title="Permalink to this headline">#</a></h2>
+<p>If you want to filter a pandas DataFrame based on the index’s name, you can use either <code class="docutils literal notranslate"><span class="pre">filter</span></code> or <code class="docutils literal notranslate"><span class="pre">loc</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">values</span><span class="p">,</span> 
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;user1&quot;</span><span class="p">,</span> <span class="s2">&quot;user2&quot;</span><span class="p">,</span> <span class="s2">&quot;user3&quot;</span><span class="p">],</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>user1</th>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>user2</th>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>user3</th>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">items</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;user1&#39;</span><span class="p">,</span> <span class="s1">&#39;user3&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>user1</th>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>user3</th>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s1">&#39;user1&#39;</span><span class="p">,</span> <span class="s1">&#39;user3&#39;</span><span class="p">],</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>user1</th>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>user3</th>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="all-select-rows-with-all-nan-values">
-<h2><span class="section-number">4.7.5. </span>all: Select Rows with All NaN Values<a class="headerlink" href="#all-select-rows-with-all-nan-values" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.7.6. </span>all: Select Rows with All NaN Values<a class="headerlink" href="#all-select-rows-with-all-nan-values" title="Permalink to this headline">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">DataFrame.all</span></code> is useful when you want to evaluate whether all values of a row or a column are <code class="docutils literal notranslate"><span class="pre">True</span></code>. If you want to get the rows whose all values are NaN, use both <code class="docutils literal notranslate"><span class="pre">isna</span></code> and <code class="docutils literal notranslate"><span class="pre">all(axis=1)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1522,7 +1682,7 @@ dtype: bool
 </div>
 </section>
 <section id="pandas-clip-exclude-outliers">
-<h2><span class="section-number">4.7.6. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.7.7. </span>pandas.clip: Exclude Outliers<a class="headerlink" href="#pandas-clip-exclude-outliers" title="Permalink to this headline">#</a></h2>
 <p>Outliers are unusual values in your dataset, and they can distort statistical analyses.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

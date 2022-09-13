@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.7. Data Classes &#8212; Effective Python for Data Scientists</title>
+    <title>3.12. Data Classes &#8212; Effective Python for Data Scientists</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -87,8 +87,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.8. Typing" href="typing.html" />
-    <link rel="prev" title="3.6. Operator" href="operator.html" />
+    <link rel="next" title="3.13. Typing" href="typing.html" />
+    <link rel="prev" title="3.11. Operator" href="operator.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -270,42 +270,42 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="itertools.html">
-     3.2. Itertools
+     3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="functools.html">
-     3.3. Functools
+     3.8. Functools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pydash.html">
-     3.4. Pydash
+     3.9. Pydash
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sympy.html">
-     3.5. SymPy
+     3.10. SymPy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="operator.html">
-     3.6. Operator
+     3.11. Operator
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     3.7. Data Classes
+     3.12. Data Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="typing.html">
-     3.8. Typing
+     3.13. Typing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pathlib.html">
-     3.9. pathlib
+     3.14. pathlib
     </a>
    </li>
   </ul>
@@ -788,22 +788,22 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-classes-vs-normal-classes">
-   3.7.1. Data Classes vs Normal Classes
+   3.12.1. Data Classes vs Normal Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">
-   3.7.2. frozen=True: Make Your Data Classes Read-Only
+   3.12.2. frozen=True: Make Your Data Classes Read-Only
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#compare-between-two-data-classes">
-   3.7.3. Compare Between Two Data Classes
+   3.12.3. Compare Between Two Data Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">
-   3.7.4. Post-init: Add Init Method to a Data Class
+   3.12.4. Post-init: Add Init Method to a Data Class
   </a>
  </li>
 </ul>
@@ -827,22 +827,22 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-classes-vs-normal-classes">
-   3.7.1. Data Classes vs Normal Classes
+   3.12.1. Data Classes vs Normal Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">
-   3.7.2. frozen=True: Make Your Data Classes Read-Only
+   3.12.2. frozen=True: Make Your Data Classes Read-Only
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#compare-between-two-data-classes">
-   3.7.3. Compare Between Two Data Classes
+   3.12.3. Compare Between Two Data Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">
-   3.7.4. Post-init: Add Init Method to a Data Class
+   3.12.4. Post-init: Add Init Method to a Data Class
   </a>
  </li>
 </ul>
@@ -856,9 +856,9 @@ title="Print to PDF"
               <div>
                 
   <section id="data-classes">
-<h1><span class="section-number">3.7. </span>Data Classes<a class="headerlink" href="#data-classes" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.12. </span>Data Classes<a class="headerlink" href="#data-classes" title="Permalink to this headline">#</a></h1>
 <section id="data-classes-vs-normal-classes">
-<h2><span class="section-number">3.7.1. </span>Data Classes vs Normal Classes<a class="headerlink" href="#data-classes-vs-normal-classes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.12.1. </span>Data Classes vs Normal Classes<a class="headerlink" href="#data-classes-vs-normal-classes" title="Permalink to this headline">#</a></h2>
 <p>If you want to use classes to store data, use the dataclass module. This module is available in Python 3.7+.</p>
 <p>With dataclass, you can create a class with attributes, type hints, and a nice representation of the data in a few lines of code. To use dataclass, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;dataclass</span></code> decorator on top of a class.</p>
 <div class="cell docutils container">
@@ -914,7 +914,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="frozen-true-make-your-data-classes-read-only">
-<h2><span class="section-number">3.7.2. </span>frozen=True: Make Your Data Classes Read-Only<a class="headerlink" href="#frozen-true-make-your-data-classes-read-only" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.12.2. </span>frozen=True: Make Your Data Classes Read-Only<a class="headerlink" href="#frozen-true-make-your-data-classes-read-only" title="Permalink to this headline">#</a></h2>
 <p>If you don’t want anybody to adjust the attributes of a class, use <code class="docutils literal notranslate"><span class="pre">&#64;dataclass(frozen=True)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -953,7 +953,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="compare-between-two-data-classes">
-<h2><span class="section-number">3.7.3. </span>Compare Between Two Data Classes<a class="headerlink" href="#compare-between-two-data-classes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.12.3. </span>Compare Between Two Data Classes<a class="headerlink" href="#compare-between-two-data-classes" title="Permalink to this headline">#</a></h2>
 <p>Normally, you need to implement the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method so that you can compare between two classes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1007,7 +1007,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="post-init-add-init-method-to-a-data-class">
-<h2><span class="section-number">3.7.4. </span>Post-init: Add Init Method to a Data Class<a class="headerlink" href="#post-init-add-init-method-to-a-data-class" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.12.4. </span>Post-init: Add Init Method to a Data Class<a class="headerlink" href="#post-init-add-init-method-to-a-data-class" title="Permalink to this headline">#</a></h2>
 <p>With a data class, you don’t need an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method to assign values to its attributes. However, sometimes you might want to use an <code class="docutils literal notranslate"><span class="pre">___init__</span></code> method to initialize certain attributes. That is when data class’s <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> comes in handy.</p>
 <p>In the code below, I use <code class="docutils literal notranslate"><span class="pre">__post_init__</span></code> to initialize the attribute <code class="docutils literal notranslate"><span class="pre">info</span></code> using the attributes <code class="docutils literal notranslate"><span class="pre">names</span></code> and <code class="docutils literal notranslate"><span class="pre">ages</span></code>.</p>
 <div class="cell docutils container">
@@ -1082,13 +1082,13 @@ title="Print to PDF"
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3.6. </span>Operator</p>
+            <p class="prev-next-title"><span class="section-number">3.11. </span>Operator</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="typing.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.8. </span>Typing</p>
+        <p class="prev-next-title"><span class="section-number">3.13. </span>Typing</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
