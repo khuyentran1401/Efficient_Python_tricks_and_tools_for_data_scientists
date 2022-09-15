@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.8. Functools &#8212; Effective Python for Data Scientists</title>
+    <title>3.3. Functools &#8212; Effective Python for Data Scientists</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -87,8 +87,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.9. Pydash" href="pydash.html" />
-    <link rel="prev" title="3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List" href="itertools.html" />
+    <link rel="next" title="3.4. Pydash" href="pydash.html" />
+    <link rel="prev" title="3.2. Itertools" href="itertools.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -270,42 +270,42 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="itertools.html">
-     3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
+     3.2. Itertools
     </a>
    </li>
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
-     3.8. Functools
+     3.3. Functools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pydash.html">
-     3.9. Pydash
+     3.4. Pydash
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="sympy.html">
-     3.10. SymPy
+     3.5. SymPy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="operator.html">
-     3.11. Operator
+     3.6. Operator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="dataclasses.html">
-     3.12. Data Classes
+     3.7. Data Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="typing.html">
-     3.13. Typing
+     3.8. Typing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="pathlib.html">
-     3.14. pathlib
+     3.9. pathlib
     </a>
    </li>
   </ul>
@@ -788,17 +788,17 @@ title="Print to PDF"
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-partial-generate-a-new-function-with-fewer-arguments">
-   3.8.1. functools.partial: Generate a New Function with Fewer Arguments
+   3.3.1. functools.partial: Generate a New Function with Fewer Arguments
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument">
-   3.8.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
+   3.3.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
-   3.8.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
+   3.3.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
   </a>
  </li>
 </ul>
@@ -822,17 +822,17 @@ title="Print to PDF"
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-partial-generate-a-new-function-with-fewer-arguments">
-   3.8.1. functools.partial: Generate a New Function with Fewer Arguments
+   3.3.1. functools.partial: Generate a New Function with Fewer Arguments
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument">
-   3.8.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
+   3.3.2. functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
-   3.8.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
+   3.3.3. functools.reduce: Apply Function Cumulatively to the Items of Iterable
   </a>
  </li>
 </ul>
@@ -846,10 +846,10 @@ title="Print to PDF"
               <div>
                 
   <section id="functools">
-<h1><span class="section-number">3.8. </span>Functools<a class="headerlink" href="#functools" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.3. </span>Functools<a class="headerlink" href="#functools" title="Permalink to this headline">#</a></h1>
 <p><a class="reference external" href="https://docs.python.org/3/library/functools.html">functools</a> is a built-in Python library to work with functions efficiently. This section will show you some useful methods of functools.</p>
 <section id="functools-partial-generate-a-new-function-with-fewer-arguments">
-<h2><span class="section-number">3.8.1. </span>functools.partial: Generate a New Function with Fewer Arguments<a class="headerlink" href="#functools-partial-generate-a-new-function-with-fewer-arguments" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.3.1. </span>functools.partial: Generate a New Function with Fewer Arguments<a class="headerlink" href="#functools-partial-generate-a-new-function-with-fewer-arguments" title="Permalink to this headline">#</a></h2>
 <p>If you want to fix some arguments of a function and generate a new function with fewer arguments, use <code class="docutils literal notranslate"><span class="pre">functools.partial</span></code>.</p>
 <p>In the code below, I use <code class="docutils literal notranslate"><span class="pre">partial</span></code> to create a new function with only <code class="docutils literal notranslate"><span class="pre">x</span></code> as the argument.</p>
 <div class="cell docutils container">
@@ -876,7 +876,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument">
-<h2><span class="section-number">3.8.2. </span>functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument<a class="headerlink" href="#functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.3.2. </span>functools.singledispatch: Call Another Function Based on the Type of the Current Function’s Argument<a class="headerlink" href="#functools-singledispatch-call-another-function-based-on-the-type-of-the-current-functions-argument" title="Permalink to this headline">#</a></h2>
 <p>Normally, to call another function based on the type of the current function’s argument, we use an if-else statement:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -979,7 +979,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="functools-reduce-apply-function-cumulatively-to-the-items-of-iterable">
-<h2><span class="section-number">3.8.3. </span>functools.reduce: Apply Function Cumulatively to the Items of Iterable<a class="headerlink" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.3.3. </span>functools.reduce: Apply Function Cumulatively to the Items of Iterable<a class="headerlink" href="#functools-reduce-apply-function-cumulatively-to-the-items-of-iterable" title="Permalink to this headline">#</a></h2>
 <p>If you want to apply a function of two arguments cumulatively to the items of iterable from left to right, use functools’s reduce. This method reduces the iterable to a single value.</p>
 <p>In the code below, <code class="docutils literal notranslate"><span class="pre">3</span></code> is the result of the function <code class="docutils literal notranslate"><span class="pre">add_nums(2,</span> <span class="pre">1)</span></code>. <code class="docutils literal notranslate"><span class="pre">3</span></code> is then used as the first argument of the function <code class="docutils literal notranslate"><span class="pre">add_nums(3,</span> <span class="pre">2)</span></code>.</p>
 <div class="cell docutils container">
@@ -1040,13 +1040,13 @@ title="Print to PDF"
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">3.2. </span>itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List</p>
+            <p class="prev-next-title"><span class="section-number">3.2. </span>Itertools</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="pydash.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.9. </span>Pydash</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Pydash</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
