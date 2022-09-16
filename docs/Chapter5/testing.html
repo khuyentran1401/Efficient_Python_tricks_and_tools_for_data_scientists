@@ -270,42 +270,42 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/itertools.html">
-     3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
+     3.2. Itertools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/functools.html">
-     3.8. Functools
+     3.3. Functools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pydash.html">
-     3.9. Pydash
+     3.4. Pydash
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/sympy.html">
-     3.10. SymPy
+     3.5. SymPy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/operator.html">
-     3.11. Operator
+     3.6. Operator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/dataclasses.html">
-     3.12. Data Classes
+     3.7. Data Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.13. Typing
+     3.8. Typing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pathlib.html">
-     3.14. pathlib
+     3.9. pathlib
     </a>
    </li>
   </ul>
@@ -1274,6 +1274,55 @@ pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">P
 </div>
 </div>
 <p>We can see that instead of <code class="docutils literal notranslate"><span class="pre">[-1--2]</span></code>, the first test case is shown as <code class="docutils literal notranslate"><span class="pre">neg</span> <span class="pre">and</span> <span class="pre">neg</span></code>. This makes it easier for others to understand the roles of your test cases.</p>
+<p>If you want to specify the test IDs together with the actual data, instead of listing them separately, use <code class="docutils literal notranslate"><span class="pre">pytest.param</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_param.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+
+<span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+
+<span class="n">examples</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;neg-neg&quot;</span><span class="p">),</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;pos-pos&quot;</span><span class="p">),</span>
+    <span class="n">pytest</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;0-0&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;n1, n2&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest -v pytest_param.py
+</pre></div>
+</div>
+<div class="cell tag_hide-inpy docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest -v pytest_param.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.8.9, pytest-7.1.2, pluggy-1.0.0 -- /Users/khuyen/book/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: anyio-3.6.1, pyfakefs-4.6.3, picked-0.4.6
+<span class=" -Color -Color-Bold">collecting ... </span>
+<span class=" -Color -Color-Bold">collected 3 items                                                              </span>
+
+pytest_param.py::test_is_float[neg-neg] <span class=" -Color -Color-Green">PASSED                           [ 33%]</span>
+pytest_param.py::test_is_float[pos-pos] <span class=" -Color -Color-Green">PASSED                           [ 66%]</span>
+pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED                               [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="pytest-fixtures-use-the-same-data-for-different-tests">
 <h2><span class="section-number">6.13.5. </span>Pytest Fixtures: Use The Same Data for Different Tests<a class="headerlink" href="#pytest-fixtures-use-the-same-data-for-different-tests" title="Permalink to this headline">#</a></h2>
