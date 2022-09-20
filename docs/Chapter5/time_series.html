@@ -891,12 +891,44 @@ title="Print to PDF"
 <p>If you want to automatically find date and time with different formats in a Python string, try datefinder.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
+<span class="s2">and another meeting on 5/18/2021 at 10:00. </span>
+<span class="s2">I hope you can attend one of the meetings.&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
+<span class="s2">and another meeting on 5/18/2021 at 10:00. </span>
+<span class="s2">I hope you can attend one of the meetings.&quot;&quot;&quot;</span>
+
+<span class="c1"># Get &#39;5/18/2021&#39;</span>
+<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d</span><span class="si">{1}</span><span class="s1">/\d</span><span class="si">{2}</span><span class="s1">/\d</span><span class="si">{4}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+
+<span class="c1"># Get a date object</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="n">date</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.date(2021, 5, 18)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datefinder</span> <span class="kn">import</span> <span class="n">find_dates</span>
 
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th,</span>
-<span class="s2">2021 at 9:00am and another meeting on 5/18/2021</span>
-<span class="s2">at 10:00. I hope you can attend one of the</span>
-<span class="s2">meetings.&quot;&quot;&quot;</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
+<span class="s2">and another meeting on 5/18/2021 at 10:00. </span>
+<span class="s2">I hope you can attend one of the meetings.&quot;&quot;&quot;</span>
 
 <span class="n">matches</span> <span class="o">=</span> <span class="n">find_dates</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
@@ -913,22 +945,7 @@ Date and time: 2021-05-18 10:00:00
 Only day: 18
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 32;
-                var nbb_unformatted_code = "from datefinder import find_dates\n\ntext = \"\"\"\"We have one meeting on May 17th,\n2021 at 9:00am and another meeting on 5/18/2021\nat 10:00. I hope you can attend one of the\nmeetings.\"\"\"\n\nmatches = find_dates(text)\n\nfor match in matches:\n    print(\"Date and time:\", match)\n    print(\"Only day:\", match.day)";
-                var nbb_formatted_code = "from datefinder import find_dates\n\ntext = \"\"\"\"We have one meeting on May 17th,\n2021 at 9:00am and another meeting on 5/18/2021\nat 10:00. I hope you can attend one of the\nmeetings.\"\"\"\n\nmatches = find_dates(text)\n\nfor match in matches:\n    print(\"Date and time:\", match)\n    print(\"Only day:\", match.day)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <p><a class="reference external" href="https://github.com/akoumjian/datefinder">Link to datefinder</a>.</p>
 </section>
