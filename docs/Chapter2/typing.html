@@ -801,6 +801,11 @@ title="Print to PDF"
    3.8.3. typing.Annotated: Add Metadata to Your Typehint
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-final-declare-that-a-method-should-not-be-overridden">
+   3.8.4. typing.final: Declare That a Method Should Not Be Overridden
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -833,6 +838,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typing-annotated-add-metadata-to-your-typehint">
    3.8.3. typing.Annotated: Add Metadata to Your Typehint
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-final-declare-that-a-method-should-not-be-overridden">
+   3.8.4. typing.final: Declare That a Method Should Not Be Overridden
   </a>
  </li>
 </ul>
@@ -985,6 +995,38 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 </div>
 </div>
 <p>This method is available for Python 3.9 and above.</p>
+</section>
+<section id="typing-final-declare-that-a-method-should-not-be-overridden">
+<h2><span class="section-number">3.8.4. </span>typing.final: Declare That a Method Should Not Be Overridden<a class="headerlink" href="#typing-final-declare-that-a-method-should-not-be-overridden" title="Permalink to this headline">#</a></h2>
+<p>If you want to declare that some methods shouldn’t be overridden by subclasses, use the decorator <code class="docutils literal notranslate"><span class="pre">typing.final</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_final.py</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">final</span> 
+
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="nd">@final</span> 
+    <span class="k">def</span> <span class="nf">bark</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Woof&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Dachshund</span><span class="p">(</span><span class="n">Dog</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">bark</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ruff&quot;</span><span class="p">)</span>
+
+<span class="n">bim</span> <span class="o">=</span> <span class="n">Dachshund</span><span class="p">()</span>
+<span class="n">bim</span><span class="o">.</span><span class="n">bark</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mypy typing_final.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_final.py:9: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Cannot override final attribute <span class=" -Color -Color-Bold">&quot;bark&quot;</span> (previously declared in base class <span class=" -Color -Color-Bold">&quot;Dog&quot;</span>)
+<span class=" -Color -Color-Bold -Color-Bold-Red">Found 1 error in 1 file (checked 1 source file)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This method is available for Python 3.8 and above.</p>
 </section>
 </section>
 
