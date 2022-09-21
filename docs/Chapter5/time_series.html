@@ -891,39 +891,6 @@ title="Print to PDF"
 <p>If you want to automatically find date and time with different formats in a Python string, try datefinder.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
-<span class="s2">and another meeting on 5/18/2021 at 10:00. </span>
-<span class="s2">I hope you can attend one of the meetings.&quot;&quot;&quot;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
-<span class="s2">and another meeting on 5/18/2021 at 10:00. </span>
-<span class="s2">I hope you can attend one of the meetings.&quot;&quot;&quot;</span>
-
-<span class="c1"># Get &#39;5/18/2021&#39;</span>
-<span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d</span><span class="si">{1}</span><span class="s1">/\d</span><span class="si">{2}</span><span class="s1">/\d</span><span class="si">{4}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
-
-<span class="c1"># Get a date object</span>
-<span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="s1">&#39;%m/</span><span class="si">%d</span><span class="s1">/%Y&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-<span class="n">date</span> 
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.date(2021, 5, 18)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datefinder</span> <span class="kn">import</span> <span class="n">find_dates</span>
 
 <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;We have one meeting on May 17th, 2021 at 9:00am </span>
