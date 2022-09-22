@@ -806,6 +806,11 @@ title="Print to PDF"
    3.1.4. Defaultdict: Create a Dictionary with Values that are List
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chainmap-combine-multiple-dictionaries-into-one-unit">
+   3.1.5. ChainMap: Combine Multiple Dictionaries into One Unit
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -843,6 +848,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#defaultdict-create-a-dictionary-with-values-that-are-list">
    3.1.4. Defaultdict: Create a Dictionary with Values that are List
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#chainmap-combine-multiple-dictionaries-into-one-unit">
+   3.1.5. ChainMap: Combine Multiple Dictionaries into One Unit
   </a>
  </li>
 </ul>
@@ -1007,6 +1017,18 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classes</span><span class="p">[</span><span class="s2">&quot;Spanish&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Outside&#39;
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="defaultdict-create-a-dictionary-with-values-that-are-list">
 <h2><span class="section-number">3.1.4. </span>Defaultdict: Create a Dictionary with Values that are List<a class="headerlink" href="#defaultdict-create-a-dictionary-with-values-that-are-list" title="Permalink to this headline">#</a></h2>
@@ -1031,6 +1053,62 @@ title="Print to PDF"
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_items([(&#39;apple&#39;, [1, 2, 3]), (&#39;orange&#39;, [1, 2, 3])])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="chainmap-combine-multiple-dictionaries-into-one-unit">
+<h2><span class="section-number">3.1.5. </span>ChainMap: Combine Multiple Dictionaries into One Unit<a class="headerlink" href="#chainmap-combine-multiple-dictionaries-into-one-unit" title="Permalink to this headline">#</a></h2>
+<p>If you want to combine multiple dictionaries into one unit, <code class="docutils literal notranslate"><span class="pre">collections.ChainMap</span></code> is a good option. <code class="docutils literal notranslate"><span class="pre">ChainMap</span></code> allows you to organize and get the keys or values across different dictionaries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">ChainMap</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">veggies</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;carrot&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">food</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">veggies</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">food</span><span class="o">.</span><span class="n">maps</span> <span class="c1"># get all contents</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;apple&#39;: 2, &#39;tomato&#39;: 1}, {&#39;carrot&#39;: 3, &#39;tomato&#39;: 1}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">food</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="c1"># Get keys</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;carrot&#39;, &#39;tomato&#39;, &#39;apple&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">food</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="c1"># Get values</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[3, 1, 2]
 </pre></div>
 </div>
 </div>
