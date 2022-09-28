@@ -85,6 +85,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="7.6. Git and GitHub" href="git_github.html" />
@@ -806,6 +808,11 @@ title="Print to PDF"
    7.5.4. Generate a Tree View with rich
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">
+   7.5.5. latexify_py: Generates a LaTex Math Description From a Python Function
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -843,6 +850,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#generate-a-tree-view-with-rich">
    7.5.4. Generate a Tree View with rich
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">
+   7.5.5. latexify_py: Generates a LaTex Math Description From a Python Function
   </a>
  </li>
 </ul>
@@ -1041,6 +1053,54 @@ title="Print to PDF"
 </div></div>
 </div>
 <p><a class="reference external" href="https://github.com/Textualize/rich/tree/aa7926c1431eebfb2ccaab9f3b63a4ac6cd8dfe6">Link to rich</a>.</p>
+</section>
+<section id="latexify-py-generates-a-latex-math-description-from-a-python-function">
+<h2><span class="section-number">7.5.5. </span>latexify_py: Generates a LaTex Math Description From a Python Function<a class="headerlink" href="#latexify-py-generates-a-latex-math-description-from-a-python-function" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install latexify-py
+</pre></div>
+</div>
+</div>
+</div>
+<p>Have you ever wanted to add math description for your Python function but found it time-consuming to do so? latexify_py allows you to add LaTex math description with only one decorator.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">latexify</span>
+
+<span class="nd">@latexify</span><span class="o">.</span><span class="n">with_latex</span>
+<span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">solve</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[ \displaystyle \mathrm{solve}(a, b, c)\triangleq \frac{-b + \sqrt{b^{2} - 4ac}}{2a} \]</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@latexify</span><span class="o">.</span><span class="n">with_latex</span>
+<span class="k">def</span> <span class="nf">sinc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span>
+
+<span class="n">sinc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_latex math notranslate nohighlight">
+\[\begin{split} \displaystyle \mathrm{sinc}(x)\triangleq \left\{ \begin{array}{ll} 1, &amp; \mathrm{if} \ x=0 \\ \frac{\sin{\left({x}\right)}}{x}, &amp; \mathrm{otherwise} \end{array} \right. \end{split}\]</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/google/latexify_py">Link to latexify_py</a>.</p>
 </section>
 </section>
 
