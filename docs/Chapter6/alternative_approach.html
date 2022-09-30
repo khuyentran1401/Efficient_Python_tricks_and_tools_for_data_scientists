@@ -270,42 +270,42 @@ const thebe_selector_output = ".output, .cell_output"
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/itertools.html">
-     3.2. itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
+     3.2. Itertools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/functools.html">
-     3.8. Functools
+     3.3. Functools
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pydash.html">
-     3.9. Pydash
+     3.4. Pydash
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/sympy.html">
-     3.10. SymPy
+     3.5. SymPy
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/operator.html">
-     3.11. Operator
+     3.6. Operator
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/dataclasses.html">
-     3.12. Data Classes
+     3.7. Data Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/typing.html">
-     3.13. Typing
+     3.8. Typing
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter2/pathlib.html">
-     3.14. pathlib
+     3.9. pathlib
     </a>
    </li>
   </ul>
@@ -807,8 +807,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">
+   7.1.5. parse: Extract Strings Using Brackets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">
-   7.1.5. Dictdiffer: Find the Differences Between Two Dictionaries
+   7.1.6. Dictdiffer: Find the Differences Between Two Dictionaries
   </a>
  </li>
 </ul>
@@ -851,8 +856,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">
+   7.1.5. parse: Extract Strings Using Brackets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">
-   7.1.5. Dictdiffer: Find the Differences Between Two Dictionaries
+   7.1.6. Dictdiffer: Find the Differences Between Two Dictionaries
   </a>
  </li>
 </ul>
@@ -1183,8 +1193,76 @@ title="Print to PDF"
 <p><a class="reference external" href="https://towardsdatascience.com/pregex-write-human-readable-regular-expressions-in-python-9c87d1b1335">Full article about PregEx</a>.</p>
 <p><a class="reference external" href="https://github.com/manoss96/pregex">Link to PregEx</a>.</p>
 </section>
+<section id="parse-extract-strings-using-brackets">
+<h2><span class="section-number">7.1.5. </span>parse: Extract Strings Using Brackets<a class="headerlink" href="#parse-extract-strings-using-brackets" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install parse
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to extract substrings from a string, but find it challenging to do so with RegEx, try parse. parse makes it easy to extract strings that are inside brackets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">parse</span> <span class="kn">import</span> <span class="n">parse</span> 
+
+<span class="c1"># Get strings in the brackets</span>
+<span class="n">parse</span><span class="p">(</span><span class="s2">&quot;I&#39;ll get some </span><span class="si">{}</span><span class="s2"> from </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;ll get some apples from Aldi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Result (&#39;apples&#39;, &#39;Aldi&#39;) {}&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also make the brackets more readable by adding the field name to them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify the field names for the brackets</span>
+<span class="n">parse</span><span class="p">(</span><span class="s2">&quot;I&#39;ll get some </span><span class="si">{items}</span><span class="s2"> from </span><span class="si">{store}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;I&#39;ll get some shirts from Walmart&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Result () {&#39;items&#39;: &#39;shirts&#39;, &#39;store&#39;: &#39;Walmart&#39;}&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>parse also allows you to get the string with a certain format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a digit and a word</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;I saw </span><span class="si">{number:d}</span><span class="s2"> {animal:w}s&quot;</span><span class="p">,</span> <span class="s2">&quot;I saw 3 deers&quot;</span><span class="p">)</span>
+<span class="n">r</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Result () {&#39;number&#39;: 3, &#39;animal&#39;: &#39;deer&#39;}&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;number&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/r1chardj0n3s/parse">Link to parse</a>.</p>
+</section>
 <section id="dictdiffer-find-the-differences-between-two-dictionaries">
-<h2><span class="section-number">7.1.5. </span>Dictdiffer: Find the Differences Between Two Dictionaries<a class="headerlink" href="#dictdiffer-find-the-differences-between-two-dictionaries" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.1.6. </span>Dictdiffer: Find the Differences Between Two Dictionaries<a class="headerlink" href="#dictdiffer-find-the-differences-between-two-dictionaries" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dictdiffer
