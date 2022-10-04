@@ -930,24 +930,20 @@ title="Print to PDF"
 <p>If you want to increase the readability of your code when applying multiple functions to a DataFrame, use <code class="docutils literal notranslate"><span class="pre">pands.DataFrame.pipe</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">textblob</span> <span class="kn">import</span> <span class="n">TextBlob</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="k">def</span> <span class="nf">remove_white_space</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">df</span>
 
-<span class="k">def</span> <span class="nf">get_sentiment</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;sentiment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span>
-                                    <span class="n">TextBlob</span><span class="p">(</span><span class="n">row</span><span class="p">)</span><span class="o">.</span><span class="n">sentiment</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">df</span>
+<span class="k">def</span> <span class="nf">get_sum</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="nb">sum</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;It is a beautiful day today  &quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;  This movie is terrible&quot;</span><span class="p">]})</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">remove_white_space</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">get_sentiment</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_diff</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">diff</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">b</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">a</span><span class="p">)</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">get_sum</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">get_diff</span><span class="p">)</span>
 
 <span class="n">df</span>
 </pre></div>
@@ -972,20 +968,33 @@ title="Print to PDF"
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>text</th>
-      <th>sentiment</th>
+      <th>a</th>
+      <th>b</th>
+      <th>sum</th>
+      <th>diff</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>It is a beautiful day today</td>
-      <td>0.85</td>
+      <td>1</td>
+      <td>4</td>
+      <td>5</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>This movie is terrible</td>
-      <td>-1.00</td>
+      <td>2</td>
+      <td>5</td>
+      <td>7</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>6</td>
+      <td>9</td>
+      <td>3</td>
     </tr>
   </tbody>
 </table>
