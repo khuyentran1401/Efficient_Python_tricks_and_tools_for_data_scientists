@@ -806,6 +806,11 @@ title="Print to PDF"
    3.8.4. typing.final: Declare That a Method Should Not Be Overridden
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-literal-specify-the-possible-values-for-a-function-parameter">
+   3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -843,6 +848,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typing-final-declare-that-a-method-should-not-be-overridden">
    3.8.4. typing.final: Declare That a Method Should Not Be Overridden
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#typing-literal-specify-the-possible-values-for-a-function-parameter">
+   3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter
   </a>
  </li>
 </ul>
@@ -1027,6 +1037,37 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 </div>
 </div>
 <p>This method is available for Python 3.8 and above.</p>
+</section>
+<section id="typing-literal-specify-the-possible-values-for-a-function-parameter">
+<h2><span class="section-number">3.8.5. </span>typing.Literal: Specify the Possible Values for a Function Parameter<a class="headerlink" href="#typing-literal-specify-the-possible-values-for-a-function-parameter" title="Permalink to this headline">#</a></h2>
+<p>If you want to use type hints to check that a variable or a function parameter is in a set of literal values, use <code class="docutils literal notranslate"><span class="pre">typing.Literal</span></code>.</p>
+<p>In the example below, since <code class="docutils literal notranslate"><span class="pre">grape</span></code> is not in the set of literal values, mypy raises an error.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_literal.py</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+
+
+<span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">fruit</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">fruit</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># if it is orange</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+
+<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;grape&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mypy typing_literal.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_literal.py:11: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;get_price&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Literal[&#39;grape&#39;]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Literal[&#39;apple&#39;, &#39;orange&#39;]&quot;</span>
+<span class=" -Color -Color-Bold -Color-Bold-Red">Found 1 error in 1 file (checked 1 source file)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This method is available in Python 3.8 and above.</p>
 </section>
 </section>
 
