@@ -816,6 +816,11 @@ title="Print to PDF"
    6.1.6. Pigeon: Quickly Annotate Your Data on Jupyter Notebook
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#probablepeople-parse-unstructured-names-into-structured-components">
+   6.1.7. probablepeople: Parse Unstructured Names Into Structured Components
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -863,6 +868,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pigeon-quickly-annotate-your-data-on-jupyter-notebook">
    6.1.6. Pigeon: Quickly Annotate Your Data on Jupyter Notebook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#probablepeople-parse-unstructured-names-into-structured-components">
+   6.1.7. probablepeople: Parse Unstructured Names Into Structured Components
   </a>
  </li>
 </ul>
@@ -1604,6 +1614,109 @@ Categorical columns: [&#39;col2&#39;]
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/agermanidis/pigeon">Link to Pigeon</a></p>
+</section>
+<section id="probablepeople-parse-unstructured-names-into-structured-components">
+<h2><span class="section-number">6.1.7. </span>probablepeople: Parse Unstructured Names Into Structured Components<a class="headerlink" href="#probablepeople-parse-unstructured-names-into-structured-components" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install probablepeople  
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to parse unstructured names of companies or people into name components, try probablepeople.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">probablepeople</span> <span class="k">as</span> <span class="nn">pp</span>
+
+<span class="n">pp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Mr. Owen Harris II&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Mr.&#39;, &#39;PrefixMarital&#39;),
+ (&#39;Owen&#39;, &#39;GivenName&#39;),
+ (&#39;Harris&#39;, &#39;Surname&#39;),
+ (&#39;II&#39;, &#39;SuffixGenerational&#39;)]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 21;
+                var nbb_unformatted_code = "import probablepeople as pp\n\npp.parse(\"Mr. Owen Harris II\")";
+                var nbb_formatted_code = "import probablepeople as pp\n\npp.parse(\"Mr. Owen Harris II\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Kate &amp; John Cumings&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Kate&#39;, &#39;GivenName&#39;),
+ (&#39;&amp;&#39;, &#39;And&#39;),
+ (&#39;John&#39;, &#39;GivenName&#39;),
+ (&#39;Cumings&#39;, &#39;Surname&#39;)]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 22;
+                var nbb_unformatted_code = "pp.parse(\"Kate & John Cumings\")";
+                var nbb_formatted_code = "pp.parse(\"Kate & John Cumings\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pp</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Prefect Technologies, Inc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Prefect&#39;, &#39;CorporationName&#39;),
+ (&#39;Technologies,&#39;, &#39;CorporationName&#39;),
+ (&#39;Inc&#39;, &#39;CorporationLegalType&#39;)]
+</pre></div>
+</div>
+<script type="application/javascript">
+            setTimeout(function() {
+                var nbb_cell_id = 23;
+                var nbb_unformatted_code = "pp.parse('Prefect Technologies, Inc')";
+                var nbb_formatted_code = "pp.parse(\"Prefect Technologies, Inc\")";
+                var nbb_cells = Jupyter.notebook.get_cells();
+                for (var i = 0; i < nbb_cells.length; ++i) {
+                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
+                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
+                             nbb_cells[i].set_text(nbb_formatted_code);
+                        }
+                        break;
+                    }
+                }
+            }, 500);
+            </script></div>
+</div>
+<p><a class="reference external" href="https://github.com/datamade/probablepeople">Link to probablepeople</a>.</p>
 </section>
 </section>
 
