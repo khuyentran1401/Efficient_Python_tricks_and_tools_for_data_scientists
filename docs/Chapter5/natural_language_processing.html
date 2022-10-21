@@ -871,6 +871,11 @@ title="Print to PDF"
    6.6.17. Expanding English Contractions in Text
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inflect-generate-plurals-singulars-and-indefinite-articles">
+   6.6.18. inflect: Generate Plurals, Singulars, and Indefinite Articles
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -973,6 +978,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#expanding-english-contractions-in-text">
    6.6.17. Expanding English Contractions in Text
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#inflect-generate-plurals-singulars-and-indefinite-articles">
+   6.6.18. inflect: Generate Plurals, Singulars, and Indefinite Articles
   </a>
  </li>
 </ul>
@@ -2471,6 +2481,93 @@ Name: text, dtype: object
 </div>
 </div>
 </div>
+</section>
+<section id="inflect-generate-plurals-singulars-and-indefinite-articles">
+<h2><span class="section-number">6.6.18. </span>inflect: Generate Plurals, Singulars, and Indefinite Articles<a class="headerlink" href="#inflect-generate-plurals-singulars-and-indefinite-articles" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install inflect 
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to generate plurals, singulars, or indefinite articles from given words, use inflect.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">inflect</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">inflect</span><span class="o">.</span><span class="n">engine</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">plural_noun</span><span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;they&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">plural_verb</span><span class="p">(</span><span class="s1">&#39;sees&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;see&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span><span class="o">.</span><span class="n">gender</span><span class="p">(</span><span class="s2">&quot;feminine&quot;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">singular_noun</span><span class="p">(</span><span class="s2">&quot;they&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;she&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">compare_verbs</span><span class="p">(</span><span class="s1">&#39;sees&#39;</span><span class="p">,</span> <span class="s1">&#39;see&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;same word&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>same word
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add the correct &quot;a&quot; or &quot;an&quot; for a given word</span>
+<span class="n">fruit1</span> <span class="o">=</span> <span class="s1">&#39;apple&#39;</span>
+<span class="n">fruit2</span> <span class="o">=</span> <span class="s1">&#39;banana&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;I got you </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">a</span><span class="p">(</span><span class="n">fruit1</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;and </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">a</span><span class="p">(</span><span class="n">fruit2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>I got you an apple and a banana
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/jaraco/inflect">Link to inflect</a>.</p>
 </section>
 </section>
 
