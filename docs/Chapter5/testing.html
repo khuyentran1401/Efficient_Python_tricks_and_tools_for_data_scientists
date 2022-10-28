@@ -862,18 +862,23 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">
+   6.13.16. dirty-equals: Write Declarative Assertions in Your Unit Tests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.16. hypothesis: Property-based Testing in Python
+   6.13.17. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.17. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.18. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
-   6.13.18. Check Conflicting Labels with Deepchecks
+   6.13.19. Check Conflicting Labels with Deepchecks
   </a>
  </li>
 </ul>
@@ -971,18 +976,23 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">
+   6.13.16. dirty-equals: Write Declarative Assertions in Your Unit Tests
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">
-   6.13.16. hypothesis: Property-based Testing in Python
+   6.13.17. hypothesis: Property-based Testing in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">
-   6.13.17. Deepchecks: Check Category Mismatch Between Train and Test Set
+   6.13.18. Deepchecks: Check Category Mismatch Between Train and Test Set
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
-   6.13.18. Check Conflicting Labels with Deepchecks
+   6.13.19. Check Conflicting Labels with Deepchecks
   </a>
  </li>
 </ul>
@@ -2058,8 +2068,54 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 </div>
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </section>
+<section id="dirty-equals-write-declarative-assertions-in-your-unit-tests">
+<h2><span class="section-number">6.13.16. </span>dirty-equals: Write Declarative Assertions in Your Unit Tests<a class="headerlink" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install dirty-equals
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to write declarative assertions and avoid boilerplate code in your unit tests, try dirty_equals.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dirty_equals</span> <span class="kn">import</span> <span class="n">IsNow</span><span class="p">,</span> <span class="n">IsPartialDict</span><span class="p">,</span> <span class="n">IsList</span><span class="p">,</span> <span class="n">IsStr</span><span class="p">,</span> <span class="n">IsTrueLike</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+
+<span class="n">shopping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+    <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="s2">&quot;locations&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Aldi&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;is_male&quot;</span><span class="p">:</span> <span class="mi">1</span> 
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">shopping</span> <span class="o">==</span> <span class="p">{</span>
+    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">IsNow</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="n">IsPartialDict</span><span class="p">(</span><span class="n">apple</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">orange</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="s2">&quot;locations&quot;</span><span class="p">:</span> <span class="n">IsList</span><span class="p">(</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="n">check_order</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="s2">&quot;is_male&quot;</span><span class="p">:</span> <span class="n">IsTrueLike</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/samuelcolvin/dirty-equals">Link to dirty-equals</a>.</p>
+</section>
 <section id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.16. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.17. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install hypothesis
@@ -2128,7 +2184,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </section>
 <section id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.17. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.18. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install deepchecks 
@@ -2265,7 +2321,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
 <section id="check-conflicting-labels-with-deepchecks">
-<h2><span class="section-number">6.13.18. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.19. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
 <p>Sometimes, your data might have identical samples with different labels. This might be because the data was mislabeled.</p>
 <p>It is good to identify these conflicting labels in your data before using the data to train your ML model. To check conflicting labels in your data, use deepchecks.</p>
 <p>In the example below, deepchecks identified that samples 0 and 1 have the same features but different labels.</p>
