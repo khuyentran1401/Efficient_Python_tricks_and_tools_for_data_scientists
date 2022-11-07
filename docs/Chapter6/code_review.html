@@ -801,6 +801,11 @@ title="Print to PDF"
    7.3.3. mypy: Static Type Checker for Python
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">
+   7.3.4. Refurb: Refurbish and Modernize Python Codebases
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -833,6 +838,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">
    7.3.3. mypy: Static Type Checker for Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">
+   7.3.4. Refurb: Refurbish and Modernize Python Codebases
   </a>
  </li>
 </ul>
@@ -967,6 +977,69 @@ title="Print to PDF"
 </div>
 </div>
 <p><a class="reference external" href="https://mypy.readthedocs.io/en/latest/introduction.html">Link to mypy</a>.</p>
+</section>
+<section id="refurb-refurbish-and-modernize-python-codebases">
+<h2><span class="section-number">7.3.4. </span>Refurb: Refurbish and Modernize Python Codebases<a class="headerlink" href="#refurb-refurbish-and-modernize-python-codebases" title="Permalink to this headline">#</a></h2>
+<p>If you want to have some guidelines to improve and optimize your code, try Refurb.</p>
+<p>For example, if you have a file like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_refurb.py</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span> 
+</pre></div>
+</div>
+<p>You can use Refurb to refurbish your code.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ refurb test_refurb.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>test_refurb.py:1:10 [FURB109]: Replace `in [x, y, z]` with `in (x, y, z)`
+test_refurb.py:2:8 [FURB108]: Use `x in (y, z)` instead of `x == y or x == z`
+
+Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence this message
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!refurb test_refurb.py --explain FURB109
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Since tuple, list, and set literals can be used with the `in` operator, it&#39;,
+ &#39;is best to pick one and stick with it.&#39;,
+ &#39;&#39;,
+ &#39;Bad:&#39;,
+ &#39;&#39;,
+ &#39;```&#39;,
+ &#39;for x in [1, 2, 3]:&#39;,
+ &#39;    pass&#39;,
+ &#39;&#39;,
+ &#39;nums = [str(x) for x in [1, 2, 3]]&#39;,
+ &#39;```&#39;,
+ &#39;&#39;,
+ &#39;Good:&#39;,
+ &#39;&#39;,
+ &#39;```&#39;,
+ &#39;for x in (1, 2, 3):&#39;,
+ &#39;    pass&#39;,
+ &#39;&#39;,
+ &#39;nums = [str(x) for x in (1, 2, 3)]&#39;,
+ &#39;```&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Refurb only works with Python 3.10 and above.</p>
+<p>You can use Refurb with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/dosisod/refurb</span><span class="w"></span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REVISION</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refurb</span><span class="w"></span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/dosisod/refurb">Link to Refurb</a>.</p>
 </section>
 </section>
 
