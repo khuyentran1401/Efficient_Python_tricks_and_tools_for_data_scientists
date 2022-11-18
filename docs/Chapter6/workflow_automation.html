@@ -826,6 +826,11 @@ title="Print to PDF"
    7.2.8. watchfiles: Rerun Code When a File Changes
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
+   7.2.9. Limit the Execution Time of a Function Call with Prefect
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -883,6 +888,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">
    7.2.8. watchfiles: Rerun Code When a File Changes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
+   7.2.9. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
 </ul>
@@ -1129,6 +1139,404 @@ dvc pull
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/samuelcolvin/watchfiles">Link to watchfiles</a>.</p>
+</section>
+<section id="limit-the-execution-time-of-a-function-call-with-prefect">
+<h2><span class="section-number">7.2.9. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U prefect 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sometimes, it is useful to cancel a function call when the execution time is longer than expected.</p>
+<p>In Prefect, you can limit the execution time of a Python function call with the decorators <code class="docutils literal notranslate"><span class="pre">task(timeout_seconds=n)</span></code> or <code class="docutils literal notranslate"><span class="pre">flow(timeout_seconds=n)</span></code>.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">flow</span><span class="p">,</span> <span class="n">task</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="nd">@task</span><span class="p">(</span><span class="n">timeout_seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">():</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># takes 2 seconds to run</span>
+    <span class="k">return</span> <span class="mi">1</span>
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">res</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="nd">@flow</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">()</span> <span class="c1"># raises an error</span>
+    <span class="k">return</span> <span class="n">process_data</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="c1"># never runs</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:22.687 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | prefect.engine - Created flow run<span style="color: #800080; text-decoration-color: #800080"> 'arrogant-goshawk'</span> for flow<span style="color: #800080; text-decoration-color: #800080; font-weight: bold"> 'main'</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:23.979 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run 'arrogant-goshawk' - Created task run 'get_data-e6feb297-0' for task 'get_data'
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:23.982 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run 'arrogant-goshawk' - Executing 'get_data-e6feb297-0' immediately...
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:25.561 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Task run 'get_data-e6feb297-0' - Task run exceeded timeout of 1.0 seconds
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 128, in run_sync_in_interruptible_worker_thread
+    tg.start_soon(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 658, in __aexit__
+    raise <span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error
+asyncio.exceptions.<span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_core/_tasks.py", line 118, in __exit__
+    raise TimeoutError
+TimeoutError
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:25.788 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Task run 'get_data-e6feb297-0' - Finished in state TimedOut('Task run exceeded timeout of 1.0 seconds Traceback (most recent call last):\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run\n    result = await run_sync(task.fn, *args, **kwargs)\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 128, in run_sync_in_interruptible_worker_thread\n    tg.start_soon(\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 658, in __aexit__\n    raise <span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error\nasyncio.exceptions.<span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error\n\nDuring handling of the above exception, another exception occurred:\n\nTimeoutError\n', type=FAILED)
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:25.790 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Flow run 'arrogant-goshawk' - Encountered exception during execution:
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 128, in run_sync_in_interruptible_worker_thread
+    tg.start_soon(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 658, in __aexit__
+    raise <span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error
+asyncio.exceptions.<span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 610, in orchestrate_flow_run
+    result = await run_sync(flow_call)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 68, in run_sync_in_worker_thread
+    return await anyio.to_thread.run_sync(call, cancellable=True)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/to_thread.py", line 31, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 937, in run_sync_in_worker_thread
+    return await future
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 867, in run
+    result = context.run(func, *args)
+  File "/var/folders/3z/svlh9jv14ps3j6cc964tbjg40000gq/T/ipykernel_83306/3092424982.py", line 15, in main
+    res = get_data()
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/tasks.py", line 360, in __call__
+    return enter_task_run_engine(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 733, in enter_task_run_engine
+    return run_async_from_worker_thread(begin_run)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 148, in run_async_from_worker_thread
+    return anyio.from_thread.run(call)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/from_thread.py", line 49, in run
+    return asynclib.run_async_from_thread(func, *args)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 970, in run_async_from_thread
+    return f.result()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 445, in result
+    return self.__get_result()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 390, in __get_result
+    raise self._exception
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 874, in get_task_call_return_value
+    return await future._result()
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/futures.py", line 237, in _result
+    return await final_state.result(raise_on_failure=raise_on_failure, fetch=True)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/states.py", line 74, in _get_state_result
+    raise await get_state_exception(state)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_core/_tasks.py", line 118, in __exit__
+    raise TimeoutError
+TimeoutError
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:33:25.949 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Flow run 'arrogant-goshawk' - Finished in state <span style="color: #d70000; text-decoration-color: #d70000">Failed</span>('Flow run encountered an exception. Traceback (most recent call last):\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1239, in orchestrate_task_run\n    result = await run_sync(task.fn, *args, **kwargs)\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 128, in run_sync_in_interruptible_worker_thread\n    tg.start_soon(\n  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 658, in __aexit__\n    raise <span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error\nasyncio.exceptions.<span style="color: #d7d700; text-decoration-color: #d7d700">Cancelled</span>Error\n\nDuring handling of the above exception, another exception occurred:\n\nTimeoutError\n')
+</pre>
+</div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">CancelledError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:1239,</span> in <span class="ni">orchestrate_task_run</span><span class="nt">(task, task_run, parameters, wait_for, result_factory, interruptible, client)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1234</span>                 <span class="n">run_sync</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1235</span>                     <span class="n">run_sync_in_interruptible_worker_thread</span>
+<span class="g g-Whitespace">   </span><span class="mi">1236</span>                     <span class="k">if</span> <span class="n">interruptible</span> <span class="ow">or</span> <span class="n">timeout_scope</span>
+<span class="g g-Whitespace">   </span><span class="mi">1237</span>                     <span class="k">else</span> <span class="n">run_sync_in_worker_thread</span>
+<span class="g g-Whitespace">   </span><span class="mi">1238</span>                 <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1239</span>                 <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_sync</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1241</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py:128,</span> in <span class="ni">run_sync_in_interruptible_worker_thread</span><span class="nt">(__fn, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>     <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span><span class="n">send_interrupt_to_thread</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">128</span>     <span class="n">tg</span><span class="o">.</span><span class="n">start_soon</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span>         <span class="n">partial</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span>             <span class="n">anyio</span><span class="o">.</span><span class="n">to_thread</span><span class="o">.</span><span class="n">run_sync</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">131</span>             <span class="n">capture_worker_thread_and_result</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span>             <span class="n">cancellable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">134</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">NotSet</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py:658,</span> in <span class="ni">TaskGroup.__aexit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
+<span class="g g-Whitespace">    </span><span class="mi">654</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">655</span>     <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">CancelledError</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">exceptions</span>
+<span class="g g-Whitespace">    </span><span class="mi">656</span> <span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">657</span>     <span class="c1"># Tasks were cancelled natively, without a cancellation message</span>
+<span class="ne">--&gt; </span><span class="mi">658</span>     <span class="k">raise</span> <span class="n">CancelledError</span>
+<span class="g g-Whitespace">    </span><span class="mi">659</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">CancelledError</span>: 
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">TimeoutError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">19</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span>     <span class="k">return</span> <span class="n">process_data</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">19</span>     <span class="n">main</span><span class="p">()</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/flows.py:442,</span> in <span class="ni">Flow.__call__</span><span class="nt">(self, return_state, wait_for, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">438</span> <span class="n">parameters</span> <span class="o">=</span> <span class="n">get_call_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">440</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s2">&quot;state&quot;</span> <span class="k">if</span> <span class="n">return_state</span> <span class="k">else</span> <span class="s2">&quot;result&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">442</span> <span class="k">return</span> <span class="n">enter_flow_run_engine_from_flow_call</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span>     <span class="n">parameters</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">445</span>     <span class="n">wait_for</span><span class="o">=</span><span class="n">wait_for</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span>     <span class="n">return_type</span><span class="o">=</span><span class="n">return_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span> <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:154,</span> in <span class="ni">enter_flow_run_engine_from_flow_call</span><span class="nt">(flow, parameters, wait_for, return_type)</span>
+<span class="g g-Whitespace">    </span><span class="mi">150</span> <span class="k">elif</span> <span class="n">in_async_main_thread</span><span class="p">():</span>
+<span class="g g-Whitespace">    </span><span class="mi">151</span>     <span class="c1"># An event loop is already running and we must create a blocking portal to</span>
+<span class="g g-Whitespace">    </span><span class="mi">152</span>     <span class="c1"># run async code from this synchronous context</span>
+<span class="g g-Whitespace">    </span><span class="mi">153</span>     <span class="k">with</span> <span class="n">start_blocking_portal</span><span class="p">()</span> <span class="k">as</span> <span class="n">portal</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">154</span>         <span class="k">return</span> <span class="n">portal</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">begin_run</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">155</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">156</span>     <span class="c1"># An event loop is not running so we will create one</span>
+<span class="g g-Whitespace">    </span><span class="mi">157</span>     <span class="k">return</span> <span class="n">anyio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">begin_run</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/from_thread.py:283,</span> in <span class="ni">BlockingPortal.call</span><span class="nt">(self, func, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span> <span class="k">def</span> <span class="nf">call</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">270</span>     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">T_Retval</span><span class="p">],</span> <span class="n">T_Retval</span><span class="p">]],</span>
+<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span>
+<span class="g g-Whitespace">    </span><span class="mi">272</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_Retval</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">273</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">274</span><span class="sd">     Call the given function in the event loop thread.</span>
+<span class="g g-Whitespace">    </span><span class="mi">275</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">282</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">283</span>     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">T_Retval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_task_soon</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">())</span>
+
+<span class="nn">File /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:445,</span> in <span class="ni">Future.result</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="k">raise</span> <span class="n">CancelledError</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">FINISHED</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">445</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_result</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">()</span>
+
+<span class="nn">File /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:390,</span> in <span class="ni">Future.__get_result</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">388</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">389</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">390</span>         <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">391</span>     <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">392</span>         <span class="c1"># Break a reference cycle with the exception in self._exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">393</span>         <span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/from_thread.py:219,</span> in <span class="ni">BlockingPortal._call_func</span><span class="nt">(self, func, args, kwargs, future)</span>
+<span class="g g-Whitespace">    </span><span class="mi">216</span>             <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>                 <span class="n">future</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">219</span>             <span class="n">retval</span> <span class="o">=</span> <span class="k">await</span> <span class="n">retval</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancelled_exc_class</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span>     <span class="n">future</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/client/utilities.py:47,</span> in <span class="ni">inject_client.&lt;locals&gt;.with_injected_client</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span> <span class="k">async</span> <span class="k">with</span> <span class="n">client_context</span> <span class="k">as</span> <span class="n">new_client</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span>     <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;client&quot;</span><span class="p">,</span> <span class="n">new_client</span> <span class="ow">or</span> <span class="n">client</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">47</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:237,</span> in <span class="ni">create_then_begin_flow_run</span><span class="nt">(flow, parameters, wait_for, return_type, client)</span>
+<span class="g g-Whitespace">    </span><span class="mi">235</span>     <span class="k">return</span> <span class="n">state</span>
+<span class="g g-Whitespace">    </span><span class="mi">236</span> <span class="k">elif</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">237</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">state</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">238</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">239</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid return type for flow engine </span><span class="si">{</span><span class="n">return_type</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/states.py:74,</span> in <span class="ni">_get_state_result</span><span class="nt">(state, raise_on_failure)</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span><span class="sd"> Internal implementation for `get_state_result` without async backwards compatibility</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">if</span> <span class="n">raise_on_failure</span> <span class="ow">and</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">is_crashed</span><span class="p">()</span> <span class="ow">or</span> <span class="n">state</span><span class="o">.</span><span class="n">is_failed</span><span class="p">()):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">raise</span> <span class="k">await</span> <span class="n">get_state_exception</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">DataDocument</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">result_from_state_with_data_document</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>         <span class="n">state</span><span class="p">,</span> <span class="n">raise_on_failure</span><span class="o">=</span><span class="n">raise_on_failure</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>     <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:610,</span> in <span class="ni">orchestrate_flow_run</span><span class="nt">(flow, flow_run, parameters, wait_for, interruptible, client, partial_flow_run_context)</span>
+<span class="g g-Whitespace">    </span><span class="mi">604</span>             <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">605</span>                 <span class="n">run_sync</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">606</span>                     <span class="n">run_sync_in_interruptible_worker_thread</span>
+<span class="g g-Whitespace">    </span><span class="mi">607</span>                     <span class="k">if</span> <span class="n">interruptible</span> <span class="ow">or</span> <span class="n">timeout_scope</span>
+<span class="g g-Whitespace">    </span><span class="mi">608</span>                     <span class="k">else</span> <span class="n">run_sync_in_worker_thread</span>
+<span class="g g-Whitespace">    </span><span class="mi">609</span>                 <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">610</span>                 <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_sync</span><span class="p">(</span><span class="n">flow_call</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">612</span>         <span class="n">waited_for_task_runs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">wait_for_task_runs_and_report_crashes</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">613</span>             <span class="n">flow_run_context</span><span class="o">.</span><span class="n">task_run_futures</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span>
+<span class="g g-Whitespace">    </span><span class="mi">614</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">616</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py:68,</span> in <span class="ni">run_sync_in_worker_thread</span><span class="nt">(__fn, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">57</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">58</span><span class="sd"> Runs a sync function in a new worker thread so that the main thread&#39;s event loop</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="sd"> is not blocked</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span><span class="sd"> thread may continue running — the outcome will just be ignored.</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="n">call</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">__fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">68</span> <span class="k">return</span> <span class="k">await</span> <span class="n">anyio</span><span class="o">.</span><span class="n">to_thread</span><span class="o">.</span><span class="n">run_sync</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">cancellable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/to_thread.py:31,</span> in <span class="ni">run_sync</span><span class="nt">(func, cancellable, limiter, *args)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">run_sync</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">T_Retval</span><span class="p">],</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">cancellable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="n">limiter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CapacityLimiter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_Retval</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span><span class="sd">     Call the given function with the given arguments in a worker thread.</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">     </span><span class="mi">29</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">---&gt; </span><span class="mi">31</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">get_asynclib</span><span class="p">()</span><span class="o">.</span><span class="n">run_sync_in_worker_thread</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span>         <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">cancellable</span><span class="o">=</span><span class="n">cancellable</span><span class="p">,</span> <span class="n">limiter</span><span class="o">=</span><span class="n">limiter</span>
+<span class="g g-Whitespace">     </span><span class="mi">33</span>     <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py:937,</span> in <span class="ni">run_sync_in_worker_thread</span><span class="nt">(func, cancellable, limiter, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">935</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">sniffio</span><span class="o">.</span><span class="n">current_async_library_cvar</span><span class="o">.</span><span class="n">set</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">936</span> <span class="n">worker</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put_nowait</span><span class="p">((</span><span class="n">context</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">future</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">937</span> <span class="k">return</span> <span class="k">await</span> <span class="n">future</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py:867,</span> in <span class="ni">WorkerThread.run</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">865</span> <span class="n">exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">866</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">867</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="n">exception</span> <span class="o">=</span> <span class="n">exc</span>
+
+<span class="nn">Cell In [2], line 15,</span> in <span class="ni">main</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="nd">@flow</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="ne">---&gt; </span><span class="mi">15</span>     <span class="n">res</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span>     <span class="k">return</span> <span class="n">process_data</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/tasks.py:360,</span> in <span class="ni">Task.__call__</span><span class="nt">(self, return_state, wait_for, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">356</span> <span class="n">parameters</span> <span class="o">=</span> <span class="n">get_call_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">358</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s2">&quot;state&quot;</span> <span class="k">if</span> <span class="n">return_state</span> <span class="k">else</span> <span class="s2">&quot;result&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">360</span> <span class="k">return</span> <span class="n">enter_task_run_engine</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">361</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span>     <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span>     <span class="n">wait_for</span><span class="o">=</span><span class="n">wait_for</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">364</span>     <span class="n">task_runner</span><span class="o">=</span><span class="n">SequentialTaskRunner</span><span class="p">(),</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span>     <span class="n">return_type</span><span class="o">=</span><span class="n">return_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span>     <span class="n">mapped</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">367</span> <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:733,</span> in <span class="ni">enter_task_run_engine</span><span class="nt">(task, parameters, wait_for, return_type, task_runner, mapped)</span>
+<span class="g g-Whitespace">    </span><span class="mi">731</span> <span class="c1"># Async or sync task run in sync flow run</span>
+<span class="g g-Whitespace">    </span><span class="mi">732</span> <span class="k">elif</span> <span class="ow">not</span> <span class="n">flow_run_context</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">isasync</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">733</span>     <span class="k">return</span> <span class="n">run_async_from_worker_thread</span><span class="p">(</span><span class="n">begin_run</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">735</span> <span class="c1"># Sync task run in async flow run</span>
+<span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">737</span>     <span class="c1"># Call out to the sync portal since we are not in a worker thread</span>
+<span class="g g-Whitespace">    </span><span class="mi">738</span>     <span class="k">return</span> <span class="n">flow_run_context</span><span class="o">.</span><span class="n">sync_portal</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">begin_run</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py:148,</span> in <span class="ni">run_async_from_worker_thread</span><span class="nt">(__fn, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">144</span><span class="sd"> Runs an async function in the main thread&#39;s event loop, blocking the worker</span>
+<span class="g g-Whitespace">    </span><span class="mi">145</span><span class="sd"> thread until completion</span>
+<span class="g g-Whitespace">    </span><span class="mi">146</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">147</span> <span class="n">call</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">__fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">148</span> <span class="k">return</span> <span class="n">anyio</span><span class="o">.</span><span class="n">from_thread</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">call</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/from_thread.py:49,</span> in <span class="ni">run</span><span class="nt">(func, *args)</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span> <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">47</span>     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;This function can only be run from an AnyIO worker thread&quot;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">49</span> <span class="k">return</span> <span class="n">asynclib</span><span class="o">.</span><span class="n">run_async_from_thread</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py:970,</span> in <span class="ni">run_async_from_thread</span><span class="nt">(func, *args)</span>
+<span class="g g-Whitespace">    </span><span class="mi">964</span> <span class="k">def</span> <span class="nf">run_async_from_thread</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">965</span>     <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">T_Retval</span><span class="p">]],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span>
+<span class="g g-Whitespace">    </span><span class="mi">966</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T_Retval</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">967</span>     <span class="n">f</span><span class="p">:</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">[</span><span class="n">T_Retval</span><span class="p">]</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">968</span>         <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">),</span> <span class="n">threadlocals</span><span class="o">.</span><span class="n">loop</span>
+<span class="g g-Whitespace">    </span><span class="mi">969</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">970</span>     <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+
+<span class="nn">File /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:445,</span> in <span class="ni">Future.result</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">443</span>     <span class="k">raise</span> <span class="n">CancelledError</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">444</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">FINISHED</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">445</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_result</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">446</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">447</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">()</span>
+
+<span class="nn">File /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py:390,</span> in <span class="ni">Future.__get_result</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">388</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">389</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">390</span>         <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">391</span>     <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">392</span>         <span class="c1"># Break a reference cycle with the exception in self._exception</span>
+<span class="g g-Whitespace">    </span><span class="mi">393</span>         <span class="bp">self</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:874,</span> in <span class="ni">get_task_call_return_value</span><span class="nt">(task, flow_run_context, parameters, wait_for, return_type, task_runner, extra_task_inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">future</span><span class="o">.</span><span class="n">_wait</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">873</span> <span class="k">elif</span> <span class="n">return_type</span> <span class="o">==</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">874</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">future</span><span class="o">.</span><span class="n">_result</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">876</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid return type for task engine </span><span class="si">{</span><span class="n">return_type</span><span class="si">!r}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/futures.py:237,</span> in <span class="ni">PrefectFuture._result</span><span class="nt">(self, timeout, raise_on_failure)</span>
+<span class="g g-Whitespace">    </span><span class="mi">235</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">final_state</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">236</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Call timed out before task finished.&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">237</span> <span class="k">return</span> <span class="k">await</span> <span class="n">final_state</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="n">raise_on_failure</span><span class="o">=</span><span class="n">raise_on_failure</span><span class="p">,</span> <span class="n">fetch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/states.py:74,</span> in <span class="ni">_get_state_result</span><span class="nt">(state, raise_on_failure)</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span> <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span><span class="sd"> Internal implementation for `get_state_result` without async backwards compatibility</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span> <span class="k">if</span> <span class="n">raise_on_failure</span> <span class="ow">and</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">is_crashed</span><span class="p">()</span> <span class="ow">or</span> <span class="n">state</span><span class="o">.</span><span class="n">is_failed</span><span class="p">()):</span>
+<span class="ne">---&gt; </span><span class="mi">74</span>     <span class="k">raise</span> <span class="k">await</span> <span class="n">get_state_exception</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">DataDocument</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">result_from_state_with_data_document</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span>         <span class="n">state</span><span class="p">,</span> <span class="n">raise_on_failure</span><span class="o">=</span><span class="n">raise_on_failure</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span>     <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/prefect/engine.py:1239,</span> in <span class="ni">orchestrate_task_run</span><span class="nt">(task, task_run, parameters, wait_for, result_factory, interruptible, client)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1233</span>             <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1234</span>                 <span class="n">run_sync</span> <span class="o">=</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1235</span>                     <span class="n">run_sync_in_interruptible_worker_thread</span>
+<span class="g g-Whitespace">   </span><span class="mi">1236</span>                     <span class="k">if</span> <span class="n">interruptible</span> <span class="ow">or</span> <span class="n">timeout_scope</span>
+<span class="g g-Whitespace">   </span><span class="mi">1237</span>                     <span class="k">else</span> <span class="n">run_sync_in_worker_thread</span>
+<span class="g g-Whitespace">   </span><span class="mi">1238</span>                 <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1239</span>                 <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_sync</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">fn</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1241</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1242</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">message</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/anyio/_core/_tasks.py:118,</span> in <span class="ni">FailAfterContextManager.__exit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
+<span class="g g-Whitespace">    </span><span class="mi">116</span> <span class="n">retval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_scope</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">117</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_scope</span><span class="o">.</span><span class="n">cancel_called</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">118</span>     <span class="k">raise</span> <span class="ne">TimeoutError</span>
+<span class="g g-Whitespace">    </span><span class="mi">120</span> <span class="k">return</span> <span class="n">retval</span>
+
+<span class="ne">TimeoutError</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prefect is an open-source library that allows you to orchestrate and observe your data pipelines defined in Python. If you are not aware of Prefect, checkout the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a>.</p>
 </section>
 </section>
 
