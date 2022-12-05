@@ -822,13 +822,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">
+   7.2.8. whereami: Use Machine Learning to Predict Where You Are
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">
-   7.2.8. watchfiles: Rerun Code When a File Changes
+   7.2.9. watchfiles: Rerun Code When a File Changes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
-   7.2.9. Limit the Execution Time of a Function Call with Prefect
+   7.2.10. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
 </ul>
@@ -886,13 +891,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">
+   7.2.8. whereami: Use Machine Learning to Predict Where You Are
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">
-   7.2.8. watchfiles: Rerun Code When a File Changes
+   7.2.9. watchfiles: Rerun Code When a File Changes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
-   7.2.9. Limit the Execution Time of a Function Call with Prefect
+   7.2.10. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
 </ul>
@@ -1124,8 +1134,33 @@ dvc pull
 </div>
 <p><a class="reference external" href="https://docs.python.org/3/library/webbrowser.html">Link to webbrowser</a>.</p>
 </section>
+<section id="whereami-use-machine-learning-to-predict-where-you-are">
+<h2><span class="section-number">7.2.8. </span>whereami: Use Machine Learning to Predict Where You Are<a class="headerlink" href="#whereami-use-machine-learning-to-predict-where-you-are" title="Permalink to this headline">#</a></h2>
+<p>If you want to predict where you are with machine learning and WiFi signals, use whereami. One application of whereami is to turn on Hue light bulbs in specific locations through your laptop.</p>
+<p>To predict your current location, start by collecting some samples by running <code class="docutils literal notranslate"><span class="pre">whereami</span> <span class="pre">learn</span> <span class="pre">-l</span> <span class="pre">location</span></code> in different locations. Once collecting at least 10 data points, run <code class="docutils literal notranslate"><span class="pre">whereami</span> <span class="pre">predict</span></code> to predict your current location.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take a sample in the kitchen</span>
+$ whereami learn -l kitchen
+
+<span class="c1"># Take a sample in the bedroom</span>
+$ whereami learn -l bedroom
+
+<span class="c1"># Get learned locations</span>
+$ whereami locations
+bedroom: <span class="m">2</span>
+office: <span class="m">2</span>
+kitchen: <span class="m">3</span>
+bathroom: <span class="m">1</span>
+livingroom: <span class="m">2</span>
+
+<span class="c1"># Run prediction in the kitchen</span>
+$ whereami predict
+kitchen
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/kootenpv/whereami">Link to whereami</a>.</p>
+</section>
 <section id="watchfiles-rerun-code-when-a-file-changes">
-<h2><span class="section-number">7.2.8. </span>watchfiles: Rerun Code When a File Changes<a class="headerlink" href="#watchfiles-rerun-code-when-a-file-changes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.9. </span>watchfiles: Rerun Code When a File Changes<a class="headerlink" href="#watchfiles-rerun-code-when-a-file-changes" title="Permalink to this headline">#</a></h2>
 <p>If you want to automatically rerun a process when a file changes, use watchfiles.</p>
 <p>In the code below, the function <code class="docutils literal notranslate"><span class="pre">train</span></code> will run when the file <code class="docutils literal notranslate"><span class="pre">process_data.py</span></code> changes.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watchfiles</span> <span class="kn">import</span> <span class="n">run_process</span>
@@ -1141,7 +1176,7 @@ dvc pull
 <p><a class="reference external" href="https://github.com/samuelcolvin/watchfiles">Link to watchfiles</a>.</p>
 </section>
 <section id="limit-the-execution-time-of-a-function-call-with-prefect">
-<h2><span class="section-number">7.2.9. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.10. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U prefect 
