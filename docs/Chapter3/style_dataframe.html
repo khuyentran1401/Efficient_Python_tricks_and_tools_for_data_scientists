@@ -796,6 +796,11 @@ title="Print to PDF"
    4.11.2. to_markdown: Print a DataFrame in Markdown Format
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#print-a-dataframe-in-latex-format">
+   4.11.3. Print a DataFrame in Latex Format
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -823,6 +828,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#to-markdown-print-a-dataframe-in-markdown-format">
    4.11.2. to_markdown: Print a DataFrame in Markdown Format
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#print-a-dataframe-in-latex-format">
+   4.11.3. Print a DataFrame in Latex Format
   </a>
  </li>
 </ul>
@@ -948,6 +958,13 @@ title="Print to PDF"
 </section>
 <section id="to-markdown-print-a-dataframe-in-markdown-format">
 <h2><span class="section-number">4.11.2. </span>to_markdown: Print a DataFrame in Markdown Format<a class="headerlink" href="#to-markdown-print-a-dataframe-in-markdown-format" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install tabulate 
+</pre></div>
+</div>
+</div>
+</div>
 <p>Sometimes, you might want to include a table in a markdown, such as GitHub README. If you want to print a DataFrame in markdown format, use <code class="docutils literal notranslate"><span class="pre">to_markdown()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1019,6 +1036,62 @@ title="Print to PDF"
 </div>
 </div>
 </div>
+</section>
+<section id="print-a-dataframe-in-latex-format">
+<h2><span class="section-number">4.11.3. </span>Print a DataFrame in Latex Format<a class="headerlink" href="#print-a-dataframe-in-latex-format" title="Permalink to this headline">#</a></h2>
+<p>If you want to print a DataFrame in LaTeX format, use <code class="docutils literal notranslate"><span class="pre">df.style.to_latex()</span></code>. This is useful when you want to include your DataFrame in a LaTeX editor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">to_latex</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{lrr}
+ &amp; a &amp; b \\
+0 &amp; 1 &amp; 5 \\
+1 &amp; 2 &amp; 6 \\
+2 &amp; 3 &amp; 7 \\
+3 &amp; 4 &amp; 8 \\
+\end{tabular}
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/equation4.png" /></p>
+<p>You can also specify the style of the table before turning it to LaTeX</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">latex</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_table_styles</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;selector&quot;</span><span class="p">:</span> <span class="s2">&quot;toprule&quot;</span><span class="p">,</span> <span class="s2">&quot;props&quot;</span><span class="p">:</span> <span class="s2">&quot;:hline;&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;selector&quot;</span><span class="p">:</span> <span class="s2">&quot;midrule&quot;</span><span class="p">,</span> <span class="s2">&quot;props&quot;</span><span class="p">:</span> <span class="s2">&quot;:hline;&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;selector&quot;</span><span class="p">:</span> <span class="s2">&quot;bottomrule&quot;</span><span class="p">,</span> <span class="s2">&quot;props&quot;</span><span class="p">:</span> <span class="s2">&quot;:hline;&quot;</span><span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_latex</span><span class="p">(</span><span class="n">column_format</span><span class="o">=</span><span class="s2">&quot;|l|l|l|&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">latex</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{|l|l|l|}
+\hline
+ &amp; a &amp; b \\
+\hline
+0 &amp; 1 &amp; 5 \\
+1 &amp; 2 &amp; 6 \\
+2 &amp; 3 &amp; 7 \\
+3 &amp; 4 &amp; 8 \\
+\hline
+\end{tabular}
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/equation5.png" /></p>
 </section>
 </section>
 
