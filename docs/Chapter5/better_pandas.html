@@ -792,13 +792,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">
+   6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">
-   6.12.2. fugue: Use pandas Functions on the Spark and Dask Engines.
+   6.12.3. fugue: Use pandas Functions on the Spark and Dask Engines.
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-   6.12.3. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
+   6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
   </a>
  </li>
 </ul>
@@ -826,13 +831,18 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">
+   6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">
-   6.12.2. fugue: Use pandas Functions on the Spark and Dask Engines.
+   6.12.3. fugue: Use pandas Functions on the Spark and Dask Engines.
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-   6.12.3. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
+   6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
   </a>
  </li>
 </ul>
@@ -891,8 +901,141 @@ Name: a, dtype: int64
 </div>
 <p><a class="reference external" href="https://github.com/tqdm/tqdm">Link to tqdm</a>.</p>
 </section>
+<section id="pandarallel-a-simple-tool-to-parallelize-pandas-operations">
+<h2><span class="section-number">6.12.2. </span>pandarallel: A Simple Tool to Parallelize Pandas Operations<a class="headerlink" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install pandarallel
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to parallelize your Pandas operations on all available CPUs by adding only one line of code, try pandarallel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandarallel</span> <span class="kn">import</span> <span class="n">pandarallel</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+        <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10000</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">pandarallel</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">parallel_apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Pandarallel will run on 8 workers.
+INFO: Pandarallel will use standard multiprocessing data transfer (pipe) to transfer data between the main process and workers.
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "4190ffc86ce94fd880ae30280c3a3a8d", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3025</td>
+      <td>324</td>
+      <td>441</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>6561</td>
+      <td>5329</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2025</td>
+      <td>4900</td>
+      <td>1024</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>25</td>
+      <td>5776</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>16</td>
+      <td>8100</td>
+      <td>3364</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>9995</th>
+      <td>49</td>
+      <td>676</td>
+      <td>4761</td>
+    </tr>
+    <tr>
+      <th>9996</th>
+      <td>3721</td>
+      <td>6889</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>9997</th>
+      <td>4225</td>
+      <td>9025</td>
+      <td>1156</td>
+    </tr>
+    <tr>
+      <th>9998</th>
+      <td>361</td>
+      <td>9</td>
+      <td>529</td>
+    </tr>
+    <tr>
+      <th>9999</th>
+      <td>5041</td>
+      <td>25</td>
+      <td>81</td>
+    </tr>
+  </tbody>
+</table>
+<p>10000 rows × 3 columns</p>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/nalepae/pandarallel">Link to pandarallel</a>.</p>
+</section>
 <section id="fugue-use-pandas-functions-on-the-spark-and-dask-engines">
-<h2><span class="section-number">6.12.2. </span>fugue: Use pandas Functions on the Spark and Dask Engines.<a class="headerlink" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.3. </span>fugue: Use pandas Functions on the Spark and Dask Engines.<a class="headerlink" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install fugue pyspark
@@ -964,7 +1107,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </section>
 <section id="fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-<h2><span class="section-number">6.12.3. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.4. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install fugue 
