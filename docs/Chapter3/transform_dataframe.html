@@ -836,6 +836,11 @@ title="Print to PDF"
    4.4.10. pandas.crosstab: Create a Cross Tabulation
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#turn-a-pandas-series-into-a-pandas-dataframe">
+   4.4.11. Turn a pandas Series into a pandas DataFrame
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -903,6 +908,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-crosstab-create-a-cross-tabulation">
    4.4.10. pandas.crosstab: Create a Cross Tabulation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#turn-a-pandas-series-into-a-pandas-dataframe">
+   4.4.11. Turn a pandas Series into a pandas DataFrame
   </a>
  </li>
 </ul>
@@ -1908,6 +1918,89 @@ dtype: int64
       <td>0</td>
       <td>1</td>
       <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="turn-a-pandas-series-into-a-pandas-dataframe">
+<h2><span class="section-number">4.4.11. </span>Turn a pandas Series into a pandas DataFrame<a class="headerlink" href="#turn-a-pandas-series-into-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<p>If you want to turn a pandas Series into a pandas DataFrame, use <code class="docutils literal notranslate"><span class="pre">str.get_dummies()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;a,b&quot;</span><span class="p">,</span> <span class="s2">&quot;a,c&quot;</span><span class="p">])</span>
+<span class="n">s</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      a
+1      b
+2    a,b
+3    a,c
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split the string by &quot;,&quot;</span>
+<span class="n">s</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>b</th>
+      <th>c</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
