@@ -861,6 +861,11 @@ title="Print to PDF"
    2.11.15. Python Switch Statement
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
+   2.11.16. Structural Pattern Matching in Python 3.10
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -953,6 +958,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
    2.11.15. Python Switch Statement
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
+   2.11.16. Structural Pattern Matching in Python 3.10
   </a>
  </li>
 </ul>
@@ -1671,6 +1681,60 @@ Hello
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="structural-pattern-matching-in-python-3-10">
+<h2><span class="section-number">2.11.16. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<p>Have you ever wanted to match complex data types and extract their information?</p>
+<p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
+<p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info</span><span class="p">):</span>
+    <span class="k">match</span> <span class="n">pet_info</span><span class="p">:</span>
+        <span class="k">case</span> <span class="p">[{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">age1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">age2</span><span class="p">}]:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Age is extracted from a list&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">age1</span><span class="p">,</span> <span class="n">age2</span><span class="p">)</span>
+
+        <span class="k">case</span> <span class="p">{</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">{}}:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Age is extracted from a dict&quot;</span><span class="p">)</span>
+            <span class="n">ages</span> <span class="o">=</span> <span class="n">pet_info</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pet_info1</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bim&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pepper&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}]</span>
+<span class="n">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Age is extracted from a list
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pet_info2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;bim&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;pepper&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}}</span>
+<span class="n">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Age is extracted from a dict
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
