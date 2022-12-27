@@ -842,28 +842,39 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stop-using-to-concatenate-strings-use-join-instead">
+   2.11.12. Stop Using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     +
+    </span>
+   </code>
+   to Concatenate Strings. Use Join Instead
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-function-should-only-do-one-task">
-   2.11.12. A Function Should Only Do One Task
+   2.11.13. A Function Should Only Do One Task
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
-   2.11.13. Avoid Using Flags as a Function’s Parameters
+   2.11.14. Avoid Using Flags as a Function’s Parameters
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">
-   2.11.14. Condense an If-Else Statement into One Line
+   2.11.15. Condense an If-Else Statement into One Line
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.11.15. Python Switch Statement
+   2.11.16. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.11.16. Structural Pattern Matching in Python 3.10
+   2.11.17. Structural Pattern Matching in Python 3.10
   </a>
  </li>
 </ul>
@@ -941,28 +952,39 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stop-using-to-concatenate-strings-use-join-instead">
+   2.11.12. Stop Using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     +
+    </span>
+   </code>
+   to Concatenate Strings. Use Join Instead
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#a-function-should-only-do-one-task">
-   2.11.12. A Function Should Only Do One Task
+   2.11.13. A Function Should Only Do One Task
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
-   2.11.13. Avoid Using Flags as a Function’s Parameters
+   2.11.14. Avoid Using Flags as a Function’s Parameters
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">
-   2.11.14. Condense an If-Else Statement into One Line
+   2.11.15. Condense an If-Else Statement into One Line
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.11.15. Python Switch Statement
+   2.11.16. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.11.16. Structural Pattern Matching in Python 3.10
+   2.11.17. Structural Pattern Matching in Python 3.10
   </a>
  </li>
 </ul>
@@ -1397,8 +1419,51 @@ Hello
 </div>
 </div>
 </section>
+<section id="stop-using-to-concatenate-strings-use-join-instead">
+<h2><span class="section-number">2.11.12. </span>Stop Using <code class="docutils literal notranslate"><span class="pre">+</span></code> to Concatenate Strings. Use Join Instead<a class="headerlink" href="#stop-using-to-concatenate-strings-use-join-instead" title="Permalink to this headline">#</a></h2>
+<p>It is more efficient to concatenate strings using the <code class="docutils literal notranslate"><span class="pre">join</span></code> method than the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator.</p>
+<p>The code below shows the difference in performance between the two approaches.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="n">chars</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">chars</span><span class="p">:</span>
+    <span class="n">text</span> <span class="o">+=</span> <span class="n">char</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>411 µs ± 2.98 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>60.5 µs ± 1.01 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="a-function-should-only-do-one-task">
-<h2><span class="section-number">2.11.12. </span>A Function Should Only Do One Task<a class="headerlink" href="#a-function-should-only-do-one-task" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.13. </span>A Function Should Only Do One Task<a class="headerlink" href="#a-function-should-only-do-one-task" title="Permalink to this headline">#</a></h2>
 <p>A function should do only one task, not multiple tasks. The function <code class="docutils literal notranslate"><span class="pre">process_data</span></code> tries to do multiple tasks such as adding new features, adding one, and taking a sum of all columns. Using comments helps explain each block of code, but it takes a lot of work to keep the comments up-to-date. It is also difficult to test each unit of code inside a function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1569,7 +1634,7 @@ Hello
 </div>
 </section>
 <section id="avoid-using-flags-as-a-function-s-parameters">
-<h2><span class="section-number">2.11.13. </span>Avoid Using Flags as a Function’s Parameters<a class="headerlink" href="#avoid-using-flags-as-a-function-s-parameters" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.14. </span>Avoid Using Flags as a Function’s Parameters<a class="headerlink" href="#avoid-using-flags-as-a-function-s-parameters" title="Permalink to this headline">#</a></h2>
 <p>A function should only do one thing. If flags are used as a function’s parameters, the function is doing more than one thing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1597,7 +1662,7 @@ Hello
 </div>
 </section>
 <section id="condense-an-if-else-statement-into-one-line">
-<h2><span class="section-number">2.11.14. </span>Condense an If-Else Statement into One Line<a class="headerlink" href="#condense-an-if-else-statement-into-one-line" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.15. </span>Condense an If-Else Statement into One Line<a class="headerlink" href="#condense-an-if-else-statement-into-one-line" title="Permalink to this headline">#</a></h2>
 <p>If your if-else statement is short, you can condense it into one line for readability.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1635,7 +1700,7 @@ Hello
 </div>
 </section>
 <section id="python-switch-statement">
-<h2><span class="section-number">2.11.15. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.16. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
 <p>It is common to use the if-else statements to execute multiple conditional statements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1687,7 +1752,7 @@ Hello
 </div>
 </section>
 <section id="structural-pattern-matching-in-python-3-10">
-<h2><span class="section-number">2.11.16. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.17. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Have you ever wanted to match complex data types and extract their information?</p>
 <p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
 <p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
