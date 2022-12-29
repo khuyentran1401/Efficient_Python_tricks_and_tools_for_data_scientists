@@ -811,6 +811,11 @@ title="Print to PDF"
    3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#write-union-types-with-x-y">
+   3.8.6. Write Union Types with X|Y
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -853,6 +858,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typing-literal-specify-the-possible-values-for-a-function-parameter">
    3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#write-union-types-with-x-y">
+   3.8.6. Write Union Types with X|Y
   </a>
  </li>
 </ul>
@@ -1068,6 +1078,50 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 </div>
 </div>
 <p>This method is available in Python 3.8 and above.</p>
+</section>
+<section id="write-union-types-with-x-y">
+<h2><span class="section-number">3.8.6. </span>Write Union Types with X|Y<a class="headerlink" href="#write-union-types-with-x-y" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">typing.Union[X,</span> <span class="pre">Y]</span></code> is used to declare that a variable can be either <code class="docutils literal notranslate"><span class="pre">X</span></code> or <code class="docutils literal notranslate"><span class="pre">Y</span></code>. In Python 3.10 and above, you can replace <code class="docutils literal notranslate"><span class="pre">Union[X,</span> <span class="pre">Y]</span></code> with <code class="docutils literal notranslate"><span class="pre">X|Y</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before Python 3.10</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+
+<span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">grocery</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]):</span>
+    <span class="k">return</span> <span class="n">grocery</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+
+<span class="n">grocery</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
+<span class="n">get_price</span><span class="p">(</span><span class="n">grocery</span><span class="p">)</span>
+ 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_values([3, 2.5])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Python 3.10</span>
+<span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">grocery</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">]):</span>
+    <span class="k">return</span> <span class="n">grocery</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+
+<span class="n">grocery</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
+<span class="n">get_price</span><span class="p">(</span><span class="n">grocery</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_values([3, 2.5])
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
