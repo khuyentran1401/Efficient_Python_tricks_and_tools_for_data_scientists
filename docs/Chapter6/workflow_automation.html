@@ -836,6 +836,11 @@ title="Print to PDF"
    7.2.10. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retry-on-failure-with-prefect">
+   7.2.11. Retry on Failure with Prefect
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -903,6 +908,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
    7.2.10. Limit the Execution Time of a Function Call with Prefect
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#retry-on-failure-with-prefect">
+   7.2.11. Retry on Failure with Prefect
   </a>
  </li>
 </ul>
@@ -1571,7 +1581,96 @@ TimeoutError
 </div>
 </div>
 </div>
-<p>Prefect is an open-source library that allows you to orchestrate and observe your data pipelines defined in Python. If you are not aware of Prefect, checkout the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a>.</p>
+</section>
+<section id="retry-on-failure-with-prefect">
+<h2><span class="section-number">7.2.11. </span>Retry on Failure with Prefect<a class="headerlink" href="#retry-on-failure-with-prefect" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U prefect
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you are running a function that occasionally fails, such as calling an API, it is useful to rerun the function when it fails.</p>
+<p>Prefect allows you to automatically retry on failure up to a specified number of times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">task</span><span class="p">,</span> <span class="n">flow</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># Retry up to 3 times and wait 1 seconds between each retry</span>
+<span class="nd">@task</span><span class="p">(</span><span class="n">retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">retry_delay_seconds</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">flaky_function</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;not this time!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">42</span>
+
+<span class="nd">@flow</span> 
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">flaky_function</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:12.022 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | prefect.engine - Created flow run<span style="color: #800080; text-decoration-color: #800080"> 'bald-caiman'</span> for flow<span style="color: #800080; text-decoration-color: #800080; font-weight: bold"> 'main'</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:12.906 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'bald-caiman'</span> - Created task run 'flaky_function-8095224b-0' for task 'flaky_function'
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:12.908 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'bald-caiman'</span> - Executing 'flaky_function-8095224b-0' immediately...
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:13.178 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Task run 'flaky_function-8095224b-0' - Encountered exception during execution:
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1449, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 91, in run_sync_in_worker_thread
+    return await anyio.to_thread.run_sync(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/to_thread.py", line 31, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 937, in run_sync_in_worker_thread
+    return await future
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 867, in run
+    result = context.run(func, *args)
+  File "/var/folders/3z/svlh9jv14ps3j6cc964tbjg40000gq/T/ipykernel_36167/3817304312.py", line 7, in flaky_function
+    raise RuntimeError("not this time!")
+RuntimeError: not this time!
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:13.277 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'flaky_function-8095224b-0' - Received non-final state 'AwaitingRetry' when proposing final state '<span style="color: #d70000; text-decoration-color: #d70000">Failed</span>' and will attempt to run again...
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:14.569 | <span style="color: #d70000; text-decoration-color: #d70000">ERROR</span>   | Task run 'flaky_function-8095224b-0' - Encountered exception during execution:
+Traceback (most recent call last):
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/engine.py", line 1449, in orchestrate_task_run
+    result = await run_sync(task.fn, *args, **kwargs)
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/prefect/utilities/asyncutils.py", line 91, in run_sync_in_worker_thread
+    return await anyio.to_thread.run_sync(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/to_thread.py", line 31, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 937, in run_sync_in_worker_thread
+    return await future
+  File "/Users/khuyen/book/venv/lib/python3.9/site-packages/anyio/_backends/_asyncio.py", line 867, in run
+    result = context.run(func, *args)
+  File "/var/folders/3z/svlh9jv14ps3j6cc964tbjg40000gq/T/ipykernel_36167/3817304312.py", line 7, in flaky_function
+    raise RuntimeError("not this time!")
+RuntimeError: not this time!
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:15.013 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'flaky_function-8095224b-0' - Received non-final state 'AwaitingRetry' when proposing final state '<span style="color: #d70000; text-decoration-color: #d70000">Failed</span>' and will attempt to run again...
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:16.390 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'flaky_function-8095224b-0' - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>()
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">08:34:16.512 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'bald-caiman'</span> - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>('All states completed.')
+</pre>
+</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Completed(message=None, type=COMPLETED, result=PersistedResult(type=&#39;reference&#39;, serializer_type=&#39;pickle&#39;, storage_block_id=UUID(&#39;2c195477-a9d1-4b59-9a9e-80b00f96c464&#39;), storage_key=&#39;84ff6378ce894b6fb1823e60b1d201b4&#39;))]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prefect is an open-source library that allows you to orchestrate and observe your data pipelines defined in Python. Check out the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a> for basic concepts of Prefect.</p>
 </section>
 </section>
 
