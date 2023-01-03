@@ -858,23 +858,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-function-should-have-fewer-than-four-arguments">
+   2.11.14. A Function Should Have Fewer Than Four Arguments
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
-   2.11.14. Avoid Using Flags as a Function’s Parameters
+   2.11.15. Avoid Using Flags as a Function’s Parameters
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">
-   2.11.15. Condense an If-Else Statement into One Line
+   2.11.16. Condense an If-Else Statement into One Line
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.11.16. Python Switch Statement
+   2.11.17. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.11.17. Structural Pattern Matching in Python 3.10
+   2.11.18. Structural Pattern Matching in Python 3.10
   </a>
  </li>
 </ul>
@@ -968,23 +973,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-function-should-have-fewer-than-four-arguments">
+   2.11.14. A Function Should Have Fewer Than Four Arguments
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">
-   2.11.14. Avoid Using Flags as a Function’s Parameters
+   2.11.15. Avoid Using Flags as a Function’s Parameters
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">
-   2.11.15. Condense an If-Else Statement into One Line
+   2.11.16. Condense an If-Else Statement into One Line
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.11.16. Python Switch Statement
+   2.11.17. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.11.17. Structural Pattern Matching in Python 3.10
+   2.11.18. Structural Pattern Matching in Python 3.10
   </a>
  </li>
 </ul>
@@ -1633,8 +1643,52 @@ Hello
 </div></div></div>
 </div>
 </section>
+<section id="a-function-should-have-fewer-than-four-arguments">
+<h2><span class="section-number">2.11.14. </span>A Function Should Have Fewer Than Four Arguments<a class="headerlink" href="#a-function-should-have-fewer-than-four-arguments" title="Permalink to this headline">#</a></h2>
+<p>A function should only do one thing and have fewer than four arguments to make testing easier.</p>
+<p>If a function only does one task but has more than three arguments, consider grouping the arguments using higher-level objects such as a dataclass.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
+    <span class="n">drop_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ProcessConfig</span><span class="p">:</span>
+    <span class="n">drop_columns</span><span class="p">:</span> <span class="nb">list</span> 
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> 
+    <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span> 
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ProcessConfig</span><span class="p">):</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">target</span> 
+    <span class="n">test_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">test_size</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="avoid-using-flags-as-a-function-s-parameters">
-<h2><span class="section-number">2.11.14. </span>Avoid Using Flags as a Function’s Parameters<a class="headerlink" href="#avoid-using-flags-as-a-function-s-parameters" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.15. </span>Avoid Using Flags as a Function’s Parameters<a class="headerlink" href="#avoid-using-flags-as-a-function-s-parameters" title="Permalink to this headline">#</a></h2>
 <p>A function should only do one thing. If flags are used as a function’s parameters, the function is doing more than one thing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1662,7 +1716,7 @@ Hello
 </div>
 </section>
 <section id="condense-an-if-else-statement-into-one-line">
-<h2><span class="section-number">2.11.15. </span>Condense an If-Else Statement into One Line<a class="headerlink" href="#condense-an-if-else-statement-into-one-line" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.16. </span>Condense an If-Else Statement into One Line<a class="headerlink" href="#condense-an-if-else-statement-into-one-line" title="Permalink to this headline">#</a></h2>
 <p>If your if-else statement is short, you can condense it into one line for readability.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1700,7 +1754,7 @@ Hello
 </div>
 </section>
 <section id="python-switch-statement">
-<h2><span class="section-number">2.11.16. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.17. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
 <p>It is common to use the if-else statements to execute multiple conditional statements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1752,7 +1806,7 @@ Hello
 </div>
 </section>
 <section id="structural-pattern-matching-in-python-3-10">
-<h2><span class="section-number">2.11.17. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.11.18. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Have you ever wanted to match complex data types and extract their information?</p>
 <p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
 <p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
