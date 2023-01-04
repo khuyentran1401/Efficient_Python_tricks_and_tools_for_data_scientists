@@ -881,6 +881,11 @@ title="Print to PDF"
    6.6.19. FlashText: Extract and Replace Keywords in Sentences
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">
+   6.6.20. ekphrasis: Text Processing Tool For Social Media Text
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -993,6 +998,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#flashtext-extract-and-replace-keywords-in-sentences">
    6.6.19. FlashText: Extract and Replace Keywords in Sentences
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">
+   6.6.20. ekphrasis: Text Processing Tool For Social Media Text
   </a>
  </li>
 </ul>
@@ -2614,6 +2624,59 @@ Name: text, dtype: object
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/vi3k6i5/flashtext">Link to FlashText</a>.</p>
+</section>
+<section id="ekphrasis-text-processing-tool-for-social-media-text">
+<h2><span class="section-number">6.6.20. </span>ekphrasis: Text Processing Tool For Social Media Text<a class="headerlink" href="#ekphrasis-text-processing-tool-for-social-media-text" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install <span class="nv">ekphrasis</span><span class="o">==</span><span class="m">0</span>.5.4
+</pre></div>
+</div>
+</div>
+</div>
+<p>It is challenging to process text from social media such as Twitter or Facebook. ekphrasis allows you to incorporate social tokenizers, word segmentation, spell correction, and more into a pipeline to process those texts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ekphrasis.classes.preprocessor</span> <span class="kn">import</span> <span class="n">TextPreProcessor</span>
+<span class="kn">from</span> <span class="nn">ekphrasis.classes.tokenizer</span> <span class="kn">import</span> <span class="n">SocialTokenizer</span>
+<span class="kn">from</span> <span class="nn">ekphrasis.dicts.emoticons</span> <span class="kn">import</span> <span class="n">emoticons</span>
+
+<span class="n">text_processor</span> <span class="o">=</span> <span class="n">TextPreProcessor</span><span class="p">(</span>
+    <span class="c1"># terms that will be normalized</span>
+    <span class="n">normalize</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span><span class="p">],</span>
+    <span class="c1"># terms that will be annotated</span>
+    <span class="n">annotate</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;hashtag&quot;</span><span class="p">,</span> <span class="s2">&quot;allcaps&quot;</span><span class="p">,</span> <span class="s2">&quot;elongated&quot;</span><span class="p">,</span> <span class="s2">&quot;repeated&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;emphasis&#39;</span><span class="p">,</span> <span class="s1">&#39;censored&#39;</span><span class="p">},</span>
+    
+    <span class="c1"># corpus for word segmentation </span>
+    <span class="n">segmenter</span><span class="o">=</span><span class="s2">&quot;twitter&quot;</span><span class="p">,</span> 
+    
+    <span class="n">unpack_hashtags</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># perform word segmentation on hashtags</span>
+    <span class="n">unpack_contractions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Unpack contractions (can&#39;t -&gt; can not)</span>
+    <span class="n">spell_correct_elong</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># spell correction for elongated words</span>
+
+    <span class="n">tokenizer</span><span class="o">=</span><span class="n">SocialTokenizer</span><span class="p">(</span><span class="n">lowercase</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">tokenize</span><span class="p">,</span>
+    
+    <span class="c1"># Replace emojis with words</span>
+    <span class="n">dicts</span><span class="o">=</span><span class="p">[</span><span class="n">emoticons</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">sent</span> <span class="o">=</span> <span class="s2">&quot;@coolyazzy94 I&#39;m learning to retweeeet!! Least it sucks LESS than Facebook haha :P #learn-twitter https://t.co/7RdyMCVPKx&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_processor</span><span class="o">.</span><span class="n">pre_process_doc</span><span class="p">(</span><span class="n">sent</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading twitter - 1grams ...
+Reading twitter - 2grams ...
+Reading english - 1grams ...
+&lt;user&gt; i am learning to retweet &lt;elongated&gt; ! &lt;repeated&gt; least it sucks &lt;allcaps&gt; less &lt;/allcaps&gt; than facebook haha &lt;tong&gt; &lt;hashtag&gt; learn twitter &lt;/hashtag&gt; &lt;url&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/cbaziotis/ekphrasis">Link to ekphrasis</a>.</p>
 </section>
 </section>
 
