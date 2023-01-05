@@ -806,6 +806,11 @@ title="Print to PDF"
    4.11.4. Print a DataFrame in Latex Format
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#format-the-text-display-value-of-cells">
+   4.11.5. Format the Text Display Value of Cells
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -843,6 +848,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#print-a-dataframe-in-latex-format">
    4.11.4. Print a DataFrame in Latex Format
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#format-the-text-display-value-of-cells">
+   4.11.5. Format the Text Display Value of Cells
   </a>
  </li>
 </ul>
@@ -1247,6 +1257,54 @@ title="Print to PDF"
 </div>
 </div>
 <p><img alt="" src="../_images/equation5.png" /></p>
+</section>
+<section id="format-the-text-display-value-of-cells">
+<h2><span class="section-number">4.11.5. </span>Format the Text Display Value of Cells<a class="headerlink" href="#format-the-text-display-value-of-cells" title="Permalink to this headline">#</a></h2>
+<p>Sometimes, you might want to format your DataFrame before writing it to a file such as an Excel sheet. <code class="docutils literal notranslate"><span class="pre">df.style.format</span></code> allows you to do that.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">],</span> <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.34</span><span class="p">]})</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">title</span><span class="p">,</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="p">},</span> <span class="n">na_rep</span><span class="o">=</span><span class="s1">&#39;MISSING&#39;</span><span class="p">)</span>
+<span class="n">s</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_2ca8d">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_2ca8d_level0_col0" class="col_heading level0 col0" >item</th>
+      <th id="T_2ca8d_level0_col1" class="col_heading level0 col1" >price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_2ca8d_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_2ca8d_row0_col0" class="data row0 col0" >A</td>
+      <td id="T_2ca8d_row0_col1" class="data row0 col1" >MISSING</td>
+    </tr>
+    <tr>
+      <th id="T_2ca8d_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_2ca8d_row1_col0" class="data row1 col0" >B</td>
+      <td id="T_2ca8d_row1_col1" class="data row1 col1" >$2.3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;formatted_file.xlsx&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
