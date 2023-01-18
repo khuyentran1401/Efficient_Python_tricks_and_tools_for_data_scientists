@@ -811,6 +811,11 @@ title="Print to PDF"
    7.3.5. Pydantic: Enforce Data Types on Your Function Parameters at Runtime
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">
+   7.3.6. perfplot: Performance Analysis for Python Snippets
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -853,6 +858,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">
    7.3.5. Pydantic: Enforce Data Types on Your Function Parameters at Runtime
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">
+   7.3.6. perfplot: Performance Analysis for Python Snippets
   </a>
  </li>
 </ul>
@@ -1108,6 +1118,59 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </div>
 <p><a class="reference external" href="https://docs.pydantic.dev/">Link to Pydantic</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/build-a-full-stack-ml-application-with-pydantic-and-prefect-915f00fe0c62?sk=b1f8c5cb53a6a9d7f48d66fa778e9cf0">Build a full-stack ML application with Pydantic and Prefect</a>.</p>
+</section>
+<section id="perfplot-performance-analysis-for-python-snippets">
+<h2><span class="section-number">7.3.6. </span>perfplot: Performance Analysis for Python Snippets<a class="headerlink" href="#perfplot-performance-analysis-for-python-snippets" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install perfplot
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to compare the performance between different snippets and plot the results, use perfplot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">perfplot</span>
+
+
+<span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l</span>
+
+
+<span class="k">def</span> <span class="nf">comprehension</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">list_range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+
+<span class="n">perfplot</span><span class="o">.</span><span class="n">show</span><span class="p">(</span>
+    <span class="n">setup</span><span class="o">=</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span>
+    <span class="n">kernels</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">append</span><span class="p">,</span>
+        <span class="n">comprehension</span><span class="p">,</span>
+        <span class="n">list_range</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">n_range</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5cf5e047a0fe4068972c728224342a8a", "version_major": 2, "version_minor": 0}
+</script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
+</pre>
+</div><img alt="../_images/code_review_40_3.png" src="../_images/code_review_40_3.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/nschloe/perfplot">Link to perfplot</a>.</p>
 </section>
 </section>
 

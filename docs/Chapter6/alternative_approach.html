@@ -816,6 +816,11 @@ title="Print to PDF"
    7.1.6. Dictdiffer: Find the Differences Between Two Dictionaries
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">
+   7.1.7. Map a Function Asynchronously with Prefect
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -863,6 +868,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">
    7.1.6. Dictdiffer: Find the Differences Between Two Dictionaries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">
+   7.1.7. Map a Function Asynchronously with Prefect
   </a>
  </li>
 </ul>
@@ -1368,6 +1378,90 @@ title="Print to PDF"
             </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/inveniosoftware/dictdiffer">Link to Dictdiffer</a>.</p>
+</section>
+<section id="map-a-function-asynchronously-with-prefect">
+<h2><span class="section-number">7.1.7. </span>Map a Function Asynchronously with Prefect<a class="headerlink" href="#map-a-function-asynchronously-with-prefect" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install -U prefect 
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">map</span></code> runs a function for each item in an iterable synchronously.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">sync_map</span><span class="p">():</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="n">add_one</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
+
+<span class="n">sync_map</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/sync_map.png" /></p>
+<p>To speed up the execution, map a function asynchronously with Prefect.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">flow</span><span class="p">,</span> <span class="n">task</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+
+<span class="c1"># Create a task</span>
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># Create a flow</span>
+<span class="nd">@flow</span>
+<span class="k">def</span> <span class="nf">async_map</span><span class="p">():</span>
+    <span class="c1"># Run a task for each element in the iterable</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">add_one</span><span class="o">.</span><span class="n">map</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+
+<span class="n">async_map</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:49.018 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | prefect.engine - Created flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> for flow<span style="color: #800080; text-decoration-color: #800080; font-weight: bold"> 'async-map'</span>
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.144 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Created task run 'add_one-3c3112ef-1' for task 'add_one'
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.148 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Submitted task run 'add_one-3c3112ef-1' for execution.
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.191 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Created task run 'add_one-3c3112ef-0' for task 'add_one'
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.192 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Submitted task run 'add_one-3c3112ef-0' for execution.
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.208 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Created task run 'add_one-3c3112ef-2' for task 'add_one'
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:51.210 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Submitted task run 'add_one-3c3112ef-2' for execution.
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:54.321 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'add_one-3c3112ef-0' - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>()
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:54.362 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'add_one-3c3112ef-2' - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>()
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:54.380 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Task run 'add_one-3c3112ef-1' - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>()
+</pre>
+</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">09:04:54.685 | <span style="color: #008080; text-decoration-color: #008080">INFO</span>    | Flow run<span style="color: #800080; text-decoration-color: #800080"> 'copper-sponge'</span> - Finished in state <span style="color: #008000; text-decoration-color: #008000">Completed</span>('All states completed.')
+</pre>
+</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Completed(message=None, type=COMPLETED, result=PersistedResult(type=&#39;reference&#39;, serializer_type=&#39;pickle&#39;, storage_block_id=UUID(&#39;45e1a1fc-bdc8-4f8d-8945-287d12b46d33&#39;), storage_key=&#39;ad7912161ab44a6d8359f8089a16202d&#39;)),
+ Completed(message=None, type=COMPLETED, result=PersistedResult(type=&#39;reference&#39;, serializer_type=&#39;pickle&#39;, storage_block_id=UUID(&#39;45e1a1fc-bdc8-4f8d-8945-287d12b46d33&#39;), storage_key=&#39;fe83574cd0df4fc5838ef902beb34f6b&#39;)),
+ Completed(message=None, type=COMPLETED, result=PersistedResult(type=&#39;reference&#39;, serializer_type=&#39;pickle&#39;, storage_block_id=UUID(&#39;45e1a1fc-bdc8-4f8d-8945-287d12b46d33&#39;), storage_key=&#39;ba18fe9c568845ecbad03c25df353655&#39;))]
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/async_map.png" /></p>
+<p>Prefect is an open-source library that allows you to orchestrate and observe your data pipelines defined in Python. Check out the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a> for basic concepts of Prefect.</p>
 </section>
 </section>
 

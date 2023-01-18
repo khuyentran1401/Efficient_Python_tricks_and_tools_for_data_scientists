@@ -807,8 +807,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-2-words">
-   6.6.5. textacy: Extract a Contiguous Sequence of 2 Words
+  <a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-words">
+   6.6.5. textacy: Extract a Contiguous Sequence of Words
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -926,8 +926,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-2-words">
-   6.6.5. textacy: Extract a Contiguous Sequence of 2 Words
+  <a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-words">
+   6.6.5. textacy: Extract a Contiguous Sequence of Words
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -1267,8 +1267,8 @@ For more information on these, you can take a look at our Data Scientist learnin
 <p><img alt="image" src="../_images/streamlit_app.png" /></p>
 <p><a class="reference external" href="https://spacy.io/universe/project/spacy-streamlit">Link to spacy-streamlit</a>.</p>
 </section>
-<section id="textacy-extract-a-contiguous-sequence-of-2-words">
-<h2><span class="section-number">6.6.5. </span>textacy: Extract a Contiguous Sequence of 2 Words<a class="headerlink" href="#textacy-extract-a-contiguous-sequence-of-2-words" title="Permalink to this headline">#</a></h2>
+<section id="textacy-extract-a-contiguous-sequence-of-words">
+<h2><span class="section-number">6.6.5. </span>textacy: Extract a Contiguous Sequence of Words<a class="headerlink" href="#textacy-extract-a-contiguous-sequence-of-words" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install spacy textacy
@@ -1283,35 +1283,23 @@ For more information on these, you can take a look at our Data Scientist learnin
 </div>
 </div>
 </div>
-<p>If you want to extract a contiguous sequence of 2 words, for example, ‘data science’, not ‘data’, what should you do? That is when the concept of extracting n-gram from text becomes useful.</p>
-<p>A really useful tool to easily extract n-gram with a specified number of words in the sequence is <code class="docutils literal notranslate"><span class="pre">textacy</span></code>.</p>
+<p>If you want to extract a contiguous sequence of words from a text, use <code class="docutils literal notranslate"><span class="pre">textacy.ngrams</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-<span class="kn">import</span> <span class="nn">spacy</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">spacy</span>
 <span class="kn">from</span> <span class="nn">textacy.extract</span> <span class="kn">import</span> <span class="n">ngrams</span>
 
-<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
 
-<span class="n">text</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s1">&#39;Data science is an inter-disciplinary field that uses&#39;</span>
-<span class="s1">&#39; scientific methods, processes, algorithms, and systme to extract&#39;</span>
-<span class="s1">&#39; knowledge and insights from many structural and unstructured data.&#39;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;Ice cream is a soft frozen food made with sweetened and flavored milk fat.&quot;</span><span class="p">)</span>
 
-<span class="n">n_grams</span> <span class="o">=</span> <span class="mi">2</span> <span class="c1"># contiguous sequence of a word</span>
-<span class="n">min_freq</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># extract n -gram based on its frequency</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="n">n</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_grams</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="c1"># extract sequences of 3 words</span>
+<span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data science          1
-disciplinary field    1
-uses scientific       1
-scientific methods    1
-extract knowledge     1
-unstructured data     1
-dtype: int64
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;soft frozen food&#39;, &#39;sweetened and flavored&#39;, &#39;flavored milk fat&#39;]
 </pre></div>
 </div>
 </div>
