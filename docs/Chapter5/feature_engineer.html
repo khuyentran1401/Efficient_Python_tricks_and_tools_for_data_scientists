@@ -821,6 +821,11 @@ title="Print to PDF"
    6.2.7. Snorkel — Programmatically Build Training Data in Python
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">
+   6.2.8. sketch: AI Code-Writing Assistant That Understands Data Content
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -873,6 +878,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">
    6.2.7. Snorkel — Programmatically Build Training Data in Python
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">
+   6.2.8. sketch: AI Code-Writing Assistant That Understands Data Content
   </a>
  </li>
 </ul>
@@ -2775,6 +2785,666 @@ Name: education, dtype: object
 </ul>
 <p><a class="reference external" href="https://www.snorkel.org/">Link to Snorkel</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/snorkel-programmatically-build-training-data-in-python-712fc39649fe">My full article about Snorkel</a>.</p>
+</section>
+<section id="sketch-ai-code-writing-assistant-that-understands-data-content">
+<h2><span class="section-number">6.2.8. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this headline">#</a></h2>
+<p>Wouldn’t it be nice if you could get insights into your data by simply asking a question? Sketch allows you to do exactly that.</p>
+<p>Sketch is an AI code-writing assistant for pandas users that understands the context of your data.</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install sketch
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+<span class="kn">import</span> <span class="nn">sketch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;taxis&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pickup</th>
+      <th>dropoff</th>
+      <th>passengers</th>
+      <th>distance</th>
+      <th>fare</th>
+      <th>tip</th>
+      <th>tolls</th>
+      <th>total</th>
+      <th>color</th>
+      <th>payment</th>
+      <th>pickup_zone</th>
+      <th>dropoff_zone</th>
+      <th>pickup_borough</th>
+      <th>dropoff_borough</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2019-03-23 20:21:09</td>
+      <td>2019-03-23 20:27:24</td>
+      <td>1</td>
+      <td>1.60</td>
+      <td>7.0</td>
+      <td>2.15</td>
+      <td>0.0</td>
+      <td>12.95</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Lenox Hill West</td>
+      <td>UN/Turtle Bay South</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2019-03-04 16:11:55</td>
+      <td>2019-03-04 16:19:00</td>
+      <td>1</td>
+      <td>0.79</td>
+      <td>5.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>9.30</td>
+      <td>yellow</td>
+      <td>cash</td>
+      <td>Upper West Side South</td>
+      <td>Upper West Side South</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2019-03-27 17:53:01</td>
+      <td>2019-03-27 18:00:25</td>
+      <td>1</td>
+      <td>1.37</td>
+      <td>7.5</td>
+      <td>2.36</td>
+      <td>0.0</td>
+      <td>14.16</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Alphabet City</td>
+      <td>West Village</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2019-03-10 01:23:59</td>
+      <td>2019-03-10 01:49:51</td>
+      <td>1</td>
+      <td>7.70</td>
+      <td>27.0</td>
+      <td>6.15</td>
+      <td>0.0</td>
+      <td>36.95</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Hudson Sq</td>
+      <td>Yorkville West</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2019-03-30 13:27:42</td>
+      <td>2019-03-30 13:37:14</td>
+      <td>3</td>
+      <td>2.16</td>
+      <td>9.0</td>
+      <td>1.10</td>
+      <td>0.0</td>
+      <td>13.40</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Midtown East</td>
+      <td>Yorkville West</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2019-03-11 10:37:23</td>
+      <td>2019-03-11 10:47:31</td>
+      <td>1</td>
+      <td>0.49</td>
+      <td>7.5</td>
+      <td>2.16</td>
+      <td>0.0</td>
+      <td>12.96</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Times Sq/Theatre District</td>
+      <td>Midtown East</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2019-03-26 21:07:31</td>
+      <td>2019-03-26 21:17:29</td>
+      <td>1</td>
+      <td>3.65</td>
+      <td>13.0</td>
+      <td>2.00</td>
+      <td>0.0</td>
+      <td>18.80</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Battery Park City</td>
+      <td>Two Bridges/Seward Park</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2019-03-22 12:47:13</td>
+      <td>2019-03-22 12:58:17</td>
+      <td>0</td>
+      <td>1.40</td>
+      <td>8.5</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>11.80</td>
+      <td>yellow</td>
+      <td>NaN</td>
+      <td>Murray Hill</td>
+      <td>Flatiron</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2019-03-23 11:48:50</td>
+      <td>2019-03-23 12:06:14</td>
+      <td>1</td>
+      <td>3.63</td>
+      <td>15.0</td>
+      <td>1.00</td>
+      <td>0.0</td>
+      <td>19.30</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>East Harlem South</td>
+      <td>Midtown Center</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2019-03-08 16:18:37</td>
+      <td>2019-03-08 16:26:57</td>
+      <td>1</td>
+      <td>1.52</td>
+      <td>8.0</td>
+      <td>1.00</td>
+      <td>0.0</td>
+      <td>13.30</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Lincoln Square East</td>
+      <td>Central Park</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+    <span class="s2">&quot;Can you give me friendly names for each column?&quot;</span> 
+    <span class="s2">&quot;(Output as an HTML list)&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<ul>
+  <li>Index: Row Number</li>
+  <li>Pickup: Pickup Time</li>
+  <li>Dropoff: Dropoff Time</li>
+  <li>Passengers: Number of Passengers</li>
+  <li>Distance: Distance Travelled</li>
+  <li>Fare: Fare Amount</li>
+  <li>Tip: Tip Amount</li>
+  <li>Tolls: Tolls Amount</li>
+  <li>Total: Total Amount</li>
+  <li>Color: Vehicle Color</li>
+  <li>Payment: Payment Method</li>
+  <li>Pickup Zone: Pickup Zone Name</li>
+  <li>Dropoff Zone: Dropoff Zone Name</li>
+  <li>Pickup Borough: Pickup Borough Name</li>
+  <li>Dropoff Borough: Dropoff Borough Name</li>
+</ul>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+    <span class="s2">&quot;Which payment is the most popular payment?&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+The most popular payment is credit card.
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">howto</span><span class="p">(</span><span class="s2">&quot;Create some features from the pickup column&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex;flex-direction:row;justify-content:space-between;">
+                <pre style="width: 100%; white-space: pre-wrap;" id="f5a08689-3fd6-4318-9962-135fc2011ca6">
+# Create a new column for the hour of the pickup
+data['pickup_hour'] = data['pickup'].dt.hour
+
+# Create a new column for the day of the week of the pickup
+data['pickup_day'] = data['pickup'].dt.weekday_name
+
+# Create a new column for the month of the pickup
+data['pickup_month'] = data['pickup'].dt.month_name()
+</pre>
+                <button style="height: fit-content;" onclick="navigator.clipboard.writeText(JSON.parse(atob(`IlxuIyBDcmVhdGUgYSBuZXcgY29sdW1uIGZvciB0aGUgaG91ciBvZiB0aGUgcGlja3VwXG5kYXRhWydwaWNrdXBfaG91ciddID0gZGF0YVsncGlja3VwJ10uZHQuaG91clxuXG4jIENyZWF0ZSBhIG5ldyBjb2x1bW4gZm9yIHRoZSBkYXkgb2YgdGhlIHdlZWsgb2YgdGhlIHBpY2t1cFxuZGF0YVsncGlja3VwX2RheSddID0gZGF0YVsncGlja3VwJ10uZHQud2Vla2RheV9uYW1lXG5cbiMgQ3JlYXRlIGEgbmV3IGNvbHVtbiBmb3IgdGhlIG1vbnRoIG9mIHRoZSBwaWNrdXBcbmRhdGFbJ3BpY2t1cF9tb250aCddID0gZGF0YVsncGlja3VwJ10uZHQubW9udGhfbmFtZSgpXG4i`)))">Copy</button>
+                </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new column for the hour of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+
+<span class="c1"># Create a new column for the day of the week of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span>
+
+<span class="c1"># Create a new column for the month of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month_name</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">howto</span><span class="p">(</span>
+    <span class="s2">&quot;Create some features from the pickup_zone column&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="display:flex;flex-direction:row;justify-content:space-between;">
+                <pre style="width: 100%; white-space: pre-wrap;" id="9374da28-314b-4ca8-be63-01f2f5779c91">
+# Create a new column called 'pickup_zone_count'
+data['pickup_zone_count'] = data.groupby('pickup_zone')['pickup_zone'].transform('count')
+
+# Create a new column called 'pickup_zone_fare'
+data['pickup_zone_fare'] = data.groupby('pickup_zone')['fare'].transform('mean')
+
+# Create a new column called 'pickup_zone_distance'
+data['pickup_zone_distance'] = data.groupby('pickup_zone')['distance'].transform('mean')
+</pre>
+                <button style="height: fit-content;" onclick="navigator.clipboard.writeText(JSON.parse(atob(`IlxuIyBDcmVhdGUgYSBuZXcgY29sdW1uIGNhbGxlZCAncGlja3VwX3pvbmVfY291bnQnXG5kYXRhWydwaWNrdXBfem9uZV9jb3VudCddID0gZGF0YS5ncm91cGJ5KCdwaWNrdXBfem9uZScpWydwaWNrdXBfem9uZSddLnRyYW5zZm9ybSgnY291bnQnKVxuXG4jIENyZWF0ZSBhIG5ldyBjb2x1bW4gY2FsbGVkICdwaWNrdXBfem9uZV9mYXJlJ1xuZGF0YVsncGlja3VwX3pvbmVfZmFyZSddID0gZGF0YS5ncm91cGJ5KCdwaWNrdXBfem9uZScpWydmYXJlJ10udHJhbnNmb3JtKCdtZWFuJylcblxuIyBDcmVhdGUgYSBuZXcgY29sdW1uIGNhbGxlZCAncGlja3VwX3pvbmVfZGlzdGFuY2UnXG5kYXRhWydwaWNrdXBfem9uZV9kaXN0YW5jZSddID0gZGF0YS5ncm91cGJ5KCdwaWNrdXBfem9uZScpWydkaXN0YW5jZSddLnRyYW5zZm9ybSgnbWVhbicpXG4i`)))">Copy</button>
+                </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new column called &#39;pickup_zone_count&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a new column called &#39;pickup_zone_fare&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_fare&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;fare&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a new column called &#39;pickup_zone_distance&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pickup</th>
+      <th>dropoff</th>
+      <th>passengers</th>
+      <th>distance</th>
+      <th>fare</th>
+      <th>tip</th>
+      <th>tolls</th>
+      <th>total</th>
+      <th>color</th>
+      <th>payment</th>
+      <th>pickup_zone</th>
+      <th>dropoff_zone</th>
+      <th>pickup_borough</th>
+      <th>dropoff_borough</th>
+      <th>pickup_hour</th>
+      <th>pickup_day</th>
+      <th>pickup_month</th>
+      <th>pickup_zone_count</th>
+      <th>pickup_zone_fare</th>
+      <th>pickup_zone_distance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2019-03-23 20:21:09</td>
+      <td>2019-03-23 20:27:24</td>
+      <td>1</td>
+      <td>1.60</td>
+      <td>7.0</td>
+      <td>2.15</td>
+      <td>0.0</td>
+      <td>12.95</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Lenox Hill West</td>
+      <td>UN/Turtle Bay South</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>20</td>
+      <td>5</td>
+      <td>March</td>
+      <td>120.0</td>
+      <td>9.016667</td>
+      <td>1.857083</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2019-03-04 16:11:55</td>
+      <td>2019-03-04 16:19:00</td>
+      <td>1</td>
+      <td>0.79</td>
+      <td>5.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>9.30</td>
+      <td>yellow</td>
+      <td>cash</td>
+      <td>Upper West Side South</td>
+      <td>Upper West Side South</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>16</td>
+      <td>0</td>
+      <td>March</td>
+      <td>144.0</td>
+      <td>9.987778</td>
+      <td>2.031597</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2019-03-27 17:53:01</td>
+      <td>2019-03-27 18:00:25</td>
+      <td>1</td>
+      <td>1.37</td>
+      <td>7.5</td>
+      <td>2.36</td>
+      <td>0.0</td>
+      <td>14.16</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Alphabet City</td>
+      <td>West Village</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>17</td>
+      <td>2</td>
+      <td>March</td>
+      <td>9.0</td>
+      <td>11.944444</td>
+      <td>2.796667</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2019-03-10 01:23:59</td>
+      <td>2019-03-10 01:49:51</td>
+      <td>1</td>
+      <td>7.70</td>
+      <td>27.0</td>
+      <td>6.15</td>
+      <td>0.0</td>
+      <td>36.95</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Hudson Sq</td>
+      <td>Yorkville West</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>1</td>
+      <td>6</td>
+      <td>March</td>
+      <td>47.0</td>
+      <td>11.000000</td>
+      <td>2.243830</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2019-03-30 13:27:42</td>
+      <td>2019-03-30 13:37:14</td>
+      <td>3</td>
+      <td>2.16</td>
+      <td>9.0</td>
+      <td>1.10</td>
+      <td>0.0</td>
+      <td>13.40</td>
+      <td>yellow</td>
+      <td>credit card</td>
+      <td>Midtown East</td>
+      <td>Yorkville West</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>13</td>
+      <td>5</td>
+      <td>March</td>
+      <td>198.0</td>
+      <td>10.994949</td>
+      <td>2.239798</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6428</th>
+      <td>2019-03-31 09:51:53</td>
+      <td>2019-03-31 09:55:27</td>
+      <td>1</td>
+      <td>0.75</td>
+      <td>4.5</td>
+      <td>1.06</td>
+      <td>0.0</td>
+      <td>6.36</td>
+      <td>green</td>
+      <td>credit card</td>
+      <td>East Harlem North</td>
+      <td>Central Harlem North</td>
+      <td>Manhattan</td>
+      <td>Manhattan</td>
+      <td>9</td>
+      <td>6</td>
+      <td>March</td>
+      <td>72.0</td>
+      <td>12.550000</td>
+      <td>2.854306</td>
+    </tr>
+    <tr>
+      <th>6429</th>
+      <td>2019-03-31 17:38:00</td>
+      <td>2019-03-31 18:34:23</td>
+      <td>1</td>
+      <td>18.74</td>
+      <td>58.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>58.80</td>
+      <td>green</td>
+      <td>credit card</td>
+      <td>Jamaica</td>
+      <td>East Concourse/Concourse Village</td>
+      <td>Queens</td>
+      <td>Bronx</td>
+      <td>17</td>
+      <td>6</td>
+      <td>March</td>
+      <td>12.0</td>
+      <td>25.597500</td>
+      <td>7.261667</td>
+    </tr>
+    <tr>
+      <th>6430</th>
+      <td>2019-03-23 22:55:18</td>
+      <td>2019-03-23 23:14:25</td>
+      <td>1</td>
+      <td>4.14</td>
+      <td>16.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>17.30</td>
+      <td>green</td>
+      <td>cash</td>
+      <td>Crown Heights North</td>
+      <td>Bushwick North</td>
+      <td>Brooklyn</td>
+      <td>Brooklyn</td>
+      <td>22</td>
+      <td>5</td>
+      <td>March</td>
+      <td>12.0</td>
+      <td>14.549167</td>
+      <td>3.665000</td>
+    </tr>
+    <tr>
+      <th>6431</th>
+      <td>2019-03-04 10:09:25</td>
+      <td>2019-03-04 10:14:29</td>
+      <td>1</td>
+      <td>1.12</td>
+      <td>6.0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>6.80</td>
+      <td>green</td>
+      <td>credit card</td>
+      <td>East New York</td>
+      <td>East Flatbush/Remsen Village</td>
+      <td>Brooklyn</td>
+      <td>Brooklyn</td>
+      <td>10</td>
+      <td>0</td>
+      <td>March</td>
+      <td>10.0</td>
+      <td>32.409000</td>
+      <td>7.086000</td>
+    </tr>
+    <tr>
+      <th>6432</th>
+      <td>2019-03-13 19:31:22</td>
+      <td>2019-03-13 19:48:02</td>
+      <td>1</td>
+      <td>3.85</td>
+      <td>15.0</td>
+      <td>3.36</td>
+      <td>0.0</td>
+      <td>20.16</td>
+      <td>green</td>
+      <td>credit card</td>
+      <td>Boerum Hill</td>
+      <td>Windsor Terrace</td>
+      <td>Brooklyn</td>
+      <td>Brooklyn</td>
+      <td>19</td>
+      <td>2</td>
+      <td>March</td>
+      <td>21.0</td>
+      <td>11.761905</td>
+      <td>2.812857</td>
+    </tr>
+  </tbody>
+</table>
+<p>6433 rows × 20 columns</p>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/approximatelabs/sketch">Link to sketch</a>.</p>
 </section>
 </section>
 
