@@ -222,33 +222,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter1/variable.html">
-     2.6. Variable
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/function.html">
-     2.7. Function
+     2.6. Function
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/class.html">
-     2.8. Classes
+     2.7. Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/datetime.html">
-     2.9. Datetime
+     2.8. Datetime
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/code_speed.html">
-     2.10. Code Speed
+     2.9. Code Speed
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/good_practices.html">
-     2.11. Good Python Practices
+     2.10. Good Python Practices
     </a>
    </li>
   </ul>
@@ -816,6 +811,11 @@ title="Print to PDF"
    3.2.6. itertools.zip_longest: Zip Iterables of Different Lengths
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">
+   3.2.7. itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -863,6 +863,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#itertools-zip-longest-zip-iterables-of-different-lengths">
    3.2.6. itertools.zip_longest: Zip Iterables of Different Lengths
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">
+   3.2.7. itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False
   </a>
  </li>
 </ul>
@@ -1197,6 +1202,43 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2), (&#39;grape&#39;, &#39;-&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">
+<h2><span class="section-number">3.2.7. </span>itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False<a class="headerlink" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false" title="Permalink to this headline">#</a></h2>
+<p>If you want to drop elements from an iterable until a condition is false, use <code class="docutils literal notranslate"><span class="pre">itertools.dropwhile</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">dropwhile</span>
+
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Drop every number until a number &gt;= 5</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">dropwhile</span><span class="p">(</span><span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">,</span> <span class="n">nums</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[5, 2, 4]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">word</span> <span class="o">=</span> <span class="s1">&#39;abcNice!&#39;</span>
+
+<span class="c1"># Drop every char until a char is in upper case</span>
+<span class="n">chars</span>  <span class="o">=</span> <span class="n">dropwhile</span><span class="p">(</span><span class="k">lambda</span> <span class="n">char</span><span class="p">:</span> <span class="n">char</span><span class="o">.</span><span class="n">islower</span><span class="p">(),</span> <span class="n">word</span><span class="p">)</span>
+<span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Nice!&#39;
 </pre></div>
 </div>
 </div>
