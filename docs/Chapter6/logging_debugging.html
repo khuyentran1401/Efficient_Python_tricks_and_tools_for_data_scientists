@@ -222,33 +222,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter1/variable.html">
-     2.6. Variable
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/function.html">
-     2.7. Function
+     2.6. Function
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/class.html">
-     2.8. Classes
+     2.7. Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/datetime.html">
-     2.9. Datetime
+     2.8. Datetime
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/code_speed.html">
-     2.10. Code Speed
+     2.9. Code Speed
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/good_practices.html">
-     2.11. Good Python Practices
+     2.10. Good Python Practices
     </a>
    </li>
   </ul>
@@ -831,6 +826,11 @@ title="Print to PDF"
    7.4.9. Hyperfine: Compare the Speed of Two Commands
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">
+   7.4.10. Timeline View of the Execution of Your Python Functions
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -893,6 +893,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#hyperfine-compare-the-speed-of-two-commands">
    7.4.9. Hyperfine: Compare the Speed of Two Commands
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">
+   7.4.10. Timeline View of the Execution of Your Python Functions
   </a>
  </li>
 </ul>
@@ -1443,6 +1448,34 @@ Processing fan
 </div>
 <p><img alt="" src="../_images/hyperfine.png" /></p>
 <p><a class="reference external" href="https://github.com/sharkdp/hyperfine">Link to hyperfine</a>.</p>
+</section>
+<section id="timeline-view-of-the-execution-of-your-python-functions">
+<h2><span class="section-number">7.4.10. </span>Timeline View of the Execution of Your Python Functions<a class="headerlink" href="#timeline-view-of-the-execution-of-your-python-functions" title="Permalink to this headline">#</a></h2>
+<p>Have you ever wanted to see a timeline graph showing how the execution of your functions takes place in time? Prefect now allows you to do exactly that.</p>
+<p>To use Prefect, simply add <code class="docutils literal notranslate"><span class="pre">&#64;task</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;flow</span></code> to your Python functions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">task</span><span class="p">,</span> <span class="n">flow</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">task1</span><span class="p">(</span><span class="n">secs</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="n">secs</span><span class="p">)</span>
+
+<span class="nd">@task</span> 
+<span class="k">def</span> <span class="nf">task2</span><span class="p">(</span><span class="n">secs</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="n">secs</span><span class="p">)</span>
+
+<span class="nd">@flow</span>
+<span class="k">def</span> <span class="nf">my_flow</span><span class="p">():</span>
+    <span class="n">task1</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">task2</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">task2</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">my_flow</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>When running this code, you should see the following on your <a class="reference external" href="https://docs.prefect.io/ui/overview/">Prefect UI</a>.</p>
+<p><img alt="" src="../_images/real_time_graph.gif" /></p>
+<p>Check out the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a> for basic concepts of Prefect.</p>
 </section>
 </section>
 
