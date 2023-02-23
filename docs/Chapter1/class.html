@@ -850,6 +850,11 @@ title="Print to PDF"
    : Add the Attributes of Two Class Instances
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">
+   2.7.10. Optimizing Memory Usage in Python with Slots
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -936,6 +941,11 @@ title="Print to PDF"
     </span>
    </code>
    : Add the Attributes of Two Class Instances
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">
+   2.7.10. Optimizing Memory Usage in Python with Slots
   </a>
  </li>
 </ul>
@@ -1507,6 +1517,90 @@ Instance is called
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimizing-memory-usage-in-python-with-slots">
+<h2><span class="section-number">2.7.10. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install memory_profiler
+</pre></div>
+</div>
+</div>
+</div>
+<p>In Python, objects can store their attributes in a flexible dictionary-like structure that can use a lot of memory. Slots make your objects more memory-efficient by reserving space for their attributes ahead of time.</p>
+<p>The code below shows that using slots significant reduces the memory usage.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># without_slot.py</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">from</span> <span class="nn">memory_profiler</span> <span class="kn">import</span> <span class="n">profile</span>
+
+
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+
+<span class="nd">@profile</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Dog</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">)]</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m memory_profiler without_slot.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: without_slot.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    10     41.6 MiB     41.6 MiB           1   @profile
+    11                                         def main():
+    12     57.8 MiB     16.2 MiB      100003       return [Dog(randint(0, 30)) for _ in range(100000)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># with_slot.py</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">from</span> <span class="nn">memory_profiler</span> <span class="kn">import</span> <span class="n">profile</span>
+
+
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="c1"># defining slots</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> 
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+
+<span class="nd">@profile</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Dog</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">)]</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python -m memory_profiler with_slot.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filename: with_slot.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    11     41.3 MiB     41.3 MiB           1   @profile
+    12                                         def main():
+    13     46.7 MiB      5.4 MiB      100003       return [Dog(randint(0, 30)) for _ in range(100000)]
 </pre></div>
 </div>
 </div>
