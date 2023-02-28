@@ -222,33 +222,28 @@ const thebe_selector_output = ".output, .cell_output"
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../Chapter1/variable.html">
-     2.6. Variable
-    </a>
-   </li>
-   <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/function.html">
-     2.7. Function
+     2.6. Function
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/class.html">
-     2.8. Classes
+     2.7. Classes
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/datetime.html">
-     2.9. Datetime
+     2.8. Datetime
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/code_speed.html">
-     2.10. Code Speed
+     2.9. Code Speed
     </a>
    </li>
    <li class="toctree-l2">
     <a class="reference internal" href="../Chapter1/good_practices.html">
-     2.11. Good Python Practices
+     2.10. Good Python Practices
     </a>
    </li>
   </ul>
@@ -792,8 +787,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ignore-the-order-of-index-when-comparing-two-dataframes">
+   4.12.2. Ignore the Order of Index When Comparing Two DataFrames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#compare-the-difference-between-two-dataframes">
-   4.12.2. Compare the Difference Between Two DataFrames
+   4.12.3. Compare the Difference Between Two DataFrames
   </a>
  </li>
 </ul>
@@ -821,8 +821,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ignore-the-order-of-index-when-comparing-two-dataframes">
+   4.12.2. Ignore the Order of Index When Comparing Two DataFrames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#compare-the-difference-between-two-dataframes">
-   4.12.2. Compare the Difference Between Two DataFrames
+   4.12.3. Compare the Difference Between Two DataFrames
   </a>
  </li>
 </ul>
@@ -844,11 +849,11 @@ title="Print to PDF"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.testing</span> <span class="kn">import</span> <span class="n">assert_frame_equal</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;coll&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;coll&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]})</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
 <span class="n">assert_frame_equal</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -856,23 +861,21 @@ title="Print to PDF"
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">AssertionError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_56620</span><span class="o">/</span><span class="mf">3851828215.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">7</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;coll&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]})</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;coll&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]})</span>
 <span class="ne">----&gt; </span><span class="mi">7</span> <span class="n">assert_frame_equal</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
 
     <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">2</span> <span class="n">frame</span><span class="p">]</span>
 
-<span class="nn">~/book/venv/lib/python3.8/site-packages/pandas/_libs/testing.pyx</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_libs/testing.pyx:52,</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
 
-<span class="nn">~/book/venv/lib/python3.8/site-packages/pandas/_libs/testing.pyx</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_libs/testing.pyx:167,</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
 
-<span class="nn">~/book/venv/lib/python3.8/site-packages/pandas/_testing/asserters.py</span> in <span class="ni">raise_assert_detail</span><span class="nt">(obj, message, left, right, diff, index_values)</span>
-<span class="g g-Whitespace">    </span><span class="mi">663</span>         <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[diff]: </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">664</span> 
-<span class="ne">--&gt; </span><span class="mi">665</span>     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">666</span> 
-<span class="g g-Whitespace">    </span><span class="mi">667</span> 
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_testing/asserters.py:679,</span> in <span class="ni">raise_assert_detail</span><span class="nt">(obj, message, left, right, diff, index_values)</span>
+<span class="g g-Whitespace">    </span><span class="mi">676</span> <span class="k">if</span> <span class="n">diff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">677</span>     <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[diff]: </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">679</span> <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <span class="ne">AssertionError</span>: DataFrame.iloc[:, 0] (column name=&quot;coll&quot;) are different
 
@@ -885,8 +888,61 @@ title="Print to PDF"
 </div>
 </div>
 </section>
+<section id="ignore-the-order-of-index-when-comparing-two-dataframes">
+<h2><span class="section-number">4.12.2. </span>Ignore the Order of Index When Comparing Two DataFrames<a class="headerlink" href="#ignore-the-order-of-index-when-comparing-two-dataframes" title="Permalink to this headline">#</a></h2>
+<p>If you want to ignore the order of index &amp; columns when comparing two DataFrames , use <code class="docutils literal notranslate"><span class="pre">assert_frame_equal(df1,</span> <span class="pre">df2,</span> <span class="pre">check_like=True)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas.testing</span> <span class="kn">import</span> <span class="n">assert_frame_equal</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="n">assert_frame_equal</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">check_like</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="n">assert_frame_equal</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AssertionError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;coll&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">assert_frame_equal</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">)</span>
+
+    <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">2</span> <span class="n">frame</span><span class="p">]</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_libs/testing.pyx:52,</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_libs/testing.pyx:167,</span> in <span class="ni">pandas._libs.testing.assert_almost_equal</span><span class="nt">()</span>
+
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pandas/_testing/asserters.py:679,</span> in <span class="ni">raise_assert_detail</span><span class="nt">(obj, message, left, right, diff, index_values)</span>
+<span class="g g-Whitespace">    </span><span class="mi">676</span> <span class="k">if</span> <span class="n">diff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">677</span>     <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[diff]: </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">679</span> <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="ne">AssertionError</span>: DataFrame.columns are different
+
+<span class="n">DataFrame</span><span class="o">.</span><span class="n">columns</span> <span class="n">values</span> <span class="n">are</span> <span class="n">different</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">%</span><span class="p">)</span>
+<span class="p">[</span><span class="n">left</span><span class="p">]:</span>  <span class="n">Index</span><span class="p">([</span><span class="s1">&#39;coll&#39;</span><span class="p">,</span> <span class="s1">&#39;col2&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="n">right</span><span class="p">]:</span> <span class="n">Index</span><span class="p">([</span><span class="s1">&#39;col2&#39;</span><span class="p">,</span> <span class="s1">&#39;coll&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="compare-the-difference-between-two-dataframes">
-<h2><span class="section-number">4.12.2. </span>Compare the Difference Between Two DataFrames<a class="headerlink" href="#compare-the-difference-between-two-dataframes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.12.3. </span>Compare the Difference Between Two DataFrames<a class="headerlink" href="#compare-the-difference-between-two-dataframes" title="Permalink to this headline">#</a></h2>
 <p>If you want to show and align the differences between two DataFrames, use <code class="docutils literal notranslate"><span class="pre">df.compare</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -956,7 +1012,7 @@ title="Print to PDF"
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./Chapter3"
         },
         predefinedOutput: true
