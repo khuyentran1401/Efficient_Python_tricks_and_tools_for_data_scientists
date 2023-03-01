@@ -811,6 +811,11 @@ title="Print to PDF"
    7.3.6. perfplot: Performance Analysis for Python Snippets
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">
+   7.3.7. Analyze the Memory Usage of Your Python Code
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -858,6 +863,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">
    7.3.6. perfplot: Performance Analysis for Python Snippets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">
+   7.3.7. Analyze the Memory Usage of Your Python Code
   </a>
  </li>
 </ul>
@@ -1166,6 +1176,45 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/nschloe/perfplot">Link to perfplot</a>.</p>
+</section>
+<section id="analyze-the-memory-usage-of-your-python-code">
+<h2><span class="section-number">7.3.7. </span>Analyze the Memory Usage of Your Python Code<a class="headerlink" href="#analyze-the-memory-usage-of-your-python-code" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>memory_profiler
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to analyze the memory consumption of your Python code line-by-line, use memory_profiler. This package allows you to generate a full memory usage report of your executable and plot it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mprof<span class="w"> </span>run<span class="w"> </span>memory_profiler_test.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mprof: Sampling memory every 0.1s
+running new process
+running as a Python program...
+Filename: memory_profiler_test.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     4     41.9 MiB     41.9 MiB           1   @profile
+     5                                         def func():
+     6     49.5 MiB      7.6 MiB           1       a = [1] * (10 ** 6)
+     7    202.1 MiB    152.6 MiB           1       b = [2] * (2 * 10 ** 7)
+     8     49.5 MiB   -152.6 MiB           1       del b
+     9     49.5 MiB      0.0 MiB           1       return a
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the memory usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mprof<span class="w"> </span>plot
+</pre></div>
+</div>
+<p><img alt="" src="../_images/memory_profiler.png" /></p>
+<p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler">Link to memory_profiler</a>.</p>
 </section>
 </section>
 
