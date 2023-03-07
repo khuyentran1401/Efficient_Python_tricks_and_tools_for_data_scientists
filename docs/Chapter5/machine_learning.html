@@ -831,6 +831,11 @@ title="Print to PDF"
    6.5.10. imbalanced-learn: Deal with an Imbalanced Dataset
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimate-prediction-intervals-in-scikit-learn-models-with-mapie">
+   6.5.11. Estimate Prediction Intervals in Scikit-Learn Models with MAPIE
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -898,6 +903,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#imbalanced-learn-deal-with-an-imbalanced-dataset">
    6.5.10. imbalanced-learn: Deal with an Imbalanced Dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimate-prediction-intervals-in-scikit-learn-models-with-mapie">
+   6.5.11. Estimate Prediction Intervals in Scikit-Learn Models with MAPIE
   </a>
  </li>
 </ul>
@@ -1787,6 +1797,85 @@ and more.</p></li>
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/scikit-learn-contrib/imbalanced-learn">Link to imbalanced-learn</a>.</p>
+</section>
+<section id="estimate-prediction-intervals-in-scikit-learn-models-with-mapie">
+<h2><span class="section-number">6.5.11. </span>Estimate Prediction Intervals in Scikit-Learn Models with MAPIE<a class="headerlink" href="#estimate-prediction-intervals-in-scikit-learn-models-with-mapie" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mapie
+</pre></div>
+</div>
+</div>
+</div>
+<p>To get estimated prediction intervals for predictions made by a scikit-learn model, use MAPIE.</p>
+<p>In the code below, we use <code class="docutils literal notranslate"><span class="pre">MapieRegressor</span></code> to estimate prediction intervals for a scikit-learn regressor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mapie.regression</span> <span class="kn">import</span> <span class="n">MapieRegressor</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_regression</span>
+
+<span class="c1"># Create data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Train and predict</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.32</span><span class="p">]</span>
+<span class="n">mapie</span> <span class="o">=</span> <span class="n">MapieRegressor</span><span class="p">(</span><span class="n">LinearRegression</span><span class="p">())</span>
+<span class="n">mapie</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">y_pred</span><span class="p">,</span> <span class="n">y_pis</span> <span class="o">=</span> <span class="n">mapie</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the coverage of the prediction intervals</span>
+<span class="kn">from</span> <span class="nn">mapie.metrics</span> <span class="kn">import</span> <span class="n">regression_coverage_score</span>
+
+<span class="n">coverage_scores</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">regression_coverage_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">y_pis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the estimated prediction intervals</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">y_pis</span><span class="p">[</span><span class="n">order</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">y_pis</span><span class="p">[</span><span class="n">order</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">[</span><span class="n">order</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">y_pis</span><span class="p">[</span><span class="n">order</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">y_pis</span><span class="p">[</span><span class="n">order</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Target coverages for &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: (</span><span class="si">{</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">coverage_scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;Target coverages for &quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;alpha=</span><span class="si">{</span><span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">: (</span><span class="si">{</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">coverage_scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/machine_learning_93_0.png" src="../_images/machine_learning_93_0.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/scikit-learn-contrib/MAPIE">Link to MAPIE</a>.</p>
 </section>
 </section>
 
