@@ -873,23 +873,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling">
+   2.10.18. Exception Handling vs. If-Else Statements: Which is Better for Error Handling?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.10.18. Python Switch Statement
+   2.10.19. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.10.19. Structural Pattern Matching in Python 3.10
+   2.10.20. Structural Pattern Matching in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.10.20. Write Union Types as X|Y in Python 3.10
+   2.10.21. Write Union Types as X|Y in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.10.21. Walrus Operator: Assign a Variable in an Expression
+   2.10.22. Walrus Operator: Assign a Variable in an Expression
   </a>
  </li>
 </ul>
@@ -1003,23 +1008,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling">
+   2.10.18. Exception Handling vs. If-Else Statements: Which is Better for Error Handling?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.10.18. Python Switch Statement
+   2.10.19. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.10.19. Structural Pattern Matching in Python 3.10
+   2.10.20. Structural Pattern Matching in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.10.20. Write Union Types as X|Y in Python 3.10
+   2.10.21. Write Union Types as X|Y in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.10.21. Walrus Operator: Assign a Variable in an Expression
+   2.10.22. Walrus Operator: Assign a Variable in an Expression
   </a>
  </li>
 </ul>
@@ -1826,8 +1836,44 @@ Hello
 </div>
 </div>
 </section>
+<section id="exception-handling-vs-if-else-statements-which-is-better-for-error-handling">
+<h2><span class="section-number">2.10.18. </span>Exception Handling vs. If-Else Statements: Which is Better for Error Handling?<a class="headerlink" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling" title="Permalink to this headline">#</a></h2>
+<p>Exception handling is more efficient and concise than if-else statements for error handling. When an exception is raised, the interpreter jumps directly to the appropriate exception handler, avoiding unnecessary comparisons and branching.</p>
+<p>It also improves code readability by separating error-handling logic from the main program flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Okay </span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">contents</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Better </span>
+<span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">contents</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">contents</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="python-switch-statement">
-<h2><span class="section-number">2.10.18. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.19. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
 <p>It is common to use the if-else statements to execute multiple conditional statements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1879,7 +1925,7 @@ Hello
 </div>
 </section>
 <section id="structural-pattern-matching-in-python-3-10">
-<h2><span class="section-number">2.10.19. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.20. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Have you ever wanted to match complex data types and extract their information?</p>
 <p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
 <p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
@@ -1933,7 +1979,7 @@ Hello
 </div>
 </section>
 <section id="write-union-types-as-x-y-in-python-3-10">
-<h2><span class="section-number">2.10.20. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.21. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Before Python 3.10, you need to use <code class="docutils literal notranslate"><span class="pre">typing.Union</span></code> to declare that a variable can have one of several different types.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1965,7 +2011,7 @@ Hello
 </div>
 </section>
 <section id="walrus-operator-assign-a-variable-in-an-expression">
-<h2><span class="section-number">2.10.21. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.22. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
 <p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
 <ul class="simple">
 <li><p>debug the components in an expression</p></li>
