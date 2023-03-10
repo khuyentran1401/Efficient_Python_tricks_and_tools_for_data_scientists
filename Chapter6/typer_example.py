@@ -1,8 +1,12 @@
-import typer 
+import typer
 
-def process_data(data: str, version: int):
-    print(f'Processing {data},' 
-          f'version {version}')
+app = typer.Typer()
 
-if __name__ == '__main__':
-    typer.run(process_data)
+@app.command()
+def add_numbers(x: float, y: float):
+    """Adds two numbers and prints the result."""
+    result = x + y
+    print(f"The sum of {x} and {y} is {result}.")
+
+if __name__ == "__main__":
+    app()
