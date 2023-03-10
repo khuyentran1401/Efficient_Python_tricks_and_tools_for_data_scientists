@@ -794,23 +794,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#python-fire-generate-a-cli-for-any-python-objects-in-two-lines-of-code">
+   7.5.3. Python Fire: Generate a CLI for Any Python Objects in Two Lines of Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typer-build-a-command-line-interface-in-a-few-lines-of-code">
-   7.5.3. Typer: Build a Command-Line Interface in a Few Lines of Code
+   7.5.4. Typer: Build a Command-Line Interface in a Few Lines of Code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#generate-a-tree-view-with-rich">
-   7.5.4. Generate a Tree View with rich
+   7.5.5. Generate a Tree View with rich
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">
-   7.5.5. latexify_py: Generates a LaTex Math Description From a Python Function
+   7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">
-   7.5.6. ManimML: Create Animations of Common ML Concepts in Python
+   7.5.7. ManimML: Create Animations of Common ML Concepts in Python
   </a>
  </li>
 </ul>
@@ -843,23 +848,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#python-fire-generate-a-cli-for-any-python-objects-in-two-lines-of-code">
+   7.5.3. Python Fire: Generate a CLI for Any Python Objects in Two Lines of Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#typer-build-a-command-line-interface-in-a-few-lines-of-code">
-   7.5.3. Typer: Build a Command-Line Interface in a Few Lines of Code
+   7.5.4. Typer: Build a Command-Line Interface in a Few Lines of Code
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#generate-a-tree-view-with-rich">
-   7.5.4. Generate a Tree View with rich
+   7.5.5. Generate a Tree View with rich
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">
-   7.5.5. latexify_py: Generates a LaTex Math Description From a Python Function
+   7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">
-   7.5.6. ManimML: Create Animations of Common ML Concepts in Python
+   7.5.7. ManimML: Create Animations of Common ML Concepts in Python
   </a>
  </li>
 </ul>
@@ -982,8 +992,57 @@ title="Print to PDF"
 <p><a class="reference external" href="https://github.com/pwaller/pyfiglet">Link to pyfiglet</a>.</p>
 <p><a class="reference external" href="https://pypi.org/project/termcolor/">Link to termcolor</a>.</p>
 </section>
+<section id="python-fire-generate-a-cli-for-any-python-objects-in-two-lines-of-code">
+<h2><span class="section-number">7.5.3. </span>Python Fire: Generate a CLI for Any Python Objects in Two Lines of Code<a class="headerlink" href="#python-fire-generate-a-cli-for-any-python-objects-in-two-lines-of-code" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>fire
+</pre></div>
+</div>
+</div>
+</div>
+<p>Have you ever wanted to adjust the values of Python objects from the command line, but found it inconvenient to do so?  With Python Fire, you can easily generate a command-line interface for any Python object in just two lines of code.</p>
+<p>To see how Python Fire works, let’s look at an example. Start with creating file named <code class="docutils literal notranslate"><span class="pre">fire_example.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fire</span>
+
+
+<span class="k">def</span> <span class="nf">get_mean</span><span class="p">(</span><span class="n">numbers</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_modulo</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">num1</span> <span class="o">%</span> <span class="n">num2</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">fire</span><span class="o">.</span><span class="n">Fire</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then run the following command on your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>fire_example.py<span class="w"> </span>get_mean<span class="w"> </span><span class="s2">&quot;[1, 2, 3]&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>fire_example.py<span class="w"> </span>get_modulo<span class="w"> </span>--num1<span class="o">=</span><span class="m">3</span><span class="w"> </span>--num2<span class="o">=</span><span class="m">2</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/google/python-fire">Link to Python Fire</a>.</p>
+</section>
 <section id="typer-build-a-command-line-interface-in-a-few-lines-of-code">
-<h2><span class="section-number">7.5.3. </span>Typer: Build a Command-Line Interface in a Few Lines of Code<a class="headerlink" href="#typer-build-a-command-line-interface-in-a-few-lines-of-code" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.4. </span>Typer: Build a Command-Line Interface in a Few Lines of Code<a class="headerlink" href="#typer-build-a-command-line-interface-in-a-few-lines-of-code" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>typer<span class="w"> </span>
@@ -991,32 +1050,51 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>The last thing you want to happen is to have users dig into your code to run it. Is there a way that users can insert arguments into your code on the command line?</p>
-<p>That is when Typer comes in handy. Typer allows you to build a command-line interface in a few lines of code based on Python-type hints.</p>
-<p>For example, in a file named <code class="docutils literal notranslate"><span class="pre">typer_example</span></code>, write:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">typer</span> 
+<p>While Python Fire is easy to use, it doesn’t provide much flexibility in terms of customization. Typer offers tools for building CLI applications in Python with a more explicit syntax. Typer also uses type annotations to validate user input.</p>
+<p>To see how Typer works, let’s look at an example. Start with creating file named <code class="docutils literal notranslate"><span class="pre">typer_example.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">typer</span>
 
-<span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Processing </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">,&#39;</span> 
-          <span class="sa">f</span><span class="s1">&#39;version </span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">typer</span><span class="o">.</span><span class="n">Typer</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">typer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">process_data</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">add_numbers</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Adds two numbers and prints the result.&quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The sum of </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">()</span>
+
 </pre></div>
 </div>
-<p>On your terminal, type:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>typer_example.py<span class="w"> </span>data<span class="w"> </span><span class="m">1</span>
+<p>Then run the following command on your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>typer_example.py<span class="w"> </span>hello<span class="w"> </span>world
 </pre></div>
 </div>
 <p>And you should see an output like below:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>python<span class="w"> </span>typer_example.py<span class="w"> </span>data<span class="w"> </span><span class="m">1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>python<span class="w"> </span>typer_example.py<span class="w"> </span>hello<span class="w"> </span>world
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing data,version 1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usage: typer_example.py [OPTIONS] X Y
+Try &#39;typer_example.py --help&#39; for help.
+
+Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can see that when the input is not a valid float, Typer raised a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> with a helpful error message.</p>
+<p>Providing the valid inputs will give the following output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>typer_example.py<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sum of 3.0 and 2.0 is 5.0.
 </pre></div>
 </div>
 </div>
@@ -1025,7 +1103,7 @@ title="Print to PDF"
 <p><a class="reference external" href="https://towardsdatascience.com/typer-build-powerful-clis-in-one-line-of-code-using-python-321d9aef3be8">My full article about Typer</a>.</p>
 </section>
 <section id="generate-a-tree-view-with-rich">
-<h2><span class="section-number">7.5.4. </span>Generate a Tree View with rich<a class="headerlink" href="#generate-a-tree-view-with-rich" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.5. </span>Generate a Tree View with rich<a class="headerlink" href="#generate-a-tree-view-with-rich" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>rich<span class="w"> </span>
@@ -1060,7 +1138,7 @@ title="Print to PDF"
 <p><a class="reference external" href="https://github.com/Textualize/rich/tree/aa7926c1431eebfb2ccaab9f3b63a4ac6cd8dfe6">Link to rich</a>.</p>
 </section>
 <section id="latexify-py-generates-a-latex-math-description-from-a-python-function">
-<h2><span class="section-number">7.5.5. </span>latexify_py: Generates a LaTex Math Description From a Python Function<a class="headerlink" href="#latexify-py-generates-a-latex-math-description-from-a-python-function" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.6. </span>latexify_py: Generates a LaTex Math Description From a Python Function<a class="headerlink" href="#latexify-py-generates-a-latex-math-description-from-a-python-function" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>latexify-py
@@ -1108,7 +1186,7 @@ title="Print to PDF"
 <p><a class="reference external" href="https://github.com/google/latexify_py">Link to latexify_py</a>.</p>
 </section>
 <section id="manimml-create-animations-of-common-ml-concepts-in-python">
-<h2><span class="section-number">7.5.6. </span>ManimML: Create Animations of Common ML Concepts in Python<a class="headerlink" href="#manimml-create-animations-of-common-ml-concepts-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5.7. </span>ManimML: Create Animations of Common ML Concepts in Python<a class="headerlink" href="#manimml-create-animations-of-common-ml-concepts-in-python" title="Permalink to this headline">#</a></h2>
 <p>If you want to create animations and visualizations for common ML concepts in Python, try ManimML.</p>
 <p>The GIF below is the visualization of Variational Autoencoder made by ManimML.</p>
 <p><img alt="" src="../_images/VAEScene.gif" /></p>
