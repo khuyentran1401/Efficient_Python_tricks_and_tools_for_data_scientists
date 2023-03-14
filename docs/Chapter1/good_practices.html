@@ -878,23 +878,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#never-catch-all-exceptions">
+   2.10.19. Never Catch All Exceptions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.10.19. Python Switch Statement
+   2.10.20. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.10.20. Structural Pattern Matching in Python 3.10
+   2.10.21. Structural Pattern Matching in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.10.21. Write Union Types as X|Y in Python 3.10
+   2.10.22. Write Union Types as X|Y in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.10.22. Walrus Operator: Assign a Variable in an Expression
+   2.10.23. Walrus Operator: Assign a Variable in an Expression
   </a>
  </li>
 </ul>
@@ -1013,23 +1018,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#never-catch-all-exceptions">
+   2.10.19. Never Catch All Exceptions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#python-switch-statement">
-   2.10.19. Python Switch Statement
+   2.10.20. Python Switch Statement
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.10.20. Structural Pattern Matching in Python 3.10
+   2.10.21. Structural Pattern Matching in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.10.21. Write Union Types as X|Y in Python 3.10
+   2.10.22. Write Union Types as X|Y in Python 3.10
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.10.22. Walrus Operator: Assign a Variable in an Expression
+   2.10.23. Walrus Operator: Assign a Variable in an Expression
   </a>
  </li>
 </ul>
@@ -1872,8 +1882,66 @@ Hello
 </div>
 </div>
 </section>
+<section id="never-catch-all-exceptions">
+<h2><span class="section-number">2.10.19. </span>Never Catch All Exceptions<a class="headerlink" href="#never-catch-all-exceptions" title="Permalink to this headline">#</a></h2>
+<p>You should be explicit about the name of the exceptions you will catch for more precise error handling. Catching any exceptions can cause unintended consequences.</p>
+<p>For example, in the code below, the error message returned is “Cannot divide by zero”, even though the actual error is <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num1</span> <span class="o">/</span> <span class="n">num2</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Error: Cannot divide by zero&quot;</span>
+
+
+<span class="n">divide</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Error: Cannot divide by zero&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>By catching only <code class="docutils literal notranslate"><span class="pre">ZeroDivisionError</span></code>, we will get a more accurate error message when calling <code class="docutils literal notranslate"><span class="pre">divide(10,</span> <span class="pre">&quot;a&quot;)</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num1</span> <span class="o">/</span> <span class="n">num2</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Error: Cannot divide by zero&quot;</span>
+
+
+<span class="n">divide</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>         <span class="k">return</span> <span class="s2">&quot;Error: Cannot divide by zero&quot;</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">divide</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+<span class="nn">Cell In[22], line 3,</span> in <span class="ni">divide</span><span class="nt">(num1, num2)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">divide</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">----&gt; </span><span class="mi">3</span>         <span class="k">return</span> <span class="n">num1</span> <span class="o">/</span> <span class="n">num2</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>         <span class="k">return</span> <span class="s2">&quot;Error: Cannot divide by zero&quot;</span>
+
+<span class="ne">TypeError</span>: unsupported operand type(s) for /: &#39;int&#39; and &#39;str&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="python-switch-statement">
-<h2><span class="section-number">2.10.19. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.20. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
 <p>It is common to use the if-else statements to execute multiple conditional statements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1925,7 +1993,7 @@ Hello
 </div>
 </section>
 <section id="structural-pattern-matching-in-python-3-10">
-<h2><span class="section-number">2.10.20. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.21. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Have you ever wanted to match complex data types and extract their information?</p>
 <p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
 <p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
@@ -1979,7 +2047,7 @@ Hello
 </div>
 </section>
 <section id="write-union-types-as-x-y-in-python-3-10">
-<h2><span class="section-number">2.10.21. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.22. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this headline">#</a></h2>
 <p>Before Python 3.10, you need to use <code class="docutils literal notranslate"><span class="pre">typing.Union</span></code> to declare that a variable can have one of several different types.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2011,7 +2079,7 @@ Hello
 </div>
 </section>
 <section id="walrus-operator-assign-a-variable-in-an-expression">
-<h2><span class="section-number">2.10.22. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.10.23. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
 <p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
 <ul class="simple">
 <li><p>debug the components in an expression</p></li>
