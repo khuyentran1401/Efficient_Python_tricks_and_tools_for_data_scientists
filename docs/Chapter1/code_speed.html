@@ -791,6 +791,11 @@ title="Print to PDF"
    2.9.2. Compare The Execution Time Between 2 Functions
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#save-disk-space-on-large-datasets-with-parquet">
+   2.9.3. Save Disk Space on Large Datasets with Parquet
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -818,6 +823,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#compare-the-execution-time-between-2-functions">
    2.9.2. Compare The Execution Time Between 2 Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#save-disk-space-on-large-datasets-with-parquet">
+   2.9.3. Save Disk Space on Large Datasets with Parquet
   </a>
  </li>
 </ul>
@@ -888,6 +898,57 @@ title="Print to PDF"
 </div>
 </div>
 <p>From the result, we can see that it is faster to use list range than to use list comprehension on average.</p>
+</section>
+<section id="save-disk-space-on-large-datasets-with-parquet">
+<h2><span class="section-number">2.9.3. </span>Save Disk Space on Large Datasets with Parquet<a class="headerlink" href="#save-disk-space-on-large-datasets-with-parquet" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyarrow
+</pre></div>
+</div>
+</div>
+</div>
+<p>To save disk space on large datasets, use Parquet files instead of CSV.  Because Parquet files are compressed, they take up less space on disk and in memory than uncompressed CSV files.</p>
+<p>For a 1 million row, 10 column dataset, storing it as CSV takes about 189.59 MB, while storing it as Parquet takes around 78.96 MB, saving approximately 110.63 MB of storage.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a dataset with 1 million rows and 10 columns </span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">63</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;col</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Write data to Parquet file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;example.parquet&#39;</span><span class="p">)</span>
+
+<span class="c1"># Write data to CSV file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;example.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parquet file size:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="s1">&#39;example.parquet&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CSV file size:&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="s1">&#39;example.csv&#39;</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parquet file size: 82805080
+CSV file size: 198796161
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
