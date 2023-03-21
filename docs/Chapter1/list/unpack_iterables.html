@@ -835,77 +835,67 @@ title="Print to PDF"
 <p><img alt="" src="../../_images/unpack_iterable.png" /></p>
 <section id="how-to-unpack-iterables-in-python">
 <h2><span class="section-number">2.3.2.1. </span>How to Unpack Iterables in Python<a class="headerlink" href="#how-to-unpack-iterables-in-python" title="Permalink to this headline">#</a></h2>
-<p>You can unpack an iterable (such as list, tuple, string) by assigning the items of that iterable to different variables.</p>
+<p>Are you extracting items from an iterable using indexing like this?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nested_arr</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">]</span>
-<span class="n">num_arr</span><span class="p">,</span> <span class="n">char_arr</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span> <span class="n">nested_arr</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A more concise way of achieving the same result is to assign the iterable to multiple variables at once like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">l</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_arr</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;c =&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[1, 2, 3]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a = 1
+b = 2
+c = 3
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">char_arr</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;a&#39;, &#39;b&#39;]
-</pre></div>
-</div>
-</div>
-</div>
+<p>This can make our code easier to read and understand, and is a common practice in Python.</p>
 </section>
 <section id="extended-iterable-unpacking-ignore-multiple-values-when-unpacking-a-python-iterable">
 <h2><span class="section-number">2.3.2.2. </span>Extended Iterable Unpacking: Ignore Multiple Values when Unpacking a Python Iterable<a class="headerlink" href="#extended-iterable-unpacking-ignore-multiple-values-when-unpacking-a-python-iterable" title="Permalink to this headline">#</a></h2>
-<p>If you want to ignore multiple values when unpacking a Python iterable, add <code class="docutils literal notranslate"><span class="pre">*</span></code> to <code class="docutils literal notranslate"><span class="pre">_</span></code> as shown below.</p>
-<p>This is called “Extended Iterable Unpacking” and is available in Python 3.x.</p>
+<p>If we have a longer iterable but we only want to extract the subset of the iterable, we can use the “splat” operator (*) to represent the elements that we don’t care about:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;a =&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b =&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;_ =&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 3]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a = 1
+b = 4
+_ = [2, 3]
 </pre></div>
 </div>
 </div>
