@@ -1567,7 +1567,8 @@ Hello
 </section>
 <section id="a-function-should-only-do-one-task">
 <h2><span class="section-number">2.10.14. </span>A Function Should Only Do One Task<a class="headerlink" href="#a-function-should-only-do-one-task" title="Permalink to this headline">#</a></h2>
-<p>A function should do only one task, not multiple tasks. The function <code class="docutils literal notranslate"><span class="pre">process_data</span></code> tries to do multiple tasks such as adding new features, adding one, and taking a sum of all columns. Using comments helps explain each block of code, but it takes a lot of work to keep the comments up-to-date. It is also difficult to test each unit of code inside a function.</p>
+<p>To make code clearer and easier to maintain, functions should only do one task at a time. However, the function <code class="docutils literal notranslate"><span class="pre">process_data</span></code> violates this principle by performing multiple tasks, such as adding new features, adding 1 to a column, and summing all columns.</p>
+<p>Although comments can be used to explain each block of code, it can be difficult to keep them updated, and testing each unit of code inside a function can be challenging.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1653,7 +1654,8 @@ Hello
 </table>
 </div></div></div>
 </div>
-<p>A better practice is to split the function <code class="docutils literal notranslate"><span class="pre">process_data</span></code> into smaller functions that do only one thing.  In the code below, I split the function <code class="docutils literal notranslate"><span class="pre">process_data</span></code> into 4 different functions and apply these functions to a pandas DataFrame in order using <code class="docutils literal notranslate"><span class="pre">pipe</span></code>.</p>
+<p>A better approach is to split the <code class="docutils literal notranslate"><span class="pre">process_data</span></code> function into smaller functions, each of which performs only one task. The revised code accomplishes this by creating four separate function. These functions are then applied to the DataFrame using the <code class="docutils literal notranslate"><span class="pre">pipe</span></code> method in a specific order to achieve the desired output.</p>
+<p>Now, the revised code is easier to comprehend and test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_a_copy</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>

@@ -791,6 +791,11 @@ title="Print to PDF"
    6.4.2. sweetviz: Compare the similar features between 2 different datasets
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">
+   6.4.3. Fluke: The Easiest Way to Move Data Around
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -818,6 +823,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sweetviz-compare-the-similar-features-between-2-different-datasets">
    6.4.2. sweetviz: Compare the similar features between 2 different datasets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">
+   6.4.3. Fluke: The Easiest Way to Move Data Around
   </a>
  </li>
 </ul>
@@ -923,54 +933,37 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <p>Run the code above and you will generate a report similar to this:</p>
 <p><img alt="image" src="../_images/sweetviz_output.png" /></p>
 <p><a class="reference external" href="https://github.com/fbdesignpro/sweetviz">Link to sweetviz</a></p>
-<div class="cell tag_hide-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>dtale<span class="w"> </span>sklearn
+</section>
+<section id="fluke-the-easiest-way-to-move-data-around">
+<h2><span class="section-number">6.4.3. </span>Fluke: The Easiest Way to Move Data Around<a class="headerlink" href="#fluke-the-easiest-way-to-move-data-around" title="Permalink to this headline">#</a></h2>
+<p>Data scientists often need to transfer data between locations, such as a remote server to cloud storage. However, many Python libraries require a lot of boilerplate code to handle HTTP/SSH connections and iterate directories.</p>
+<p>This can be cumbersome for those who want to transfer files easily. Fluke offers a simple API that allows users to interact with remote data in a few lines of code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluke.auth</span> <span class="kn">import</span> <span class="n">RemoteAuth</span><span class="p">,</span> <span class="n">AWSAuth</span>
+
+<span class="c1"># This object will be used to authenticate</span>
+<span class="c1"># with the remote machine.</span>
+<span class="n">rmt_auth</span> <span class="o">=</span> <span class="n">RemoteAuth</span><span class="o">.</span><span class="n">from_password</span><span class="p">(</span>
+    <span class="n">hostname</span><span class="o">=</span><span class="s2">&quot;host&quot;</span><span class="p">,</span>
+    <span class="n">username</span><span class="o">=</span><span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">)</span>
+
+<span class="c1"># This object will be used to authenticate</span>
+<span class="c1"># with AWS.</span>
+<span class="n">aws_auth</span> <span class="o">=</span> <span class="n">AWSAuth</span><span class="p">(</span>
+    <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s2">&quot;aws_access_key&quot;</span><span class="p">,</span>
+    <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s2">&quot;aws_secret_key&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
-<span class="kn">import</span> <span class="nn">dtale</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluke.storage</span> <span class="kn">import</span> <span class="n">RemoteDir</span><span class="p">,</span> <span class="n">AWSS3Dir</span>
+
+<span class="k">with</span> <span class="p">(</span>
+    <span class="n">RemoteDir</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">rmt_auth</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/home/user/dir&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">rmt_dir</span><span class="p">,</span>
+    <span class="n">AWSS3Dir</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">aws_auth</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="s2">&quot;bucket&quot;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;dir&#39;</span><span class="p">,</span> <span class="n">create_if_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">aws_dir</span>
+<span class="p">):</span>
+    <span class="n">rmt_dir</span><span class="o">.</span><span class="n">transfer_to</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="n">aws_dir</span><span class="p">,</span> <span class="n">recursively</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
-<span class="n">dtale</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html">
-<iframe
-    width="100%"
-    height="475"
-    src="http://khuyen-Precision-7740:40001/dtale/iframe/3"
-    frameborder="0"
-    allowfullscreen
-></iframe>
-</div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Executing shutdown due to inactivity...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-03-21 10:04:49,654 - INFO     - Executing shutdown due to inactivity...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Executing shutdown...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2022-03-21 10:04:49,675 - INFO     - Executing shutdown...
-</pre></div>
-</div>
-</div>
-</div>
+<p><a class="reference external" href="https://github.com/manoss96/fluke">Link to Fluke</a>.</p>
 </section>
 </section>
 
