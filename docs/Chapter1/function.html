@@ -782,13 +782,18 @@ title="Print to PDF"
     <nav id="bd-toc-nav" aria-label="Page">
         <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">
+   2.6.1. When to Use and Not to Use Lambda Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#kwargs-pass-multiple-arguments-to-a-function-in-python">
-   2.6.1. **kwargs: Pass Multiple Arguments to a Function in Python
+   2.6.2. **kwargs: Pass Multiple Arguments to a Function in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#decorator-in-python">
-   2.6.2. Decorator in Python
+   2.6.3. Decorator in Python
   </a>
  </li>
 </ul>
@@ -811,13 +816,18 @@ title="Print to PDF"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">
+   2.6.1. When to Use and Not to Use Lambda Functions
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#kwargs-pass-multiple-arguments-to-a-function-in-python">
-   2.6.1. **kwargs: Pass Multiple Arguments to a Function in Python
+   2.6.2. **kwargs: Pass Multiple Arguments to a Function in Python
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#decorator-in-python">
-   2.6.2. Decorator in Python
+   2.6.3. Decorator in Python
   </a>
  </li>
 </ul>
@@ -832,8 +842,40 @@ title="Print to PDF"
                 
   <section id="function">
 <h1><span class="section-number">2.6. </span>Function<a class="headerlink" href="#function" title="Permalink to this headline">#</a></h1>
+<section id="when-to-use-and-not-to-use-lambda-functions">
+<h2><span class="section-number">2.6.1. </span>When to Use and Not to Use Lambda Functions<a class="headerlink" href="#when-to-use-and-not-to-use-lambda-functions" title="Permalink to this headline">#</a></h2>
+<p>Lambda functions are helpful when defining a function that is used only once and does not require a name.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="c1"># use lambda function because it is used only once</span>
+<span class="n">even_numbers</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">num</span><span class="p">:</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, if you need to reuse a function in various parts of your code, use a named function to avoid repeating the same code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use named function because it is used multiple times</span>
+<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+
+<span class="n">even_numbers</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">is_even</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+<span class="nb">any</span><span class="p">(</span><span class="n">is_even</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="kwargs-pass-multiple-arguments-to-a-function-in-python">
-<h2><span class="section-number">2.6.1. </span>**kwargs: Pass Multiple Arguments to a Function in Python<a class="headerlink" href="#kwargs-pass-multiple-arguments-to-a-function-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.2. </span>**kwargs: Pass Multiple Arguments to a Function in Python<a class="headerlink" href="#kwargs-pass-multiple-arguments-to-a-function-in-python" title="Permalink to this headline">#</a></h2>
 <p>Sometimes you might not know the arguments you will pass to a function. If so, use <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> allow you to pass multiple arguments to a function using a dictionary. In the example below, passing <code class="docutils literal notranslate"><span class="pre">**{'a':1,</span> <span class="pre">'b':2}</span></code> to the function is similar to passing <code class="docutils literal notranslate"><span class="pre">a=1</span></code>, <code class="docutils literal notranslate"><span class="pre">b=1</span></code> to the function.</p>
 <p>Once <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> argument is passed, you can treat it like a Python dictionary.</p>
@@ -860,7 +902,7 @@ title="Print to PDF"
 </div>
 </section>
 <section id="decorator-in-python">
-<h2><span class="section-number">2.6.2. </span>Decorator in Python<a class="headerlink" href="#decorator-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.3. </span>Decorator in Python<a class="headerlink" href="#decorator-in-python" title="Permalink to this headline">#</a></h2>
 <p>Do you want to add the same block of code to different functions in Python? If so, try decorator.</p>
 <p>In the code below, I created the decorator to track the time of the function <code class="docutils literal notranslate"><span class="pre">say_hello</span></code>.</p>
 <div class="cell docutils container">
