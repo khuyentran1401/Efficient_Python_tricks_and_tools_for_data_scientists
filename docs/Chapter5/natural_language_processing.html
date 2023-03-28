@@ -1002,25 +1002,6 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package brown to /home/khuyen/nltk_data...
-[nltk_data]   Unzipping corpora/brown.zip.
-[nltk_data] Downloading package punkt to /home/khuyen/nltk_data...
-[nltk_data]   Package punkt is already up-to-date!
-[nltk_data] Downloading package wordnet to /home/khuyen/nltk_data...
-[nltk_data]   Unzipping corpora/wordnet.zip.
-[nltk_data] Downloading package averaged_perceptron_tagger to
-[nltk_data]     /home/khuyen/nltk_data...
-[nltk_data]   Unzipping taggers/averaged_perceptron_tagger.zip.
-[nltk_data] Downloading package conll2000 to /home/khuyen/nltk_data...
-[nltk_data]   Unzipping corpora/conll2000.zip.
-[nltk_data] Downloading package movie_reviews to
-[nltk_data]     /home/khuyen/nltk_data...
-[nltk_data]   Unzipping corpora/movie_reviews.zip.
-Finished.
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1370,7 +1351,7 @@ For more information on these, you can take a look at our Data Scientist learnin
 </div>
 </div>
 </div>
-<p>If you want to preprocess text in one line of code, try texthero. The <code class="docutils literal notranslate"><span class="pre">texthero.clean</span></code> method will:</p>
+<p>Have you ever wanted to preprocess text in one line of code? By using the <code class="docutils literal notranslate"><span class="pre">texthero.clean</span></code> method, various text preprocessing steps will be applied to your pandas DataFrame, including:</p>
 <ul class="simple">
 <li><p>fill missing values</p></li>
 <li><p>convert upper case to lower case</p></li>
@@ -1411,6 +1392,29 @@ Name: text, dtype: object
 </div>
 </div>
 </div>
+<p>You can also create a custom cleaning pipeline by chaining different processing methods.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">text</span>
+    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">hero</span><span class="o">.</span><span class="n">fillna</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">hero</span><span class="o">.</span><span class="n">remove_punctuation</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">hero</span><span class="o">.</span><span class="n">remove_stopwords</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">hero</span><span class="o">.</span><span class="n">remove_whitespace</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    Today beautiful day
+1     There 3 ducks pond
+2              This cool
+3                       
+Name: text, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
 <p>Texthero also provides other useful methods to process and visualize text.</p>
 <p><a class="reference external" href="https://github.com/jbesomi/texthero">Link to texthero</a>.</p>
 </section>
@@ -1433,23 +1437,13 @@ Name: text, dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 2;
-                var nbb_unformatted_code = "import pandas as pd \nimport texthero as hero ";
-                var nbb_formatted_code = "import pandas as pd\nimport texthero as hero";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>gdown<span class="w"> </span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1466,23 +1460,6 @@ Name: text, dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 24;
-                var nbb_unformatted_code = "df = pd.read_csv('small_CNN.csv')";
-                var nbb_formatted_code = "df = pd.read_csv(\"small_CNN.csv\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1490,27 +1467,18 @@ Name: text, dtype: object
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 25;
-                var nbb_unformatted_code = "df[\"pca\"] = df[\"Description\"].pipe(hero.clean).pipe(hero.tfidf).pipe(hero.pca)";
-                var nbb_formatted_code = "df[\"pca\"] = df[\"Description\"].pipe(hero.clean).pipe(hero.tfidf).pipe(hero.pca)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hero</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;pca&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CNN News&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> 
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">hero</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">&quot;pca&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CNN News&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x300 with 0 Axes&gt;
 </pre></div>
 </div>
 </div>
@@ -1573,7 +1541,7 @@ Name: text, dtype: object
   warnings.warn(
 </pre></div>
 </div>
-<img alt="../_images/natural_language_processing_72_1.png" src="../_images/natural_language_processing_72_1.png" />
+<img alt="../_images/natural_language_processing_75_1.png" src="../_images/natural_language_processing_75_1.png" />
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/khuyentran1401/Python-data-science-code-snippet/blob/master/code_snippets/data_science_tools/wordfreq_example.py">Link to wordfreq</a>.</p>
@@ -2409,9 +2377,9 @@ Name: text, dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/natural_language_processing_141_0.png" src="../_images/natural_language_processing_141_0.png" />
-<img alt="../_images/natural_language_processing_141_1.png" src="../_images/natural_language_processing_141_1.png" />
-<img alt="../_images/natural_language_processing_141_2.png" src="../_images/natural_language_processing_141_2.png" />
+<img alt="../_images/natural_language_processing_144_0.png" src="../_images/natural_language_processing_144_0.png" />
+<img alt="../_images/natural_language_processing_144_1.png" src="../_images/natural_language_processing_144_1.png" />
+<img alt="../_images/natural_language_processing_144_2.png" src="../_images/natural_language_processing_144_2.png" />
 <script type="application/javascript">
             setTimeout(function() {
                 var nbb_cell_id = 21;
