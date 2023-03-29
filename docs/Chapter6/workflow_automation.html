@@ -795,23 +795,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types">
+   7.2.9. MonkeyType: Automatically Generate Static Type Annotations Based on Runtime Types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">
-   7.2.9. whereami: Use Machine Learning to Predict Where You Are
+   7.2.10. whereami: Use Machine Learning to Predict Where You Are
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">
-   7.2.10. watchfiles: Rerun Code When a File Changes
+   7.2.11. watchfiles: Rerun Code When a File Changes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
-   7.2.11. Limit the Execution Time of a Function Call with Prefect
+   7.2.12. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#retry-on-failure-with-prefect">
-   7.2.12. Retry on Failure with Prefect
+   7.2.13. Retry on Failure with Prefect
   </a>
  </li>
 </ul>
@@ -874,23 +879,28 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types">
+   7.2.9. MonkeyType: Automatically Generate Static Type Annotations Based on Runtime Types
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">
-   7.2.9. whereami: Use Machine Learning to Predict Where You Are
+   7.2.10. whereami: Use Machine Learning to Predict Where You Are
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">
-   7.2.10. watchfiles: Rerun Code When a File Changes
+   7.2.11. watchfiles: Rerun Code When a File Changes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">
-   7.2.11. Limit the Execution Time of a Function Call with Prefect
+   7.2.12. Limit the Execution Time of a Function Call with Prefect
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#retry-on-failure-with-prefect">
-   7.2.12. Retry on Failure with Prefect
+   7.2.13. Retry on Failure with Prefect
   </a>
  </li>
 </ul>
@@ -1188,8 +1198,72 @@ $<span class="w"> </span>removestar<span class="w"> </span>star_script.py<span c
 </div>
 <p><a class="reference external" href="https://github.com/asmeurer/removestar">Link to removestar</a>.</p>
 </section>
+<section id="monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types">
+<h2><span class="section-number">7.2.9. </span>MonkeyType: Automatically Generate Static Type Annotations Based on Runtime Types<a class="headerlink" href="#monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types" title="Permalink to this headline">#</a></h2>
+<p>Type annotations can improve code readability and catch type-related errors early in development.</p>
+<p>MonkeyType simplifies adding type annotations by automatically generating draft annotations based on the types collected at runtime, saving time and effort compared to manual annotation.</p>
+<p>Let’s say we have two files inside the folder monkey_example. The <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> file contains the <code class="docutils literal notranslate"><span class="pre">get_mean</span></code> function and the <code class="docutils literal notranslate"><span class="pre">main.py</span></code> file calls the <code class="docutils literal notranslate"><span class="pre">get_mean</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">mkdir</span> monkey_example
+<span class="o">%</span><span class="k">cd</span> monkey_example
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> utils.py 
+<span class="k">def</span> <span class="nf">get_mean</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">num1</span><span class="o">+</span><span class="n">num2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py 
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">get_mean</span>  
+
+<span class="n">get_mean</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can infer the type annotation of <code class="docutils literal notranslate"><span class="pre">get_mean</span></code> in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code> by running <code class="docutils literal notranslate"><span class="pre">main.py</span></code> with MonkeyType.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>monkeytype<span class="w"> </span>run<span class="w"> </span>main.py<span class="w"> </span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>Then generate a stub file for a module:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>monkeytype<span class="w"> </span>stub<span class="w"> </span>utils
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>def get_mean(num1: int, num2: int) -&gt; float: ...
+</pre></div>
+</div>
+</div>
+</div>
+<p>or apply the type annotations directly to the code.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>monkeytype<span class="w"> </span>apply<span class="w"> </span>utils<span class="w"> </span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>def get_mean(num1: int, num2: int) -&gt; float:
+    return (num1+num2)/2  
+</pre></div>
+</div>
+</div>
+</div>
+<p>While MonkeyType makes it very easy to add annotations, those annotations may not always match the full intended capability of the functions. For example, <code class="docutils literal notranslate"><span class="pre">get_mean</span></code> is capable of handling many more types than just integers. MonkeyType’s annotations are an informative first draft that are meant to be checked and corrected by a developer.</p>
+<p><a class="reference external" href="https://github.com/Instagram/MonkeyType">Link to MonkeyType</a>.</p>
+</section>
 <section id="whereami-use-machine-learning-to-predict-where-you-are">
-<h2><span class="section-number">7.2.9. </span>whereami: Use Machine Learning to Predict Where You Are<a class="headerlink" href="#whereami-use-machine-learning-to-predict-where-you-are" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.10. </span>whereami: Use Machine Learning to Predict Where You Are<a class="headerlink" href="#whereami-use-machine-learning-to-predict-where-you-are" title="Permalink to this headline">#</a></h2>
 <p>If you want to predict where you are with machine learning and WiFi signals, use whereami. One application of whereami is to turn on Hue light bulbs in specific locations through your laptop.</p>
 <p>To predict your current location, start by collecting some samples by running <code class="docutils literal notranslate"><span class="pre">whereami</span> <span class="pre">learn</span> <span class="pre">-l</span> <span class="pre">location</span></code> in different locations. Once collecting at least 10 data points, run <code class="docutils literal notranslate"><span class="pre">whereami</span> <span class="pre">predict</span></code> to predict your current location.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Take a sample in the kitchen</span>
@@ -1214,7 +1288,7 @@ kitchen
 <p><a class="reference external" href="https://github.com/kootenpv/whereami">Link to whereami</a>.</p>
 </section>
 <section id="watchfiles-rerun-code-when-a-file-changes">
-<h2><span class="section-number">7.2.10. </span>watchfiles: Rerun Code When a File Changes<a class="headerlink" href="#watchfiles-rerun-code-when-a-file-changes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.11. </span>watchfiles: Rerun Code When a File Changes<a class="headerlink" href="#watchfiles-rerun-code-when-a-file-changes" title="Permalink to this headline">#</a></h2>
 <p>If you want to automatically rerun a process when a file changes, use watchfiles.</p>
 <p>In the code below, the function <code class="docutils literal notranslate"><span class="pre">train</span></code> will run when the file <code class="docutils literal notranslate"><span class="pre">process_data.py</span></code> changes.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">watchfiles</span> <span class="kn">import</span> <span class="n">run_process</span>
@@ -1230,7 +1304,7 @@ kitchen
 <p><a class="reference external" href="https://github.com/samuelcolvin/watchfiles">Link to watchfiles</a>.</p>
 </section>
 <section id="limit-the-execution-time-of-a-function-call-with-prefect">
-<h2><span class="section-number">7.2.11. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.12. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>prefect<span class="w"> </span>
@@ -1628,7 +1702,7 @@ TimeoutError
 </div>
 </section>
 <section id="retry-on-failure-with-prefect">
-<h2><span class="section-number">7.2.12. </span>Retry on Failure with Prefect<a class="headerlink" href="#retry-on-failure-with-prefect" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2.13. </span>Retry on Failure with Prefect<a class="headerlink" href="#retry-on-failure-with-prefect" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>prefect
