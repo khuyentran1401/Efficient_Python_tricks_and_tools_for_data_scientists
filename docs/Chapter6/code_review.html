@@ -855,12 +855,12 @@ title="Print to PDF"
                 
   <section id="code-review">
 <h1><span class="section-number">7.3. </span>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">#</a></h1>
-<p>This section covers some tools to automatically review and improve your code such as sorting imports, check for missing docstrings, etc.</p>
+<p>This section covers some tools to automatically review and improve your code such as sorting imports, checking for missing docstrings, etc.</p>
 <section id="isort-automatically-sort-your-python-imports-in-1-line-of-code">
 <h2><span class="section-number">7.3.1. </span>isort: Automatically Sort your Python Imports in 1 Line of Code<a class="headerlink" href="#isort-automatically-sort-your-python-imports-in-1-line-of-code" title="Permalink to this headline">#</a></h2>
-<p>When your code grows bigger, you might need to import a lot of libraries, and it can be confusing to look at. Instead of manually organing your imports, use isort.</p>
-<p>isort is a Python library to sort imports alphabetically and automatically separated into sections and by type. You just need to use <code class="docutils literal notranslate"><span class="pre">isort</span> <span class="pre">name_of_your_file.py</span></code> to sort your imports.</p>
-<p>Below is how the imports look like before sorting.</p>
+<p>As your codebase expands, you may find yourself importing numerous libraries, which can become overwhelming to navigate. To avoid arranging your imports manually, use isort.</p>
+<p>isort is a Python library that automatically sorts imports alphabetically, grouping them by section and type.</p>
+<p>Consider the following example where your imports are unsorted:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">fl_score</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">roc_curve</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">StratifiedKFold</span>
@@ -871,11 +871,7 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">TimeSeriesSplit</span>
 </pre></div>
 </div>
-<p>On your terminal, type:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>isort<span class="w"> </span>name_of_your_file.py
-</pre></div>
-</div>
-<p>Now the imports are much more organized!</p>
+<p>By running <code class="docutils literal notranslate"><span class="pre">isort</span> <span class="pre">name_of_your_file.py</span></code>, isort can sort your imports automatically into the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">svm</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">fl_score</span><span class="p">,</span>
                              <span class="n">roc_curve</span><span class="p">)</span>
@@ -884,6 +880,13 @@ title="Print to PDF"
 <span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span><span class="p">,</span> <span class="n">MultinomialNB</span>
 <span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+</pre></div>
+</div>
+<p>You can use isort with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/timothycrosley/isort</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.12.0</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isort</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/pycqa/isort">Link to isort</a>.</p>
@@ -897,8 +900,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>Sometimes, you might forget to write docstrings for classes and functions. Instead of manually looking at all your functions and classes for missing docstrings, use interrogate instead.</p>
-<p>In the code below, I use interrogate to check for missing docstrings in the file <code class="docutils literal notranslate"><span class="pre">interrogate_example.py</span></code>.</p>
+<p>Sometimes, you might forget to include docstrings for classes and functions. Instead of manually searching through all your functions and classes for missing docstrings, use interrogate.</p>
+<p>Consider the following example where there are missing docstrings:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># interrogate_example.py</span>
 <span class="k">class</span> <span class="nc">Math</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -912,7 +915,7 @@ title="Print to PDF"
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="mi">3</span>
 </pre></div>
 </div>
-<p>On your terminal, type:</p>
+<p>You can use interrogate to identify missing docstrings:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>interrogate<span class="w"> </span>interrogate_example.py
 </pre></div>
 </div>
@@ -930,7 +933,13 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>To automatically check for missing docstrings whenever you commit new files, add interrogate to your pre-commit hooks. <a class="reference external" href="https://towardsdatascience.com/4-pre-commit-plugins-to-automate-code-reviewing-and-formatting-in-python-c80c6d2e9f5#1bec">Here</a> is how to do that.</p>
+<p>You can use interrogate with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/mirrors-interrogate</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.4.0</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interrogate</span>
+</pre></div>
+</div>
 <p><a class="reference external" href="https://interrogate.readthedocs.io/en/latest/">Link to interrogate</a>.</p>
 </section>
 <section id="mypy-static-type-checker-for-python">
@@ -942,8 +951,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>Type hinting in Python is useful for other developers to understand which data types to insert into your function. To automatically type check your code, use mypy.</p>
-<p>To see how mypy works, start with writing a normal code that uses type hinting. We name this file <code class="docutils literal notranslate"><span class="pre">mypy_example.py</span></code></p>
+<p>Type hinting in Python is useful for other developers to understand the expected data types to be used in your functions. To automate type checking in your code, use mypy.</p>
+<p>Consider the following file that includes type hinting:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mypy_example.py</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
@@ -956,11 +965,11 @@ title="Print to PDF"
 <span class="nb">print</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>  <span class="c1"># (2, 3, 2)</span>
 </pre></div>
 </div>
-<p>On your terminal, type:</p>
+<p>When typing the following command on your terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mypy<span class="w"> </span>mypy_example.py
 </pre></div>
 </div>
-<p>And you should see something like below:</p>
+<p>you will get the output similar to this:</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mypy<span class="w"> </span>mypy_example.py
@@ -973,6 +982,14 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+</div>
+<p>You can use mypy with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">repos</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/mirrors-mypy</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.910</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypy</span>
+</pre></div>
 </div>
 <p><a class="reference external" href="https://mypy.readthedocs.io/en/latest/introduction.html">Link to mypy</a>.</p>
 </section>
@@ -1000,7 +1017,7 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </div>
 </div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>!refurb<span class="w"> </span>test_refurb.py<span class="w"> </span>--explain<span class="w"> </span>FURB109
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>refurb<span class="w"> </span>test_refurb.py<span class="w"> </span>--explain<span class="w"> </span>FURB109
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
@@ -1031,7 +1048,8 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </div>
 <p>Refurb only works with Python 3.10 and above.</p>
 <p>You can use Refurb with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/dosisod/refurb</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">repos</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/dosisod/refurb</span>
 <span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REVISION</span>
 <span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">refurb</span>
@@ -1145,7 +1163,7 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </script><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
 </div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace">
 </pre>
-</div><img alt="../_images/code_review_40_3.png" src="../_images/code_review_40_3.png" />
+</div><img alt="../_images/code_review_42_3.png" src="../_images/code_review_42_3.png" />
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/nschloe/perfplot">Link to perfplot</a>.</p>
