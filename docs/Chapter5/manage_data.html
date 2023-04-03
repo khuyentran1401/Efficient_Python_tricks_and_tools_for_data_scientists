@@ -765,8 +765,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">
+   6.4.3. whylogs: Data Logging Made Easy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">
-   6.4.3. Fluke: The Easiest Way to Move Data Around
+   6.4.4. Fluke: The Easiest Way to Move Data Around
   </a>
  </li>
 </ul>
@@ -799,8 +804,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">
+   6.4.3. whylogs: Data Logging Made Easy
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">
-   6.4.3. Fluke: The Easiest Way to Move Data Around
+   6.4.4. Fluke: The Easiest Way to Move Data Around
   </a>
  </li>
 </ul>
@@ -907,8 +917,209 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <p><img alt="image" src="../_images/sweetviz_output.png" /></p>
 <p><a class="reference external" href="https://github.com/fbdesignpro/sweetviz">Link to sweetviz</a></p>
 </section>
+<section id="whylogs-data-logging-made-easy">
+<h2><span class="section-number">6.4.3. </span>whylogs: Data Logging Made Easy<a class="headerlink" href="#whylogs-data-logging-made-easy" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>whylogs
+</pre></div>
+</div>
+</div>
+</div>
+<p>Logging the summary statistics of a dataset is valuable for monitoring data changes and ensuring data quality. With whylogs, you can easily log your data in just a few lines of code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">whylogs</span> <span class="k">as</span> <span class="nn">why</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span> <span class="s2">&quot;Banana&quot;</span><span class="p">,</span> <span class="s2">&quot;Orange&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Color&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span> <span class="s2">&quot;Yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;Orange&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Log the DataFrame using whylogs and create a profile</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">why</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">profile</span><span class="p">()</span>
+
+<span class="c1"># View the profile and convert it to a pandas DataFrame</span>
+<span class="n">prof_view</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+<span class="n">prof_df</span> <span class="o">=</span> <span class="n">prof_view</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">prof_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cardinality/est</th>
+      <th>cardinality/lower_1</th>
+      <th>cardinality/upper_1</th>
+      <th>counts/inf</th>
+      <th>counts/n</th>
+      <th>counts/nan</th>
+      <th>counts/null</th>
+      <th>distribution/max</th>
+      <th>distribution/mean</th>
+      <th>distribution/median</th>
+      <th>...</th>
+      <th>frequent_items/frequent_strings</th>
+      <th>type</th>
+      <th>types/boolean</th>
+      <th>types/fractional</th>
+      <th>types/integral</th>
+      <th>types/object</th>
+      <th>types/string</th>
+      <th>types/tensor</th>
+      <th>ints/max</th>
+      <th>ints/min</th>
+    </tr>
+    <tr>
+      <th>column</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Color</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>[FrequentItem(value='Yellow', est=1, upper=1, ...</td>
+      <td>SummaryType.COLUMN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Fruit</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>[FrequentItem(value='Orange', est=1, upper=1, ...</td>
+      <td>SummaryType.COLUMN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Quantity</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8.0</td>
+      <td>5.333333</td>
+      <td>5.0</td>
+      <td>...</td>
+      <td>[FrequentItem(value='8', est=1, upper=1, lower...</td>
+      <td>SummaryType.COLUMN</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>8.0</td>
+      <td>3.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 31 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prof_df</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;cardinality/est&#39;, &#39;cardinality/lower_1&#39;, &#39;cardinality/upper_1&#39;,
+       &#39;counts/inf&#39;, &#39;counts/n&#39;, &#39;counts/nan&#39;, &#39;counts/null&#39;,
+       &#39;distribution/max&#39;, &#39;distribution/mean&#39;, &#39;distribution/median&#39;,
+       &#39;distribution/min&#39;, &#39;distribution/n&#39;, &#39;distribution/q_01&#39;,
+       &#39;distribution/q_05&#39;, &#39;distribution/q_10&#39;, &#39;distribution/q_25&#39;,
+       &#39;distribution/q_75&#39;, &#39;distribution/q_90&#39;, &#39;distribution/q_95&#39;,
+       &#39;distribution/q_99&#39;, &#39;distribution/stddev&#39;,
+       &#39;frequent_items/frequent_strings&#39;, &#39;type&#39;, &#39;types/boolean&#39;,
+       &#39;types/fractional&#39;, &#39;types/integral&#39;, &#39;types/object&#39;, &#39;types/string&#39;,
+       &#39;types/tensor&#39;, &#39;ints/max&#39;, &#39;ints/min&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/whylabs/whylogs">Link to whylogs</a>.</p>
+</section>
 <section id="fluke-the-easiest-way-to-move-data-around">
-<h2><span class="section-number">6.4.3. </span>Fluke: The Easiest Way to Move Data Around<a class="headerlink" href="#fluke-the-easiest-way-to-move-data-around" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.4.4. </span>Fluke: The Easiest Way to Move Data Around<a class="headerlink" href="#fluke-the-easiest-way-to-move-data-around" title="Permalink to this headline">#</a></h2>
 <p>Data scientists often need to transfer data between locations, such as a remote server to cloud storage. However, many Python libraries require a lot of boilerplate code to handle HTTP/SSH connections and iterate directories.</p>
 <p>This can be cumbersome for those who want to transfer files easily. Fluke offers a simple API that allows users to interact with remote data in a few lines of code.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fluke.auth</span> <span class="kn">import</span> <span class="n">RemoteAuth</span><span class="p">,</span> <span class="n">AWSAuth</span>
@@ -952,13 +1163,13 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
             mode: "python"
         },
         kernelOptions: {
-            name: "python3810jvsc74a57bd081fd2c32c01ae2ba49907a34c36447a670709039fbd002790bd1125f246cf4a2",
+            name: "python3",
             path: "./Chapter5"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3810jvsc74a57bd081fd2c32c01ae2ba49907a34c36447a670709039fbd002790bd1125f246cf4a2'</script>
+    <script>kernelName = 'python3'</script>
 
               </div>
               
