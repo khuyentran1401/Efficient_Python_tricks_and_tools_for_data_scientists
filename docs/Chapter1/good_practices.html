@@ -87,7 +87,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3. Python Utility Libraries" href="../Chapter2/Chapter2.html" />
+    <link rel="next" title="2.10. New Features in Python" href="python_new_features.html" />
     <link rel="prev" title="2.8. Code Speed" href="code_speed.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -239,6 +239,11 @@ const thebe_selector_output = ".output, .cell_output"
    <li class="toctree-l2 current active">
     <a class="current reference internal" href="#">
      2.9. Good Python Practices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="python_new_features.html">
+     2.10. New Features in Python
     </a>
    </li>
   </ul>
@@ -860,26 +865,6 @@ title="Print to PDF"
    2.9.20. Never Catch All Exceptions
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#python-switch-statement">
-   2.9.21. Python Switch Statement
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.9.22. Structural Pattern Matching in Python 3.10
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.9.23. Write Union Types as X|Y in Python 3.10
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.9.24. Walrus Operator: Assign a Variable in an Expression
-  </a>
- </li>
 </ul>
 
     </nav>
@@ -1003,26 +988,6 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#never-catch-all-exceptions">
    2.9.20. Never Catch All Exceptions
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#python-switch-statement">
-   2.9.21. Python Switch Statement
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">
-   2.9.22. Structural Pattern Matching in Python 3.10
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">
-   2.9.23. Write Union Types as X|Y in Python 3.10
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">
-   2.9.24. Walrus Operator: Assign a Variable in an Expression
   </a>
  </li>
 </ul>
@@ -1962,180 +1927,6 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
 </div>
 </div>
 </section>
-<section id="python-switch-statement">
-<h2><span class="section-number">2.9.21. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this headline">#</a></h2>
-<p>It is common to use the if-else statements to execute multiple conditional statements.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">food</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">4</span>
-    <span class="k">elif</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">3</span>
-    <span class="k">elif</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;grape&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mi">5</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;Unknown&quot;</span>
-
-
-<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
-</pre></div>
-</div>
-</div>
-</div>
-<p>In Python 3.10 and above, you can use the switch statement to do the same thing.</p>
-<p>With the switch statement, you don’t need to repeat the same statements multiple times (<code class="docutils literal notranslate"><span class="pre">food==x</span></code>), which makes the code cleaner than using multiple if-else statements.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">food</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">match</span> <span class="n">food</span><span class="p">:</span>
-        <span class="k">case</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="c1"># if food == &quot;apple&quot;</span>
-            <span class="k">return</span> <span class="mi">4</span>
-        <span class="k">case</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">3</span>
-        <span class="k">case</span> <span class="s2">&quot;grape&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">5</span>
-        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>        <span class="c1"># else</span>
-            <span class="k">return</span> <span class="s2">&quot;Unknown&quot;</span>
-
-<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="structural-pattern-matching-in-python-3-10">
-<h2><span class="section-number">2.9.22. </span>Structural Pattern Matching in Python 3.10<a class="headerlink" href="#structural-pattern-matching-in-python-3-10" title="Permalink to this headline">#</a></h2>
-<p>Have you ever wanted to match complex data types and extract their information?</p>
-<p>Python 3.10 allows you to do exactly that with the <code class="docutils literal notranslate"><span class="pre">match</span></code> statement and the <code class="docutils literal notranslate"><span class="pre">case</span></code> statements.</p>
-<p>The code below uses structural pattern matching to extract ages from the matching data structure.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info</span><span class="p">):</span>
-    <span class="k">match</span> <span class="n">pet_info</span><span class="p">:</span>
-        <span class="k">case</span> <span class="p">[{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">age1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">age2</span><span class="p">}]:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Age is extracted from a list&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">age1</span><span class="p">,</span> <span class="n">age2</span><span class="p">)</span>
-
-        <span class="k">case</span> <span class="p">{</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">{}}:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Age is extracted from a dict&quot;</span><span class="p">)</span>
-            <span class="n">ages</span> <span class="o">=</span> <span class="n">pet_info</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">ages</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pet_info1</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bim&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;pepper&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}]</span>
-<span class="n">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Age is extracted from a list
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pet_info2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;bim&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;pepper&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">}}</span>
-<span class="n">get_youngest_pet</span><span class="p">(</span><span class="n">pet_info2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Age is extracted from a dict
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="write-union-types-as-x-y-in-python-3-10">
-<h2><span class="section-number">2.9.23. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this headline">#</a></h2>
-<p>Before Python 3.10, you need to use <code class="docutils literal notranslate"><span class="pre">typing.Union</span></code> to declare that a variable can have one of several different types.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
-
-<span class="n">num</span> <span class="o">=</span> <span class="mf">2.3</span>
-<span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
-<p>In Python 3.10, you can replace <code class="docutils literal notranslate"><span class="pre">Union[X,</span> <span class="pre">Y]</span></code> with <code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">|</span> <span class="pre">Y</span></code> to simplify the expression.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="walrus-operator-assign-a-variable-in-an-expression">
-<h2><span class="section-number">2.9.24. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
-<p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
-<ul class="simple">
-<li><p>debug the components in an expression</p></li>
-<li><p>avoid repeated computations</p></li>
-</ul>
-<p>In the code below, I use the walrus operator to assign a value to <code class="docutils literal notranslate"><span class="pre">r</span></code> when getting the circumference of a circle, which is then used to find the area of the circle.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
-
-<span class="n">d</span> <span class="o">=</span> <span class="mi">4</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># without Walrus operator</span>
-<span class="n">circumference</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
-<span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># d/2 is computed twice</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with Walrus operator</span>
-<span class="n">circumference</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">:=</span> <span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
-<span class="n">area</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># d/2 is computed twice</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2172,10 +1963,10 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
             <p class="prev-next-title"><span class="section-number">2.8. </span>Code Speed</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../Chapter2/Chapter2.html" title="next page">
+    <a class='right-next' id="next-link" href="python_new_features.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3. </span>Python Utility Libraries</p>
+        <p class="prev-next-title"><span class="section-number">2.10. </span>New Features in Python</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
