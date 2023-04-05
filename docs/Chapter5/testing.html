@@ -864,6 +864,11 @@ title="Print to PDF"
    6.13.21. Check Conflicting Labels with Deepchecks
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">
+   6.13.22. Evaluate Your ML Model Performance with Simple Model Comparison
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -986,6 +991,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">
    6.13.21. Check Conflicting Labels with Deepchecks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">
+   6.13.22. Evaluate Your ML Model Performance with Simple Model Comparison
   </a>
  </li>
 </ul>
@@ -2451,6 +2461,72 @@ Results (0.38s):
 {"model_id": "00283018bced42abab72ff96033fcac1", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
+</section>
+<section id="evaluate-your-ml-model-performance-with-simple-model-comparison">
+<h2><span class="section-number">6.13.22. </span>Evaluate Your ML Model Performance with Simple Model Comparison<a class="headerlink" href="#evaluate-your-ml-model-performance-with-simple-model-comparison" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deepchecks
+</pre></div>
+</div>
+</div>
+</div>
+<p>How do you check if your ML model is trained properly? One approach is to use a simple model for comparison.</p>
+<p>A simple model establishes a minimum performance benchmark for the given task. A model achieving less or a similar score to the simple model indicates a possible problem with the model.</p>
+<p>The following code shows how to evaluate a model’s performance using Deepchecks’ simple model comparison.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.tabular.datasets.classification.phishing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">load_data</span><span class="p">,</span> <span class="n">load_fitted_model</span><span class="p">)</span>
+
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">load_fitted_model</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">steps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;preprocessing&#39;,
+  ColumnTransformer(transformers=[(&#39;num&#39;, SimpleImputer(),
+                                   [&#39;urlLength&#39;, &#39;numDigits&#39;, &#39;numParams&#39;,
+                                    &#39;num_%20&#39;, &#39;num_@&#39;, &#39;entropy&#39;, &#39;hasHttp&#39;,
+                                    &#39;hasHttps&#39;, &#39;dsr&#39;, &#39;dse&#39;, &#39;bodyLength&#39;,
+                                    &#39;numTitles&#39;, &#39;numImages&#39;, &#39;numLinks&#39;,
+                                    &#39;specialChars&#39;, &#39;scriptLength&#39;, &#39;sbr&#39;, &#39;bscr&#39;,
+                                    &#39;sscr&#39;]),
+                                  (&#39;cat&#39;,
+                                   Pipeline(steps=[(&#39;imputer&#39;,
+                                                    SimpleImputer(strategy=&#39;most_frequent&#39;)),
+                                                   (&#39;encoder&#39;, OneHotEncoder())]),
+                                   [&#39;ext&#39;])])),
+ (&#39;model&#39;,
+  RandomForestClassifier(criterion=&#39;entropy&#39;, n_estimators=40, random_state=0))]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.tabular.checks</span> <span class="kn">import</span> <span class="n">SimpleModelComparison</span>
+
+<span class="c1"># Using tree model as a simple model</span>
+<span class="n">check</span> <span class="o">=</span> <span class="n">SimpleModelComparison</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;tree&#39;</span><span class="p">)</span>
+<span class="n">check</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "18c5dbd0a25d4e25a03f577c98ee641a", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
+<p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
 </section>
 
