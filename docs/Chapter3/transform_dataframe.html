@@ -810,8 +810,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stack-columns-into-rows-in-pandas">
+   4.4.11. Stack Columns into Rows in Pandas
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#turn-a-pandas-series-into-a-pandas-dataframe">
-   4.4.11. Turn a pandas Series into a pandas DataFrame
+   4.4.12. Turn a pandas Series into a pandas DataFrame
   </a>
  </li>
 </ul>
@@ -884,8 +889,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stack-columns-into-rows-in-pandas">
+   4.4.11. Stack Columns into Rows in Pandas
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#turn-a-pandas-series-into-a-pandas-dataframe">
-   4.4.11. Turn a pandas Series into a pandas DataFrame
+   4.4.12. Turn a pandas Series into a pandas DataFrame
   </a>
  </li>
 </ul>
@@ -1897,8 +1907,60 @@ dtype: int64
 </div></div></div>
 </div>
 </section>
+<section id="stack-columns-into-rows-in-pandas">
+<h2><span class="section-number">4.4.11. </span>Stack Columns into Rows in Pandas<a class="headerlink" href="#stack-columns-into-rows-in-pandas" title="Permalink to this headline">#</a></h2>
+<p>If you want to stack the columns into rows, use <code class="docutils literal notranslate"><span class="pre">DataFrame.stack()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a DataFrame with two columns and a MultiIndex</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Original DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original DataFrame:
+   A  B
+x  1  4
+y  2  5
+z  3  6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stacked DataFrame</span>
+<span class="n">stacked_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Stacked DataFrame:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stacked_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Stacked DataFrame:
+x  A    1
+   B    4
+y  A    2
+   B    5
+z  A    3
+   B    6
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="turn-a-pandas-series-into-a-pandas-dataframe">
-<h2><span class="section-number">4.4.11. </span>Turn a pandas Series into a pandas DataFrame<a class="headerlink" href="#turn-a-pandas-series-into-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.4.12. </span>Turn a pandas Series into a pandas DataFrame<a class="headerlink" href="#turn-a-pandas-series-into-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
 <p>If you want to turn a pandas Series into a pandas DataFrame, use <code class="docutils literal notranslate"><span class="pre">str.get_dummies()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
