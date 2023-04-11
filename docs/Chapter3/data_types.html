@@ -774,6 +774,11 @@ title="Print to PDF"
    4.8.3. pandas.Categorical: Turn a List of Strings into a Categorical Variable
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">
+   4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -806,6 +811,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable">
    4.8.3. pandas.Categorical: Turn a List of Strings into a Categorical Variable
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">
+   4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects
   </a>
  </li>
 </ul>
@@ -1039,6 +1049,57 @@ Categories (3, object): [&#39;S&#39; &lt; &#39;M&#39; &lt; &#39;L&#39;]
   </tbody>
 </table>
 </div></div></div>
+</div>
+</section>
+<section id="optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">
+<h2><span class="section-number">4.8.4. </span>Optimizing Memory Usage in a pandas DataFrame with infer_objects<a class="headerlink" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects" title="Permalink to this headline">#</a></h2>
+<p>pandas DataFrames that contain columns of mixed data types are stored in a more general format (such as “object”), resulting in inefficient memory usage and slower computation times.</p>
+<p><code class="docutils literal notranslate"><span class="pre">df.infer_objects()</span></code> can infer the true data types of columns in a DataFrame, which can help optimize memory usage in your code.</p>
+<p>In the following code, the column “col1” still has an “object” data type even though it contains integer values after removing the first row.</p>
+<p>By using the <code class="docutils literal notranslate"><span class="pre">df.infer_objects()</span></code> method, “col1” is converted to an “int64” data type which saves approximately 27 MB of memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span> 
+
+<span class="n">random_numbers</span> <span class="o">=</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">random_numbers</span><span class="p">]})</span>
+
+<span class="c1"># Remove the first row</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>col1    object
+dtype: object
+Index         132
+col1     35960884
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">inferred_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">infer_objects</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inferred_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inferred_df</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>col1    int64
+dtype: object
+Index        132
+col1     8000000
+dtype: int64
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
