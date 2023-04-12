@@ -25,7 +25,7 @@ This book expects you to have some basic knowledge of Python and data science.
 You should also expect bite-size code snippets for each section. This will allow you to obtain multiple pieces of knowledge in fewer than one minute. I included the link to the resources for every tools introduced in case you want to explore them further. 
 
 ## About This Book
-This book includes more than 300 tips and tools I have shared daily on my website, [Data Science Simplified](https://mathdatasimplified.com/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
+This book includes more than 700 tips and tools I have shared daily on my website, [Data Science Simplified](https://mathdatasimplified.com/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
 
 ## About The Author
 
