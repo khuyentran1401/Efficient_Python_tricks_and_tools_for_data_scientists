@@ -1,8 +1,10 @@
+<div align="center">
+<h1 align="center">
+Efficient Python Tricks and Tools for Data Scientists  
+</h3>
+
 [![View on GitHub](https://img.shields.io/badge/GitHub-View_on_GitHub-blue?logo=GitHub)](https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists) [![View Book](https://img.shields.io/badge/Book-View%20Book-red?style=plastic&logo=book)](https://khuyentran1401.github.io/Efficient_Python_tricks_and_tools_for_data_scientists)
-
-![](img/arrow.png)
-
-# Efficient Python Tricks and Tools for Data Scientists  
+</div>
 
 Why efficient Python? Because using Python more efficiently will make your code more readable and run more efficiently.
 
@@ -23,7 +25,7 @@ This book expects you to have some basic knowledge of Python and data science.
 You should also expect bite-size code snippets for each section. This will allow you to obtain multiple pieces of knowledge in fewer than one minute. I included the link to the resources for every tools introduced in case you want to explore them further. 
 
 ## About This Book
-This book includes more than 300 tips and tools I have shared daily on my website, [Data Science Simplified](https://mathdatasimplified.com/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
+This book includes more than 700 tips and tools I have shared daily on my website, [Data Science Simplified](https://mathdatasimplified.com/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
 
 ## About The Author
 
