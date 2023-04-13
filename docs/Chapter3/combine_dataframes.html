@@ -775,8 +775,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#include-all-rows-when-merging-two-dataframes">
+   4.6.4. Include All Rows When Merging Two DataFrames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location">
-   4.6.4. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location
+   4.6.5. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location
   </a>
  </li>
 </ul>
@@ -814,8 +819,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#include-all-rows-when-merging-two-dataframes">
+   4.6.4. Include All Rows When Merging Two DataFrames
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location">
-   4.6.4. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location
+   4.6.5. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location
   </a>
  </li>
 </ul>
@@ -1278,8 +1288,113 @@ title="Print to PDF"
 </div>
 <p>Try it if you want the names of your columns to be less confusing.</p>
 </section>
+<section id="include-all-rows-when-merging-two-dataframes">
+<h2><span class="section-number">4.6.4. </span>Include All Rows When Merging Two DataFrames<a class="headerlink" href="#include-all-rows-when-merging-two-dataframes" title="Permalink to this headline">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">df.merge</span></code> only includes rows with matching values in both DataFrames. If you want to include all rows from both DataFrames, use <code class="docutils literal notranslate"><span class="pre">how='outer'</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+
+<span class="c1"># Keep only rows with matching keys</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key</th>
+      <th>v1</th>
+      <th>v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>B</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep all rows</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>key</th>
+      <th>v1</th>
+      <th>v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>A</td>
+      <td>1.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>B</td>
+      <td>2.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>C</td>
+      <td>NaN</td>
+      <td>4.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location">
-<h2><span class="section-number">4.6.4. </span>DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location<a class="headerlink" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.6.5. </span>DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location<a class="headerlink" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location" title="Permalink to this headline">#</a></h2>
 <p>If you want to insert a column into a DataFrame at a specified location, use <code class="docutils literal notranslate"><span class="pre">df.insert</span></code>. In the code below, I insert column c at location 0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
