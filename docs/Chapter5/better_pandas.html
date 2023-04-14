@@ -144,7 +144,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Efficient Python Tricks and Tools for Data Scientists
+                    What Should You Expect From This Book?
                 </a>
             </li>
         </ul>
@@ -784,6 +784,11 @@ title="Print to PDF"
    6.12.5. Version Your Pandas DataFrame with Delta Lake
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">
+   6.12.6. Polars: Blazing Fast DataFrame Library
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -826,6 +831,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">
    6.12.5. Version Your Pandas DataFrame with Delta Lake
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">
+   6.12.6. Polars: Blazing Fast DataFrame Library
   </a>
  </li>
 </ul>
@@ -1334,6 +1344,74 @@ Total count: 2
 </div></div></div>
 </div>
 <p><a class="reference external" href="https://delta.io/">Link to Delta Lake</a>.</p>
+</section>
+<section id="polars-blazing-fast-dataframe-library">
+<h2><span class="section-number">6.12.6. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want data manipulation library that’s both fast and memory-efficient, try Polars. Polars provides a high-level API similar to Pandas but with better performance for large datasets.</p>
+<p>The code below compares the performance of Polars and pandas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Create two Pandas DataFrames with 1 million rows each</span>
+<span class="n">pandas_df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
+    <span class="s1">&#39;value1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">pandas_df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
+    <span class="s1">&#39;value2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="c1"># Create two Polars DataFrames from the Pandas DataFrames</span>
+<span class="n">polars_df1</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pandas_df1</span><span class="p">)</span>
+<span class="n">polars_df2</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pandas_df2</span><span class="p">)</span>
+
+<span class="c1"># Merge the two DataFrames on the &#39;key&#39; column</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">pandas_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pandas_df1</span><span class="p">,</span> <span class="n">pandas_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="n">pandas_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">polars_merged</span> <span class="o">=</span> <span class="n">polars_df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">polars_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="n">polars_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pandas time: </span><span class="si">{</span><span class="n">pandas_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polars time: </span><span class="si">{</span><span class="n">polars_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pandas time: 127.604390 seconds
+Polars time: 41.079080 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Polars is </span><span class="si">{</span><span class="n">pandas_time</span><span class="o">/</span><span class="n">polars_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> times faster than Pandas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Polars is 3.11 times faster than Pandas
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 </section>
 
