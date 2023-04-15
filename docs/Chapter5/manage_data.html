@@ -144,7 +144,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Efficient Python Tricks and Tools for Data Scientists
+                    What Should You Expect From This Book?
                 </a>
             </li>
         </ul>
@@ -840,9 +840,8 @@ title="Print to PDF"
 </div>
 </div>
 </div>
-<p>Git is a powerful tool to go back and forth different versions of your code. Is there a way that you can also control different versions of your data?</p>
-<p>That is when DVC comes in handy. With DVC, you can keep the information about different versions of your data in Git while storing your original data somewhere else.</p>
-<p>It is essentially like Git but is used for data. The code below shows how to use DVC.</p>
+<p>Git is great for managing code versions, but what about data? DVC solves this problem by allowing you to track data versions in Git while storing the actual data separately. Think of it as Git for data.</p>
+<p>Here’s some example code for using DVC.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize</span>
 $<span class="w"> </span>dvc<span class="w"> </span>init
 
@@ -877,7 +876,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 </div>
 </div>
 </div>
-<p>Sometimes it is important to compare the similar features between 2 different datasets side by side such as comparing train and test sets. If you want to quickly compare 2 datasets through graphs, check out sweetviz.</p>
+<p>Comparing similar characteristics of two datasets, such as the training and testing sets, can be useful. sweetviz provides an easy way to compare 2 datasets through graphs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
@@ -892,33 +891,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "8373d1bacc894532a51f7ca635d47127", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Report SWEETVIZ_REPORT.html was generated! NOTEBOOK/COLAB USERS: the web browser MAY not pop up, regardless, the report IS saved in your notebook/colab files.
-</pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 17;
-                var nbb_unformatted_code = "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\nimport sweetviz as sv \n\nX, y = load_iris(return_X_y=True, as_frame=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\nreport = sv.compare([X_train, 'train data'], [X_test, 'test data'])\nreport.show_html()";
-                var nbb_formatted_code = "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\nimport sweetviz as sv\n\nX, y = load_iris(return_X_y=True, as_frame=True)\nX_train, X_test, y_train, y_test = train_test_split(X, y)\n\nreport = sv.compare([X_train, \"train data\"], [X_test, \"test data\"])\nreport.show_html()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Opening in existing browser session.
-</pre></div>
-</div>
-</div>
-</div>
-<p>Run the code above and you will generate a report similar to this:</p>
 <p><img alt="image" src="../_images/sweetviz_output.png" /></p>
 <p><a class="reference external" href="https://github.com/fbdesignpro/sweetviz">Link to sweetviz</a></p>
 </section>
@@ -1097,6 +1070,75 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
   </tbody>
 </table>
 <p>3 rows × 31 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prof_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cardinality/est</th>
+      <th>cardinality/lower_1</th>
+      <th>cardinality/upper_1</th>
+      <th>counts/inf</th>
+      <th>counts/n</th>
+    </tr>
+    <tr>
+      <th>column</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Color</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Fruit</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Quantity</th>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>3.00015</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
 </div></div></div>
 </div>
 <div class="cell docutils container">
