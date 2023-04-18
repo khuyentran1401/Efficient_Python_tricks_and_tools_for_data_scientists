@@ -144,7 +144,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Efficient Python Tricks and Tools for Data Scientists
+                    What Should You Expect From This Book?
                 </a>
             </li>
         </ul>
@@ -779,6 +779,11 @@ title="Print to PDF"
    4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#say-goodbye-to-data-type-conversion-in-pandas-2-0">
+   4.8.5. Say Goodbye to Data Type Conversion in pandas 2.0
+  </a>
+ </li>
 </ul>
 
     </nav>
@@ -816,6 +821,11 @@ title="Print to PDF"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">
    4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#say-goodbye-to-data-type-conversion-in-pandas-2-0">
+   4.8.5. Say Goodbye to Data Type Conversion in pandas 2.0
   </a>
  </li>
 </ul>
@@ -1097,6 +1107,54 @@ dtype: object
 Index        132
 col1     8000000
 dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="say-goodbye-to-data-type-conversion-in-pandas-2-0">
+<h2><span class="section-number">4.8.5. </span>Say Goodbye to Data Type Conversion in pandas 2.0<a class="headerlink" href="#say-goodbye-to-data-type-conversion-in-pandas-2-0" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pandas</span><span class="o">==</span><span class="m">2</span>.0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Previously in pandas, if a Series had missing values, its data type would be converted to float, resulting in a potential loss of precision for the original data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type without None: </span><span class="si">{</span><span class="n">s1</span><span class="o">.</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">s1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type with None: </span><span class="si">{</span><span class="n">s1</span><span class="o">.</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data type without None: int64
+Data type with None: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>With the integration of Apache Arrow in pandas 2.0, this issue is solved.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int64[pyarrow]&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type without None: </span><span class="si">{</span><span class="n">s2</span><span class="o">.</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">s2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type with None: </span><span class="si">{</span><span class="n">s2</span><span class="o">.</span><span class="n">dtypes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data type without None: int64[pyarrow]
+Data type with None: int64[pyarrow]
 </pre></div>
 </div>
 </div>
