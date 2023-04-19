@@ -144,7 +144,7 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../README.html">
-                    Efficient Python Tricks and Tools for Data Scientists
+                    What Should You Expect From This Book?
                 </a>
             </li>
         </ul>
@@ -790,8 +790,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">
+   7.1.7. unyt: Manipulate and Convert Units in NumPy Arrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">
-   7.1.7. Map a Function Asynchronously with Prefect
+   7.1.8. Map a Function Asynchronously with Prefect
   </a>
  </li>
 </ul>
@@ -844,8 +849,13 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">
+   7.1.7. unyt: Manipulate and Convert Units in NumPy Arrays
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">
-   7.1.7. Map a Function Asynchronously with Prefect
+   7.1.8. Map a Function Asynchronously with Prefect
   </a>
  </li>
 </ul>
@@ -1352,8 +1362,71 @@ title="Print to PDF"
 </div>
 <p><a class="reference external" href="https://github.com/inveniosoftware/dictdiffer">Link to Dictdiffer</a>.</p>
 </section>
+<section id="unyt-manipulate-and-convert-units-in-numpy-arrays">
+<h2><span class="section-number">7.1.7. </span>unyt: Manipulate and Convert Units in NumPy Arrays<a class="headerlink" href="#unyt-manipulate-and-convert-units-in-numpy-arrays" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>unyt<span class="w"> </span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Working with NumPy arrays that have units can be difficult, as it is not immediately clear what the units are, which can lead to errors.</p>
+<p>The unyt package solves this by providing a subclass of NumPy’s ndarray class that knows units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+
+<span class="n">temps_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">temps</span> <span class="o">*</span> <span class="mi">9</span><span class="o">/</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">32</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temps_f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 77.  86.  95. 104.]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unyt</span> <span class="kn">import</span> <span class="n">degC</span><span class="p">,</span> <span class="n">degF</span>
+
+<span class="c1"># Create an array of temperatures in Celsius</span>
+<span class="n">temps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span> <span class="o">*</span> <span class="n">degC</span>
+
+<span class="c1"># Convert the temperatures to Fahrenheit</span>
+<span class="n">temps_f</span> <span class="o">=</span> <span class="n">temps</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">degF</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temps_f</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[ 77.  86.  95. 104.] °F
+</pre></div>
+</div>
+</div>
+</div>
+<p>unyt arrays support standard NumPy array operations and functions while also preserving the units associated with the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temps_f</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unyt_array([[ 77., 572.],
+            [ 95., 104.]], &#39;degF&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/yt-project/unyt">Link to unyt</a>.</p>
+</section>
 <section id="map-a-function-asynchronously-with-prefect">
-<h2><span class="section-number">7.1.7. </span>Map a Function Asynchronously with Prefect<a class="headerlink" href="#map-a-function-asynchronously-with-prefect" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.1.8. </span>Map a Function Asynchronously with Prefect<a class="headerlink" href="#map-a-function-asynchronously-with-prefect" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>prefect<span class="w"> </span>
