@@ -507,6 +507,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">4.1.8. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-the-missing-values-with-the-most-frequent-categories-in-a-column">4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">4.1.10. Encode Categorical Values in a Pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.11. Raise an Exception for a Chained Assignment in pandas</a></li>
 </ul>
             </nav>
         </div>
@@ -1423,6 +1424,131 @@ dtype: object
 </div>
 </div>
 </section>
+<section id="raise-an-exception-for-a-chained-assignment-in-pandas">
+<h2><span class="section-number">4.1.11. </span>Raise an Exception for a Chained Assignment in pandas<a class="headerlink" href="#raise-an-exception-for-a-chained-assignment-in-pandas" title="Permalink to this headline">#</a></h2>
+<p>Pandas allows chained assignments, which involve performing multiple indexing operations in a single statement, but they can lead to unexpected results or errors.</p>
+<p>The statement below fails to modify the values in <code class="docutils literal notranslate"><span class="pre">df</span></code> as intended, but it doesn’t throw an error.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+
+<span class="c1"># Create a new copy of the selected rows</span>
+<span class="c1"># Sets the value of `col2` to 1 in the new copy</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][</span><span class="s2">&quot;col2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_77093/431778579.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  df[df[&quot;col1&quot;] &gt; 0][&quot;col2&quot;] = 1
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>col1</th>
+      <th>col2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">pd.options.mode.chained_assignment</span></code> to <code class="docutils literal notranslate"><span class="pre">'raise'</span></code> will cause pandas to raise an exception if a chained assignment occurs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][</span><span class="s2">&quot;col2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">SettingWithCopyError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
+<span class="nn">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_77093/1432928481.py</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="s2">&quot;raise&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]})</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][</span><span class="s2">&quot;col2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="nn">~/book/venv/lib/python3.9/site-packages/pandas/core/frame.py</span> in <span class="ni">__setitem__</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3957</span>         <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3958</span>             <span class="c1"># set column</span>
+<span class="ne">-&gt; </span><span class="mi">3959</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_set_item</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3960</span> 
+<span class="g g-Whitespace">   </span><span class="mi">3961</span>     <span class="k">def</span> <span class="nf">_setitem_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">slice</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">~/book/venv/lib/python3.9/site-packages/pandas/core/frame.py</span> in <span class="ni">_set_item</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4163</span>                     <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">existing_piece</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+<span class="g g-Whitespace">   </span><span class="mi">4164</span> 
+<span class="ne">-&gt; </span><span class="mi">4165</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_set_item_mgr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4166</span> 
+<span class="g g-Whitespace">   </span><span class="mi">4167</span>     <span class="k">def</span> <span class="nf">_set_value</span><span class="p">(</span>
+
+<span class="nn">~/book/venv/lib/python3.9/site-packages/pandas/core/frame.py</span> in <span class="ni">_set_item_mgr</span><span class="nt">(self, key, value)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4128</span>         <span class="c1"># value exception to occur first</span>
+<span class="g g-Whitespace">   </span><span class="mi">4129</span>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">4130</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_check_setitem_copy</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">4131</span> 
+<span class="g g-Whitespace">   </span><span class="mi">4132</span>     <span class="k">def</span> <span class="nf">_iset_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">~/book/venv/lib/python3.9/site-packages/pandas/core/generic.py</span> in <span class="ni">_check_setitem_copy</span><span class="nt">(self, t, force)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4245</span> 
+<span class="g g-Whitespace">   </span><span class="mi">4246</span>         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">4247</span>             <span class="k">raise</span> <span class="n">SettingWithCopyError</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4248</span>         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;warn&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">4249</span>             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">SettingWithCopyWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="n">find_stack_level</span><span class="p">())</span>
+
+<span class="ne">SettingWithCopyError</span>: 
+<span class="n">A</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">trying</span> <span class="n">to</span> <span class="n">be</span> <span class="nb">set</span> <span class="n">on</span> <span class="n">a</span> <span class="n">copy</span> <span class="n">of</span> <span class="n">a</span> <span class="nb">slice</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">DataFrame</span><span class="o">.</span>
+<span class="n">Try</span> <span class="n">using</span> <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">row_indexer</span><span class="p">,</span><span class="n">col_indexer</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="n">instead</span>
+
+<span class="n">See</span> <span class="n">the</span> <span class="n">caveats</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">documentation</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pandas</span><span class="o">.</span><span class="n">pydata</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">pandas</span><span class="o">-</span><span class="n">docs</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_guide</span><span class="o">/</span><span class="n">indexing</span><span class="o">.</span><span class="n">html</span><span class="c1">#returning-a-view-versus-a-copy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SettingWithCopyError:<span class="w"> </span>
+A<span class="w"> </span>value<span class="w"> </span>is<span class="w"> </span>trying<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span><span class="nb">set</span><span class="w"> </span>on<span class="w"> </span>a<span class="w"> </span>copy<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>slice<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>DataFrame.
+Try<span class="w"> </span>using<span class="w"> </span>.loc<span class="o">[</span>row_indexer,col_indexer<span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>value<span class="w"> </span>instead
+
+See<span class="w"> </span>the<span class="w"> </span>caveats<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>documentation:<span class="w"> </span>https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+</pre></div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1502,6 +1628,7 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">4.1.8. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-the-missing-values-with-the-most-frequent-categories-in-a-column">4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">4.1.10. Encode Categorical Values in a Pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.11. Raise an Exception for a Chained Assignment in pandas</a></li>
 </ul>
   </nav></div>
 
