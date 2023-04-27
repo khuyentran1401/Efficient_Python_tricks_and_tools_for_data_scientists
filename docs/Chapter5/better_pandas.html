@@ -1069,9 +1069,18 @@ Total count: 2
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;tmp/records&quot;</span> 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
 <span class="p">)</span>
 <span class="n">write_deltalake</span><span class="p">(</span>
     <span class="n">table_path</span><span class="p">,</span>
@@ -1124,23 +1133,28 @@ Total count: 2
   <tbody>
     <tr>
       <th>0</th>
-      <td>1</td>
-      <td>04-21</td>
+      <td>2</td>
+      <td>04-22</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>2</td>
+      <td>3</td>
       <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>04-21</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>Next, create another DataFrame with three other records on 04-22. Overwrite the 04-22 partition with the new DataFrame and leave other partitions untouched.</p>
+<p>Next, create another DataFrame with two other records on 04-22. Overwrite the 04-22 partition with the new DataFrame and leave other partitions untouched.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
 <span class="p">)</span>
 <span class="n">write_deltalake</span><span class="p">(</span>
     <span class="n">table_path</span><span class="p">,</span>
@@ -1159,18 +1173,47 @@ Total count: 2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+-----+--------+
-|    |   a | date   |
-+====+=====+========+
-|  0 |   1 | 04-21  |
-+----+-----+--------+
-|  1 |   3 | 04-22  |
-+----+-----+--------+
-|  2 |   4 | 04-22  |
-+----+-----+--------+
-</pre></div>
-</div>
-</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>04-21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>8</td>
+      <td>04-22</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <p>Here is the updated contents of the Delta table:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>└──<span class="w">  </span>_delta_log/<span class="w"> </span>
@@ -1216,13 +1259,18 @@ Total count: 2
   <tbody>
     <tr>
       <th>0</th>
-      <td>1</td>
-      <td>04-21</td>
+      <td>2</td>
+      <td>04-22</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>2</td>
+      <td>3</td>
       <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>04-21</td>
     </tr>
   </tbody>
 </table>
