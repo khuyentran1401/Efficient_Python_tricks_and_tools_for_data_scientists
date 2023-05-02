@@ -508,6 +508,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-strings">2.1.9. Multiline Strings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difflib-sequencematcher-detect-the-almost-similar-articles">2.1.10. difflib.SequenceMatcher: Detect The “Almost Similar” Articles</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difflib-get-close-matches-get-a-list-of-the-best-matches-for-a-certain-word">2.1.11. difflib.get_close_matches:  Get a List of the Best Matches for a Certain Word</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">2.1.12. Create Dynamic SQL Statements with Python string Template</a></li>
 </ul>
             </nav>
         </div>
@@ -896,6 +897,59 @@ i=3, j=2
 </div>
 </div>
 </section>
+<section id="create-dynamic-sql-statements-with-python-string-template">
+<h2><span class="section-number">2.1.12. </span>Create Dynamic SQL Statements with Python string Template<a class="headerlink" href="#create-dynamic-sql-statements-with-python-string-template" title="Permalink to this headline">#</a></h2>
+<p>If you want to create dynamic SQL statements with Python variables, use Python string Template.</p>
+<p>string Template supports $-based substitutions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%writefile query.sql
+SELECT
+    *
+FROM
+    my_table
+LIMIT
+    $limit
+WHERE
+    start_date &gt; $start_date;
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing query.sql
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">Template</span>
+
+<span class="c1"># Read the query from the file</span>
+<span class="n">query</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;query.sql&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+
+<span class="c1"># Substitute the placeholders with the values</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">substitutions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;start_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2021-01-01&quot;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">substitute</span><span class="p">(</span><span class="n">substitutions</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
+    *
+FROM
+    my_table
+LIMIT
+    10
+WHERE
+    start_date &gt; 2021-01-01;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -976,6 +1030,7 @@ i=3, j=2
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiline-strings">2.1.9. Multiline Strings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difflib-sequencematcher-detect-the-almost-similar-articles">2.1.10. difflib.SequenceMatcher: Detect The “Almost Similar” Articles</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difflib-get-close-matches-get-a-list-of-the-best-matches-for-a-certain-word">2.1.11. difflib.get_close_matches:  Get a List of the Best Matches for a Certain Word</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">2.1.12. Create Dynamic SQL Statements with Python string Template</a></li>
 </ul>
   </nav></div>
 
