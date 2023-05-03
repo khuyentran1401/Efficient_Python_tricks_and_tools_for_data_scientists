@@ -509,7 +509,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-weights-biases-test-and-track-your-ml-model-and-data">6.5.10. Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imbalanced-learn-deal-with-an-imbalanced-dataset">6.5.11. imbalanced-learn: Deal with an Imbalanced Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-prediction-intervals-in-scikit-learn-models-with-mapie">6.5.12. Estimate Prediction Intervals in Scikit-Learn Models with MAPIE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlem-capture-your-machine-learning-model-s-metadata">6.5.13. MLEM: Capture Your Machine Learning Model’s Metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlforecast-scalable-machine-learning-for-time-series">6.5.13. mlforecast: Scalable Machine Learning for Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlem-capture-your-machine-learning-model-s-metadata">6.5.14. MLEM: Capture Your Machine Learning Model’s Metadata</a></li>
 </ul>
             </nav>
         </div>
@@ -1559,8 +1560,31 @@ and more.</p></li>
 </div>
 <p><a class="reference external" href="https://github.com/scikit-learn-contrib/MAPIE">Link to MAPIE</a>.</p>
 </section>
+<section id="mlforecast-scalable-machine-learning-for-time-series">
+<h2><span class="section-number">6.5.13. </span>mlforecast: Scalable Machine Learning for Time Series<a class="headerlink" href="#mlforecast-scalable-machine-learning-for-time-series" title="Permalink to this headline">#</a></h2>
+<p>If you want to perform time series forecasting using machine learning models and scale to massive amounts of data with distributed training, try mlforecast.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlforecast.distributed</span> <span class="kn">import</span> <span class="n">DistributedMLForecast</span>
+<span class="kn">from</span> <span class="nn">mlforecast.distributed.models.dask.lgb</span> <span class="kn">import</span> <span class="n">DaskLGBMForecast</span>
+<span class="kn">from</span> <span class="nn">mlforecast.target_transforms</span> <span class="kn">import</span> <span class="n">Differences</span>
+
+<span class="c1"># Create Dask Dataframe</span>
+<span class="n">series_ddf</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1"># Perform distributed training</span>
+<span class="n">fcst</span> <span class="o">=</span> <span class="n">DistributedMLForecast</span><span class="p">(</span>
+    <span class="n">models</span><span class="o">=</span><span class="n">DaskLGBMForecast</span><span class="p">(),</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="c1"># daily frequency</span>
+    <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> 
+    <span class="n">target_transforms</span><span class="o">=</span><span class="p">[</span><span class="n">Differences</span><span class="p">([</span><span class="mi">1</span><span class="p">])],</span>
+<span class="p">)</span>
+<span class="n">fcst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">series_ddf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://nixtla.github.io/mlforecast/docs/quick_start_distributed.html">Full code of the example above</a>.
+<a class="reference external" href="https://github.com/Nixtla/mlforecast">Link to mlforecast</a>.</p>
+</section>
 <section id="mlem-capture-your-machine-learning-model-s-metadata">
-<h2><span class="section-number">6.5.13. </span>MLEM: Capture Your Machine Learning Model’s Metadata<a class="headerlink" href="#mlem-capture-your-machine-learning-model-s-metadata" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.5.14. </span>MLEM: Capture Your Machine Learning Model’s Metadata<a class="headerlink" href="#mlem-capture-your-machine-learning-model-s-metadata" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1751,7 +1775,8 @@ and more.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-weights-biases-test-and-track-your-ml-model-and-data">6.5.10. Deepchecks + Weights &amp; Biases: Test and Track Your ML Model and Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imbalanced-learn-deal-with-an-imbalanced-dataset">6.5.11. imbalanced-learn: Deal with an Imbalanced Dataset</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-prediction-intervals-in-scikit-learn-models-with-mapie">6.5.12. Estimate Prediction Intervals in Scikit-Learn Models with MAPIE</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlem-capture-your-machine-learning-model-s-metadata">6.5.13. MLEM: Capture Your Machine Learning Model’s Metadata</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlforecast-scalable-machine-learning-for-time-series">6.5.13. mlforecast: Scalable Machine Learning for Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mlem-capture-your-machine-learning-model-s-metadata">6.5.14. MLEM: Capture Your Machine Learning Model’s Metadata</a></li>
 </ul>
   </nav></div>
 
