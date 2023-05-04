@@ -878,29 +878,26 @@ Instance is called
 </section>
 <section id="property-decorator-a-pythonic-way-to-use-getters-and-setters">
 <h2><span class="section-number">2.6.7. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
-<p>If you want users to use the right data type for a class attribute or prevent them from changing that attribute, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
-<p>In the code below, the first <code class="docutils literal notranslate"><span class="pre">color</span></code> method is used to get the attribute <code class="docutils literal notranslate"><span class="pre">color</span></code> and the second <code class="docutils literal notranslate"><span class="pre">color</span></code> method is used to set the value for the attribute <code class="docutils literal notranslate"><span class="pre">color</span></code>.</p>
+<p>To define the behaviors that are executed when a class attribute is set, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
+<p>In the code below, we use <code class="docutils literal notranslate"><span class="pre">&#64;color.setter</span></code> method to restrict the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute modification to string data types only.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The color of the fruit is:&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
 
     <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting value of color...&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;color must be of type string&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Sorry, you cannot change a fruit&#39;s color!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Fruit&#39;s color must be a string.&quot;</span><span class="p">)</span>
 
 
 <span class="n">fruit</span> <span class="o">=</span> <span class="n">Fruit</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
@@ -909,32 +906,33 @@ Instance is called
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The color of the fruit is:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting value of color...
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;red&#39;
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "class Fruit:\n    def __init__(self, name: str, color: str):\n        self._name = name\n        self._color = color\n\n    @property\n    def color(self):\n        print(\"The color of the fruit is:\")\n        return self._color\n\n    @color.setter\n    def color(self, value):\n        print(\"Setting value of color...\")\n        if self._color is None:\n            if not isinstance(value, str):\n                raise ValueError(\"color must be of type string\")\n            self.color = value\n        else:\n            raise AttributeError(\"Sorry, you cannot change a fruit's color!\")\n\n\nfruit = Fruit(\"apple\", \"red\")\nfruit.color";
-                var nbb_formatted_code = "class Fruit:\n    def __init__(self, name: str, color: str):\n        self._name = name\n        self._color = color\n\n    @property\n    def color(self):\n        print(\"The color of the fruit is:\")\n        return self._color\n\n    @color.setter\n    def color(self, value):\n        print(\"Setting value of color...\")\n        if self._color is None:\n            if not isinstance(value, str):\n                raise ValueError(\"color must be of type string\")\n            self.color = value\n        else:\n            raise AttributeError(\"Sorry, you cannot change a fruit's color!\")\n\n\nfruit = Fruit(\"apple\", \"red\")\nfruit.color";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
+<span class="n">fruit</span><span class="o">.</span><span class="n">color</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting value of color...
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;yellow&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
@@ -944,35 +942,20 @@ Instance is called
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_337430</span><span class="o">/</span><span class="mf">2513783301.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
+<span class="nn">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_4221/1033431134.py</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="nn">/tmp/ipykernel_337430/2891187161.py</span> in <span class="ni">color</span><span class="nt">(self, value)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span>             <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">value</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span>         <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">19</span>             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Sorry, you cannot change a fruit&#39;s color!&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> 
-<span class="g g-Whitespace">     </span><span class="mi">21</span> 
+<span class="nn">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_4221/3851711942.py</span> in <span class="ni">color</span><span class="nt">(self, value)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">value</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>         <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">16</span>             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Fruit&#39;s color must be a string.&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> 
+<span class="g g-Whitespace">     </span><span class="mi">18</span> 
 
-<span class="ne">AttributeError</span>: Sorry, you cannot change a fruit&#39;s color!
+<span class="ne">AttributeError</span>: Fruit&#39;s color must be a string.
 </pre></div>
 </div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 16;
-                var nbb_unformatted_code = "fruit.color = \"yellow\"";
-                var nbb_formatted_code = "fruit.color = \"yellow\"";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div>
 </div>
 </section>
 <section id="str-and-repr-create-a-string-representation-of-a-python-object">
