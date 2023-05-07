@@ -503,7 +503,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.7. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-merge-operations-with-delta-lake">6.12.7. Simplify Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.8. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
             </nav>
         </div>
@@ -1278,8 +1279,194 @@ Total count: 2
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
+<section id="simplify-merge-operations-with-delta-lake">
+<h2><span class="section-number">6.12.7. </span>Simplify Merge Operations with Delta Lake<a class="headerlink" href="#simplify-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>delta-spark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Merging two datasets and performing both insert and update operations can be a complex task.</p>
+<p>Delta Lake makes it easy to perform multiple data manipulation operations during a merge operation.</p>
+<p>The following code demonstrates merging two datasets using Delta Lake:</p>
+<ul class="simple">
+<li><p>If a match is found, the <code class="docutils literal notranslate"><span class="pre">last_talk</span></code> column in <code class="docutils literal notranslate"><span class="pre">people_table</span></code> is updated with the corresponding value from <code class="docutils literal notranslate"><span class="pre">new_df</span></code>.</p></li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">last_talk</span></code> value in <code class="docutils literal notranslate"><span class="pre">people_table</span></code> is older than 30 days and the corresponding row is not present in the <code class="docutils literal notranslate"><span class="pre">new_df</span></code> table, the <code class="docutils literal notranslate"><span class="pre">status</span></code> column is updated to ‘rejected’.</p></li>
+</ul>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">delta</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Configure Spark to use Delta</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pyspark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;MyApp&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span>
+        <span class="s2">&quot;spark.sql.catalog.spark_catalog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">configure_spark_with_delta_pip</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a spark dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-04-15&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-05-01&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-03-01&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;last_talk&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Write to a delta table</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;tmp/interviews&quot;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">delta.tables</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="c1"># Update the delta table</span>
+<span class="n">people_table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Target table</span>
+<span class="n">people_table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+------------+
+| id|company| last_talk|      status|
++---+-------+----------+------------+
+|  0|      A|2023-05-07|interviewing|
+|  1|      B|2023-05-01|interviewing|
+|  2|      C|2023-03-01|    rejected|
++---+-------+----------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-05-07&quot;</span><span class="p">)]</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;last_talk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source table</span>
+<span class="n">new_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+
+| id|company| last_talk|
++---+-------+----------+
+|  0|      A|2023-05-07|
++---+-------+----------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">one_month_ago</span> <span class="o">=</span> <span class="s2">&quot;current_date() - INTERVAL &#39;30&#39; DAY&quot;</span>
+
+<span class="n">people_table</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">new_df</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">),</span> <span class="s2">&quot;target.id = source.id&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenMatchedUpdate</span><span class="p">(</span>
+    <span class="nb">set</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;target.last_talk&quot;</span><span class="p">:</span> <span class="s2">&quot;source.last_talk&quot;</span><span class="p">,</span> <span class="s2">&quot;target.status&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;interviewing&#39;&quot;</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenNotMatchedBySourceUpdate</span><span class="p">(</span>
+    <span class="n">condition</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;target.last_talk &lt;= </span><span class="si">{</span><span class="n">one_month_ago</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="nb">set</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;target.status&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;rejected&#39;&quot;</span><span class="p">},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">people_table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+------------+
+| id|company| last_talk|      status|
++---+-------+----------+------------+
+|  0|      A|2023-05-07|interviewing|
+|  1|      B|2023-05-01|interviewing|
+|  2|      C|2023-03-01|    rejected|
++---+-------+----------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
+</section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.7. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.8. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1427,7 +1614,8 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.7. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-merge-operations-with-delta-lake">6.12.7. Simplify Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.8. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
   </nav></div>
 
