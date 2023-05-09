@@ -511,14 +511,15 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">6.13.12. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-steps-share-data-between-tests">6.13.13. pytest-steps: Share Data Between Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">6.13.14. pytest-picked: Run the Tests Related to the Unstaged Files in Git</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.15. pyfakefs: Create Fake File System in Memory for Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.16. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.17. DeepDiff Find Deep Differences of Python Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.18. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.19. hypothesis: Property-based Testing in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.20. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.21. Check Conflicting Labels with Deepchecks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.22. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.15. Simulate External Services in Testing with Mock Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.16. pyfakefs: Create Fake File System in Memory for Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.17. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.18. DeepDiff Find Deep Differences of Python Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.19. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.20. hypothesis: Property-based Testing in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.21. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.22. Check Conflicting Labels with Deepchecks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.23. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 </ul>
             </nav>
         </div>
@@ -1344,8 +1345,48 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </div>
 <p><a class="reference external" href="https://github.com/anapaulagomes/pytest-picked">Link to pytest-picked</a>.</p>
 </section>
+<section id="simulate-external-services-in-testing-with-mock-objects">
+<h2><span class="section-number">6.13.15. </span>Simulate External Services in Testing with Mock Objects<a class="headerlink" href="#simulate-external-services-in-testing-with-mock-objects" title="Permalink to this headline">#</a></h2>
+<p>Testing code that relies on external services, like a database, can be difficult since the behaviors of these services can change.</p>
+<p>A mock object can control the behavior of a real object in a testing environment by simulating responses from external services.</p>
+<p>The following code uses a mock object to test the <code class="docutils literal notranslate"><span class="pre">get_data</span></code> function’s behavior when calling an API that may either succeed or fail.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span>
+
+
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Make an API call to Postgres&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://localhost:5432&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_data_fails</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the get_data function when the API call fails&quot;&quot;&quot;</span>
+    <span class="c1"># Mock the requests.get function</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;requests.get&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_get</span><span class="p">:</span>
+        <span class="c1"># Define what happens when the function is called</span>
+        <span class="n">mock_get</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="ne">ConnectionError</span>
+        <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">test_get_data_succeeds</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the get_data function when the API call succeeds&quot;&quot;&quot;</span>
+    <span class="c1"># Mock the requests.get function</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;requests.get&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_get</span><span class="p">:</span>
+        <span class="c1"># Define the return value of the function</span>
+        <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
+        <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
+
+</pre></div>
+</div>
+<p><a class="reference external" href="https://docs.python.org/3/library/unittest.mock.html">Link to mock</a>.</p>
+</section>
 <section id="pyfakefs-create-fake-file-system-in-memory-for-testing">
-<h2><span class="section-number">6.13.15. </span>pyfakefs: Create Fake File System in Memory for Testing<a class="headerlink" href="#pyfakefs-create-fake-file-system-in-memory-for-testing" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.16. </span>pyfakefs: Create Fake File System in Memory for Testing<a class="headerlink" href="#pyfakefs-create-fake-file-system-in-memory-for-testing" title="Permalink to this headline">#</a></h2>
 <p>Sometimes you might want to test if the function that interacts with files is working properly but don’t want the tests to touch the real disk.</p>
 <p>pyfakefs allows your tests to operate on a file system in memory without touching the real disk.</p>
 <p>In the code below, I created a fake directory and tested if <code class="docutils literal notranslate"><span class="pre">save_result</span></code> is creating a new file in the fake directory and writing the result to that file.</p>
@@ -1394,7 +1435,7 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://github.com/jmcgeheeiv/pyfakefs/">Link to pyfakefs</a>.</p>
 </section>
 <section id="pandera-a-python-library-to-validate-your-pandas-dataframe">
-<h2><span class="section-number">6.13.16. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.17. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1564,7 +1605,7 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </section>
 <section id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.13.17. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.18. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1693,7 +1734,7 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </section>
 <section id="dirty-equals-write-declarative-assertions-in-your-unit-tests">
-<h2><span class="section-number">6.13.18. </span>dirty-equals: Write Declarative Assertions in Your Unit Tests<a class="headerlink" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.19. </span>dirty-equals: Write Declarative Assertions in Your Unit Tests<a class="headerlink" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1745,7 +1786,7 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://github.com/samuelcolvin/dirty-equals">Link to dirty-equals</a>.</p>
 </section>
 <section id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.13.19. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.20. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>hypothesis
@@ -1814,7 +1855,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </section>
 <section id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.13.20. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.21. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1957,7 +1998,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
 <section id="check-conflicting-labels-with-deepchecks">
-<h2><span class="section-number">6.13.21. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.22. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this headline">#</a></h2>
 <p>Sometimes, your data might have identical samples with different labels. This might be because the data was mislabeled.</p>
 <p>It is good to identify these conflicting labels in your data before using the data to train your ML model. To check conflicting labels in your data, use deepchecks.</p>
 <p>In the example below, deepchecks identified that samples 0 and 1 have the same features but different labels.</p>
@@ -2043,7 +2084,7 @@ Results (0.38s):
 </div>
 </section>
 <section id="evaluate-your-ml-model-performance-with-simple-model-comparison">
-<h2><span class="section-number">6.13.22. </span>Evaluate Your ML Model Performance with Simple Model Comparison<a class="headerlink" href="#evaluate-your-ml-model-performance-with-simple-model-comparison" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.13.23. </span>Evaluate Your ML Model Performance with Simple Model Comparison<a class="headerlink" href="#evaluate-your-ml-model-performance-with-simple-model-comparison" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2195,14 +2236,15 @@ Results (0.38s):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-sugar-show-the-failures-and-errors-instantly-with-a-progress-bar">6.13.12. pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-steps-share-data-between-tests">6.13.13. pytest-steps: Share Data Between Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">6.13.14. pytest-picked: Run the Tests Related to the Unstaged Files in Git</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.15. pyfakefs: Create Fake File System in Memory for Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.16. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.17. DeepDiff Find Deep Differences of Python Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.18. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.19. hypothesis: Property-based Testing in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.20. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.21. Check Conflicting Labels with Deepchecks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.22. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.15. Simulate External Services in Testing with Mock Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.16. pyfakefs: Create Fake File System in Memory for Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.17. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.18. DeepDiff Find Deep Differences of Python Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.19. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.20. hypothesis: Property-based Testing in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.21. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.22. Check Conflicting Labels with Deepchecks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.23. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 </ul>
   </nav></div>
 
