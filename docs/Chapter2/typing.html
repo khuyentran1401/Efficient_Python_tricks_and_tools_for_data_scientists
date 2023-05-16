@@ -502,7 +502,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-annotated-add-metadata-to-your-typehint">3.8.3. typing.Annotated: Add Metadata to Your Typehint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-final-declare-that-a-method-should-not-be-overridden">3.8.4. typing.final: Declare That a Method Should Not Be Overridden</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-literal-specify-the-possible-values-for-a-function-parameter">3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-with-x-y">3.8.6. Write Union Types with X|Y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-typevar-flexible-typing-for-context-dependent-types">3.8.6. typing.TypeVar: Flexible Typing for Context-Dependent Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-with-x-y">3.8.7. Write Union Types with X|Y</a></li>
 </ul>
             </nav>
         </div>
@@ -536,9 +537,6 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> callable_example.py 
-
-<span class="c1"># callable_example.py </span>
-
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
 
 <span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -548,6 +546,11 @@ document.write(`
     <span class="k">return</span> <span class="n">multiply_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
 <span class="n">res</span> <span class="o">=</span> <span class="n">multiply_then_divide_by_two</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing callable_example.py
 </pre></div>
 </div>
 </div>
@@ -579,7 +582,9 @@ document.write(`
 <h2><span class="section-number">3.8.2. </span>Use Python Class as a Type Hint<a class="headerlink" href="#use-python-class-as-a-type-hint" title="Permalink to this headline">#</a></h2>
 <p>In the code below, <code class="docutils literal notranslate"><span class="pre">Orange</span></code> and <code class="docutils literal notranslate"><span class="pre">Apple</span></code> are subclasses of <code class="docutils literal notranslate"><span class="pre">Fruit</span></code>. How do we use type hint to specify that <code class="docutils literal notranslate"><span class="pre">fruit_type</span></code> in <code class="docutils literal notranslate"><span class="pre">make_fruit</span></code> should be a subclass of <code class="docutils literal notranslate"><span class="pre">Fruit</span></code>?</p>
 <p>Using a parent class as a type hint will give you a type error when using mypy.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># type_example_wrong.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> type_example_wrong.py
 <span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">taste</span> <span class="o">=</span> <span class="n">taste</span> 
@@ -596,20 +601,30 @@ document.write(`
 <span class="n">orange</span> <span class="o">=</span> <span class="n">make_fruit</span><span class="p">(</span><span class="n">Orange</span><span class="p">,</span> <span class="s2">&quot;sour&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing type_example_wrong.py
+</pre></div>
+</div>
+</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mypy<span class="w"> </span>type_example_wrong.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type_example_wrong.py:12: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span> not callable
-type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;make_fruit&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Type[Orange]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>type_example_wrong.py:12: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span> not callable  <span class=" -Color -Color-Yellow">[operator]</span>
+type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;make_fruit&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Type[Orange]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Fruit&quot;</span>  <span class=" -Color -Color-Yellow">[arg-type]</span>
 <span class=" -Color -Color-Bold -Color-Bold-Red">Found 2 errors in 1 file (checked 1 source file)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">typing.Type</span></code> instead.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span> 
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> type_example_right.py
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span> 
 
 <span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taste</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -627,6 +642,13 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <span class="n">orange</span> <span class="o">=</span> <span class="n">make_fruit</span><span class="p">(</span><span class="n">Orange</span><span class="p">,</span> <span class="s2">&quot;sour&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing type_example_right.py
+</pre></div>
+</div>
+</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mypy<span class="w"> </span>type_example_right.py
 </pre></div>
 </div>
@@ -641,7 +663,9 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <section id="typing-annotated-add-metadata-to-your-typehint">
 <h2><span class="section-number">3.8.3. </span>typing.Annotated: Add Metadata to Your Typehint<a class="headerlink" href="#typing-annotated-add-metadata-to-your-typehint" title="Permalink to this headline">#</a></h2>
 <p>If you want to add metadata to your typehint such as units of measurement, use <code class="docutils literal notranslate"><span class="pre">typing.Annotated</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_annotated.py </span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> typing_annotated.py 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span>
 
 
@@ -651,6 +675,13 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 
 <span class="nb">print</span><span class="p">(</span><span class="n">get_height_in_feet</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mf">1.6</span><span class="p">))</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing typing_annotated.py
+</pre></div>
+</div>
+</div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">Annotated[T,</span> <span class="pre">x]</span></code> allows static typechecking such as mypy to check <code class="docutils literal notranslate"><span class="pre">T</span></code> while safely ignoring <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 <div class="cell docutils container">
@@ -670,7 +701,9 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <section id="typing-final-declare-that-a-method-should-not-be-overridden">
 <h2><span class="section-number">3.8.4. </span>typing.final: Declare That a Method Should Not Be Overridden<a class="headerlink" href="#typing-final-declare-that-a-method-should-not-be-overridden" title="Permalink to this headline">#</a></h2>
 <p>If you want to declare that some methods shouldn’t be overridden by subclasses, use the decorator <code class="docutils literal notranslate"><span class="pre">typing.final</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_final.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> typing_final.py
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">final</span> 
 
 <span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
@@ -686,12 +719,19 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <span class="n">bim</span><span class="o">.</span><span class="n">bark</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing typing_final.py
+</pre></div>
+</div>
+</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mypy<span class="w"> </span>typing_final.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_final.py:9: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Cannot override final attribute <span class=" -Color -Color-Bold">&quot;bark&quot;</span> (previously declared in base class <span class=" -Color -Color-Bold">&quot;Dog&quot;</span>)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_final.py:9: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Cannot override final attribute <span class=" -Color -Color-Bold">&quot;bark&quot;</span> (previously declared in base class <span class=" -Color -Color-Bold">&quot;Dog&quot;</span>)  <span class=" -Color -Color-Yellow">[misc]</span>
 <span class=" -Color -Color-Bold -Color-Bold-Red">Found 1 error in 1 file (checked 1 source file)</span>
 </pre></div>
 </div>
@@ -703,7 +743,9 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <h2><span class="section-number">3.8.5. </span>typing.Literal: Specify the Possible Values for a Function Parameter<a class="headerlink" href="#typing-literal-specify-the-possible-values-for-a-function-parameter" title="Permalink to this headline">#</a></h2>
 <p>If you want to use type hints to check that a variable or a function parameter is in a set of literal values, use <code class="docutils literal notranslate"><span class="pre">typing.Literal</span></code>.</p>
 <p>In the example below, since <code class="docutils literal notranslate"><span class="pre">grape</span></code> is not in the set of literal values, mypy raises an error.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># typing_literal.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> typing_literal.py
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
 
 
@@ -717,12 +759,19 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;grape&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing typing_literal.py
+</pre></div>
+</div>
+</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mypy<span class="w"> </span>typing_literal.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_literal.py:11: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;get_price&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Literal[&#39;grape&#39;]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Literal[&#39;apple&#39;, &#39;orange&#39;]&quot;</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>typing_literal.py:11: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Argument 1 to <span class=" -Color -Color-Bold">&quot;get_price&quot;</span> has incompatible type <span class=" -Color -Color-Bold">&quot;Literal[&#39;grape&#39;]&quot;</span>; expected <span class=" -Color -Color-Bold">&quot;Literal[&#39;apple&#39;, &#39;orange&#39;]&quot;</span>  <span class=" -Color -Color-Yellow">[arg-type]</span>
 <span class=" -Color -Color-Bold -Color-Bold-Red">Found 1 error in 1 file (checked 1 source file)</span>
 </pre></div>
 </div>
@@ -730,8 +779,60 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 </div>
 <p>This method is available in Python 3.8 and above.</p>
 </section>
+<section id="typing-typevar-flexible-typing-for-context-dependent-types">
+<h2><span class="section-number">3.8.6. </span>typing.TypeVar: Flexible Typing for Context-Dependent Types<a class="headerlink" href="#typing-typevar-flexible-typing-for-context-dependent-types" title="Permalink to this headline">#</a></h2>
+<p>If you have multiple functions with a shared purpose but differing only in element types, group them into one function to improve code readability and scalability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">last_int</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">last_str</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Type variables allow you to create generic code that can adapt to various types based on the context in which it is invoked.</p>
+<p>In the first call, the list <code class="docutils literal notranslate"><span class="pre">list(range(10))</span></code> contains integers, so the type of <code class="docutils literal notranslate"><span class="pre">T</span></code> is inferred to be <code class="docutils literal notranslate"><span class="pre">int</span></code>. In the second example call, the list <code class="docutils literal notranslate"><span class="pre">list(&quot;abc&quot;)</span></code> contains strings, so the type of <code class="docutils literal notranslate"><span class="pre">T</span></code> is inferred to be <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> typevar_example.py 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">last</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)))</span>
+    <span class="n">last</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing typevar_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mypy<span class="w"> </span>typevar_example.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Green">Success: no issues found in 1 source file</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="write-union-types-with-x-y">
-<h2><span class="section-number">3.8.6. </span>Write Union Types with X|Y<a class="headerlink" href="#write-union-types-with-x-y" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.8.7. </span>Write Union Types with X|Y<a class="headerlink" href="#write-union-types-with-x-y" title="Permalink to this headline">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">typing.Union[X,</span> <span class="pre">Y]</span></code> is used to declare that a variable can be either <code class="docutils literal notranslate"><span class="pre">X</span></code> or <code class="docutils literal notranslate"><span class="pre">Y</span></code>. In Python 3.10 and above, you can replace <code class="docutils literal notranslate"><span class="pre">Union[X,</span> <span class="pre">Y]</span></code> with <code class="docutils literal notranslate"><span class="pre">X|Y</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -848,7 +949,8 @@ type_example_wrong.py:14: <span class=" -Color -Color-Bold -Color-Bold-Red">erro
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-annotated-add-metadata-to-your-typehint">3.8.3. typing.Annotated: Add Metadata to Your Typehint</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-final-declare-that-a-method-should-not-be-overridden">3.8.4. typing.final: Declare That a Method Should Not Be Overridden</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-literal-specify-the-possible-values-for-a-function-parameter">3.8.5. typing.Literal: Specify the Possible Values for a Function Parameter</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-with-x-y">3.8.6. Write Union Types with X|Y</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#typing-typevar-flexible-typing-for-context-dependent-types">3.8.6. typing.TypeVar: Flexible Typing for Context-Dependent Types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-with-x-y">3.8.7. Write Union Types with X|Y</a></li>
 </ul>
   </nav></div>
 
