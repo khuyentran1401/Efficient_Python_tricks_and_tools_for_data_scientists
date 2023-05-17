@@ -548,26 +548,6 @@ $<span class="w"> </span><span class="nb">source</span><span class="w"> </span>n
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>uninstall<span class="w"> </span>pandas-profiling<span class="o">[</span>notebook<span class="o">]</span><span class="w"> </span>-y
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>uninstall<span class="w"> </span>pandas-profiling<span class="o">[</span>notebook<span class="o">]</span><span class="w"> </span>-y
-</pre></div>
-</div>
-</div>
-</details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Found existing installation: pandas-profiling 3.1.0
-Uninstalling pandas-profiling-3.1.0:
-  Successfully uninstalled pandas-profiling-3.1.0
-</pre></div>
-</div>
-</div>
-</div>
 <p>Wouldn’t it be nice if you can uninstall that package and its unused dependencies? That is when <code class="docutils literal notranslate"><span class="pre">pip-autoremove</span></code> comes in handy.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -577,16 +557,6 @@ Uninstalling pandas-profiling-3.1.0:
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pip-autoremove
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pip-autoremove
-  Downloading pip_autoremove-0.10.0-py2.py3-none-any.whl (5.0 kB)
-Requirement already satisfied: setuptools in /home/khuyen/book/venv/lib/python3.8/site-packages (from pip-autoremove) (44.0.0)
-Requirement already satisfied: pip in /home/khuyen/book/venv/lib/python3.8/site-packages (from pip-autoremove) (21.2.4)
-Installing collected packages: pip-autoremove
-Successfully installed pip-autoremove-0.10.0
 </pre></div>
 </div>
 </div>
@@ -608,18 +578,7 @@ Successfully installed pip-autoremove-0.10.0
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip-autoremove<span class="w"> </span>pandas-profiling<span class="o">[</span>notebook<span class="o">]</span><span class="w"> </span>-y
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip-autoremove<span class="w"> </span>pandas-profiling<span class="o">[</span>notebook<span class="o">]</span><span class="w"> </span>-y
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jinja2 3.0.1 is installed but jinja2~=2.11.2 is required
 Redoing requirement with just package name...
@@ -692,18 +651,7 @@ Uninstalling missingno-0.5.0:
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pipreqs<span class="w"> </span>.<span class="w"> </span>
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pipreqs<span class="w"> </span>.<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO: Successfully saved requirements file in ./requirements.txt
 </pre></div>
@@ -785,35 +733,44 @@ Options:
 </div>
 <p>It can be cumbersome to compare the dependencies between two requirements files. Especially when there are a lot of dependencies in each file. To automate the comparison, use <code class="docutils literal notranslate"><span class="pre">compare-requirements</span></code>.</p>
 <p>For example, if your reqs1.txt looks like this:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.19.5
-datacommons-pandas<span class="o">==</span><span class="m">0</span>.0.3
-<span class="nv">pandas</span><span class="o">==</span><span class="m">1</span>.3.3
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> reqs1.txt
+<span class="n">numpy</span><span class="o">==</span><span class="mf">1.19.5</span>
+<span class="n">datacommons</span><span class="o">-</span><span class="n">pandas</span><span class="o">==</span><span class="mf">0.0.3</span>
+<span class="n">pandas</span><span class="o">==</span><span class="mf">1.3.3</span>
 </pre></div>
 </div>
-<p>and your reqs2.txt looks like this:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">numpy</span><span class="o">==</span><span class="m">1</span>.19.5
-datacommons-pandas<span class="o">==</span><span class="m">0</span>.0.3
-<span class="nv">pandas</span><span class="o">==</span><span class="m">1</span>.3.4
-pandas-datareader<span class="o">==</span><span class="m">0</span>.10.0
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing reqs1.txt
 </pre></div>
+</div>
+</div>
+</div>
+<p>and your reqs2.txt looks like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> reqs2.txt
+<span class="n">numpy</span><span class="o">==</span><span class="mf">1.19.5</span>
+<span class="n">datacommons</span><span class="o">-</span><span class="n">pandas</span><span class="o">==</span><span class="mf">0.0.3</span>
+<span class="n">pandas</span><span class="o">==</span><span class="mf">1.3.4</span>
+<span class="n">pandas</span><span class="o">-</span><span class="n">datareader</span><span class="o">==</span><span class="mf">0.10.0</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing reqs2.txt
+</pre></div>
+</div>
+</div>
 </div>
 <p>Running</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>cmpreqs<span class="w"> </span>reqs1.txt<span class="w"> </span>reqs2.txt
 </pre></div>
 </div>
 <p>will output:</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>cmpreqs<span class="w"> </span>reqs1.txt<span class="w"> </span>reqs2.txt<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Different dependencies
 ======================
@@ -855,18 +812,7 @@ Name  Version
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>add<span class="w"> </span>pandas<span class="w"> </span>numpy
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry<span class="w"> </span>add<span class="w"> </span>pandas<span class="w"> </span>numpy
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using version <span class=" -Color -Color-Bold">^1.4.1</span> for <span class=" -Color -Color-Cyan">pandas</span>
 Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class=" -Color -Color-Cyan">numpy</span>
@@ -922,18 +868,7 @@ Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class="
 </pre></div>
 </div>
 <p>Since pandas==1.4.1 requires numpy&gt;=1.18.5, numpy&lt;1.18 is not installed. Thus, you avoid installing dependencies that are not compatible with the current dependencies.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry<span class="w"> </span>add<span class="w"> </span><span class="s1">&#39;numpy&lt;1.18&#39;</span>
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">Updating dependencies</span>
 <span class=" -Color -Color-Blue">Resolving dependencies...</span> <span class=" -Color -Color-Faint">(0.1s)</span>
@@ -962,18 +897,7 @@ Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class="
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>show<span class="w"> </span>pandas<span class="w">  </span>
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry<span class="w"> </span>show<span class="w"> </span>pandas<span class="w">  </span>
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">name</span>         : <span class=" -Color -Color-Cyan">pandas</span>
 <span class=" -Color -Color-Blue">version</span>      : <span class=" -Color -Color-Bold">1.4.1</span>
@@ -995,18 +919,7 @@ Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class="
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>remove<span class="w"> </span>pandas<span class="w"> </span>
 </pre></div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>poetry<span class="w"> </span>remove<span class="w"> </span>pandas<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">Updating dependencies</span>
 <span class=" -Color -Color-Blue">Resolving dependencies...</span> <span class=" -Color -Color-Faint">(0.1s)</span>

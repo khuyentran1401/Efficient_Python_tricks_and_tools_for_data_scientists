@@ -13,4 +13,3 @@ df = df.assign(is_even=lambda df_: is_even(df_.nums))
 
 profiler.stop()
 profiler.print()
-
