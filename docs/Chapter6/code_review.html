@@ -501,10 +501,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.3.2. interrogate: Check your Python Code for Missing Docstrings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.3.3. mypy: Static Type Checker for Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.3.4. Refurb: Refurbish and Modernize Python Codebases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.5. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.6. perfplot: Performance Analysis for Python Snippets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.7. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.8. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.3.5. eradicate: Remove Junk Comments from Python Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.9. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 </ul>
             </nav>
         </div>
@@ -571,7 +572,9 @@ document.write(`
 </div>
 <p>Sometimes, you might forget to include docstrings for classes and functions. Instead of manually searching through all your functions and classes for missing docstrings, use interrogate.</p>
 <p>Consider the following example where there are missing docstrings:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># interrogate_example.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> interrogate_example.py
 <span class="k">class</span> <span class="nc">Math</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="n">num</span>
@@ -583,6 +586,13 @@ document.write(`
     <span class="k">def</span> <span class="nf">multiply_three</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="mi">3</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing interrogate_example.py
+</pre></div>
+</div>
+</div>
 </div>
 <p>You can use interrogate to identify missing docstrings:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>interrogate<span class="w"> </span>interrogate_example.py
@@ -634,7 +644,9 @@ document.write(`
 </div>
 <p>Type hinting in Python is useful for other developers to understand the expected data types to be used in your functions. To automate type checking in your code, use mypy.</p>
 <p>Consider the following file that includes type hinting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mypy_example.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> mypy_example.py
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="k">def</span> <span class="nf">get_name_price</span><span class="p">(</span><span class="n">fruits</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
@@ -646,23 +658,19 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>  <span class="c1"># (2, 3, 2)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing mypy_example.py
+</pre></div>
+</div>
+</div>
+</div>
 <p>When typing the following command on your terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mypy<span class="w"> </span>mypy_example.py
 </pre></div>
 </div>
 <p>you will get the output similar to this:</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mypy<span class="w"> </span>mypy_example.py
-</pre></div>
-</div>
-</div>
-</details>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mypy_example.py:4: <span class=" -Color -Color-Bold -Color-Bold-Red">error:</span> Incompatible return value type (got <span class=" -Color -Color-Bold">&quot;zip[Any]&quot;</span>, expected <span class=" -Color -Color-Bold">&quot;Union[List[Any], Tuple[Any, ...]]&quot;</span>)
 <span class=" -Color -Color-Bold -Color-Bold-Red">Found 1 error in 1 file (checked 1 source file)</span>
@@ -684,11 +692,20 @@ document.write(`
 <h2><span class="section-number">7.3.4. </span>Refurb: Refurbish and Modernize Python Codebases<a class="headerlink" href="#refurb-refurbish-and-modernize-python-codebases" title="Permalink to this headline">#</a></h2>
 <p>If you want to have some guidelines to improve and optimize your code, try Refurb.</p>
 <p>For example, if you have a file like this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_refurb.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_refurb.py
 <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">n</span><span class="o">/</span><span class="mi">2</span> 
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_refurb.py
+</pre></div>
+</div>
+</div>
 </div>
 <p>You can use Refurb to refurbish your code.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>refurb<span class="w"> </span>test_refurb.py
@@ -744,8 +761,108 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </div>
 <p><a class="reference external" href="https://github.com/dosisod/refurb">Link to Refurb</a>.</p>
 </section>
+<section id="eradicate-remove-junk-comments-from-python-files">
+<h2><span class="section-number">7.3.5. </span>eradicate: Remove Junk Comments from Python Files<a class="headerlink" href="#eradicate-remove-junk-comments-from-python-files" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>eradicate
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>As your code base grows, the number of junk comments also increases. eradicate makes it easy to remove commented-out code from Python files.</p>
+<p>For example, if you have a file like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> eradicate_test.py
+<span class="c1"># from math import *</span>
+
+<span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="c1"># print(nums)</span>
+    <span class="c1"># TODO: check if nums is empty</span>
+    <span class="c1"># Return mean</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+
+<span class="c1"># nums = [0, 1]</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">mean</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing eradicate_test.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use eradicate to remove junk comments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># print diffs</span>
+$<span class="w"> </span>eradicate<span class="w"> </span>eradicate_test.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--- before/eradicate_test.py
++++ after/eradicate_test.py
+@@ -1,11 +1,8 @@
+-# from math import *
+ 
+ def mean(nums: list):
+-    # print(nums)
+     # TODO: check if nums is empty
+     # Return mean
+     return sum(nums) / len(nums)
+ 
+-# nums = [0, 1]
+ nums = [1, 2, 3]
+ mean(nums)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># make changes to files</span>
+$<span class="w"> </span>eradicate<span class="w"> </span>eradicate_test.py<span class="w"> </span>-i
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># show file contents</span>
+<span class="o">%</span><span class="k">cat</span> eradicate_test.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>def mean(nums: list):
+    # TODO: check if nums is empty
+    # Return mean
+    return sum(nums) / len(nums)
+
+nums = [1, 2, 3]
+mean(nums)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use Refurb with pre-commit by adding the following to your <code class="docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">repos</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/wemake-services/eradicate/</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v2.2.0</span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eradicate</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/wemake-services/eradicate/">Link to eradicate</a>.</p>
+</section>
 <section id="pydantic-enforce-data-types-on-your-function-parameters-at-runtime">
-<h2><span class="section-number">7.3.5. </span>Pydantic: Enforce Data Types on Your Function Parameters at Runtime<a class="headerlink" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.3.6. </span>Pydantic: Enforce Data Types on Your Function Parameters at Runtime<a class="headerlink" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -809,7 +926,7 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 <p><a class="reference external" href="https://towardsdatascience.com/build-a-full-stack-ml-application-with-pydantic-and-prefect-915f00fe0c62?sk=b1f8c5cb53a6a9d7f48d66fa778e9cf0">Build a full-stack ML application with Pydantic and Prefect</a>.</p>
 </section>
 <section id="perfplot-performance-analysis-for-python-snippets">
-<h2><span class="section-number">7.3.6. </span>perfplot: Performance Analysis for Python Snippets<a class="headerlink" href="#perfplot-performance-analysis-for-python-snippets" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.3.7. </span>perfplot: Performance Analysis for Python Snippets<a class="headerlink" href="#perfplot-performance-analysis-for-python-snippets" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -866,7 +983,7 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 <p><a class="reference external" href="https://github.com/nschloe/perfplot">Link to perfplot</a>.</p>
 </section>
 <section id="analyze-the-memory-usage-of-your-python-code">
-<h2><span class="section-number">7.3.7. </span>Analyze the Memory Usage of Your Python Code<a class="headerlink" href="#analyze-the-memory-usage-of-your-python-code" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.3.8. </span>Analyze the Memory Usage of Your Python Code<a class="headerlink" href="#analyze-the-memory-usage-of-your-python-code" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -881,6 +998,31 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 </details>
 </div>
 <p>If you want to analyze the memory consumption of your Python code line-by-line, use memory_profiler. This package allows you to generate a full memory usage report of your executable and plot it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> memory_profiler_test.py 
+<span class="kn">from</span> <span class="nn">memory_profiler</span> <span class="kn">import</span> <span class="n">profile</span>
+
+
+<span class="nd">@profile</span>
+<span class="k">def</span> <span class="nf">func</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span> <span class="o">**</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">func</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing memory_profiler_test.py
+</pre></div>
+</div>
+</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mprof<span class="w"> </span>run<span class="w"> </span>memory_profiler_test.py
 </pre></div>
 </div>
@@ -911,7 +1053,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler">Link to memory_profiler</a>.</p>
 </section>
 <section id="sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">
-<h2><span class="section-number">7.3.8. </span>SQLFluff: A Linter and Auto-Formatter for Your SQL Code<a class="headerlink" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.3.9. </span>SQLFluff: A Linter and Auto-Formatter for Your SQL Code<a class="headerlink" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1061,10 +1203,11 @@ FROM my_table
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.3.2. interrogate: Check your Python Code for Missing Docstrings</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.3.3. mypy: Static Type Checker for Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.3.4. Refurb: Refurbish and Modernize Python Codebases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.5. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.6. perfplot: Performance Analysis for Python Snippets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.7. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.8. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.3.5. eradicate: Remove Junk Comments from Python Files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.9. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 </ul>
   </nav></div>
 
