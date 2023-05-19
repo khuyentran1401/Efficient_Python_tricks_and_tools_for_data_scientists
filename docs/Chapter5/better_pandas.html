@@ -499,12 +499,13 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tqdm-add-progress-bar-to-your-pandas-apply">6.12.1. tqdm: Add Progress Bar to Your Pandas Apply</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.3. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.7. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.8. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandasai-gain-insights-from-your-pandas-dataframe-with-ai">6.12.3. PandasAI: Gain Insights From Your pandas DataFrame With AI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.4. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
             </nav>
         </div>
@@ -705,8 +706,211 @@ INFO: Pandarallel will use standard multiprocessing data transfer (pipe) to tran
 </div>
 <p><a class="reference external" href="https://github.com/nalepae/pandarallel">Link to pandarallel</a>.</p>
 </section>
+<section id="pandasai-gain-insights-from-your-pandas-dataframe-with-ai">
+<h2><span class="section-number">6.12.3. </span>PandasAI: Gain Insights From Your pandas DataFrame With AI<a class="headerlink" href="#pandasai-gain-insights-from-your-pandas-dataframe-with-ai" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pandasai
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to quickly gain insights from your pandas DataFrame with AI, use PandasAI. PandasAI serves as:</p>
+<ul class="simple">
+<li><p>A tool to analyze your DataFrame</p></li>
+<li><p>Not a tool to process your DataFrame</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/mwaskom/seaborn-data/master/flights.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>month</th>
+      <th>passengers</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1949</td>
+      <td>January</td>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1949</td>
+      <td>February</td>
+      <td>118</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1949</td>
+      <td>March</td>
+      <td>132</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1949</td>
+      <td>April</td>
+      <td>129</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1949</td>
+      <td>May</td>
+      <td>121</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1949</td>
+      <td>June</td>
+      <td>135</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1949</td>
+      <td>July</td>
+      <td>148</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1949</td>
+      <td>August</td>
+      <td>148</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1949</td>
+      <td>September</td>
+      <td>136</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1949</td>
+      <td>October</td>
+      <td>119</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|    | year                | month    |   passengers |
+|---:|:--------------------|:---------|-------------:|
+|  0 | 1949-01-01 00:00:00 | January  |          112 |
+|  1 | 1949-01-01 00:00:00 | February |          118 |
+|  2 | 1949-01-01 00:00:00 | March    |          132 |
+|  3 | 1949-01-01 00:00:00 | April    |          129 |
+|  4 | 1949-01-01 00:00:00 | May      |          121 |
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandasai</span> <span class="kn">import</span> <span class="n">PandasAI</span>
+<span class="kn">from</span> <span class="nn">pandasai.llm.openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="c1"># Instantiate a LLM</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_token</span><span class="o">=</span><span class="s2">&quot;YOUR_API_TOKEN&quot;</span><span class="p">)</span>
+
+<span class="c1"># Use pandasai</span>
+<span class="n">pandas_ai</span> <span class="o">=</span> <span class="n">PandasAI</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">conversational</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">pandas_ai</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Which month of the years has the highest number of passengers on average?&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The month with the highest average number of passengers is: July
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="n">pandas_ai</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Which are the five years with the highest passenger numbers?&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>year
+1960    5714
+1959    5140
+1958    4572
+1957    4421
+1956    3939
+Name: passengers, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pandas_ai</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Within what range of years does the dataset span?&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        year     month  passengers
+0 1949-01-01   January         112
+1 1949-01-01  February         118
+2 1949-01-01     March         132
+3 1949-01-01     April         129
+4 1949-01-01       May         121
+The dataset spans from 1949 to 1960.
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/gventuri/pandas-ai">Link to PandasAI</a>.</p>
+</section>
 <section id="fugue-use-pandas-functions-on-the-spark-and-dask-engines">
-<h2><span class="section-number">6.12.3. </span>fugue: Use pandas Functions on the Spark and Dask Engines.<a class="headerlink" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.4. </span>fugue: Use pandas Functions on the Spark and Dask Engines.<a class="headerlink" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -784,7 +988,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </section>
 <section id="fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-<h2><span class="section-number">6.12.4. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.5. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -833,7 +1037,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </section>
 <section id="version-your-pandas-dataframe-with-delta-lake">
-<h2><span class="section-number">6.12.5. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.6. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1042,7 +1246,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="overwrite-partitions-of-a-pandas-dataframe">
-<h2><span class="section-number">6.12.6. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.7. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1280,7 +1484,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="simplify-table-merge-operations-with-delta-lake">
-<h2><span class="section-number">6.12.7. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1466,7 +1670,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.8. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.9. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1610,12 +1814,13 @@ Polars time: 41.079080 seconds
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tqdm-add-progress-bar-to-your-pandas-apply">6.12.1. tqdm: Add Progress Bar to Your Pandas Apply</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.3. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.4. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.7. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.8. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandasai-gain-insights-from-your-pandas-dataframe-with-ai">6.12.3. PandasAI: Gain Insights From Your pandas DataFrame With AI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.4. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
   </nav></div>
 
