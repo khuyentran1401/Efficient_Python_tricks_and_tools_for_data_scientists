@@ -526,9 +526,26 @@ document.write(`
 <p>If there are datetime columns in your CSV file, use the <code class="docutils literal notranslate"><span class="pre">parse_dates</span></code> parameter when reading CSV file with pandas. This reduces one extra step to convert these columns from string to datetime after reading the file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create data files</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;date_column_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2021/02/10&quot;</span><span class="p">,</span> <span class="s2">&quot;2021/02/12&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;date_column_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2021/02/11&quot;</span><span class="p">,</span> <span class="s2">&quot;2021/02/13&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data1.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date_column_1&quot;</span><span class="p">,</span> <span class="s2">&quot;date_column_2&quot;</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date_column_1&quot;</span><span class="p">,</span> <span class="s2">&quot;date_column_2&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
