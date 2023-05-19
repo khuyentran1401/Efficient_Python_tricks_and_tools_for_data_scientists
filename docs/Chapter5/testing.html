@@ -602,7 +602,9 @@ document.write(`
 </div>
 <p>If you want to benchmark your code while testing with pytest, try pytest-benchmark.</p>
 <p>To use pytest-benchmark works, add <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> to the test function that you want to benchmark.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_benchmark_example.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_benchmark_example.py
 <span class="k">def</span> <span class="nf">list_comprehension</span><span class="p">(</span><span class="n">len_list</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_list</span><span class="p">)]</span>
 
@@ -611,6 +613,8 @@ document.write(`
     <span class="n">res</span> <span class="o">=</span> <span class="n">benchmark</span><span class="p">(</span><span class="n">list_comprehension</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">res</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_benchmark_example.py
@@ -677,7 +681,9 @@ Legend:
 </div>
 <p>If you want to test your function with different examples, use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> decorator.</p>
 <p>To use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code>, add <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> to the test function that you want to experiment with.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_parametrize.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_parametrize.py
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="k">def</span> <span class="nf">text_contain_word</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -697,6 +703,13 @@ Legend:
 
     <span class="k">assert</span> <span class="n">text_contain_word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
 </pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing pytest_parametrize.py
+</pre></div>
+</div>
+</div>
 </div>
 <p>In the code above, I expect the first sentence to contain the word “duck” and expect the second sentence not to contain that word. Let’s see if my expectations are correct by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_parametrize.py
@@ -753,7 +766,9 @@ pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span
 </pre></div>
 </div>
 <p>You can save your time by using <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> twice instead.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_combination.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_combination.py
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -768,6 +783,8 @@ pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span
 <span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">operation</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>On your terminal, run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>pytest_combination.py
@@ -799,8 +816,9 @@ pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -
 <section id="assign-ids-to-test-cases">
 <h2><span class="section-number">6.13.6. </span>Assign IDs to Test Cases<a class="headerlink" href="#assign-ids-to-test-cases" title="Permalink to this headline">#</a></h2>
 <p>When using pytest parametrize, it can be difficult to understand the role of each test case.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_without_ids.py</span>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_without_ids.py
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
 
 
@@ -814,6 +832,8 @@ pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -
 <span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>pytest_without_ids.py<span class="w"> </span>
 </pre></div>
@@ -839,8 +859,9 @@ pytest_without_ids.py::test_is_float[0-0] <span class=" -Color -Color-Green">PAS
 </div>
 </div>
 <p>You can add <code class="docutils literal notranslate"><span class="pre">ids</span></code> to pytest parametrize to assign a name to each test case.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_ids.py</span>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_ids.py
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
 
 <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -854,6 +875,8 @@ pytest_without_ids.py::test_is_float[0-0] <span class=" -Color -Color-Green">PAS
 <span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>pytest_ids.py<span class="w"> </span>
 </pre></div>
@@ -880,7 +903,9 @@ pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">P
 </div>
 <p>We can see that instead of <code class="docutils literal notranslate"><span class="pre">[-1--2]</span></code>, the first test case is shown as <code class="docutils literal notranslate"><span class="pre">neg</span> <span class="pre">and</span> <span class="pre">neg</span></code>. This makes it easier for others to understand the roles of your test cases.</p>
 <p>If you want to specify the test IDs together with the actual data, instead of listing them separately, use <code class="docutils literal notranslate"><span class="pre">pytest.param</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_param.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_param.py
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 
@@ -898,8 +923,9 @@ pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">P
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">&quot;n1, n2&quot;</span><span class="p">,</span> <span class="n">examples</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">test_is_float</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span>
-
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>-v<span class="w"> </span>pytest_param.py
 </pre></div>
@@ -938,7 +964,7 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>textblob<span class="w"> </span>
 </pre></div>
 </div>
 </div>
@@ -946,7 +972,9 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
 </div>
 <p>If you want to use the same data to test different functions, use pytest fixtures.</p>
 <p>To use pytest fixtures,  add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code> to the function that creates the data you want to reuse.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_fixture.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_fixture.py
 <span class="kn">import</span> <span class="nn">pytest</span> 
 <span class="kn">from</span> <span class="nn">textblob</span> <span class="kn">import</span> <span class="n">TextBlob</span>
 
@@ -964,6 +992,8 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
     <span class="n">sentiment</span> <span class="o">=</span> <span class="n">extract_sentiment</span><span class="p">(</span><span class="n">example_data</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">sentiment</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_fixture.py
@@ -1016,7 +1046,9 @@ Test<span class="w"> </span>modulus...
 </pre></div>
 </div>
 <p>If a fixture is expensive to execute, you can make the fixture be executed only once per session using <code class="docutils literal notranslate"><span class="pre">scope=session</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_scope.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_scope.py
 <span class="kn">import</span> <span class="nn">pytest</span> 
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
@@ -1033,6 +1065,8 @@ Test<span class="w"> </span>modulus...
     <span class="k">assert</span> <span class="n">my_data</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span>
 </pre></div>
 </div>
+</div>
+</div>
 <p>From the output, we can see that the fixture <code class="docutils literal notranslate"><span class="pre">my_data</span></code> is executed only once.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_scope.py<span class="w"> </span>-s
 Reading<span class="w"> </span>data...
@@ -1044,7 +1078,9 @@ Test<span class="w"> </span>modulus...
 <section id="pytest-skipif-skip-a-test-when-a-condition-is-not-met">
 <h2><span class="section-number">6.13.9. </span>Pytest skipif: Skip a Test When a Condition is Not Met<a class="headerlink" href="#pytest-skipif-skip-a-test-when-a-condition-is-not-met" title="Permalink to this headline">#</a></h2>
 <p>If you want to skip a test when a condition is not met, use pytest <code class="docutils literal notranslate"><span class="pre">skipif</span></code>. For example, in the code below, I use <code class="docutils literal notranslate"><span class="pre">skipif</span></code> to skip a test if the python version is less than 3.9.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_skip.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_skip.py
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 
@@ -1055,6 +1091,8 @@ Test<span class="w"> </span>modulus...
 <span class="k">def</span> <span class="nf">test_add_two</span><span class="p">():</span> 
     <span class="k">assert</span> <span class="n">add_two</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_skip.py<span class="w"> </span>-v<span class="w"> </span>
@@ -1082,8 +1120,9 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 <h2><span class="section-number">6.13.10. </span>Pytest xfail: Mark a Test as Expected to Fail<a class="headerlink" href="#pytest-xfail-mark-a-test-as-expected-to-fail" title="Permalink to this headline">#</a></h2>
 <p>If you expect a test to fail, use pytest <code class="docutils literal notranslate"><span class="pre">xfail</span></code> marker. This will prevent pytest from marking a test as failed when there is an exception.</p>
 <p>To be more specific about what exception you expect to see, use the <code class="docutils literal notranslate"><span class="pre">raises</span></code> argument.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_mark_xfail.py</span>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_mark_xfail.py
 <span class="kn">import</span> <span class="nn">pytest</span> 
 
 <span class="k">def</span> <span class="nf">divide_two_nums</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
@@ -1093,6 +1132,8 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 <span class="k">def</span> <span class="nf">test_divide_by_zero</span><span class="p">():</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">divide_two_nums</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_mark_xfail.py
@@ -1132,30 +1173,21 @@ pytest_mark_xfail.py <span class=" -Color -Color-Yellow">x                      
 </div>
 <p>It is a good practice to test your functions to make sure they work as expected, but sometimes you need to test 100 times until you found the rare cases when the test fails. That is when pytest-repeat comes in handy.</p>
 <p>To use pytest-repeat, add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.repeat(N)</span></code> to the test function you want to repeat <code class="docutils literal notranslate"><span class="pre">N</span></code> times</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_repeat_example.py</span>
-<span class="kn">import</span> <span class="nn">pytest</span> 
-<span class="kn">import</span> <span class="nn">random</span> 
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">writfile</span> pytest_repeat_example.py
+import pytest 
+import random 
 
-<span class="k">def</span> <span class="nf">generate_numbers</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+def generate_numbers():
+    return random.randint(1, 100)
 
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">test_generate_numbers</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span>
+@pytest.mark.repeat(100)
+def test_generate_numbers():
+    assert generate_numbers() &gt; 1 and generate_numbers() &lt; 100
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pytest_repeat_example.py</span>
-
-<span class="kn">import</span> <span class="nn">pytest</span> 
-<span class="kn">import</span> <span class="nn">random</span> 
-
-<span class="k">def</span> <span class="nf">generate_numbers</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-
-<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">test_generate_numbers</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span>
-</pre></div>
+</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_repeat_example.py
@@ -1197,8 +1229,22 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 </details>
 </div>
 <p>It can be frustrating to wait for a lot of tests to run before knowing the status of the tests. If you want to see the failures and errors instantly with a progress bar, use pytest-sugar.</p>
-<p>pytest-sugar is a plugin for pytest. The code below shows how the outputs will look like when running pytest.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest
+<p>pytest-sugar is a plugin for pytest. To see how pytest-sugar works, assume we have several test files in the <code class="docutils literal notranslate"><span class="pre">pytest_sugar_example</span></code> directory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">ls</span> pytest_sugar_example
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>test_benchmark_example.py  test_parametrize.py
+test_fixture.py            test_repeat_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>The code below shows how the outputs will look like when running pytest.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_sugar_example
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
@@ -1240,7 +1286,10 @@ Results (2.63s):
 <p>Have you ever wanted to use the result of one test for another test? That is when pytest_steps comes in handy.</p>
 <p><img alt="" src="../_images/pytest_steps.png" /></p>
 <p>In the code below, I use the result of <code class="docutils literal notranslate"><span class="pre">sum_test</span></code> as the input of <code class="docutils literal notranslate"><span class="pre">average_2_nums</span></code>. The argument <code class="docutils literal notranslate"><span class="pre">steps_data</span></code> allows me to share the data between 2 tests.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytest_steps</span> <span class="kn">import</span> <span class="n">test_steps</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_steps.py
+<span class="kn">from</span> <span class="nn">pytest_steps</span> <span class="kn">import</span> <span class="n">test_steps</span>
 
 
 <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -1268,8 +1317,9 @@ Results (2.63s):
         <span class="n">sum_test</span><span class="p">(</span><span class="n">steps_data</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">test_step</span> <span class="o">==</span> <span class="s1">&#39;perc_difference_test&#39;</span><span class="p">:</span>
         <span class="n">perc_difference_test</span><span class="p">(</span><span class="n">steps_data</span><span class="p">)</span>
-
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_steps.py
 </pre></div>
@@ -1296,7 +1346,9 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 <h2><span class="section-number">6.13.14. </span>pytest-picked: Run the Tests Related to the Unstaged Files in Git<a class="headerlink" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git" title="Permalink to this headline">#</a></h2>
 <p>It can be time-consuming to run all tests in your project. Wouldn’t it be nice if you can run only the tests related to the unstaged files in Git? That is when pytest-picked comes in handy.</p>
 <p>In the code below, only tests in the file <code class="docutils literal notranslate"><span class="pre">test_picked.py</span></code> are executed because it is an unstaged file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_picked.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_picked.py
 <span class="k">def</span> <span class="nf">plus_one</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -1304,6 +1356,8 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 <span class="k">def</span> <span class="nf">test_plus_one</span><span class="p">():</span>
     <span class="k">assert</span> <span class="n">plus_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>status
 </pre></div>
@@ -1390,7 +1444,9 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <p>Sometimes you might want to test if the function that interacts with files is working properly but don’t want the tests to touch the real disk.</p>
 <p>pyfakefs allows your tests to operate on a file system in memory without touching the real disk.</p>
 <p>In the code below, I created a fake directory and tested if <code class="docutils literal notranslate"><span class="pre">save_result</span></code> is creating a new file in the fake directory and writing the result to that file.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_pyfakefs.py</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_pyfakefs.py
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
@@ -1413,6 +1469,8 @@ test_picked.py <span class=" -Color -Color-Green">.                             
     <span class="n">res</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
     <span class="k">assert</span> <span class="n">res</span> <span class="o">==</span> <span class="n">result</span>
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_pyfakefs.py
 </pre></div>
@@ -1796,8 +1854,9 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 </div>
 <p>If you want to test some properties or assumptions, it can be cumbersome to write a wide range of scenarios. To automatically run your tests against a wide range of scenarios and find edge cases in your code that you would otherwise have missed, use hypothesis.</p>
 <p>In the code below, I test if the addition of two floats is commutative. The test fails when either <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> is <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># test_hypothesis.py </span>
-
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_hypothesis.py 
 <span class="kn">from</span> <span class="nn">hypothesis</span> <span class="kn">import</span> <span class="n">given</span>
 <span class="kn">from</span> <span class="nn">hypothesis.strategies</span> <span class="kn">import</span> <span class="n">floats</span>
 
@@ -1807,6 +1866,8 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <span class="k">def</span> <span class="nf">test_floats_are_commutative</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">assert</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
 </pre></div>
+</div>
+</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_hypothesis.py
 </pre></div>
