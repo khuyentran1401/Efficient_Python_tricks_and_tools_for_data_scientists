@@ -504,8 +504,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.8. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
             </nav>
         </div>
@@ -1483,8 +1484,68 @@ Total count: 2
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
+<section id="efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">
+<h2><span class="section-number">6.12.8. </span>Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas<a class="headerlink" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas" title="Permalink to this headline">#</a></h2>
+<p>Appending data to an existing Parquet file using pandas involves:</p>
+<ul class="simple">
+<li><p>Loading the entire existing table into memory.</p></li>
+<li><p>Merging the new data with the existing table.</p></li>
+<li><p>Writing the merged data to the existing file.</p></li>
+</ul>
+<p>This process can be time-consuming and memory-intensive.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">])</span>
+
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="mi">8000</span><span class="p">),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save to a parquet file</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read the data</span>
+<span class="n">existing_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+
+<span class="c1"># Concat two dataframes</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span>
+
+<span class="c1"># Save to a file</span>
+<span class="n">df3</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Delta Lake offers a more efficient approach to handle this process. With Delta Lake, you can add, remove, or modify columns without the need to recreate the entire table.</p>
+<p>Delta Lake is also built on top of the Parquet file format so it retains the efficiency and columnar storage benefits of Parquet.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;employees&quot;</span>
+
+<span class="c1"># Write to Delta Lake</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df1</span><span class="p">)</span>
+
+<span class="c1"># Append to Delta Lake</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="simplify-table-merge-operations-with-delta-lake">
-<h2><span class="section-number">6.12.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.9. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1670,7 +1731,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.9. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.10. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1819,8 +1880,9 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.8. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
 </ul>
   </nav></div>
 
