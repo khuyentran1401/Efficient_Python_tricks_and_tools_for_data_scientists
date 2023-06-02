@@ -503,6 +503,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydeps-python-module-dependency-visualization">7.7.4. pydeps: Python Module Dependency Visualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-dependencies-of-two-requirements-files">7.7.5. Compare Dependencies of Two Requirements Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#poetry-python-tool-for-dependency-management-and-packaging">7.7.6. Poetry: Python Tool for Dependency Management and Packaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinstaller-bundle-a-python-application-into-a-single-executable">7.7.7. PyInstaller: Bundle a Python Application Into a Single Executable</a></li>
 </ul>
             </nav>
         </div>
@@ -947,6 +948,96 @@ Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class="
 <p><a class="reference external" href="https://python-poetry.org/docs">Link to Poetry</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/how-to-effortlessly-publish-your-python-package-to-pypi-using-poetry-44b305362f9f?gi=f5490e76b74">My full article on how to publish your Python package to PyPI using Poetry</a></p>
 </section>
+<section id="pyinstaller-bundle-a-python-application-into-a-single-executable">
+<h2><span class="section-number">7.7.7. </span>PyInstaller: Bundle a Python Application Into a Single Executable<a class="headerlink" href="#pyinstaller-bundle-a-python-application-into-a-single-executable" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyinstaller
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>To package a Python application along with its dependencies into a single executable, use PyInstaller. With PyInstaller, users can run the packaged app without installing a Python interpreter or any modules.</p>
+<p>To see how PyInstaller works, let’s start with creating a <code class="docutils literal notranslate"><span class="pre">main.py</span></code> script that depends on another Python script and various Python modules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> get_data.py
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  
+
+<span class="k">def</span> <span class="nf">get_data</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing get_data.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py
+<span class="kn">from</span> <span class="nn">get_data</span> <span class="kn">import</span> <span class="n">get_data</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Dataframe:</span><span class="se">\n</span><span class="si">{</span><span class="n">df</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting main.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, execute PyInstaller against the <code class="docutils literal notranslate"><span class="pre">main.py</span></code> script, specifying the <code class="docutils literal notranslate"><span class="pre">onefile</span></code> option to bundle the application into a single file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyinstaller<span class="w"> </span>main.py<span class="w"> </span>--onefile
+</pre></div>
+</div>
+<p>After the command completes, your directory structure will look like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.
+├──<span class="w"> </span>build/
+├──<span class="w"> </span>dist/
+│<span class="w">   </span>└──<span class="w"> </span>main
+├──<span class="w"> </span>main.spec
+├──<span class="w"> </span>main.py
+└──<span class="w"> </span>get_data.py
+</pre></div>
+</div>
+<p>The “dist/main” file contains all dependencies and executable for your application.</p>
+<p>Now, running the “dist/main” file will execute the application.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./dist/main
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataframe:
+          A         B
+0  0.255826 -1.038615
+1 -0.850358  0.318558
+2  1.255311  0.618789
+3  1.434642  0.474813
+4  0.676099  1.662942
+5  2.314174 -0.142569
+6 -0.704812 -0.095609
+7 -0.156275 -0.999871
+8  0.839902  0.366550
+9 -1.818387 -1.512015
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can conveniently share this file with your colleagues, allowing them to run the application without any additional setup or installations.</p>
+<p><a class="reference external" href="https://github.com/pyinstaller/pyinstaller">Link to PyInstaller</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1022,6 +1113,7 @@ Using version <span class=" -Color -Color-Bold">^1.22.2</span> for <span class="
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydeps-python-module-dependency-visualization">7.7.4. pydeps: Python Module Dependency Visualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-dependencies-of-two-requirements-files">7.7.5. Compare Dependencies of Two Requirements Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#poetry-python-tool-for-dependency-management-and-packaging">7.7.6. Poetry: Python Tool for Dependency Management and Packaging</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinstaller-bundle-a-python-application-into-a-single-executable">7.7.7. PyInstaller: Bundle a Python Application Into a Single Executable</a></li>
 </ul>
   </nav></div>
 
