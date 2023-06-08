@@ -499,6 +499,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
 </ul>
             </nav>
         </div>
@@ -648,6 +649,94 @@ To: /home/khuyen/book/book/Chapter4/Twitter.zip
 </div>
 <p><a class="reference external" href="https://pypi.org/project/gdown/">Link to gdown</a>.</p>
 </section>
+<section id="pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">
+<h2><span class="section-number">6.8.3. </span>pyserde: Effortless Serialization and Deserialization of Dataclass Objects<a class="headerlink" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyserde
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Dataclasses provide a concise syntax for defining data-holding classes. Paired with pyserde, you can easily serialize and deserialize dataclass objects.</p>
+<p>Serialization converts dataclass data into a serialized format (e.g., JSON, YAML) for easy storage and transmission. Deserialization reconstructs the dataclass object from serialized data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">serde</span> <span class="kn">import</span> <span class="n">serde</span>
+<span class="kn">from</span> <span class="nn">serde.json</span> <span class="kn">import</span> <span class="n">from_json</span><span class="p">,</span> <span class="n">to_json</span>
+<span class="kn">from</span> <span class="nn">serde.yaml</span> <span class="kn">import</span> <span class="n">from_yaml</span><span class="p">,</span> <span class="n">to_yaml</span>
+
+
+<span class="nd">@serde</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">user1</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;user1&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">to_json</span><span class="p">(</span><span class="n">user1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&quot;name&quot;:&quot;user1&quot;,&quot;age&quot;:20}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">from_json</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s1">&#39;{&quot;name&quot;:&quot;user1&quot;,&quot;age&quot;:20}&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>User(name=&#39;user1&#39;, age=20)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">to_yaml</span><span class="p">(</span><span class="n">user1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>age: 20
+name: user1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">from_yaml</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="s2">&quot;age: 20</span><span class="se">\n</span><span class="s2">name: user1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>User(name=&#39;user1&#39;, age=20)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/yukinarit/pyserde">Link to pyserde</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -719,6 +808,7 @@ To: /home/khuyen/book/book/Chapter4/Twitter.zip
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
 </ul>
   </nav></div>
 
