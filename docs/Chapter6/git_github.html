@@ -504,6 +504,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#astral-organize-your-github-stars-with-ease">7.6.5. Astral: Organize Your Github Stars with Ease</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-install-e-install-forked-github-repository-using-pip">7.6.6. pip install -e: Install Forked GitHub Repository Using Pip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-open-open-a-github-page-for-a-local-repository">7.6.7. git-open: Open a GitHub Page for a Local Repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-commit-summarizer-automate-pull-request-summarization">7.6.8. gpt-commit-summarizer: Automate Pull Request Summarization</a></li>
 </ul>
             </nav>
         </div>
@@ -590,6 +591,33 @@ $<span class="w"> </span>git<span class="w"> </span>commit
 <p><img alt="" src="../_images/gitopen.gif" /></p>
 <p><a class="reference external" href="https://github.com/paulirish/git-open">Link to git-open</a>.</p>
 </section>
+<section id="gpt-commit-summarizer-automate-pull-request-summarization">
+<h2><span class="section-number">7.6.8. </span>gpt-commit-summarizer: Automate Pull Request Summarization<a class="headerlink" href="#gpt-commit-summarizer-automate-pull-request-summarization" title="Permalink to this headline">#</a></h2>
+<p>gpt-commit-summarizer is a GitHub Action that leverages the power of GPT to summarize the changes made in a pull request.</p>
+<p>This eliminates the need for manual summarization, saving you valuable time, especially when dealing with numerous changes within a commit.</p>
+<p><img alt="" src="../_images/gpt-commit.gif" /></p>
+<p>To use gpt-commit-summarizer, simply add the the following workflow file to your repository:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPT Commits summarizer</span>
+<span class="c1"># Summary: This action will write a comment about every commit in a pull request, as well as generate a summary for every file that was modified and add it to the review page, compile a PR summary from all commit summaries and file diff summaries, and delete outdated code review comments</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">types</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">opened</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">synchronize</span><span class="p p-Indicator">]</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">summarize</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">permissions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write-all</span><span class="w">  </span><span class="c1"># Some repositories need this line</span>
+
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KanHarI/gpt-commit-summarizer@master</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">GITHUB_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+<span class="w">          </span><span class="nt">OPENAI_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.OPENAI_API_KEY }}</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/KanHarI/gpt-commit-summarizer/">Link to gpt-commit-summarizer</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -666,6 +694,7 @@ $<span class="w"> </span>git<span class="w"> </span>commit
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#astral-organize-your-github-stars-with-ease">7.6.5. Astral: Organize Your Github Stars with Ease</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-install-e-install-forked-github-repository-using-pip">7.6.6. pip install -e: Install Forked GitHub Repository Using Pip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-open-open-a-github-page-for-a-local-repository">7.6.7. git-open: Open a GitHub Page for a Local Repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-commit-summarizer-automate-pull-request-summarization">7.6.8. gpt-commit-summarizer: Automate Pull Request Summarization</a></li>
 </ul>
   </nav></div>
 
