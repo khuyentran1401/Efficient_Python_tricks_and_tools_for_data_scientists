@@ -523,6 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.24. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.25. Check Conflicting Labels with Deepchecks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2381,6 +2382,142 @@ Results (0.38s):
 <script type="application/vnd.jupyter.widget-view+json">{"model_id": "18c5dbd0a25d4e25a03f577c98ee641a", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="c1"># Original data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
+
+<span class="c1"># Scaling transformation</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">scaled_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Inverse transformation</span>
+<span class="n">original_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">scaled_data</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original data:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scaled data:&quot;</span><span class="p">,</span> <span class="n">scaled_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Restored data:&quot;</span><span class="p">,</span> <span class="n">original_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data: [[1 3 5 7 9]]
+Scaled data: [[0. 0. 0. 0. 0.]]
+Restored data: [[1. 3. 5. 7. 9.]]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="leab-ab-testing-analysis-in-python">
+<h2><span class="section-number">6.13.27. </span>leAB: AB Testing Analysis in Python<a class="headerlink" href="#leab-ab-testing-analysis-in-python" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>leab
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>AB testing is crucial for assessing the effectiveness of changes in a controlled environment. With the leAB library, you can compute the appropriate sample size before launching the test.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">before</span>
+
+<span class="c1"># What is the number of sample needed per variation to detect a 1% result </span>
+<span class="c1"># difference in a population with a 15% conversion rate?</span>
+<span class="n">ab_test</span> <span class="o">=</span> <span class="n">before</span><span class="o">.</span><span class="n">leSample</span><span class="p">(</span><span class="n">conversion_rate</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">min_detectable_effect</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ab_test</span><span class="o">.</span><span class="n">get_size_per_variation</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20177
+</pre></div>
+</div>
+</div>
+</div>
+<p>After reaching the sample size, you can compare the successes between group A and group B.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">after</span><span class="p">,</span> <span class="n">leDataset</span>
+
+<span class="c1"># Import sample data for A and B</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">leDataset</span><span class="o">.</span><span class="n">SampleLeSuccess</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>success</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ab_test</span> <span class="o">=</span> <span class="n">after</span><span class="o">.</span><span class="n">leSuccess</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">confidence_level</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+
+<span class="c1"># Get the conclusion on the test </span>
+<span class="n">ab_test</span><span class="o">.</span><span class="n">get_verdict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;No significant difference&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/tlentali/leab">Link to leAB</a>.</p>
 </section>
 </section>
 
@@ -2477,6 +2614,7 @@ Results (0.38s):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.24. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.25. Check Conflicting Labels with Deepchecks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 </ul>
   </nav></div>
 
