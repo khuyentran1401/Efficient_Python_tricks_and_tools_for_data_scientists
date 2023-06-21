@@ -1140,69 +1140,56 @@ Total count: 2
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create delta table</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>x</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>10</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|    |   x |
+|---:|----:|
+|  0 |   1 |
+|  1 |   2 |
+|  2 |   3 |
+|  3 |   8 |
+|  4 |   9 |
+|  5 |  10 |
+</pre></div>
+</div>
+</div>
 </div>
 <p>Our Delta table now has two versions. Version 0 contains the initial data and Version 1 includes the data that was appended.</p>
 <p><img alt="" src="../_images/delta_lake.png" /></p>
+<p>To get the metadata of files that currently make up the current table such as creation time, size, and statistics, call the <code class="docutils literal notranslate"><span class="pre">get_add_actions</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">get_add_actions</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                               path  size_bytes   
+0  0-a6738752-efca-4577-8cbf-9c69b404f2ee-0.parquet        1654  \
+1  1-7a6df896-715a-4d4a-b210-b12e3fe57bc6-0.parquet        1654   
+
+        modification_time  data_change  num_records  null_count.x  min.x   
+0 2023-06-21 14:07:14.479         True            3             0      1  \
+1 2023-06-21 14:07:18.657         True            3             0      8   
+
+   max.x  
+0      3  
+1     10  
+</pre></div>
+</div>
+</div>
+</div>
 <p>To access prior versions, simply specify the version number when loading the Delta table:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read Version 0 of the dataset</span>
-<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">dt0</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dt0</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
