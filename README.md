@@ -32,8 +32,3 @@ This book includes more than 700 tips and tools I have shared daily on my websit
 ![image](img/mypic.jpeg)
 
 Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 500+ daily data science tips at [Data Science Simplified](https://mathdatasimplified.com/). Her current mission is to make open-source more accessible to the data science community. 
-
-## Supporters
-Special thanks to these supporters for supporting this project!
-
-[<img src="https://github.com/khuyentran1401/Data-science/blob/master/img/danny.png?raw=true" width="100" height="100">](https://github.com/DataWithDanny) [<img src="https://github.com/khuyentran1401/Data-science/blob/master/img/sagar.jpeg?raw=true" width="100" height="100">](https://www.linkedin.com/in/sagar-ravindra-sonawane/)
