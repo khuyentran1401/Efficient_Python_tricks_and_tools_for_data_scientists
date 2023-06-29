@@ -502,6 +502,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadratic-data-science-speadsheet-with-python-and-sql">6.4.3. quadratic: Data Science Speadsheet with Python and SQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">6.4.4. whylogs: Data Logging Made Easy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.4.6. SQLModel: Simplify SQL Database Interactions in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -905,6 +906,108 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 </div>
 <p><a class="reference external" href="https://github.com/manoss96/fluke">Link to Fluke</a>.</p>
 </section>
+<section id="sqlmodel-simplify-sql-database-interactions-in-python">
+<h2><span class="section-number">6.4.6. </span>SQLModel: Simplify SQL Database Interactions in Python<a class="headerlink" href="#sqlmodel-simplify-sql-database-interactions-in-python" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlmodel
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Interacting with SQL databases from Python code can often be challenging to write and comprehend.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="c1"># Connect to the database</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;users.db&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a cursor object</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># Define the SQL statement for creating the table</span>
+<span class="n">create_table_sql</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    CREATE TABLE IF NOT EXISTS membership (</span>
+<span class="s1">        id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s1">        username TEXT,</span>
+<span class="s1">        age INTEGER,</span>
+<span class="s1">        active INTEGER</span>
+<span class="s1">    )</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="c1"># Execute the SQL statement to create the table</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_table_sql</span><span class="p">)</span>
+
+<span class="c1"># Define the SQL statement for inserting rows</span>
+<span class="n">insert_rows_sql</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    INSERT INTO membership (username, age, active)</span>
+<span class="s1">    VALUES (?, ?, ?)</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="c1"># Define the rows to be inserted</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># Execute the SQL statement for each row</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">insert_rows_sql</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+
+<span class="c1"># Commit the changes to the database</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="c1"># Close the cursor and the database connection</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>However, by utilizing SQLModel, you can harness Pydantic-like classes that leverage Python type annotations, making the code more intuitive to write and easier to understand.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
+
+
+<span class="k">class</span> <span class="nc">Membership</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> 
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span> 
+    <span class="n">active</span><span class="p">:</span> <span class="nb">int</span>
+    
+<span class="c1"># age is converted from str to int through type coercion</span>
+<span class="n">user1</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;25&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="n">user2</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">user3</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;35&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;sqlite:///users.db&quot;</span><span class="p">)</span>
+
+
+<span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Session</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user1</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user2</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user3</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/tiangolo/sqlmodel">Link to SQLModel</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -979,6 +1082,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadratic-data-science-speadsheet-with-python-and-sql">6.4.3. quadratic: Data Science Speadsheet with Python and SQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">6.4.4. whylogs: Data Logging Made Easy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.4.6. SQLModel: Simplify SQL Database Interactions in Python</a></li>
 </ul>
   </nav></div>
 
