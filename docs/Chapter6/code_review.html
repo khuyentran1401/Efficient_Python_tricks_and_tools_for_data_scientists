@@ -257,6 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/best_python_practice_tools.html">6.11. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter6.html">7. Cool Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -505,7 +506,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.9. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 </ul>
             </nav>
         </div>
@@ -1052,84 +1052,6 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <p><img alt="" src="../_images/memory_profiler.png" /></p>
 <p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler">Link to memory_profiler</a>.</p>
 </section>
-<section id="sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">
-<h2><span class="section-number">7.3.9. </span>SQLFluff: A Linter and Auto-Formatter for Your SQL Code<a class="headerlink" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code" title="Permalink to this headline">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlfluff
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>Linting helps ensure that code follows consistent style conventions, making it easier to understand and maintain. With SQLFluff, you can automatically lint your SQL code and correct most linting errors, freeing you up to focus on more important tasks.</p>
-<p>SQLFluff supports various SQL dialects such as ANSI, MySQL, PostgreSQL, BigQuery, Databricks, Oracle, Teradata, etc.</p>
-<p>In the code below, we use SQLFLuff to lint and fix the SQL code in the file <code class="docutils literal notranslate"><span class="pre">sqlfluff_example.sql</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> sqlfluff_example.sql
-<span class="n">SELECT</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>  <span class="n">AS</span> <span class="n">foo</span><span class="p">,</span>
-<span class="n">c</span> <span class="n">AS</span> <span class="n">bar</span> <span class="kn">from</span> <span class="nn">my_table</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sqlfluff<span class="w"> </span>lint<span class="w"> </span>sqlfluff_example.sql<span class="w"> </span>--dialect<span class="w"> </span>postgres
-</pre></div>
-</div>
-<div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>== [<span class=" -Color -Color-Bold -Color-Bold-Black">sqlfluff_example.sql</span>] <span class=" -Color -Color-Red">FAIL</span>                            
-<span class=" -Color -Color-Blue">L:   1 | P:   1 | LT09 | </span>Select targets should be on a new line unless there is
-                       <span class=" -Color -Color-Blue">| </span>only one select target.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.select_targets</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   1 | ST06 | </span>Select wildcards then simple targets before calculations
-                       <span class=" -Color -Color-Blue">| </span>and aggregates. [<span class=" -Color -Color-Bold -Color-Bold-Black">structure.column_order</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   7 | LT02 | </span>Expected line break and indent of 4 spaces before &#39;a&#39;.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   9 | LT01 | </span>Expected single whitespace between naked identifier and
-                       <span class=" -Color -Color-Blue">| </span>binary operator &#39;+&#39;. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:  10 | LT01 | </span>Expected single whitespace between binary operator &#39;+&#39;
-                       <span class=" -Color -Color-Blue">| </span>and naked identifier. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:  11 | LT01 | </span>Expected only single space before &#39;AS&#39; keyword. Found &#39; 
-                       <span class=" -Color -Color-Blue">| </span>&#39;. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:   1 | LT02 | </span>Expected indent of 4 spaces.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:   9 | LT02 | </span>Expected line break and no indent before &#39;from&#39;.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:  10 | CP01 | </span>Keywords must be consistently upper case.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">capitalisation.keywords</span>]
-All Finished 📜 🎉!
-
-</pre></div>
-</div>
-</div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sqlfluff<span class="w"> </span>fix<span class="w"> </span>sqlfluff_example.sql<span class="w"> </span>--dialect<span class="w"> </span>postgres
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> sqlfluff_example.sql
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
-    c AS bar,
-    a + b AS foo
-FROM my_table
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/sqlfluff/sqlfluff">Link to SQLFluff</a>.</p>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1207,7 +1129,6 @@ FROM my_table
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">7.3.9. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 </ul>
   </nav></div>
 
