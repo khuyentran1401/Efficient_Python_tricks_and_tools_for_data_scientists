@@ -257,6 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="best_python_practice_tools.html">6.11. Tools for Best Python Practices</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.13. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -501,13 +502,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandasai-gain-insights-from-your-pandas-dataframe-with-ai">6.12.3. PandasAI: Gain Insights From Your pandas DataFrame With AI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.4. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.8. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.10. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
             </nav>
         </div>
@@ -989,57 +989,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </section>
-<section id="fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-<h2><span class="section-number">6.12.5. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Permalink to this headline">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>fugue<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>Do you like to use both Python and SQL to manipulate data? FugueSQL is an interface that allows users to use SQL to work with Pandas, Spark, and Dask DataFrames.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">fugue_sql</span> <span class="kn">import</span> <span class="n">fsql</span>
-
-<span class="n">input_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">])})</span>
-
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT price, fruit FROM input_df</span>
-<span class="s2">WHERE price &gt; 1</span>
-<span class="s2">PRINT</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">fsql</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PandasDataFrame
-price:long|fruit:str
-----------+---------
-2         |apple    
-3         |orange   
-Total count: 2
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrames()
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
-</section>
 <section id="version-your-pandas-dataframe-with-delta-lake">
-<h2><span class="section-number">6.12.6. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.5. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1235,7 +1186,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="overwrite-partitions-of-a-pandas-dataframe">
-<h2><span class="section-number">6.12.7. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.6. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1473,7 +1424,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">
-<h2><span class="section-number">6.12.8. </span>Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas<a class="headerlink" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.7. </span>Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas<a class="headerlink" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1547,7 +1498,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="simplify-table-merge-operations-with-delta-lake">
-<h2><span class="section-number">6.12.9. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1733,7 +1684,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.10. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.9. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1807,7 +1758,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.11. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.10. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2100,13 +2051,12 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandarallel-a-simple-tool-to-parallelize-pandas-operations">6.12.2. pandarallel: A Simple Tool to Parallelize Pandas Operations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandasai-gain-insights-from-your-pandas-dataframe-with-ai">6.12.3. PandasAI: Gain Insights From Your pandas DataFrame With AI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fugue-use-pandas-functions-on-the-spark-and-dask-engines">6.12.4. fugue: Use pandas Functions on the Spark and Dask Engines.</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.12.5. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.6. Version Your Pandas DataFrame with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.7. Overwrite Partitions of a pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.8. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.10. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
   </nav></div>
 
