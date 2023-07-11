@@ -519,21 +519,30 @@ document.write(`
 <p>pathlib is a Python library that makes it easy to handle file in Python.</p>
 <section id="create-a-new-directory-and-file">
 <h2><span class="section-number">3.9.1. </span>Create a New Directory and File<a class="headerlink" href="#create-a-new-directory-and-file" title="Permalink to this headline">#</a></h2>
-<p>If you want to create new directories and files, you can either use os or pathlib. However, pathlib’s syntax is more straightforward and easier to understand than os’s syntax.</p>
+<p>You can use either os or pathlib to create new directories and files in Python. pathlib is my preferred choice because it is simpler to use and easier to understand.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;new&#39;</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;new_file.txt&#39;</span>
-
 <span class="c1"># Create a new directory</span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">)</span>
 
-<span class="c1"># Create new file inside new directory</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">):</span>
-    <span class="k">pass</span>
+<span class="c1"># Create a new file inside new directory</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="s2">&quot;new_file.txt&quot;</span><span class="p">)</span>
+
+<span class="c1"># Write text to the file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read the file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hello World!
 </pre></div>
 </div>
 </div>
@@ -543,30 +552,31 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="c1"># Create a new directory</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;new&#39;</span><span class="p">)</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">)</span>
 <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Create new file inside new directory</span>
-<span class="n">file</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="s1">&#39;new_file.txt&#39;</span>
-<span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>tree<span class="w"> </span>new<span class="w"> </span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">folder</span> <span class="o">/</span> <span class="s2">&quot;new_file.txt&quot;</span>
+
+<span class="c1"># Write text</span>
+<span class="n">file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read text</span>
+<span class="n">file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">new</span>
-└── new_file.txt
-
-0 directories, 1 file
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12
 </pre></div>
 </div>
 </div>
+</div>
+<p>The following is the structure of the <code class="docutils literal notranslate"><span class="pre">new</span></code> folder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.
+└──<span class="w"> </span>new/
+<span class="w">    </span>└──<span class="w"> </span>new_file.txt
+</pre></div>
 </div>
 </section>
 <section id="get-access-to-files-from-home-directory">
