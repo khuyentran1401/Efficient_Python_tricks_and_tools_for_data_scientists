@@ -506,8 +506,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.10. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
             </nav>
         </div>
@@ -1572,11 +1573,6 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 <div class="cell tag_hide-cell docutils container">
@@ -1683,8 +1679,155 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
+<section id="the-best-way-to-append-mismatched-data-to-parquet-tables">
+<h2><span class="section-number">6.12.9. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this headline">#</a></h2>
+<p>Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.</p>
+<p>In the following code, the datatype of <code class="docutils literal notranslate"><span class="pre">col3</span></code> is supposed to be <code class="docutils literal notranslate"><span class="pre">int64</span></code> instead of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;test.parquet&#39;</span>
+
+<span class="c1"># Write a dataframe to a parquet file</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># Append a dataframe to a parquet file</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;col3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+<span class="n">concatenation</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span> <span class="c1"># concatenate dataframes</span>
+<span class="n">concatenation</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="c1"># overwrite original file</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2  col3
+0     1     3   NaN
+1     2     4   NaN
+0     2     7   0.0 
+
+col1      int64
+col2      int64
+col3    float64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>With Delta Lake, you can effortlessly append DataFrames with extra columns while ensuring the preservation of your data’s schema.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">delta</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Configure Spark to use Delta</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pyspark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;MyApp&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span>
+        <span class="s2">&quot;spark.sql.catalog.spark_catalog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">configure_spark_with_delta_pip</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a spark Dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Write to a delta table</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new DataFrame</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">,</span> <span class="s2">&quot;col3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+----+----+
+|col1|col2|col3|
++----+----+----+
+|   2|   7|   0|
++----+----+----+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Append to the existing Delta table</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;mergeSchema&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the Delta table</span>
+<span class="kn">from</span> <span class="nn">delta.tables</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<span class="n">concat_df</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">pandas_api</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2  col3
+0     2     7   0.0
+1     1     3   NaN
+2     2     4   NaN 
+
+col1    int64
+col2    int64
+col3    int64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
+</section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.9. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.10. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1758,7 +1901,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.10. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.11. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2055,8 +2198,9 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.9. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.10. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
   </nav></div>
 
