@@ -501,6 +501,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.4. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
 </ul>
             </nav>
         </div>
@@ -738,6 +739,55 @@ name: user1
 </div>
 <p><a class="reference external" href="https://github.com/yukinarit/pyserde">Link to pyserde</a>.</p>
 </section>
+<section id="itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">
+<h2><span class="section-number">6.8.4. </span>ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back<a class="headerlink" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>itsdangerous
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>When passing data between different web requests, there is a risk of malicious code injection.</p>
+<p>To ensure the safety of passing data to untrusted environments, use ItsDangerous. ItsDangerous adds a unique signature to the data to verify that the data has not been tampered with during transmission.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">URLSafeSerializer</span>
+
+<span class="n">auth_s</span> <span class="o">=</span> <span class="n">URLSafeSerializer</span><span class="p">(</span><span class="s2">&quot;some key&quot;</span><span class="p">)</span>
+<span class="n">token</span> <span class="o">=</span> <span class="n">auth_s</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;khuyentran&quot;</span><span class="p">})</span>
+<span class="n">token</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;eyJpZCI6NSwibmFtZSI6ImtodXllbnRyYW4ifQ.3cQlkHP1MyeUS8jNQmGV_mbrxsQ&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the data back from the token using the secret key</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">auth_s</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;khuyentran&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pallets/itsdangerous/">Link to ItsDangerous</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -810,6 +860,7 @@ name: user1
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.4. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
 </ul>
   </nav></div>
 
