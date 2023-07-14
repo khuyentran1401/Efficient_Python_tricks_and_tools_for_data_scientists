@@ -525,6 +525,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.25. Check Conflicting Labels with Deepchecks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
 </ul>
             </nav>
         </div>
@@ -2520,6 +2521,59 @@ Restored data: [[1. 3. 5. 7. 9.]]
 </div>
 <p><a class="reference external" href="https://github.com/tlentali/leab">Link to leAB</a>.</p>
 </section>
+<section id="pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">
+<h2><span class="section-number">6.13.28. </span>pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite<a class="headerlink" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-postgresql
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to incorporate database testing seamlessly within your pytest test suite, use pytest-postgresql.</p>
+<p>pytest-postgres provides fixtures that manage the setup and cleanup of test databases, ensuring repeatable tests. Additionally, each test runs in isolation, preventing any impact on the production database from testing changes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_postgres.py 
+<span class="k">def</span> <span class="nf">test_query_results</span><span class="p">(</span><span class="n">postgresql</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the query results are as expected.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">postgresql</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE test_table (id SERIAL PRIMARY KEY, name VARCHAR);&quot;</span><span class="p">)</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO test_table (name) VALUES (&#39;John&#39;), (&#39;Jane&#39;), (&#39;Alice&#39;);&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Assert the results</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM test_table;&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span> <span class="o">==</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;Jane&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;Alice&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_postgres.py<span class="w"> </span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: dash-2.10.2, postgresql-5.0.0, anyio-3.6.2
+collected 1 item                                                               
+
+test_postgres.py <span class=" -Color -Color-Green">.                                                       [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 1.20s ===============================</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/ClearcodeHQ/pytest-postgresql">Link to pytest-postgresql</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2616,6 +2670,7 @@ Restored data: [[1. 3. 5. 7. 9.]]
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.25. Check Conflicting Labels with Deepchecks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
 </ul>
   </nav></div>
 
