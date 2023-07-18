@@ -508,7 +508,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
             </nav>
         </div>
@@ -1910,8 +1911,157 @@ Polars time: 41.079080 seconds
 </div>
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
+<section id="polars-speed-up-data-processing-12x-with-lazy-execution">
+<h2><span class="section-number">6.12.11. </span>Polars: Speed Up Data Processing 12x with Lazy Execution<a class="headerlink" href="#polars-speed-up-data-processing-12x-with-lazy-execution" title="Permalink to this headline">#</a></h2>
+<p>Polars is a lightning-fast DataFrame library that utilizes all available cores on your machine.</p>
+<p>Polars has two APIs: an eager API and a lazy API.</p>
+<p>The eager execution is similar to Pandas, which executes code immediately.</p>
+<p>In contrast, the lazy execution defers computations until the <code class="docutils literal notranslate"><span class="pre">collect()</span></code> method is called. This approach avoids unnecessary computations, making lazy execution potentially more efficient than eager execution.</p>
+<p>The code following code shows filter operations on a DataFrame containing 10 million rows. Running polars with lazy execution is 12 times faster than using pandas.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a random seed for reproducibility</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Number of rows in the dataset</span>
+<span class="n">num_rows</span> <span class="o">=</span> <span class="mi">10_000_000</span>
+
+<span class="c1"># Sample data for categorical columns</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">]</span>
+
+<span class="c1"># Generate random data for the dataset</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">categories</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+    <span class="s2">&quot;Cat2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">categories</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+    <span class="s2">&quot;Num1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+    <span class="s2">&quot;Num2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Create a pandas DataFrame and filter the DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Cat1</th>
+      <th>Cat2</th>
+      <th>Num1</th>
+      <th>Num2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>c</td>
+      <td>a</td>
+      <td>40</td>
+      <td>7292</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>d</td>
+      <td>b</td>
+      <td>45</td>
+      <td>7849</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>a</td>
+      <td>a</td>
+      <td>93</td>
+      <td>6940</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>c</td>
+      <td>a</td>
+      <td>46</td>
+      <td>1265</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>c</td>
+      <td>a</td>
+      <td>98</td>
+      <td>2509</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> df[(df[&#39;Cat1&#39;] == &#39;a&#39;) &amp; (df[&#39;Cat2&#39;] == &#39;b&#39;) &amp; (df[&#39;Num1&#39;] &gt;= 70)]
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>706 ms ± 75.4 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a polars DataFrame and filter the DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> pl_df.lazy().filter((pl.col(&#39;Cat1&#39;) == &#39;a&#39;) &amp; (pl.col(&#39;Cat2&#39;) == &#39;b&#39;) &amp; (pl.col(&#39;Num1&#39;) &gt;= 70)).collect()
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>58.1 ms ± 428 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
+</section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.11. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.12. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2210,7 +2360,8 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.11. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
   </nav></div>
 
