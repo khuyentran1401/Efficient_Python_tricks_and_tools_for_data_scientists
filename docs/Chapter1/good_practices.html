@@ -1255,17 +1255,18 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
 </section>
 <section id="a-function-should-have-fewer-than-four-arguments">
 <h2><span class="section-number">2.9.16. </span>A Function Should Have Fewer Than Four Arguments<a class="headerlink" href="#a-function-should-have-fewer-than-four-arguments" title="Permalink to this headline">#</a></h2>
-<p>A function should only do one thing and have fewer than four arguments to make testing easier.</p>
-<p>If a function only does one task but has more than three arguments, consider grouping the arguments using higher-level objects such as a dataclass.</p>
+<p>As the number of function arguments increases, it becomes challenging to keep track of the purpose of numerous arguments, making it difficult for developers to understand and use the function.</p>
+<p>To improve the code readability, you can bundle multiple related arguments into a cohesive data structure with a dataclass or a Pydantic model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process</span><span class="p">(</span>
-    <span class="n">drop_columns</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">zip_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">raw_train_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">raw_test_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">processed_train_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">processed_test_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </div>
@@ -1276,21 +1277,18 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">ProcessConfig</span><span class="p">:</span>
-    <span class="n">drop_columns</span><span class="p">:</span> <span class="nb">list</span> 
-    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> 
-    <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span> 
-    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ProcessConfig</span><span class="p">):</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">target</span> 
-    <span class="n">test_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">test_size</span>
+<span class="k">class</span> <span class="nc">RawLocation</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">zip_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path_train</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path_test</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ProcessedLocation</span><span class="p">:</span>
+    <span class="n">path_train</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path_test</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">raw_location</span><span class="p">:</span> <span class="n">RawLocation</span><span class="p">,</span> <span class="n">processed_location</span><span class="p">:</span> <span class="n">ProcessedLocation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </div>
