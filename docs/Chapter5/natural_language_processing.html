@@ -518,6 +518,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inflect-generate-plurals-singulars-and-indefinite-articles">6.6.18. inflect: Generate Plurals, Singulars, and Indefinite Articles</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flashtext-extract-and-replace-keywords-in-sentences">6.6.19. FlashText: Extract and Replace Keywords in Sentences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
 </ul>
             </nav>
         </div>
@@ -2160,6 +2161,59 @@ Reading english - 1grams ...
 </div>
 <p><a class="reference external" href="https://github.com/cbaziotis/ekphrasis">Link to ekphrasis</a>.</p>
 </section>
+<section id="chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">
+<h2><span class="section-number">6.6.21. </span>Chroma: The Lightning-Fast Solution to Text Embeddings and Querying<a class="headerlink" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>chromadb
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Semantic search uses embedding to understand the meaning of search queries instead of relying solely on keyword matches to locate documents.</p>
+<p>Embedding is like a translator converting words into numbers so that computers can understand. Chroma makes it easy to create embeddings from documents and find similar results with a few lines of code.</p>
+<p>In the code below, the documents with IDs 1 and 2 closely match the given query text.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">chromadb</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">chromadb</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+<span class="n">collection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_or_create_collection</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+
+<span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="n">documents</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;A man is eating food.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;A man is eating yellow noodles.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The girl is carrying a baby.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;A man is riding a horse.&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">query_result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">query_texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A man is eating pasta.&quot;</span> <span class="p">],</span>
+    <span class="n">n_results</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">query_result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;ids&#39;: [[&#39;2&#39;, &#39;1&#39;]], &#39;distances&#39;: [[0.5690374970436096, 0.5929027199745178]], &#39;metadatas&#39;: [[{}, {}]], &#39;embeddings&#39;: None, &#39;documents&#39;: [[&#39;A man is eating yellow noodles.&#39;, &#39;A man is eating food.&#39;]]}
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/chroma-core/chroma">Link to Chroma</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2249,6 +2303,7 @@ Reading english - 1grams ...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inflect-generate-plurals-singulars-and-indefinite-articles">6.6.18. inflect: Generate Plurals, Singulars, and Indefinite Articles</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flashtext-extract-and-replace-keywords-in-sentences">6.6.19. FlashText: Extract and Replace Keywords in Sentences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
 </ul>
   </nav></div>
 
