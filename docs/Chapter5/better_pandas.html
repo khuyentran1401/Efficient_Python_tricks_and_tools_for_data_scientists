@@ -2285,19 +2285,18 @@ Polars time: 41.079080 seconds
 </section>
 <section id="efficient-sql-operations-with-duckdb-on-pandas-dataframes">
 <h2><span class="section-number">6.12.13. </span>Efficient SQL Operations with DuckDB on Pandas DataFrames<a class="headerlink" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes" title="Permalink to this headline">#</a></h2>
-<div class="cell docutils container">
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>duckdb
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
-</pre></div>
-</div>
-</div>
+</details>
 </div>
 <p>Using pandas with SQL allows you to use the flexible SQL language alongside Python for downstream tasks like feature engineering and model training.</p>
 <p>With DuckDB, you can efficiently run SQL operations on pandas DataFrames without the need to manage a separate DBMS server.</p>
@@ -2308,13 +2307,13 @@ Polars time: 41.079080 seconds
 <span class="nb">print</span><span class="p">(</span><span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(a) FROM mydf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>In the code below, aggregating data using DuckDB is nearly 27 times faster compared to aggregating with pandas.</p>
+<p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">duckdb</span>
 
-<span class="n">lineitem</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2322,15 +2321,17 @@ Polars time: 41.079080 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">lineitem</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;l_returnflag&quot;</span><span class="p">,</span> <span class="s2">&quot;l_linestatus&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-    <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
-    <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">),</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;l_returnflag&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+  <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
+  <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
+  <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">),</span>
+  <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>363 ms ± 6.22 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>226 ms ± 4.63 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div>
 </div>
 </div>
@@ -2338,14 +2339,22 @@ Polars time: 41.079080 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="s2">&quot;SELECT SUM(l_extendedprice), MIN(l_extendedprice) FROM lineitem&quot;</span> <span class="s2">&quot;&quot;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
+<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">      l_returnflag,</span>
+<span class="s2">      SUM(l_extendedprice),</span>
+<span class="s2">      MIN(l_extendedprice),</span>
+<span class="s2">      MAX(l_extendedprice),</span>
+<span class="s2">      AVG(l_extendedprice)</span>
+<span class="s2">FROM df</span>
+<span class="s2">GROUP BY</span>
+<span class="s2">        l_returnflag</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>12.7 ms ± 409 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37 ms ± 2.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 </pre></div>
 </div>
 </div>
