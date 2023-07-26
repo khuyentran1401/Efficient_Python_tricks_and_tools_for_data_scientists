@@ -2377,8 +2377,9 @@ Polars time: 41.079080 seconds
 </div>
 </details>
 </div>
-<p>DuckDB optimizes query execution with multiple optimizations, while PyArrow efficiently manages in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.</p>
-<p>In the code below, we convert Delta Lake tables to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB. Running DuckDB on PyArrow dataset is approximately 2818 times faster than running DuckDB on pandas.</p>
+<p>DuckDB leverages various optimizations for query execution, while PyArrow efficiently handles in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.</p>
+<p>In the code below, we convert a Delta Lake table with over 6 million rows to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB.</p>
+<p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -2404,12 +2405,12 @@ Polars time: 41.079080 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
 <span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50 and l_discount &lt; 0.05&quot;</span><span class="p">)</span>
+<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.84 s ± 269 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.77 s ± 108 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div>
 </div>
 </div>
@@ -2418,12 +2419,12 @@ Polars time: 41.079080 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
 <span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pyarrow_dataset</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50 and l_discount &lt; 0.05&quot;</span><span class="p">)</span>
+<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.01 ms ± 58.6 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>954 µs ± 32.2 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
