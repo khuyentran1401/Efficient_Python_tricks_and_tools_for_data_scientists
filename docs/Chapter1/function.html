@@ -605,60 +605,45 @@ document.write(`
 </section>
 <section id="decorator-in-python">
 <h2><span class="section-number">2.5.4. </span>Decorator in Python<a class="headerlink" href="#decorator-in-python" title="Permalink to this headline">#</a></h2>
-<p>Do you want to add the same block of code to different functions in Python? If so, try decorator.</p>
-<p>In the code below, I created the decorator to track the time of the function <code class="docutils literal notranslate"><span class="pre">say_hello</span></code>.</p>
+<p>If you want to apply a common piece of functionality to multiple functions while keeping the code clean, use decorator. Decorator modifies the behavior of your Python functions without altering the code directly.</p>
+<p>In the code below, <code class="docutils literal notranslate"><span class="pre">time_func</span></code> is a decorator that can be used to track the execution time of any function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> 
 
 <span class="k">def</span> <span class="nf">time_func</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This happens before the function is called&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="n">func</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;This happens after the funciton is called&#39;</span><span class="p">)</span>
+        <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The duration is&#39;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
-
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Elapsed time: </span><span class="si">{</span><span class="p">(</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">ms&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">wrapper</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Now all I need to do is to add <code class="docutils literal notranslate"><span class="pre">&#64;time_func</span></code> before the function <code class="docutils literal notranslate"><span class="pre">say_hello</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@time_func</span>
-<span class="k">def</span> <span class="nf">say_hello</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Add </span><span class="si">{</span><span class="n">num1</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">num2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
 
-<span class="n">say_hello</span><span class="p">()</span>
+<span class="nd">@time_func</span>
+<span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiply </span><span class="si">{</span><span class="n">num1</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">num2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num1</span> <span class="o">*</span> <span class="n">num2</span>
+
+<span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">multiply</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This happens before the function is called
-hello
-This happens after the funciton is called
-The duration is 0.0002987384796142578 s
-</pre></div>
-</div>
-</div>
-</div>
-<p>Decorator makes the code clean and shortens repetitive code. If I want to track the time of another function, for example, <code class="docutils literal notranslate"><span class="pre">func2()</span></code>, I can just use:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@time_func</span>
-<span class="k">def</span> <span class="nf">func2</span><span class="p">():</span>
-    <span class="k">pass</span>
-<span class="n">func2</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>This happens before the function is called
-This happens after the funciton is called
-The duration is 4.38690185546875e-05 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Add 1 and 2
+Elapsed time: 1.006ms
+Multiply 1 and 2
+Elapsed time: 0.027ms
 </pre></div>
 </div>
 </div>
