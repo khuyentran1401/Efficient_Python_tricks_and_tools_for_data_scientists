@@ -504,6 +504,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.14.4. SQLModel: Simplify SQL Database Interactions in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.14.5. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlparse-extract-components-from-a-sql-statement-in-python">6.14.9. sqlparse: Extract Components From a SQL Statement in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -872,6 +875,233 @@ FROM my_table
 </div>
 <p><a class="reference external" href="https://github.com/postgresml/postgresml">Link to PostgresML</a>.</p>
 </section>
+<section id="efficient-sql-operations-with-duckdb-on-pandas-dataframes">
+<h2><span class="section-number">6.14.7. </span>Efficient SQL Operations with DuckDB on Pandas DataFrames<a class="headerlink" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>duckdb
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using SQL with pandas empowers data scientists to leverage SQL’s powerful querying capabilities alongside the data manipulation functionalities of pandas.</p>
+<p>However, traditional database systems often demand the management of a separate DBMS server, introducing additional complexity to the workflow.</p>
+<p>With DuckDB, you can efficiently run SQL operations on pandas DataFrames without the need to manage a separate DBMS server.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">duckdb</span>
+
+<span class="n">mydf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(a) FROM mydf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">duckdb</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;l_returnflag&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+  <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
+  <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
+  <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">),</span>
+  <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>226 ms ± 4.63 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT</span>
+<span class="s2">      l_returnflag,</span>
+<span class="s2">      SUM(l_extendedprice),</span>
+<span class="s2">      MIN(l_extendedprice),</span>
+<span class="s2">      MAX(l_extendedprice),</span>
+<span class="s2">      AVG(l_extendedprice)</span>
+<span class="s2">FROM df</span>
+<span class="s2">GROUP BY</span>
+<span class="s2">        l_returnflag</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37 ms ± 2.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
+</section>
+<section id="efficiently-handle-large-datasets-with-duckdb-and-pyarrow">
+<h2><span class="section-number">6.14.8. </span>Efficiently Handle Large Datasets with DuckDB and PyArrow<a class="headerlink" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow" title="Permalink to this headline">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb<span class="w"> </span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+</pre></div>
+</div>
+</div>
+</div>
+<p>DuckDB leverages various optimizations for query execution, while PyArrow efficiently handles in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.</p>
+<p>In the code below, we convert a Delta Lake table with over 6 million rows to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB.</p>
+<p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">duckdb</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
+<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.77 s ± 108 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pyarrow_dataset</span><span class="p">())</span>
+<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>954 µs ± 32.2 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
+</section>
+<section id="sqlparse-extract-components-from-a-sql-statement-in-python">
+<h2><span class="section-number">6.14.9. </span>sqlparse: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sqlparse-extract-components-from-a-sql-statement-in-python" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlparse
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to extract specific components of a SQL statement for downstream Python tasks, use sqlparse.</p>
+<p>In the code below, we use sqlparse to extract tables and columns from the SQL statement.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlparse</span>
+
+<span class="n">sql_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT e.employee_name, d.department_name</span>
+<span class="s2">FROM employees e</span>
+<span class="s2">JOIN departments d ON e.department_id = d.id</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sql_query</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">parsed</span><span class="o">.</span><span class="n">tokens</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Newline &#39; &#39; at 0x10A13E4C0&gt;,
+ &lt;DML &#39;SELECT&#39; at 0x10A1AE040&gt;,
+ &lt;Whitespace &#39; &#39; at 0x10A1AE100&gt;,
+ &lt;IdentifierList &#39;e.empl...&#39; at 0x10A198E40&gt;,
+ &lt;Newline &#39; &#39; at 0x10A1AE580&gt;,
+ &lt;Keyword &#39;FROM&#39; at 0x10A1AE5E0&gt;,
+ &lt;Whitespace &#39; &#39; at 0x10A1AE640&gt;,
+ &lt;Identifier &#39;employ...&#39; at 0x10A198C10&gt;,
+ &lt;Newline &#39; &#39; at 0x10A1AE7C0&gt;,
+ &lt;Keyword &#39;JOIN&#39; at 0x10A1AE820&gt;,
+ &lt;Whitespace &#39; &#39; at 0x10A1AE880&gt;,
+ &lt;Identifier &#39;depart...&#39; at 0x10A198CF0&gt;,
+ &lt;Whitespace &#39; &#39; at 0x10A1AEA00&gt;,
+ &lt;Keyword &#39;ON&#39; at 0x10A1AEA60&gt;,
+ &lt;Whitespace &#39; &#39; at 0x10A1AEAC0&gt;,
+ &lt;Comparison &#39;e.depa...&#39; at 0x10A198DD0&gt;,
+ &lt;Newline &#39; &#39; at 0x10A1AEE80&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">parsed</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">IdentifierList</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">identifier</span><span class="o">.</span><span class="n">get_real_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">get_identifiers</span><span class="p">()]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">Identifier</span><span class="p">):</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">get_real_name</span><span class="p">()</span>
+        <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tables: </span><span class="si">{</span><span class="n">tables</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Columns: </span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tables: [&#39;employees&#39;, &#39;departments&#39;]
+Columns: [&#39;employee_name&#39;, &#39;department_name&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/andialbrecht/sqlparse">Link to sqlparse</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -883,16 +1113,16 @@ FROM my_table
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "data-science"
+            mode: "python"
         },
         kernelOptions: {
-            name: "data-science",
+            name: "python3",
             path: "./Chapter5"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'data-science'</script>
+    <script>kernelName = 'python3'</script>
 
                 </article>
               
@@ -947,6 +1177,9 @@ FROM my_table
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.14.4. SQLModel: Simplify SQL Database Interactions in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.14.5. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlparse-extract-components-from-a-sql-statement-in-python">6.14.9. sqlparse: Extract Components From a SQL Statement in Python</a></li>
 </ul>
   </nav></div>
 

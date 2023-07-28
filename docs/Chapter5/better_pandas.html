@@ -510,8 +510,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.12.13. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.12.14. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 </ul>
             </nav>
         </div>
@@ -2283,154 +2281,6 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
-<section id="efficient-sql-operations-with-duckdb-on-pandas-dataframes">
-<h2><span class="section-number">6.12.13. </span>Efficient SQL Operations with DuckDB on Pandas DataFrames<a class="headerlink" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes" title="Permalink to this headline">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>Using SQL with pandas empowers data scientists to leverage SQL’s powerful querying capabilities alongside the data manipulation functionalities of pandas.</p>
-<p>However, traditional database systems often demand the management of a separate DBMS server, introducing additional complexity to the workflow.</p>
-<p>With DuckDB, you can efficiently run SQL operations on pandas DataFrames without the need to manage a separate DBMS server.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">duckdb</span>
-
-<span class="n">mydf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(a) FROM mydf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">())</span>
-</pre></div>
-</div>
-<p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">duckdb</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;l_returnflag&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-  <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
-  <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
-  <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">),</span>
-  <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>226 ms ± 4.63 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT</span>
-<span class="s2">      l_returnflag,</span>
-<span class="s2">      SUM(l_extendedprice),</span>
-<span class="s2">      MIN(l_extendedprice),</span>
-<span class="s2">      MAX(l_extendedprice),</span>
-<span class="s2">      AVG(l_extendedprice)</span>
-<span class="s2">FROM df</span>
-<span class="s2">GROUP BY</span>
-<span class="s2">        l_returnflag</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37 ms ± 2.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
-<section id="efficiently-handle-large-datasets-with-duckdb-and-pyarrow">
-<h2><span class="section-number">6.12.14. </span>Efficiently Handle Large Datasets with DuckDB and PyArrow<a class="headerlink" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow" title="Permalink to this headline">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>DuckDB leverages various optimizations for query execution, while PyArrow efficiently handles in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.</p>
-<p>In the code below, we convert a Delta Lake table with over 6 million rows to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB.</p>
-<p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">duckdb</span>
-<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
-<span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.77 s ± 108 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pyarrow_dataset</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>954 µs ± 32.2 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2512,8 +2362,6 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.12.13. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.12.14. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 </ul>
   </nav></div>
 
