@@ -500,7 +500,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#omit-else-clauses-in-a-python-function-to-improve-code-readability">2.5.1. Omit Else Clauses in a Python Function to Improve Code Readability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">2.5.2. When to Use and Not to Use Lambda Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kwargs-pass-multiple-arguments-to-a-function-in-python">2.5.3. **kwargs: Pass Multiple Arguments to a Function in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
 </ul>
             </nav>
@@ -576,28 +576,49 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="kwargs-pass-multiple-arguments-to-a-function-in-python">
-<h2><span class="section-number">2.5.3. </span>**kwargs: Pass Multiple Arguments to a Function in Python<a class="headerlink" href="#kwargs-pass-multiple-arguments-to-a-function-in-python" title="Permalink to this headline">#</a></h2>
-<p>Sometimes you might not know the arguments you will pass to a function. If so, use <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> allow you to pass multiple arguments to a function using a dictionary. In the example below, passing <code class="docutils literal notranslate"><span class="pre">**{'a':1,</span> <span class="pre">'b':2}</span></code> to the function is similar to passing <code class="docutils literal notranslate"><span class="pre">a=1</span></code>, <code class="docutils literal notranslate"><span class="pre">b=1</span></code> to the function.</p>
-<p>Once <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> argument is passed, you can treat it like a Python dictionary.</p>
+<section id="how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">
+<h2><span class="section-number">2.5.3. </span>How to Pass an Arbitrary Number of Arguments to a Python Function<a class="headerlink" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function" title="Permalink to this headline">#</a></h2>
+<p>If you want to create a function that takes an arbitrary number of arguments, use <code class="docutils literal notranslate"><span class="pre">*args</span></code> or <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">*args</span></code> allows variable arguments as a set, while <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> allows variable keyword arguments as a dictionary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="o">*</span><span class="n">nums</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;nums: </span><span class="si">{</span><span class="n">nums</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">*=</span> <span class="n">num</span>
+    <span class="k">return</span> <span class="n">res</span>
 
-<span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">val</span><span class="p">)</span>
-
-<span class="n">example</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+<span class="n">multiply</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;a&#39;: 1, &#39;b&#39;: 2}
-4
-5
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nums: (1, 2, 3)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_order</span><span class="p">(</span><span class="o">**</span><span class="n">new_order</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;new_order: </span><span class="si">{</span><span class="n">new_order</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+    <span class="n">cart</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">new_order</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">cart</span>  
+
+<span class="n">add_to_order</span><span class="p">(</span><span class="n">kiwi</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">apple</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>new_order: {&#39;kiwi&#39;: 2, &#39;apple&#39;: 1}
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;apple&#39;: 1, &#39;orange&#39;: 3, &#39;kiwi&#39;: 2}
 </pre></div>
 </div>
 </div>
@@ -720,7 +741,7 @@ Elapsed time: 0.027ms
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#omit-else-clauses-in-a-python-function-to-improve-code-readability">2.5.1. Omit Else Clauses in a Python Function to Improve Code Readability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">2.5.2. When to Use and Not to Use Lambda Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kwargs-pass-multiple-arguments-to-a-function-in-python">2.5.3. **kwargs: Pass Multiple Arguments to a Function in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
 </ul>
   </nav></div>
