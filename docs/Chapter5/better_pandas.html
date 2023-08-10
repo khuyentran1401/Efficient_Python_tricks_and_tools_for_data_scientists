@@ -505,11 +505,13 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.12.8. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.11. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.12. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.13. Polars vs. Pandas for CSV Loading and Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.14. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
             </nav>
         </div>
@@ -1216,15 +1218,6 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;tmp/records&quot;</span> 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
@@ -1499,8 +1492,106 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
+<section id="efficient-data-updates-and-scanning-with-delta-lake">
+<h2><span class="section-number">6.12.8. </span>Efficient Data Updates and Scanning with Delta Lake<a class="headerlink" href="#efficient-data-updates-and-scanning-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;deltalake==0.10.1&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Every time new data is appended to an existing Delta table, a new Parquet file is generated. This allows data to be ingested incrementally without having to rewrite the entire dataset.</p>
+<p>As files accumulate, read operations may surge. The compact operation merges small files into larger ones, enhancing scanning performance.</p>
+<p>Combining incremental processing and compaction enables efficient data updates and scans, ensuring streamlined operations as your dataset grows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">table_path</span> <span class="o">=</span> <span class="s1">&#39;delta_lake&#39;</span>
+<span class="n">data_url</span> <span class="o">=</span> <span class="s2">&quot;https://gist.githubusercontent.com/khuyentran1401/458905fc5c630d7a1f7a510a04e5e0f9/raw/5b2d760011c9255a68eb08b83b3b8759ffa25d5c/data.csv&quot;</span>
+<span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">:</span>
+    <span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30.6 ms ± 2.94 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">compact</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;numFilesAdded&#39;: 1,
+ &#39;numFilesRemoved&#39;: 100,
+ &#39;filesAdded&#39;: {&#39;min&#39;: 278115,
+  &#39;max&#39;: 278115,
+  &#39;avg&#39;: 278115.0,
+  &#39;totalFiles&#39;: 1,
+  &#39;totalSize&#39;: 278115},
+ &#39;filesRemoved&#39;: {&#39;min&#39;: 5712,
+  &#39;max&#39;: 5717,
+  &#39;avg&#39;: 5715.8,
+  &#39;totalFiles&#39;: 100,
+  &#39;totalSize&#39;: 571580},
+ &#39;partitionsOptimized&#39;: 1,
+ &#39;numBatches&#39;: 100,
+ &#39;totalConsideredFiles&#39;: 100,
+ &#39;totalFilesSkipped&#39;: 0,
+ &#39;preserveInsertionOrder&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.32 ms ± 49 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
+</section>
 <section id="simplify-table-merge-operations-with-delta-lake">
-<h2><span class="section-number">6.12.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.9. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1681,7 +1772,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="the-best-way-to-append-mismatched-data-to-parquet-tables">
-<h2><span class="section-number">6.12.9. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.10. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this headline">#</a></h2>
 <p>Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.</p>
 <p>In the following code, the datatype of <code class="docutils literal notranslate"><span class="pre">col3</span></code> is supposed to be <code class="docutils literal notranslate"><span class="pre">int64</span></code> instead of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
 <div class="cell docutils container">
@@ -1838,7 +1929,7 @@ dtype: object
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.10. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.11. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1912,7 +2003,20 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="polars-speed-up-data-processing-12x-with-lazy-execution">
-<h2><span class="section-number">6.12.11. </span>Polars: Speed Up Data Processing 12x with Lazy Execution<a class="headerlink" href="#polars-speed-up-data-processing-12x-with-lazy-execution" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.12. </span>Polars: Speed Up Data Processing 12x with Lazy Execution<a class="headerlink" href="#polars-speed-up-data-processing-12x-with-lazy-execution" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <p>Polars is a lightning-fast DataFrame library that utilizes all available cores on your machine.</p>
 <p>Polars has two APIs: an eager API and a lazy API.</p>
 <p>The eager execution is similar to Pandas, which executes code immediately.</p>
@@ -2060,8 +2164,77 @@ Polars time: 41.079080 seconds
 </div>
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
+<section id="polars-vs-pandas-for-csv-loading-and-filtering">
+<h2><span class="section-number">6.12.13. </span>Polars vs. Pandas for CSV Loading and Filtering<a class="headerlink" href="#polars-vs-pandas-for-csv-loading-and-filtering" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-O<span class="w"> </span>airport-codes.csv<span class="w"> </span><span class="s2">&quot;https://datahub.io/core/airport-codes/r/0.csv&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">read_csv</span></code> method in Pandas loads all rows of the dataset into the DataFrame before filtering to remove all unwanted rows.</p>
+<p>On the other hand, the <code class="docutils literal notranslate"><span class="pre">scan_csv</span></code> method in Polars delays execution and optimizes the operation until the <code class="docutils literal notranslate"><span class="pre">collect</span></code> method is called. This approach accelerates code execution, particularly when handling large datasets.</p>
+<p>In the code below, it is 25.5 times faster to use Polars instead of Pandas to read a subset of CSV file containing 57k rows.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;airport-codes.csv&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;heliport&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;continent&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;EU&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>143 ms ± 8.3 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">pl</span><span class="o">.</span><span class="n">scan_csv</span><span class="p">(</span><span class="s2">&quot;airport-codes.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;heliport&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;continent&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;EU&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5.6 ms ± 594 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.12. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.12.14. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2357,11 +2530,13 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.12.5. Version Your Pandas DataFrame with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.12.6. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.12.7. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.9. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.10. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.11. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.12. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.12.8. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.11. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.12. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.13. Polars vs. Pandas for CSV Loading and Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.14. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 </ul>
   </nav></div>
 
