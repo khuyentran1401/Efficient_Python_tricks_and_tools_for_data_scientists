@@ -516,7 +516,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-function-should-have-fewer-than-four-arguments">2.9.16. A Function Should Have Fewer Than Four Arguments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">2.9.17. Avoid Using Flags as a Function’s Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">2.9.18. Condense an If-Else Statement into One Line</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling">2.9.19. Exception Handling vs. If-Else Statements: Which is Better for Error Handling?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-except-vs-if-else">2.9.19. try-except vs if-else</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#never-catch-all-exceptions">2.9.20. Never Catch All Exceptions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.21. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
 </ul>
@@ -1361,37 +1361,58 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
 </div>
 </div>
 </section>
-<section id="exception-handling-vs-if-else-statements-which-is-better-for-error-handling">
-<h2><span class="section-number">2.9.19. </span>Exception Handling vs. If-Else Statements: Which is Better for Error Handling?<a class="headerlink" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling" title="Permalink to this headline">#</a></h2>
-<p>Exception handling is more efficient and concise than if-else statements for error handling. When an exception is raised, the interpreter jumps directly to the appropriate exception handler, avoiding unnecessary comparisons and branching.</p>
-<p>It also improves code readability by separating error-handling logic from the main program flow.</p>
+<section id="try-except-vs-if-else">
+<h2><span class="section-number">2.9.19. </span>try-except vs if-else<a class="headerlink" href="#try-except-vs-if-else" title="Permalink to this headline">#</a></h2>
+<p>try-except blocks and if-else statements can both control the flow of the program based on conditions.</p>
+<p>if-else statements evaluate a condition each time the if statement is encountered.</p>
+<p>try-except blocks handle the exception only if an exception actually occurs.</p>
+<p>Thus, use try-except blocks if the possibility of an exception is low, as this can enhance execution speed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Okay </span>
-<span class="kn">import</span> <span class="nn">os</span>
-
-
-<span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">contents</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Better </span>
-<span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">division</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b must not be zero&quot;</span><span class="p">)</span> 
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>b must not be zero
+b must not be zero
+b must not be zero
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">division</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">contents</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-        <span class="n">contents</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">contents</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b must not be zero&quot;</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">division</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>b must not be zero
 </pre></div>
 </div>
 </div>
@@ -1621,7 +1642,7 @@ Process data
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-function-should-have-fewer-than-four-arguments">2.9.16. A Function Should Have Fewer Than Four Arguments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#avoid-using-flags-as-a-function-s-parameters">2.9.17. Avoid Using Flags as a Function’s Parameters</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#condense-an-if-else-statement-into-one-line">2.9.18. Condense an If-Else Statement into One Line</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exception-handling-vs-if-else-statements-which-is-better-for-error-handling">2.9.19. Exception Handling vs. If-Else Statements: Which is Better for Error Handling?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-except-vs-if-else">2.9.19. try-except vs if-else</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#never-catch-all-exceptions">2.9.20. Never Catch All Exceptions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.21. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
 </ul>
