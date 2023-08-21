@@ -1672,29 +1672,27 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pandera
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pandera
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>The outputs of your pandas DataFrame might not be like what you expected either due to the error in your code or the change in the data format. Using data that is different from what you expected can cause errors or lead to decrease performance.</p>
-<p>Thus, it is important to validate your data before using it. A good tool to validate pandas DataFrame is pandera. Pandera is easy to read and use.</p>
+<p>Poor data quality can lead to incorrect conclusions and bad model performance. Thus, it is important to check data for consistency and reliability before using it.</p>
+<p>pandera makes it easy to perform data validation on dataframe-like objects. If the dataframe does not pass validation checks, pandera provides useful error messages.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandera</span> <span class="k">as</span> <span class="nn">pa</span>
-<span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">check_input</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;text_1&quot;</span><span class="p">,</span> <span class="s2">&quot;text_2&quot;</span><span class="p">,</span> <span class="s2">&quot;text_3&quot;</span><span class="p">]})</span>
-<span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+<span class="n">fruits</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">Check</span><span class="p">(</span><span class="k">lambda</span> <span class="n">minute</span><span class="p">:</span> <span class="mi">5</span> <span class="o">&lt;=</span> <span class="n">minute</span><span class="p">)),</span>
-        <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">Check</span><span class="o">.</span><span class="n">str_startswith</span><span class="p">(</span><span class="s2">&quot;text_&quot;</span><span class="p">)),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
     <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">validated_df</span> <span class="o">=</span> <span class="n">schema</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-<span class="n">validated_df</span>
+
+<span class="n">fruits</span>
 </pre></div>
 </div>
 </div>
@@ -1717,55 +1715,72 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>col1</th>
-      <th>col2</th>
+      <th>name</th>
+      <th>store</th>
+      <th>price</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>5.0</td>
-      <td>text_1</td>
+      <td>apple</td>
+      <td>Aldi</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>8.0</td>
-      <td>text_2</td>
+      <td>banana</td>
+      <td>Walmart</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>10.0</td>
-      <td>text_3</td>
+      <td>apple</td>
+      <td>Walmart</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 40;
-                var nbb_unformatted_code = "import pandera as pa\nfrom pandera import check_input\nimport pandas as pd\n\ndf = pd.DataFrame({\"col1\": [5.0, 8.0, 10.0], \"col2\": [\"text_1\", \"text_2\", \"text_3\"]})\nschema = pa.DataFrameSchema(\n    {\n        \"col1\": pa.Column(float, pa.Check(lambda minute: 5 <= minute)),\n        \"col2\": pa.Column(str, pa.Check.str_startswith(\"text_\")),\n    }\n)\nvalidated_df = schema(df)\nvalidated_df";
-                var nbb_formatted_code = "import pandera as pa\nfrom pandera import check_input\nimport pandas as pd\n\ndf = pd.DataFrame({\"col1\": [5.0, 8.0, 10.0], \"col2\": [\"text_1\", \"text_2\", \"text_3\"]})\nschema = pa.DataFrameSchema(\n    {\n        \"col1\": pa.Column(float, pa.Check(lambda minute: 5 <= minute)),\n        \"col2\": pa.Column(str, pa.Check.str_startswith(\"text_\")),\n    }\n)\nvalidated_df = schema(df)\nvalidated_df";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
 </div>
-<p>You can also use the pandera’s decorator check_input to validates input pandas DataFrame before entering the function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@check_input</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">plus_three</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1_plus_3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span>
-    <span class="k">return</span> <span class="n">df</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">available_fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>
+<span class="n">nearby_stores</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">]</span>
 
+<span class="kn">import</span> <span class="nn">pandera</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Check</span>
 
-<span class="n">plus_three</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
+        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span> <span class="c1"># validation fails</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SchemaError:<span class="w">  </span>failed<span class="w"> </span>element-wise<span class="w"> </span>validator<span class="w"> </span><span class="m">0</span>:
+
+failure<span class="w"> </span>cases:
+<span class="w">   </span>index<span class="w">  </span>failure_case
+<span class="m">0</span><span class="w">      </span><span class="m">2</span><span class="w">             </span><span class="m">4</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
+        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">5</span><span class="p">)),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span> <span class="c1"># validation succeeds</span>
 </pre></div>
 </div>
 </div>
@@ -1788,48 +1803,75 @@ test_pyfakefs.py <span class=" -Color -Color-Green">.                           
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>col1</th>
-      <th>col2</th>
-      <th>col1_plus_3</th>
+      <th>name</th>
+      <th>store</th>
+      <th>price</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>5.0</td>
-      <td>text_1</td>
-      <td>8.0</td>
+      <td>apple</td>
+      <td>Aldi</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>8.0</td>
-      <td>text_2</td>
-      <td>11.0</td>
+      <td>banana</td>
+      <td>Walmart</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>10.0</td>
-      <td>text_3</td>
-      <td>13.0</td>
+      <td>apple</td>
+      <td>Walmart</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>orange</td>
+      <td>Aldi</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 41;
-                var nbb_unformatted_code = "@check_input(schema)\ndef plus_three(df):\n\tdf['col1_plus_3'] = df['col1'] + 3\n\treturn df \n\nplus_three(df)";
-                var nbb_formatted_code = "@check_input(schema)\ndef plus_three(df):\n    df[\"col1_plus_3\"] = df[\"col1\"] + 3\n    return df\n\n\nplus_three(df)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+</div></div></div>
+</div>
+<p>With pandera’s decorator <code class="docutils literal notranslate"><span class="pre">check_input</span></code>, you can validate input data before calling a function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">check_input</span>
+
+
+<span class="n">fruits</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
+        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">6</span><span class="p">)),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="nd">@check_input</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_total_price</span><span class="p">(</span><span class="n">fruits</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fruits</span><span class="o">.</span><span class="n">price</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">get_total_price</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+</pre></div>
+</div>
+</div>
 </div>
 <p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
 </section>
