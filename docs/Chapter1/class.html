@@ -500,7 +500,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-in-python">2.6.1. Inheritance in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract-classes-declare-methods-without-implementation">2.6.2. Abstract Classes: Declare Methods without Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classmethod-what-is-it-and-when-to-use-it">2.6.3. classmethod: What is it and When to Use it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.6. Static method: use the function without adding the attributes required for a new instance</a></li>
@@ -644,44 +644,50 @@ Bella says: Meows
 </div>
 </div>
 </section>
-<section id="classmethod-what-is-it-and-when-to-use-it">
-<h2><span class="section-number">2.6.3. </span>classmethod: What is it and When to Use it<a class="headerlink" href="#classmethod-what-is-it-and-when-to-use-it" title="Permalink to this headline">#</a></h2>
-<p>When working with a Python class, if you want to create a method that returns that class with new attributes, use <code class="docutils literal notranslate"><span class="pre">classmethod</span></code>.</p>
-<p>Classmethod doesn’t depend on the creation of a class instance. In the code below, I use <code class="docutils literal notranslate"><span class="pre">classmethod</span></code> to instantiate a new object whose attribute is a list of even numbers.</p>
+<section id="distinguishing-instance-level-and-class-methods">
+<h2><span class="section-number">2.6.3. </span>Distinguishing Instance-Level and Class Methods<a class="headerlink" href="#distinguishing-instance-level-and-class-methods" title="Permalink to this headline">#</a></h2>
+<p>An instance-level method requires instantiating a class object to operate, while a class method doesn’t.</p>
+<p>Class methods can provide alternate ways to construct objects. In the code below, the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method instantiates the class by reading data from a CSV file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Solver</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nums</span> <span class="o">=</span> <span class="n">nums</span>
-    
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_even</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nums</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="n">num</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="n">nums</span> <span class="k">if</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">])</span>
-    
-    <span class="k">def</span> <span class="nf">print_output</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result:&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nums</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="c1"># Not using class method       </span>
-<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span><span class="o">.</span><span class="n">print_output</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">DataAnalyzer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># instance-level method</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape of data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">csv_path</span><span class="p">):</span> <span class="c1"># class method</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">DataAnalyzer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Result: [1, 2, 3, 4, 5, 6, 7]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of data: (3, 2)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solver2</span> <span class="o">=</span> <span class="n">Solver</span><span class="o">.</span><span class="n">get_even</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
-<span class="n">solver2</span><span class="o">.</span><span class="n">print_output</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using the class method to create an instance from a CSV file</span>
+<span class="n">csv_file_path</span> <span class="o">=</span> <span class="s2">&quot;data.csv&quot;</span>
+<span class="n">analyzer</span> <span class="o">=</span> <span class="n">DataAnalyzer</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csv_file_path</span><span class="p">)</span> 
+<span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Result: [2, 4, 6]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape of data: (2, 3)
 </pre></div>
 </div>
 </div>
@@ -1232,7 +1238,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-in-python">2.6.1. Inheritance in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract-classes-declare-methods-without-implementation">2.6.2. Abstract Classes: Declare Methods without Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classmethod-what-is-it-and-when-to-use-it">2.6.3. classmethod: What is it and When to Use it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.6. Static method: use the function without adding the attributes required for a new instance</a></li>
