@@ -1192,8 +1192,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </section>
 <section id="optimize-query-speed-with-data-partitioning">
 <h2><span class="section-number">6.12.6. </span>Optimize Query Speed with Data Partitioning<a class="headerlink" href="#optimize-query-speed-with-data-partitioning" title="Permalink to this headline">#</a></h2>
-<p>Partitioning data allows queries to target specific segments rather than scanning the entire table, speeding up data retrieval, especially for large datasets.</p>
-<p>The following code uses Delta Lake to select partitions from a pandas DataFrame. Loading data through partitions is 22.2 times faster than loading the entire dataset and then querying a specific subset.</p>
+<p>Partitioning data allows queries to target specific segments rather than scanning the entire table, which speeds up data retrieval.</p>
+<p>The following code uses Delta Lake to select partitions from a pandas DataFrame. Partitioned data loading is approximately 24.5 times faster than loading the complete dataset and then querying a particular subset</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -1316,7 +1316,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>76.8 ms ± 481 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>79.2 ms ± 2.62 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div>
 </div>
 </div>
@@ -1339,11 +1339,12 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.46 ms ± 353 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.23 ms ± 181 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 </pre></div>
 </div>
 </div>
 </div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="overwrite-partitions-of-a-pandas-dataframe">
 <h2><span class="section-number">6.12.7. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this headline">#</a></h2>
