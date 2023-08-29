@@ -519,7 +519,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-checking-object-types-in-python">2.9.19. Efficiently Checking Object Types in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-except-vs-if-else">2.9.20. try-except vs if-else</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#never-catch-all-exceptions">2.9.21. Never Catch All Exceptions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.22. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-clean-error-handling-logic-with-else-statements">2.9.22. Write Clean Error Handling Logic with Else Statements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.23. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
 </ul>
             </nav>
         </div>
@@ -1515,8 +1516,40 @@ b must not be zero
 </div>
 </div>
 </section>
+<section id="write-clean-error-handling-logic-with-else-statements">
+<h2><span class="section-number">2.9.22. </span>Write Clean Error Handling Logic with Else Statements<a class="headerlink" href="#write-clean-error-handling-logic-with-else-statements" title="Permalink to this headline">#</a></h2>
+<p>Including both the potentially problematic code and post-success actions within the try block can make the code more messy and harder to follow.</p>
+<p>Use the else block for post-success actions to create a clear separation between the two.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">sum_nums</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="n">mean_nums</span> <span class="o">=</span> <span class="n">sum_nums</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean of the numbers is </span><span class="si">{</span><span class="n">mean_nums</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Items in the list must be numbers&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">sum_nums</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Items in the list must be numbers&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">mean_nums</span> <span class="o">=</span> <span class="n">sum_nums</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The mean of the numbers is </span><span class="si">{</span><span class="n">mean_nums</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="why-name-main-matters-in-a-python-script">
-<h2><span class="section-number">2.9.22. </span>Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span></code> Matters in a Python Script?<a class="headerlink" href="#why-name-main-matters-in-a-python-script" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.9.23. </span>Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span></code> Matters in a Python Script?<a class="headerlink" href="#why-name-main-matters-in-a-python-script" title="Permalink to this headline">#</a></h2>
 <p>Without <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;</span></code> block, other scripts can unintentionally trigger the execution of the main code block when importing from another script</p>
 <p>In the following example, the <code class="docutils literal notranslate"><span class="pre">process_data</span></code> function is executed twice.</p>
 <div class="cell docutils container">
@@ -1684,7 +1717,8 @@ Process data
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-checking-object-types-in-python">2.9.19. Efficiently Checking Object Types in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-except-vs-if-else">2.9.20. try-except vs if-else</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#never-catch-all-exceptions">2.9.21. Never Catch All Exceptions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.22. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-clean-error-handling-logic-with-else-statements">2.9.22. Write Clean Error Handling Logic with Else Statements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-name-main-matters-in-a-python-script">2.9.23. Why <code class="docutils literal notranslate"><span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">"__main__"</span></code> Matters in a Python Script?</a></li>
 </ul>
   </nav></div>
 
