@@ -659,15 +659,15 @@ document.write(`
 <h2><span class="section-number">2.10.4. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this headline">#</a></h2>
 <p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
 <ul class="simple">
-<li><p>debug the components in an expression</p></li>
-<li><p>avoid repeated computations</p></li>
+<li><p>Debug the components in an expression</p></li>
+<li><p>Avoid repeated computations</p></li>
+<li><p>Assign a meaningful name to an expression</p></li>
 </ul>
-<p>In the code below, I use the walrus operator to assign a value to <code class="docutils literal notranslate"><span class="pre">r</span></code> when getting the circumference of a circle, which is then used to find the area of the circle.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
 
-<span class="n">d</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">diameter</span> <span class="o">=</span> <span class="mi">4</span>
 </pre></div>
 </div>
 </div>
@@ -675,8 +675,18 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># without Walrus operator</span>
-<span class="n">circumference</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
-<span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># d/2 is computed twice</span>
+
+<span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># computed twice</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
 </pre></div>
 </div>
 </div>
@@ -684,8 +694,18 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with Walrus operator</span>
-<span class="n">circumference</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span> <span class="o">:=</span> <span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span>
-<span class="n">area</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="n">pi</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># d/2 is computed twice</span>
+
+<span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">radius</span> <span class="o">:=</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">radius</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
 </pre></div>
 </div>
 </div>

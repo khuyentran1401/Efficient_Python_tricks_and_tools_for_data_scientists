@@ -504,7 +504,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy-streamlit-create-a-web-app-to-visualize-your-text-in-3-lines-of-code">6.6.4. Spacy_streamlit: Create a Web App to Visualize Your Text in 3 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-words">6.6.5. textacy: Extract a Contiguous Sequence of Words</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-number-to-words">6.6.6. Convert Number to Words</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texthero-clean-preprocess-text-in-one-line-of-code">6.6.7. texthero.clean: Preprocess Text in One Line of Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-text-in-one-line-of-code-with-texthero">6.6.7. Preprocess Text in One Line of Code with Texthero</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texthero-reduce-dimension-and-visualize-text-in-one-line-of-code">6.6.8. texthero: Reduce Dimension and Visualize Text in One Line of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wordfreq-estimate-the-frequency-of-a-word-in-36-languages">6.6.9. wordfreq: Estimate the Frequency of a Word in 36 Languages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#newspaper3k-extract-meaningful-information-from-an-articles-in-2-lines-of-code">6.6.10. newspaper3k: Extract Meaningful Information From an Articles in 2 Lines of Code</a></li>
@@ -953,8 +953,8 @@ For more information on these, you can take a look at our Data Scientist learnin
 </div>
 <p><a class="reference external" href="https://github.com/savoirfairelinux/num2words">Link to num2words</a>.</p>
 </section>
-<section id="texthero-clean-preprocess-text-in-one-line-of-code">
-<h2><span class="section-number">6.6.7. </span>texthero.clean: Preprocess Text in One Line of Code<a class="headerlink" href="#texthero-clean-preprocess-text-in-one-line-of-code" title="Permalink to this headline">#</a></h2>
+<section id="preprocess-text-in-one-line-of-code-with-texthero">
+<h2><span class="section-number">6.6.7. </span>Preprocess Text in One Line of Code with Texthero<a class="headerlink" href="#preprocess-text-in-one-line-of-code-with-texthero" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -968,38 +968,39 @@ For more information on these, you can take a look at our Data Scientist learnin
 </div>
 </details>
 </div>
-<p>Have you ever wanted to preprocess text in one line of code? By using the <code class="docutils literal notranslate"><span class="pre">texthero.clean</span></code> method, various text preprocessing steps will be applied to your pandas DataFrame, including:</p>
+<p>Processing text in a DataFrame often involves writing lengthy code. Texthero simplifies this by enabling one-line preprocessing, including:</p>
 <ul class="simple">
-<li><p>fill missing values</p></li>
-<li><p>convert upper case to lower case</p></li>
-<li><p>remove digits</p></li>
-<li><p>remove punctuation</p></li>
-<li><p>remove stopwords</p></li>
-<li><p>remove whitespace</p></li>
+<li><p>filling missing values</p></li>
+<li><p>converting upper case to lower case</p></li>
+<li><p>removing digits</p></li>
+<li><p>removing punctuation</p></li>
+<li><p>removing stopwords</p></li>
+<li><p>removing whitespace</p></li>
 </ul>
-<p>The code below shows an example of <code class="docutils literal notranslate"><span class="pre">texthero.clean</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">texthero</span> <span class="k">as</span> <span class="nn">hero</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;Today is a    beautiful day&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;There are 3 ducks in this pond&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;This is. very cool.&quot;</span><span class="p">,</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
-        <span class="p">]</span>
-    <span class="p">}</span>
-<span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Today is a    beautiful day&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;There are 3 ducks in this pond&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;This is. very cool.&quot;</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">})</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">hero</span><span class="o">.</span><span class="n">clean</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[nltk_data] Downloading package stopwords to
+[nltk_data]     /Users/khuyentran/nltk_data...
+[nltk_data]   Unzipping corpora/stopwords.zip.
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    today beautiful day
 1             ducks pond
 2                   cool
@@ -1032,7 +1033,6 @@ Name: text, dtype: object
 </div>
 </div>
 </div>
-<p>Texthero also provides other useful methods to process and visualize text.</p>
 <p><a class="reference external" href="https://github.com/jbesomi/texthero">Link to texthero</a>.</p>
 </section>
 <section id="texthero-reduce-dimension-and-visualize-text-in-one-line-of-code">
@@ -2289,7 +2289,7 @@ Reading english - 1grams ...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacy-streamlit-create-a-web-app-to-visualize-your-text-in-3-lines-of-code">6.6.4. Spacy_streamlit: Create a Web App to Visualize Your Text in 3 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#textacy-extract-a-contiguous-sequence-of-words">6.6.5. textacy: Extract a Contiguous Sequence of Words</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-number-to-words">6.6.6. Convert Number to Words</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texthero-clean-preprocess-text-in-one-line-of-code">6.6.7. texthero.clean: Preprocess Text in One Line of Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocess-text-in-one-line-of-code-with-texthero">6.6.7. Preprocess Text in One Line of Code with Texthero</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#texthero-reduce-dimension-and-visualize-text-in-one-line-of-code">6.6.8. texthero: Reduce Dimension and Visualize Text in One Line of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wordfreq-estimate-the-frequency-of-a-word-in-36-languages">6.6.9. wordfreq: Estimate the Frequency of a Word in 36 Languages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#newspaper3k-extract-meaningful-information-from-an-articles-in-2-lines-of-code">6.6.10. newspaper3k: Extract Meaningful Information From an Articles in 2 Lines of Code</a></li>
