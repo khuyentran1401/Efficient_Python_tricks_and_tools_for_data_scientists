@@ -876,48 +876,51 @@ mean(nums)
 </div>
 </details>
 </div>
-<p>If you want to enforce data types on your function parameters and validate their values at runtime, use Pydantic.</p>
-<p>In the code below, since the value of <code class="docutils literal notranslate"><span class="pre">test_size</span></code> is a string, Pydantic raises a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code>.</p>
+<p>To enforce data types and validate function parameters at runtime, use Pydantic.</p>
+<p>Pydantic will attempt to convert values to the correct data type. If the conversion fails, it raises a ValidationError.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-
-<span class="k">class</span> <span class="nc">ProcessConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">drop_columns</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]</span>
-    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;y&quot;</span>
+<span class="k">class</span> <span class="nc">SplitConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.3</span>
     <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">ProcessConfig</span> <span class="o">=</span> <span class="n">ProcessConfig</span><span class="p">()):</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">target</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">SplitConfig</span> <span class="o">=</span> <span class="n">SplitConfig</span><span class="p">()):</span>
     <span class="n">test_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">test_size</span>
+    <span class="n">random_state</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">random_state</span>
     <span class="o">...</span>
 
 
-<span class="n">process</span><span class="p">(</span><span class="n">ProcessConfig</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">))</span>
+<span class="n">split_data</span><span class="p">(</span><span class="n">SplitConfig</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mf">1.0</span><span class="p">))</span> 
+<span class="c1"># --&gt; 1 (int)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">split_data</span><span class="p">(</span><span class="n">SplitConfig</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ValidationError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">test_size</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">test_size</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="o">...</span>
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">process</span><span class="p">(</span><span class="n">ProcessConfig</span><span class="p">(</span><span class="n">test_size</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">))</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">split_data</span><span class="p">(</span><span class="n">SplitConfig</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">))</span>
 
-<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pydantic/main.py:342,</span> in <span class="ni">pydantic.main.BaseModel.__init__</span><span class="nt">()</span>
+<span class="nn">File ~/book/venv/lib/python3.9/site-packages/pydantic/main.py:341,</span> in <span class="ni">pydantic.main.BaseModel.__init__</span><span class="nt">()</span>
 
-<span class="ne">ValidationError</span>: 1 validation error for ProcessConfig
-<span class="n">test_size</span>
-  <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">valid</span> <span class="nb">float</span> <span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">type_error</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<span class="ne">ValidationError</span>: 1 validation error for SplitConfig
+<span class="n">random_state</span>
+  <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">integer</span> <span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">type_error</span><span class="o">.</span><span class="n">integer</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -503,11 +503,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.6. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.7. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.8. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.9. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.10. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.8. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.9. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.10. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.11. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
             </nav>
         </div>
@@ -837,8 +838,54 @@ Instance is called
             </script></div>
 </div>
 </section>
+<section id="instance-comparison-in-python-classes">
+<h2><span class="section-number">2.6.6. </span>Instance Comparison in Python Classes<a class="headerlink" href="#instance-comparison-in-python-classes" title="Permalink to this headline">#</a></h2>
+<p>Even if two class instances have the same attributes, they are not equal because they are stored in separate memory locations.</p>
+<p>To define how class instances should be compared, add the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+
+<span class="n">dog1</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">&quot;Bim&quot;</span><span class="p">)</span>
+<span class="n">dog2</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">&quot;Bim&quot;</span><span class="p">)</span>
+<span class="n">dog1</span> <span class="o">==</span> <span class="n">dog2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+
+
+<span class="n">dog1</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">&quot;Bim&quot;</span><span class="p">)</span>
+<span class="n">dog2</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">&quot;Bim&quot;</span><span class="p">)</span>
+<span class="n">dog1</span> <span class="o">==</span> <span class="n">dog2</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">
-<h2><span class="section-number">2.6.6. </span>Static method: use the function without adding the attributes required for a new instance<a class="headerlink" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.7. </span>Static method: use the function without adding the attributes required for a new instance<a class="headerlink" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance" title="Permalink to this headline">#</a></h2>
 <p>Have you ever had a function in your class that doesn’t access any properties of a class but fits well in a class? You might find it redundant to instantiate the class to use that function. That is when you can turn your function into a static method.</p>
 <p>All you need to turn your function into a static method is the decorator <code class="docutils literal notranslate"><span class="pre">&#64;staticmethod</span></code>. Now you can use the function without adding the attributes required for a new instance.</p>
 <div class="cell docutils container">
@@ -884,7 +931,7 @@ Instance is called
 </div>
 </section>
 <section id="property-decorator-a-pythonic-way-to-use-getters-and-setters">
-<h2><span class="section-number">2.6.7. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.8. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
 <p>To define the behaviors that are executed when a class attribute is set, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
 <p>In the code below, the getter method gets the value of the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute and the setter method restricts the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute modification to string data types only.</p>
 <div class="cell docutils container">
@@ -963,7 +1010,7 @@ Instance is called
 </div>
 </section>
 <section id="str-and-repr-create-a-string-representation-of-a-python-object">
-<h2><span class="section-number">2.6.8. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.9. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
 <p>If you want to create a string representation of an object, add <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">__str__</span></code> shows readable outputs when printing the object. <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> shows outputs that are useful for displaying and debugging the object.</p>
 <div class="cell docutils container">
@@ -1036,7 +1083,7 @@ Instance is called
 </div>
 </section>
 <section id="add-add-the-attributes-of-two-class-instances">
-<h2><span class="section-number">2.6.9. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.10. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
 <p>If you want to add the attributes of class instances, use <code class="docutils literal notranslate"><span class="pre">__add__</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">__add__</span></code> to add the ages of two class instances <code class="docutils literal notranslate"><span class="pre">bim</span></code> and <code class="docutils literal notranslate"><span class="pre">coco</span></code> when calling <code class="docutils literal notranslate"><span class="pre">bim</span> <span class="pre">+</span> <span class="pre">coco</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1070,7 +1117,7 @@ Instance is called
 </div>
 </section>
 <section id="optimizing-memory-usage-in-python-with-slots">
-<h2><span class="section-number">2.6.10. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.11. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1241,11 +1288,12 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.6. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.7. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.8. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.9. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.10. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.8. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.9. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.10. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.11. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
   </nav></div>
 
