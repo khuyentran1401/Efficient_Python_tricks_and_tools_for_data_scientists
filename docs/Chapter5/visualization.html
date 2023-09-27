@@ -520,8 +520,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-adjust-annotations-in-matplotlib-for-readability">6.10.20. Automatically Adjust Annotations in Matplotlib for Readability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloxs-create-an-attractive-display-in-your-jupyter-notebook">6.10.21. Bloxs: Create an Attractive Display in Your Jupyter Notebook</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lovelyplots-create-nice-matplotlib-figures-for-presentations">6.10.22. LovelyPlots: Create Nice Matplotlib Figures for Presentations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.23. Visualize the Frequency Tokens in a Text Corpora</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.24. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.23. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2785,8 +2786,68 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 </div>
 <p><a class="reference external" href="https://github.com/killiansheriff/LovelyPlots">Link to LovelyPlots</a></p>
 </section>
+<section id="gif-the-easiest-way-to-animate-your-matplotlib-plot">
+<h2><span class="section-number">6.10.23. </span>gif: The Easiest Way to Animate Your matplotlib Plot<a class="headerlink" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>gif
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to effortlessly animate your matplotlib plot in Python, use gif.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">gif</span>
+
+
+<span class="n">START</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">&quot;2019-04-20&quot;</span><span class="p">)</span>
+<span class="n">END</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">&quot;2020-05-01&quot;</span><span class="p">)</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">378</span><span class="p">)]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">START</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">END</span><span class="p">),</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+
+
+<span class="nd">@gif</span><span class="o">.</span><span class="n">frame</span>
+<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">date</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="n">date</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b &#39;%y&quot;</span><span class="p">)])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">10</span><span class="se">\n</span><span class="s2">hours&quot;</span><span class="p">])</span>
+
+
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]:</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+    <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+<span class="n">gif</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="s2">&quot;phone.gif&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/matplotlib_gif.gif" /></p>
+<p><a class="reference external" href="https://github.com/maxhumber/gif">Link to gif</a>.</p>
+</section>
 <section id="visualize-the-frequency-tokens-in-a-text-corpora">
-<h2><span class="section-number">6.10.23. </span>Visualize the Frequency Tokens in a Text Corpora<a class="headerlink" href="#visualize-the-frequency-tokens-in-a-text-corpora" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.10.24. </span>Visualize the Frequency Tokens in a Text Corpora<a class="headerlink" href="#visualize-the-frequency-tokens-in-a-text-corpora" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2843,7 +2904,7 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <p><a class="reference external" href="https://github.com/DistrictDataLabs/yellowbrick">Link to Yellowbrick</a></p>
 </section>
 <section id="prettymaps-generate-pretty-painting-of-a-location-in-python">
-<h2><span class="section-number">6.10.24. </span>prettymaps: Generate Pretty Painting of a Location in Python<a class="headerlink" href="#prettymaps-generate-pretty-painting-of-a-location-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.10.25. </span>prettymaps: Generate Pretty Painting of a Location in Python<a class="headerlink" href="#prettymaps-generate-pretty-painting-of-a-location-in-python" title="Permalink to this headline">#</a></h2>
 <p>If you want to generate a pretty painting of a location from OpenStreetMap in Python, use prettymaps.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -2961,8 +3022,9 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-adjust-annotations-in-matplotlib-for-readability">6.10.20. Automatically Adjust Annotations in Matplotlib for Readability</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloxs-create-an-attractive-display-in-your-jupyter-notebook">6.10.21. Bloxs: Create an Attractive Display in Your Jupyter Notebook</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lovelyplots-create-nice-matplotlib-figures-for-presentations">6.10.22. LovelyPlots: Create Nice Matplotlib Figures for Presentations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.23. Visualize the Frequency Tokens in a Text Corpora</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.24. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.23. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
 </ul>
   </nav></div>
 
