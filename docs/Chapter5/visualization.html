@@ -523,6 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.23. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.26. Vizro: Create Modular Data Visualization Applications in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2931,6 +2932,51 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <p><img alt="" src="../_images/pretty_map.png" /></p>
 <p><a class="reference external" href="https://github.com/marceloprates/prettymaps">Link to prettymaps</a>.</p>
 </section>
+<section id="vizro-create-modular-data-visualization-applications-in-python">
+<h2><span class="section-number">6.10.26. </span>Vizro: Create Modular Data Visualization Applications in Python<a class="headerlink" href="#vizro-create-modular-data-visualization-applications-in-python" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>plotly<span class="w"> </span>vizro<span class="w"> </span><span class="s1">&#39;typing-extensions==4.5.0&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to use modular and simple code to create beautiful dashboards, use Vizro.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">vizro.plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">vizro</span> <span class="kn">import</span> <span class="n">Vizro</span>
+<span class="kn">import</span> <span class="nn">vizro.models</span> <span class="k">as</span> <span class="nn">vm</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">iris</span><span class="p">()</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">vm</span><span class="o">.</span><span class="n">Page</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My first dashboard&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;scatter_chart&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;petal_width&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">)),</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hist_chart&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;sepal_width&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="n">controls</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="o">=</span><span class="n">vm</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ALL&quot;</span><span class="p">])),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">dashboard</span> <span class="o">=</span> <span class="n">vm</span><span class="o">.</span><span class="n">Dashboard</span><span class="p">(</span><span class="n">pages</span><span class="o">=</span><span class="p">[</span><span class="n">page</span><span class="p">])</span>
+
+<span class="n">Vizro</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">dashboard</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/vizro.png" /></p>
+<p><a class="reference external" href="https://github.com/mckinsey/vizro">Link to vizro</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3025,6 +3071,7 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.23. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.26. Vizro: Create Modular Data Visualization Applications in Python</a></li>
 </ul>
   </nav></div>
 
