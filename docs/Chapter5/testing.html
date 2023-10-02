@@ -526,6 +526,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.29. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
 </ul>
             </nav>
         </div>
@@ -2616,6 +2617,70 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 </div>
 <p><a class="reference external" href="https://github.com/ClearcodeHQ/pytest-postgresql">Link to pytest-postgresql</a>.</p>
 </section>
+<section id="maintain-the-accuracy-of-docstring-examples-with-doctest">
+<h2><span class="section-number">6.13.29. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this headline">#</a></h2>
+<p>Including examples in a docstring is valuable. However, examples can become obsolete as the function evolves.</p>
+<p>To ensure that the examples remain accurate, use doctest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> example.py 
+<span class="k">def</span> <span class="nf">perc_difference</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the percentage difference between two numbers, n1 and n2.</span>
+
+<span class="sd">    Formula: ((n2 - n1) / n1) * 100</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    &gt;&gt;&gt; perc_difference(50, 60)</span>
+<span class="sd">    20.0</span>
+<span class="sd">    &gt;&gt;&gt; perc_difference(100, 100)</span>
+<span class="sd">    0.0</span>
+
+<span class="sd">    :param n1: The first number (the original value).</span>
+<span class="sd">    :param n2: The second number (the new value).</span>
+<span class="sd">    :return: The percentage difference between n1 and n2 as a float.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">n2</span> <span class="o">-</span> <span class="n">n1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing example.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>example.py<span class="w"> </span>-v
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trying:
+    perc_difference(50, 60)
+Expecting:
+    20.0
+ok
+Trying:
+    perc_difference(100, 100)
+Expecting:
+    0.0
+ok
+1 items had no tests:
+    __main__
+1 items passed all tests:
+   2 tests in __main__.perc_difference
+2 tests in 2 items.
+2 passed and 0 failed.
+Test passed.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2713,6 +2778,7 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.26. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.29. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
 </ul>
   </nav></div>
 
