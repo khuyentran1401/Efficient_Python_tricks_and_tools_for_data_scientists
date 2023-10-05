@@ -527,6 +527,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.29. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.30. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
             </nav>
         </div>
@@ -2619,9 +2620,9 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 </section>
 <section id="maintain-the-accuracy-of-docstring-examples-with-doctest">
 <h2><span class="section-number">6.13.29. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this headline">#</a></h2>
-<p>Including examples in a docstring is valuable. However, examples can become obsolete as the function evolves.</p>
+<p>Including examples in a docstring is helpful. However, examples can become obsolete as the function evolves.</p>
 <p>To ensure that the examples remain accurate, use doctest.</p>
-<div class="cell docutils container">
+<div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> example.py 
 <span class="k">def</span> <span class="nf">perc_difference</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -2645,11 +2646,6 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">doctest</span>
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing example.py
 </pre></div>
 </div>
 </div>
@@ -2680,6 +2676,79 @@ Test passed.
 </div>
 </div>
 </div>
+</section>
+<section id="deepeval-unit-testing-for-your-llm-model">
+<h2><span class="section-number">6.13.30. </span>DeepEval: Unit Testing for Your LLM Model<a class="headerlink" href="#deepeval-unit-testing-for-your-llm-model" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>deepeval
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>When deploying an LLM model to production, it’s crucial that the model is accurate, relevant to the specific question, and free from biases.</p>
+<p>DeepEval simplifies unit testing of LLM outputs in Python using these criteria.</p>
+<p>In the following code, we use DeepEval to check if the LLM output is accurate and aligns with established facts.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_chatbot.py
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">deepeval.metrics.factual_consistency</span> <span class="kn">import</span> <span class="n">FactualConsistencyMetric</span>
+<span class="kn">from</span> <span class="nn">deepeval.test_case</span> <span class="kn">import</span> <span class="n">LLMTestCase</span>
+<span class="kn">from</span> <span class="nn">deepeval.run_test</span> <span class="kn">import</span> <span class="n">assert_test</span>
+
+<span class="k">def</span> <span class="nf">test_case</span><span class="p">():</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;What if these shoes don&#39;t fit?&quot;</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;All customers are eligible for a 30 day full refund.&quot;</span>
+
+    <span class="c1"># Replace this with the actual output from your LLM application</span>
+    <span class="n">actual_output</span> <span class="o">=</span> <span class="s2">&quot;We offer a 30-day full refund.&quot;</span>
+    <span class="n">factual_consistency_metric</span> <span class="o">=</span> <span class="n">FactualConsistencyMetric</span><span class="p">(</span><span class="n">minimum_score</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">test_case</span> <span class="o">=</span> <span class="n">LLMTestCase</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">actual_output</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">assert_test</span><span class="p">(</span><span class="n">test_case</span><span class="p">,</span> <span class="p">[</span><span class="n">factual_consistency_metric</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>deepeval<span class="w"> </span><span class="nb">test</span><span class="w"> </span>run<span class="w"> </span>test_chatbot.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0 -- /Users/khuyentran/book/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: deepeval-0.20.0, postgresql-5.0.0, dash-2.13.0, typeguard-4.1.2, anyio-3.6.2
+collected 1 item                                                               
+
+Downloading FactualConsistencyModel (may take up to 2 minutes if running for th…
+<span class=" -Color -Color-Green">PASSED</span>Running teardown with pytest sessionfinish<span class=" -Color -Color-Yellow">...</span>
+
+
+============================= slowest 10 durations =============================
+7.00s call     test_chatbot.py::test_case
+
+(2 durations &lt; 0.005s hidden.  Use -vv to show these durations.)
+<span class=" -Color -Color-Yellow">======================== </span><span class=" -Color -Color-Green">1 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">2 warnings</span><span class=" -Color -Color-Yellow"> in 7.02s =========================</span>
+                                 Test Results                                  
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┓
+┃<span class=" -Color -Color-Bold">              Metric </span>┃<span class=" -Color -Color-Bold">      Average Score </span>┃<span class=" -Color -Color-Bold"> Passes </span>┃<span class=" -Color -Color-Bold"> Failures </span>┃<span class=" -Color -Color-Bold"> Success Rate </span>┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━┩
+│ Factual Consistency │ 0.9911543130874634 │      <span class=" -Color -Color-Green">1</span> │        <span class=" -Color -Color-Red">0</span> │      100.00% │
+│               Total │                  - │      <span class=" -Color -Color-Green">1</span> │        <span class=" -Color -Color-Red">0</span> │      100.00% │
+└─────────────────────┴────────────────────┴────────┴──────────┴──────────────┘
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/confident-ai/deepeval">Link to DeepEval</a>.</p>
 </section>
 </section>
 
@@ -2779,6 +2848,7 @@ Test passed.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.27. leAB: AB Testing Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.28. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.29. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.30. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
   </nav></div>
 
