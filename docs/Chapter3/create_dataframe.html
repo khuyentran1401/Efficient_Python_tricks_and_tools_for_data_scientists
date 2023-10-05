@@ -498,12 +498,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fix-unnamed-0-when-reading-a-csv-in-pandas">4.5.1. Fix Unnamed:0 When Reading a CSV in pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-a-website">4.5.2. Read Data from a Website</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-a-large-pandas-dataframe-into-chunks">4.5.3. Divide a Large pandas DataFrame into Chunks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-html-tables-using-pandas">4.5.4. Read HTML Tables Using Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-copy-make-a-copy-of-a-dataframe">4.5.5. DataFrame.copy(): Make a Copy of a DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-on-write-mode-in-pandas-2-0">4.5.6. Copy on Write Mode in pandas 2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-pyarrow-for-efficient-parquet-data-filtering">4.5.1. Leverage PyArrow for Efficient Parquet Data Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fix-unnamed-0-when-reading-a-csv-in-pandas">4.5.2. Fix Unnamed:0 When Reading a CSV in pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-a-website">4.5.3. Read Data from a Website</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-a-large-pandas-dataframe-into-chunks">4.5.4. Divide a Large pandas DataFrame into Chunks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-html-tables-using-pandas">4.5.5. Read HTML Tables Using Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-copy-make-a-copy-of-a-dataframe">4.5.6. DataFrame.copy(): Make a Copy of a DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-on-write-mode-in-pandas-2-0">4.5.7. Copy on Write Mode in pandas 2.0</a></li>
 </ul>
             </nav>
         </div>
@@ -518,8 +519,60 @@ document.write(`
   <section id="create-a-dataframe">
 <h1><span class="section-number">4.5. </span>Create a DataFrame<a class="headerlink" href="#create-a-dataframe" title="Permalink to this headline">#</a></h1>
 <p>This section shows some tips to read or create a DataFrame.</p>
+<section id="leverage-pyarrow-for-efficient-parquet-data-filtering">
+<h2><span class="section-number">4.5.1. </span>Leverage PyArrow for Efficient Parquet Data Filtering<a class="headerlink" href="#leverage-pyarrow-for-efficient-parquet-data-filtering" title="Permalink to this headline">#</a></h2>
+<p>When dealing with Parquet files in pandas, it is common to first load the data into a pandas DataFrame and then apply filters.</p>
+<p>To improve query execution speed, push down the filers to the PyArrow engine to leverage PyArrow’s processing optimizations.</p>
+<p>In the following code, filtering a dataset of 100 million rows using PyArrow is approximately 113 times faster than performing the same operation with pandas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;data.parquet&quot;</span>
+
+<span class="c1"># Define the number of rows</span>
+<span class="n">num_rows</span> <span class="o">=</span> <span class="mi">100_000_000</span>
+
+<span class="c1"># Generate the DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">num_rows</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Write the result to a Parquet file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">row_group_size</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;id == 50000&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2 s ± 106 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>19.5 ms ± 414 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="fix-unnamed-0-when-reading-a-csv-in-pandas">
-<h2><span class="section-number">4.5.1. </span>Fix Unnamed:0 When Reading a CSV in pandas<a class="headerlink" href="#fix-unnamed-0-when-reading-a-csv-in-pandas" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.2. </span>Fix Unnamed:0 When Reading a CSV in pandas<a class="headerlink" href="#fix-unnamed-0-when-reading-a-csv-in-pandas" title="Permalink to this headline">#</a></h2>
 <p>Sometimes, when reading a CSV in pandas, you will get an <code class="docutils literal notranslate"><span class="pre">Unnamed:0</span></code> column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -569,7 +622,7 @@ document.write(`
 </div>
 </section>
 <section id="read-data-from-a-website">
-<h2><span class="section-number">4.5.2. </span>Read Data from a Website<a class="headerlink" href="#read-data-from-a-website" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.3. </span>Read Data from a Website<a class="headerlink" href="#read-data-from-a-website" title="Permalink to this headline">#</a></h2>
 <p>pandas allows you to read data from a website without downloading the data.</p>
 <p>For example, to read a CSV from GitHub, click Raw then copy the link.</p>
 <p><img alt="" src="../_images/github_raw.png" /></p>
@@ -661,7 +714,7 @@ document.write(`
 </div>
 </section>
 <section id="divide-a-large-pandas-dataframe-into-chunks">
-<h2><span class="section-number">4.5.3. </span>Divide a Large pandas DataFrame into Chunks<a class="headerlink" href="#divide-a-large-pandas-dataframe-into-chunks" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.4. </span>Divide a Large pandas DataFrame into Chunks<a class="headerlink" href="#divide-a-large-pandas-dataframe-into-chunks" title="Permalink to this headline">#</a></h2>
 <p>As a data professional, you might work with large datasets that don’t fit in the memory.</p>
 <p>When dealing with these datasets, you can divide the data into smaller portions using the pandas’s <code class="docutils literal notranslate"><span class="pre">chunksize</span></code> parameter.</p>
 <p>In the code below, using no <code class="docutils literal notranslate"><span class="pre">chunksize</span></code> takes an average of 2.33s to run. Using <code class="docutils literal notranslate"><span class="pre">chunksize=100000</span></code> takes an average of 424 µs to run, which is 563k times faster.</p>
@@ -735,7 +788,7 @@ document.write(`
 </div>
 </section>
 <section id="read-html-tables-using-pandas">
-<h2><span class="section-number">4.5.4. </span>Read HTML Tables Using Pandas<a class="headerlink" href="#read-html-tables-using-pandas" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.5. </span>Read HTML Tables Using Pandas<a class="headerlink" href="#read-html-tables-using-pandas" title="Permalink to this headline">#</a></h2>
 <p>If you want to quickly extract a table on a website and turn it into a Pandas DataFrame, use <code class="docutils literal notranslate"><span class="pre">pd.read_html</span></code>. In the code below, I extracted the table from a Wikipedia page in one line of code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -898,7 +951,7 @@ document.write(`
 </div>
 </section>
 <section id="dataframe-copy-make-a-copy-of-a-dataframe">
-<h2><span class="section-number">4.5.5. </span>DataFrame.copy(): Make a Copy of a DataFrame<a class="headerlink" href="#dataframe-copy-make-a-copy-of-a-dataframe" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.6. </span>DataFrame.copy(): Make a Copy of a DataFrame<a class="headerlink" href="#dataframe-copy-make-a-copy-of-a-dataframe" title="Permalink to this headline">#</a></h2>
 <p>Have you ever tried to make a copy of a DataFrame using <code class="docutils literal notranslate"><span class="pre">=</span></code>? You will not get a copy but a reference to the original DataFrame. Thus, changing the new DataFrame will also change the original DataFrame.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1064,7 +1117,7 @@ document.write(`
 </div>
 </section>
 <section id="copy-on-write-mode-in-pandas-2-0">
-<h2><span class="section-number">4.5.6. </span>Copy on Write Mode in pandas 2.0<a class="headerlink" href="#copy-on-write-mode-in-pandas-2-0" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">4.5.7. </span>Copy on Write Mode in pandas 2.0<a class="headerlink" href="#copy-on-write-mode-in-pandas-2-0" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1260,12 +1313,13 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fix-unnamed-0-when-reading-a-csv-in-pandas">4.5.1. Fix Unnamed:0 When Reading a CSV in pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-a-website">4.5.2. Read Data from a Website</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-a-large-pandas-dataframe-into-chunks">4.5.3. Divide a Large pandas DataFrame into Chunks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-html-tables-using-pandas">4.5.4. Read HTML Tables Using Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-copy-make-a-copy-of-a-dataframe">4.5.5. DataFrame.copy(): Make a Copy of a DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-on-write-mode-in-pandas-2-0">4.5.6. Copy on Write Mode in pandas 2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-pyarrow-for-efficient-parquet-data-filtering">4.5.1. Leverage PyArrow for Efficient Parquet Data Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fix-unnamed-0-when-reading-a-csv-in-pandas">4.5.2. Fix Unnamed:0 When Reading a CSV in pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data-from-a-website">4.5.3. Read Data from a Website</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-a-large-pandas-dataframe-into-chunks">4.5.4. Divide a Large pandas DataFrame into Chunks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-html-tables-using-pandas">4.5.5. Read HTML Tables Using Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-copy-make-a-copy-of-a-dataframe">4.5.6. DataFrame.copy(): Make a Copy of a DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-on-write-mode-in-pandas-2-0">4.5.7. Copy on Write Mode in pandas 2.0</a></li>
 </ul>
   </nav></div>
 
