@@ -506,6 +506,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.3.9. Vulture: Automatically Find Dead Python Code</a></li>
 </ul>
             </nav>
         </div>
@@ -1055,6 +1056,83 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <p><img alt="" src="../_images/memory_profiler.png" /></p>
 <p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler">Link to memory_profiler</a>.</p>
 </section>
+<section id="vulture-automatically-find-dead-python-code">
+<h2><span class="section-number">7.3.9. </span>Vulture: Automatically Find Dead Python Code<a class="headerlink" href="#vulture-automatically-find-dead-python-code" title="Permalink to this headline">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>vulture
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Unused code poses multiple issues, including:</p>
+<ul class="simple">
+<li><p>Increased difficulty in comprehending the code.</p></li>
+<li><p>Challenges in debugging and testing.</p></li>
+<li><p>Unnecessary consumption of memory and resources.</p></li>
+</ul>
+<p>To automatically remove unused Python code, use Vulture.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> dead_code.py
+<span class="c1"># Unused Imports</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">class</span> <span class="nc">DataProcessor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">clean_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Unused Variables</span>
+        <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span>
+        <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span> 
+
+        <span class="c1"># Data cleaning logic here</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;any&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This method is defined but not used in the class</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+    
+    <span class="n">processor</span> <span class="o">=</span> <span class="n">DataProcessor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">processor</span><span class="o">.</span><span class="n">clean_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>vulture<span class="w"> </span>dead_code.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dead_code.py:3: unused import &#39;np&#39; (90% confidence)
+dead_code.py:11: unused variable &#39;how&#39; (60% confidence)
+dead_code.py:12: unused variable &#39;inplace&#39; (60% confidence)
+dead_code.py:17: unused method &#39;get_mean&#39; (60% confidence)
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use Vulture with pre-commit by adding the following to your .pre-commit-config.yaml file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">repos</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/jendrikseipp/vulture</span>
+<span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;v2.3&#39;</span><span class="w">  </span><span class="c1"># or any later Vulture version</span>
+<span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vulture</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/jendrikseipp/vulture">Link to Vulture</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1132,6 +1210,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.3.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.3.7. perfplot: Performance Analysis for Python Snippets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.3.8. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.3.9. Vulture: Automatically Find Dead Python Code</a></li>
 </ul>
   </nav></div>
 
