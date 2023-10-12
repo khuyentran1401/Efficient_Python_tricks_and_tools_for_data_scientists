@@ -505,10 +505,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.8. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.9. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.10. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.11. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
             </nav>
         </div>
@@ -930,8 +931,52 @@ Instance is called
             </script></div>
 </div>
 </section>
+<section id="minimize-data-risks-with-python-private-variables">
+<h2><span class="section-number">2.6.8. </span>Minimize Data Risks with Python Private Variables<a class="headerlink" href="#minimize-data-risks-with-python-private-variables" title="Permalink to this headline">#</a></h2>
+<p>To restrict external access and modification of a variable outside of a class, make it a private variable by using double underscores. This helps minimize the chances of unintended alterations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Grocery</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">price</span><span class="p">):</span>
+        <span class="c1"># Making &#39;price&#39; a private variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__price</span> <span class="o">=</span> <span class="n">price</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="c1"># Getter method to access the private variable &#39;price&#39;</span>
+    <span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The price of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">item</span><span class="si">}</span><span class="s2"> is $</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__price</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Create an instance of the Grocery class</span>
+<span class="n">grocery_item</span> <span class="o">=</span> <span class="n">Grocery</span><span class="p">(</span><span class="s2">&quot;Apples&quot;</span><span class="p">,</span> <span class="mf">2.99</span><span class="p">)</span>
+
+<span class="c1"># Access the private variable &#39;price&#39; using the getter method</span>
+<span class="n">grocery_item</span><span class="o">.</span><span class="n">get_price</span><span class="p">()</span>
+
+<span class="c1"># Access the private variable directly</span>
+<span class="n">grocery_item</span><span class="o">.</span><span class="n">__price</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The price of Apples is $2.99
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">18</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">grocery_item</span><span class="o">.</span><span class="n">get_price</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="c1"># Access the private variable directly</span>
+<span class="ne">---&gt; </span><span class="mi">18</span> <span class="n">grocery_item</span><span class="o">.</span><span class="n">__price</span>
+
+<span class="ne">AttributeError</span>: &#39;Grocery&#39; object has no attribute &#39;__price&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="property-decorator-a-pythonic-way-to-use-getters-and-setters">
-<h2><span class="section-number">2.6.8. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.9. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
 <p>To define the behaviors that are executed when a class attribute is set, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
 <p>In the code below, the getter method gets the value of the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute and the setter method restricts the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute modification to string data types only.</p>
 <div class="cell docutils container">
@@ -1010,7 +1055,7 @@ Instance is called
 </div>
 </section>
 <section id="str-and-repr-create-a-string-representation-of-a-python-object">
-<h2><span class="section-number">2.6.9. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.10. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
 <p>If you want to create a string representation of an object, add <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">__str__</span></code> shows readable outputs when printing the object. <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> shows outputs that are useful for displaying and debugging the object.</p>
 <div class="cell docutils container">
@@ -1083,7 +1128,7 @@ Instance is called
 </div>
 </section>
 <section id="add-add-the-attributes-of-two-class-instances">
-<h2><span class="section-number">2.6.10. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.11. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
 <p>If you want to add the attributes of class instances, use <code class="docutils literal notranslate"><span class="pre">__add__</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">__add__</span></code> to add the ages of two class instances <code class="docutils literal notranslate"><span class="pre">bim</span></code> and <code class="docutils literal notranslate"><span class="pre">coco</span></code> when calling <code class="docutils literal notranslate"><span class="pre">bim</span> <span class="pre">+</span> <span class="pre">coco</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1117,7 +1162,7 @@ Instance is called
 </div>
 </section>
 <section id="optimizing-memory-usage-in-python-with-slots">
-<h2><span class="section-number">2.6.11. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.12. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1290,10 +1335,11 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.8. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.9. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.10. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.11. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
   </nav></div>
 
