@@ -500,16 +500,17 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-in-python">2.6.1. Inheritance in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract-classes-declare-methods-without-implementation">2.6.2. Abstract Classes: Declare Methods without Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-vs-composition-choose-the-right-design-approach">2.6.3. Inheritance vs. Composition: Choose the Right Design Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.4. Distinguishing Instance-Level and Class Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.5. getattr: a Better Way to Get the Attribute of a Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.6. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.7. Instance Comparison in Python Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.8. Static method: use the function without adding the attributes required for a new instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.9. Minimize Data Risks with Python Private Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.10. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.11. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.12. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.13. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
             </nav>
         </div>
@@ -646,8 +647,89 @@ Bella says: Meows
 </div>
 </div>
 </section>
+<section id="inheritance-vs-composition-choose-the-right-design-approach">
+<h2><span class="section-number">2.6.3. </span>Inheritance vs. Composition: Choose the Right Design Approach<a class="headerlink" href="#inheritance-vs-composition-choose-the-right-design-approach" title="Permalink to this headline">#</a></h2>
+<p>In Python, inheritance is used when one class is a specialized version of another class. In the following example, the <code class="docutils literal notranslate"><span class="pre">WholeMilk</span></code> class represents a specific type of milk.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Milk</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fat_content</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fat_content</span> <span class="o">=</span> <span class="n">fat_content</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> milk...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Serving </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> milk...&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">WholeMilk</span><span class="p">(</span><span class="n">Milk</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;Whole&quot;</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding cream to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> milk...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">serve</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Serving </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> milk with cream...&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>On the other hand, composition is used when one class forms a “has-a” relationship with another class. In the following example, the <code class="docutils literal notranslate"><span class="pre">MilkTea</span></code> class contains an instance of <code class="docutils literal notranslate"><span class="pre">Milk</span></code> as an attribute.</p>
+<p>By using composition, the <code class="docutils literal notranslate"><span class="pre">MilkTea</span></code> class can use the functionalities of the <code class="docutils literal notranslate"><span class="pre">Milk</span></code> class without inheriting its attributes and methods. This design enables:</p>
+<ul class="simple">
+<li><p>Substituting the milk implementation without impacting the <code class="docutils literal notranslate"><span class="pre">MilkTea</span></code> class.</p></li>
+<li><p>Reusing the <code class="docutils literal notranslate"><span class="pre">Milk</span></code> class in other classes, such as <code class="docutils literal notranslate"><span class="pre">Cake</span></code>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Milk</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fat_content</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fat_content</span> <span class="o">=</span> <span class="n">fat_content</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preparing </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> milk...&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MilkTea</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">milk</span><span class="p">:</span> <span class="n">Milk</span><span class="p">,</span> <span class="n">sugar_percentage</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">milk</span> <span class="o">=</span> <span class="n">milk</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sugar_percentage</span> <span class="o">=</span> <span class="n">sugar_percentage</span>
+
+    <span class="k">def</span> <span class="nf">prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">milk</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sugar_percentage</span><span class="si">}</span><span class="s2">% sugar...&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">serve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Serving the MilkTea...&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># Create a MilkTea object</span>
+<span class="n">milk_tea</span> <span class="o">=</span> <span class="n">MilkTea</span><span class="p">(</span><span class="n">Milk</span><span class="p">(</span><span class="s2">&quot;Whole&quot;</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Prepare the MilkTea</span>
+<span class="n">milk_tea</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+
+<span class="c1"># Serve the MilkTea</span>
+<span class="n">milk_tea</span><span class="o">.</span><span class="n">serve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Preparing Whole milk...
+Adding 10% sugar...
+Serving the MilkTea...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="distinguishing-instance-level-and-class-methods">
-<h2><span class="section-number">2.6.3. </span>Distinguishing Instance-Level and Class Methods<a class="headerlink" href="#distinguishing-instance-level-and-class-methods" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.4. </span>Distinguishing Instance-Level and Class Methods<a class="headerlink" href="#distinguishing-instance-level-and-class-methods" title="Permalink to this headline">#</a></h2>
 <p>An instance-level method requires instantiating a class object to operate, while a class method doesn’t.</p>
 <p>Class methods can provide alternate ways to construct objects. In the code below, the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method instantiates the class by reading data from a CSV file.</p>
 <div class="cell docutils container">
@@ -696,7 +778,7 @@ Bella says: Meows
 </div>
 </section>
 <section id="getattr-a-better-way-to-get-the-attribute-of-a-class">
-<h2><span class="section-number">2.6.4. </span>getattr: a Better Way to Get the Attribute of a Class<a class="headerlink" href="#getattr-a-better-way-to-get-the-attribute-of-a-class" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.5. </span>getattr: a Better Way to Get the Attribute of a Class<a class="headerlink" href="#getattr-a-better-way-to-get-the-attribute-of-a-class" title="Permalink to this headline">#</a></h2>
 <p>If you want to get a default value when calling an attribute that is not in a class, use <code class="docutils literal notranslate"><span class="pre">getattr()</span></code> method.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">getattr(class,</span> <span class="pre">attribute_name)</span></code> method simply gets the value of an attribute of a class. However, if the attribute is not found in a class, it returns the default value provided to the function.</p>
 <div class="cell docutils container">
@@ -795,7 +877,7 @@ Bella says: Meows
 </div>
 </section>
 <section id="call-call-your-class-instance-like-a-function">
-<h2><span class="section-number">2.6.5. </span><code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function<a class="headerlink" href="#call-call-your-class-instance-like-a-function" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.6. </span><code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function<a class="headerlink" href="#call-call-your-class-instance-like-a-function" title="Permalink to this headline">#</a></h2>
 <p>If you want to call your class instance like a function, add <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method to your class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -840,7 +922,7 @@ Instance is called
 </div>
 </section>
 <section id="instance-comparison-in-python-classes">
-<h2><span class="section-number">2.6.6. </span>Instance Comparison in Python Classes<a class="headerlink" href="#instance-comparison-in-python-classes" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.7. </span>Instance Comparison in Python Classes<a class="headerlink" href="#instance-comparison-in-python-classes" title="Permalink to this headline">#</a></h2>
 <p>Even if two class instances have the same attributes, they are not equal because they are stored in separate memory locations.</p>
 <p>To define how class instances should be compared, add the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> method.</p>
 <div class="cell docutils container">
@@ -886,7 +968,7 @@ Instance is called
 </div>
 </section>
 <section id="static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">
-<h2><span class="section-number">2.6.7. </span>Static method: use the function without adding the attributes required for a new instance<a class="headerlink" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.8. </span>Static method: use the function without adding the attributes required for a new instance<a class="headerlink" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance" title="Permalink to this headline">#</a></h2>
 <p>Have you ever had a function in your class that doesn’t access any properties of a class but fits well in a class? You might find it redundant to instantiate the class to use that function. That is when you can turn your function into a static method.</p>
 <p>All you need to turn your function into a static method is the decorator <code class="docutils literal notranslate"><span class="pre">&#64;staticmethod</span></code>. Now you can use the function without adding the attributes required for a new instance.</p>
 <div class="cell docutils container">
@@ -932,7 +1014,7 @@ Instance is called
 </div>
 </section>
 <section id="minimize-data-risks-with-python-private-variables">
-<h2><span class="section-number">2.6.8. </span>Minimize Data Risks with Python Private Variables<a class="headerlink" href="#minimize-data-risks-with-python-private-variables" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.9. </span>Minimize Data Risks with Python Private Variables<a class="headerlink" href="#minimize-data-risks-with-python-private-variables" title="Permalink to this headline">#</a></h2>
 <p>To restrict external access and modification of a variable outside of a class, make it a private variable by using double underscores. This helps minimize the chances of unintended alterations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -976,7 +1058,7 @@ Instance is called
 </div>
 </section>
 <section id="property-decorator-a-pythonic-way-to-use-getters-and-setters">
-<h2><span class="section-number">2.6.9. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.10. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this headline">#</a></h2>
 <p>To define the behaviors that are executed when a class attribute is set, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
 <p>In the code below, the getter method gets the value of the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute and the setter method restricts the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute modification to string data types only.</p>
 <div class="cell docutils container">
@@ -1055,7 +1137,7 @@ Instance is called
 </div>
 </section>
 <section id="str-and-repr-create-a-string-representation-of-a-python-object">
-<h2><span class="section-number">2.6.10. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.11. </span><code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object<a class="headerlink" href="#str-and-repr-create-a-string-representation-of-a-python-object" title="Permalink to this headline">#</a></h2>
 <p>If you want to create a string representation of an object, add <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">__str__</span></code> shows readable outputs when printing the object. <code class="docutils literal notranslate"><span class="pre">__repr__</span></code> shows outputs that are useful for displaying and debugging the object.</p>
 <div class="cell docutils container">
@@ -1128,7 +1210,7 @@ Instance is called
 </div>
 </section>
 <section id="add-add-the-attributes-of-two-class-instances">
-<h2><span class="section-number">2.6.11. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.12. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this headline">#</a></h2>
 <p>If you want to add the attributes of class instances, use <code class="docutils literal notranslate"><span class="pre">__add__</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">__add__</span></code> to add the ages of two class instances <code class="docutils literal notranslate"><span class="pre">bim</span></code> and <code class="docutils literal notranslate"><span class="pre">coco</span></code> when calling <code class="docutils literal notranslate"><span class="pre">bim</span> <span class="pre">+</span> <span class="pre">coco</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1162,7 +1244,7 @@ Instance is called
 </div>
 </section>
 <section id="optimizing-memory-usage-in-python-with-slots">
-<h2><span class="section-number">2.6.12. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">2.6.13. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1330,16 +1412,17 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-in-python">2.6.1. Inheritance in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract-classes-declare-methods-without-implementation">2.6.2. Abstract Classes: Declare Methods without Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.3. Distinguishing Instance-Level and Class Methods</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.4. getattr: a Better Way to Get the Attribute of a Class</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.5. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inheritance-vs-composition-choose-the-right-design-approach">2.6.3. Inheritance vs. Composition: Choose the Right Design Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguishing-instance-level-and-class-methods">2.6.4. Distinguishing Instance-Level and Class Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getattr-a-better-way-to-get-the-attribute-of-a-class">2.6.5. getattr: a Better Way to Get the Attribute of a Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#call-call-your-class-instance-like-a-function">2.6.6. <code class="docutils literal notranslate"><span class="pre">__call__</span></code>: Call your Class Instance like a Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.7. Instance Comparison in Python Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.8. Static method: use the function without adding the attributes required for a new instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.9. Minimize Data Risks with Python Private Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.10. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.11. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.12. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.13. Optimizing Memory Usage in Python with Slots</a></li>
 </ul>
   </nav></div>
 
