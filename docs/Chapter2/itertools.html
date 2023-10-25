@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>3.2. Itertools &#8212; Effective Python for Data Scientists</title>
   
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,12 +38,14 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
@@ -101,7 +103,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="next" title="3.3. Functools" href="functools.html" />
     <link rel="prev" title="3.1. Collections" href="collections.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -110,6 +112,15 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -170,13 +181,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
+  
     
     
       
     
     
-    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Effective Python for Data Scientists - Home"/>
+    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Effective Python for Data Scientists - Home"/>`);</script>
   
   
 </a></div>
@@ -460,10 +472,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -471,7 +483,7 @@ document.write(`
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
@@ -517,11 +529,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="itertools">
-<h1><span class="section-number">3.2. </span>Itertools<a class="headerlink" href="#itertools" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">3.2. </span>Itertools<a class="headerlink" href="#itertools" title="Permalink to this heading">#</a></h1>
 <p><img alt="" src="../_images/itertools.png" /></p>
 <p><a class="reference external" href="https://docs.python.org/3/library/itertools.html">itertools</a> is a built-in Python library that creates iterators for efficient looping. This section will show you some useful methods of itertools.</p>
 <section id="itertools-combinations-a-better-way-to-iterate-through-a-pair-of-values-in-a-python-list">
-<h2><span class="section-number">3.2.1. </span>itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List<a class="headerlink" href="#itertools-combinations-a-better-way-to-iterate-through-a-pair-of-values-in-a-python-list" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.1. </span>itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List<a class="headerlink" href="#itertools-combinations-a-better-way-to-iterate-through-a-pair-of-values-in-a-python-list" title="Permalink to this heading">#</a></h2>
 <p>If you want to iterate through a pair of values in a list and the order does not matter (<code class="docutils literal notranslate"><span class="pre">(a,b)</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">(b,</span> <span class="pre">a)</span></code>), a naive approach is to use two for-loops.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -577,7 +589,7 @@ document.write(`
 </div>
 </section>
 <section id="itertools-product-nested-for-loops-in-a-generator-expression">
-<h2><span class="section-number">3.2.2. </span>itertools.product: Nested For-Loops in a Generator Expression<a class="headerlink" href="#itertools-product-nested-for-loops-in-a-generator-expression" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.2. </span>itertools.product: Nested For-Loops in a Generator Expression<a class="headerlink" href="#itertools-product-nested-for-loops-in-a-generator-expression" title="Permalink to this heading">#</a></h2>
 <p>Are you using nested for-loops to experiment with different combinations of parameters?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -638,7 +650,7 @@ document.write(`
 </div>
 </section>
 <section id="itertools-starmap-apply-a-function-with-more-than-2-arguments-to-elements-in-a-list">
-<h2><span class="section-number">3.2.3. </span>itertools.starmap: Apply a Function With More Than 2 Arguments to Elements in a List<a class="headerlink" href="#itertools-starmap-apply-a-function-with-more-than-2-arguments-to-elements-in-a-list" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.3. </span>itertools.starmap: Apply a Function With More Than 2 Arguments to Elements in a List<a class="headerlink" href="#itertools-starmap-apply-a-function-with-more-than-2-arguments-to-elements-in-a-list" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">map</span></code> is a useful method that allows you to apply a function to elements in a list. However, it can’t apply a function with more than one argument to a list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -731,7 +743,7 @@ document.write(`
 </div>
 </section>
 <section id="itertools-compress-filter-a-list-using-booleans">
-<h2><span class="section-number">3.2.4. </span>itertools.compress: Filter a List Using Booleans<a class="headerlink" href="#itertools-compress-filter-a-list-using-booleans" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.4. </span>itertools.compress: Filter a List Using Booleans<a class="headerlink" href="#itertools-compress-filter-a-list-using-booleans" title="Permalink to this heading">#</a></h2>
 <p>Normally, you cannot filter a list using a list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -771,7 +783,7 @@ document.write(`
 </div>
 </section>
 <section id="itertools-groupby-group-elements-in-an-iterable-by-a-key">
-<h2><span class="section-number">3.2.5. </span>itertools.groupby: Group Elements in an Iterable by a Key<a class="headerlink" href="#itertools-groupby-group-elements-in-an-iterable-by-a-key" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.5. </span>itertools.groupby: Group Elements in an Iterable by a Key<a class="headerlink" href="#itertools-groupby-group-elements-in-an-iterable-by-a-key" title="Permalink to this heading">#</a></h2>
 <p>If you want to group elements in a list by a key, use <code class="docutils literal notranslate"><span class="pre">itertools.groupby</span></code>. In the example below, I grouped elements in the list by the first element in each tuple.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -800,7 +812,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </div>
 </section>
 <section id="itertools-zip-longest-zip-iterables-of-different-lengths">
-<h2><span class="section-number">3.2.6. </span>itertools.zip_longest: Zip Iterables of Different Lengths<a class="headerlink" href="#itertools-zip-longest-zip-iterables-of-different-lengths" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.6. </span>itertools.zip_longest: Zip Iterables of Different Lengths<a class="headerlink" href="#itertools-zip-longest-zip-iterables-of-different-lengths" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">zip</span></code> allows you to aggregate elements from each of the iterables. However, <code class="docutils literal notranslate"><span class="pre">zip</span></code> doesn’t show all pairs of elements when iterables have different lengths.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -844,7 +856,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </div>
 </section>
 <section id="itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">
-<h2><span class="section-number">3.2.7. </span>itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False<a class="headerlink" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">3.2.7. </span>itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False<a class="headerlink" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false" title="Permalink to this heading">#</a></h2>
 <p>If you want to drop elements from an iterable until a condition is false, use <code class="docutils literal notranslate"><span class="pre">itertools.dropwhile</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -907,11 +919,10 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 
               
               
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="collections.html"
@@ -931,10 +942,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1003,8 +1011,8 @@ By Khuyen Tran
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
 
   <footer class="bd-footer">
   </footer>
