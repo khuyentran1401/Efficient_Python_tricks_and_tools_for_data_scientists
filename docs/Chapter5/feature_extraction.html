@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 
 
-<html >
+<html lang="en" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>6.1. Feature Extraction &#8212; Effective Python for Data Scientists</title>
   
@@ -19,12 +19,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
@@ -38,12 +38,14 @@
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
@@ -101,7 +103,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="next" title="6.2. Feature Engineer" href="feature_engineer.html" />
     <link rel="prev" title="6. Data Science Tools" href="Chapter5.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
@@ -110,6 +112,15 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
   
   <input type="checkbox"
           class="sidebar-toggle"
@@ -170,13 +181,14 @@ const thebe_selector_output = ".output, .cell_output"
   
   
   
+  
     
     
       
     
     
-    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Logo image"/>
-    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Effective Python for Data Scientists - Home"/>
+    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Effective Python for Data Scientists - Home"/>`);</script>
   
   
 </a></div>
@@ -460,10 +472,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 <script>
 document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
   </button>
 `);
 </script>
@@ -471,7 +483,7 @@ document.write(`
 <script>
 document.write(`
   <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
   </button>
 `);
 </script>
@@ -518,9 +530,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section id="feature-extraction">
-<h1><span class="section-number">6.1. </span>Feature Extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">6.1. </span>Feature Extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this heading">#</a></h1>
 <section id="distfit-find-the-best-theoretical-distribution-for-your-data-in-python">
-<h2><span class="section-number">6.1.1. </span>distfit: Find The Best Theoretical Distribution For Your Data in Python<a class="headerlink" href="#distfit-find-the-best-theoretical-distribution-for-your-data-in-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.1. </span>distfit: Find The Best Theoretical Distribution For Your Data in Python<a class="headerlink" href="#distfit-find-the-best-theoretical-distribution-for-your-data-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -593,7 +605,7 @@ document.write(`
 <p><a class="reference external" href="https://erdogant.github.io/distfit/pages/html/index.html">Link to distfit</a>.</p>
 </section>
 <section id="geopy-extract-location-based-on-python-string">
-<h2><span class="section-number">6.1.2. </span>Geopy: Extract Location Based on Python String<a class="headerlink" href="#geopy-extract-location-based-on-python-string" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.2. </span>Geopy: Extract Location Based on Python String<a class="headerlink" href="#geopy-extract-location-based-on-python-string" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -659,7 +671,7 @@ document.write(`
 <p><a class="reference external" href="https://geopy.readthedocs.io/en/stable/">Link to Geopy</a></p>
 </section>
 <section id="fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality">
-<h2><span class="section-number">6.1.3. </span>fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality<a class="headerlink" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.3. </span>fastai’s cont_cat_split: Get a DataFrame’s Continuous and Categorical Variables Based on Their Cardinality<a class="headerlink" href="#fastais-cont-cat-split-get-a-dataframes-continuous-and-categorical-variables-based-on-their-cardinality" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -749,7 +761,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://docs.fast.ai/tabular.core.html">Link to the documentation</a>.</p>
 </section>
 <section id="patsy-build-features-with-arbitrary-python-code">
-<h2><span class="section-number">6.1.4. </span>Patsy: Build Features with Arbitrary Python Code<a class="headerlink" href="#patsy-build-features-with-arbitrary-python-code" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.4. </span>Patsy: Build Features with Arbitrary Python Code<a class="headerlink" href="#patsy-build-features-with-arbitrary-python-code" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1063,7 +1075,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://towardsdatascience.com/patsy-build-powerful-features-with-arbitrary-python-code-bb4bb98db67a#3be4-4bcff97738cd">Link to my full article on Patsy</a>.</p>
 </section>
 <section id="yarl-create-and-extract-elements-from-a-url-using-python">
-<h2><span class="section-number">6.1.5. </span>yarl: Create and Extract Elements from a URL Using Python<a class="headerlink" href="#yarl-create-and-extract-elements-from-a-url-using-python" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.5. </span>yarl: Create and Extract Elements from a URL Using Python<a class="headerlink" href="#yarl-create-and-extract-elements-from-a-url-using-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output text_html"><iframe width="560" height="315" src="https://www.youtube.com/embed/eTJI6Bodf9E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div>
@@ -1201,7 +1213,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://github.com/aio-libs/yarl">Link to yarl</a>.</p>
 </section>
 <section id="pigeon-quickly-annotate-your-data-on-jupyter-notebook">
-<h2><span class="section-number">6.1.6. </span>Pigeon: Quickly Annotate Your Data on Jupyter Notebook<a class="headerlink" href="#pigeon-quickly-annotate-your-data-on-jupyter-notebook" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.6. </span>Pigeon: Quickly Annotate Your Data on Jupyter Notebook<a class="headerlink" href="#pigeon-quickly-annotate-your-data-on-jupyter-notebook" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1247,7 +1259,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://github.com/agermanidis/pigeon">Link to Pigeon</a></p>
 </section>
 <section id="probablepeople-parse-unstructured-names-into-structured-components">
-<h2><span class="section-number">6.1.7. </span>probablepeople: Parse Unstructured Names Into Structured Components<a class="headerlink" href="#probablepeople-parse-unstructured-names-into-structured-components" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.7. </span>probablepeople: Parse Unstructured Names Into Structured Components<a class="headerlink" href="#probablepeople-parse-unstructured-names-into-structured-components" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1356,7 +1368,7 @@ Categorical columns: [&#39;col2&#39;]
 <p><a class="reference external" href="https://github.com/datamade/probablepeople">Link to probablepeople</a>.</p>
 </section>
 <section id="supercharge-pdf-text-extraction-in-python-with-pypdf">
-<h2><span class="section-number">6.1.8. </span>Supercharge PDF Text Extraction in Python with pypdf<a class="headerlink" href="#supercharge-pdf-text-extraction-in-python-with-pypdf" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">6.1.8. </span>Supercharge PDF Text Extraction in Python with pypdf<a class="headerlink" href="#supercharge-pdf-text-extraction-in-python-with-pypdf" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1412,11 +1424,10 @@ Categorical columns: [&#39;col2&#39;]
 
               
               
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
        href="Chapter5.html"
@@ -1436,10 +1447,7 @@ Categorical columns: [&#39;col2&#39;]
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
-</div></div>
-  
 </div>
-
                 </footer>
               
             </div>
@@ -1509,8 +1517,8 @@ By Khuyen Tran
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
 
   <footer class="bd-footer">
   </footer>
