@@ -512,14 +512,15 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-data-in-a-stratified-fashion-in-scikit-learn">6.2.1. Split Data in a Stratified Fashion in scikit-learn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-to-prevent-data-leakage-in-time-correlated-datasets">6.2.2. Strategy to Prevent Data Leakage in Time-correlated Datasets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.3. Drop Correlated Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.4. Encode Rare Labels with Feature-engine</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.5. Encode Categorical Data Using Frequency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.6. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.7. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.8. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.9. Snorkel — Programmatically Build Training Data in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.10. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support">6.2.3. Enhancing Data Handling with scikit-learn’s DataFrame Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.4. Drop Correlated Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.5. Encode Rare Labels with Feature-engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.6. Encode Categorical Data Using Frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.7. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.8. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.9. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.10. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.11. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
 </ul>
             </nav>
         </div>
@@ -699,8 +700,86 @@ Test data:
 </div>
 </div>
 </section>
+<section id="enhancing-data-handling-with-scikit-learn-s-dataframe-support">
+<h2><span class="section-number">6.2.3. </span>Enhancing Data Handling with scikit-learn’s DataFrame Support<a class="headerlink" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support" title="Permalink to this heading">#</a></h2>
+<p>By default, scikit-learn transformers return a NumPy array. This can pose a challenge if you require the data in a pandas DataFrame for subsequent data processing steps.</p>
+<p>Luckily, as of scikit-learn version 1.3.2, you can use the <code class="docutils literal notranslate"><span class="pre">set_output</span></code> method to obtain the results as a pandas DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a small pandas DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+    <span class="s2">&quot;income&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">60000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.22474487, -1.22474487],
+       [ 0.        ,  0.        ],
+       [        nan,  1.22474487],
+       [ 1.22474487,         nan]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        age    income
+0 -1.224745 -1.224745
+1  0.000000  0.000000
+2       NaN  1.224745
+3  1.224745       NaN
+</pre></div>
+</div>
+</div>
+</div>
+<p>This method is not limited to individual transformers but can also be applied within a scikit-learn pipeline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a pipeline with two transformers</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">())]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+
+<span class="c1"># Fit and transform the DataFrame using the pipeline</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>        age    income
+0 -1.414214 -1.414214
+1  0.000000  0.000000
+2  0.000000  1.414214
+3  1.414214  0.000000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="drop-correlated-features">
-<h2><span class="section-number">6.2.3. </span>Drop Correlated Features<a class="headerlink" href="#drop-correlated-features" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.4. </span>Drop Correlated Features<a class="headerlink" href="#drop-correlated-features" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -912,7 +991,7 @@ Test data:
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
 <section id="encode-rare-labels-with-feature-engine">
-<h2><span class="section-number">6.2.4. </span>Encode Rare Labels with Feature-engine<a class="headerlink" href="#encode-rare-labels-with-feature-engine" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.5. </span>Encode Rare Labels with Feature-engine<a class="headerlink" href="#encode-rare-labels-with-feature-engine" title="Permalink to this heading">#</a></h2>
 <p>When dealing with features with high cardinality, you might want to mark the rare categories as “Other”. Feature-engine’s <code class="docutils literal notranslate"><span class="pre">RareLabelEncoder</span></code> makes it easy for you to do so.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1259,7 +1338,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
 <section id="encode-categorical-data-using-frequency">
-<h2><span class="section-number">6.2.5. </span>Encode Categorical Data Using Frequency<a class="headerlink" href="#encode-categorical-data-using-frequency" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.6. </span>Encode Categorical Data Using Frequency<a class="headerlink" href="#encode-categorical-data-using-frequency" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1721,7 +1800,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
 <section id="return-a-dataframe-when-using-a-scikit-learn-s-transformer">
-<h2><span class="section-number">6.2.6. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.7. </span>Return a DataFrame When Using a scikit-learn’s Transformer<a class="headerlink" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1814,7 +1893,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://feature-engine.readthedocs.io/en/1.1.x/">Link to feature-engine</a>.</p>
 </section>
 <section id="similarity-encoding-for-dirty-categories-using-dirty-cat">
-<h2><span class="section-number">6.2.7. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.8. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2101,7 +2180,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
 </section>
 <section id="solving-data-mismatches-joining-tables-with-fuzzy-matching">
-<h2><span class="section-number">6.2.8. </span>Solving Data Mismatches: Joining Tables with Fuzzy Matching<a class="headerlink" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.9. </span>Solving Data Mismatches: Joining Tables with Fuzzy Matching<a class="headerlink" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2219,7 +2298,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://github.com/skrub-data/skrub/">Link to skrub</a>.</p>
 </section>
 <section id="snorkel-programmatically-build-training-data-in-python">
-<h2><span class="section-number">6.2.9. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.10. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2647,7 +2726,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://towardsdatascience.com/snorkel-programmatically-build-training-data-in-python-712fc39649fe">My full article about Snorkel</a>.</p>
 </section>
 <section id="sketch-ai-code-writing-assistant-that-understands-data-content">
-<h2><span class="section-number">6.2.10. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.11. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this heading">#</a></h2>
 <p>Wouldn’t it be nice if you could get insights into your data by simply asking a question? Sketch allows you to do exactly that.</p>
 <p>Sketch is an AI code-writing assistant for pandas users that understands the context of your data.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -3379,14 +3458,15 @@ data['pickup_zone_distance'] = data.groupby('pickup_zone')['distance'].transform
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-data-in-a-stratified-fashion-in-scikit-learn">6.2.1. Split Data in a Stratified Fashion in scikit-learn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#strategy-to-prevent-data-leakage-in-time-correlated-datasets">6.2.2. Strategy to Prevent Data Leakage in Time-correlated Datasets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.3. Drop Correlated Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.4. Encode Rare Labels with Feature-engine</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.5. Encode Categorical Data Using Frequency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.6. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.7. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.8. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.9. Snorkel — Programmatically Build Training Data in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.10. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support">6.2.3. Enhancing Data Handling with scikit-learn’s DataFrame Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.4. Drop Correlated Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.5. Encode Rare Labels with Feature-engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.6. Encode Categorical Data Using Frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.7. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.8. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.9. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.10. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.11. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
 </ul>
   </nav></div>
 
