@@ -515,6 +515,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">2.5.2. When to Use and Not to Use Lambda Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-only-arguments-in-python">2.5.5. Keyword-Only Arguments in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -683,6 +684,109 @@ Elapsed time: 0.027ms
 </div>
 </div>
 </section>
+<section id="keyword-only-arguments-in-python">
+<h2><span class="section-number">2.5.5. </span>Keyword-Only Arguments in Python<a class="headerlink" href="#keyword-only-arguments-in-python" title="Permalink to this heading">#</a></h2>
+<p>In Python, you can define functions that accept arguments either by position or by keyword. However, passing arguments by position can lead to errors if the arguments are provided in the wrong order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">add_number</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">add_number</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nn">Cell In[5], line 5,</span> in <span class="ni">add_number</span><span class="nt">(number, df)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">5</span>     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="ne">AttributeError</span>: &#39;int&#39; object has no attribute &#39;add&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>To avoid this issue, you can define keyword-only arguments in a function using the * symbol. This requires the caller to specify the arguments using their corresponding keywords.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">add_number</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">add_number</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: add_number() takes 0 positional arguments but 2 were given
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">add_number</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -752,6 +856,7 @@ Elapsed time: 0.027ms
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-use-and-not-to-use-lambda-functions">2.5.2. When to Use and Not to Use Lambda Functions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-only-arguments-in-python">2.5.5. Keyword-Only Arguments in Python</a></li>
 </ul>
   </nav></div>
 
