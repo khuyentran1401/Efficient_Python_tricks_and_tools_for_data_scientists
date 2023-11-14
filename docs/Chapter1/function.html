@@ -516,6 +516,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-only-arguments-in-python">2.5.5. Keyword-Only Arguments in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-single-point-of-return">2.5.6. Enhance Code Readability with Single Point of Return</a></li>
 </ul>
             </nav>
         </div>
@@ -787,6 +788,56 @@ Elapsed time: 0.027ms
 </div></div></div>
 </div>
 </section>
+<section id="enhance-code-readability-with-single-point-of-return">
+<h2><span class="section-number">2.5.6. </span>Enhance Code Readability with Single Point of Return<a class="headerlink" href="#enhance-code-readability-with-single-point-of-return" title="Permalink to this heading">#</a></h2>
+<p>Consider using a single point of return in a Python function instead of multiple points of return to enhance code readability. When there is only one return statement, it becomes simpler to follow the logic and understand the purpose of the function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_grade</span><span class="p">(</span><span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid score!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excellent!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;A&quot;</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Good job!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;B&quot;</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;C&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You failed.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;F&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_grade</span><span class="p">(</span><span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid score!&quot;</span><span class="p">)</span>
+        <span class="n">grade</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">90</span><span class="p">:</span>
+        <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Excellent!&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">80</span><span class="p">:</span>
+        <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Good job!&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;=</span> <span class="mi">70</span><span class="p">:</span>
+        <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">grade</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You failed.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grade</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -857,6 +908,7 @@ Elapsed time: 0.027ms
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-pass-an-arbitrary-number-of-arguments-to-a-python-function">2.5.3. How to Pass an Arbitrary Number of Arguments to a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-in-python">2.5.4. Decorator in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keyword-only-arguments-in-python">2.5.5. Keyword-Only Arguments in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-single-point-of-return">2.5.6. Enhance Code Readability with Single Point of Return</a></li>
 </ul>
   </nav></div>
 
