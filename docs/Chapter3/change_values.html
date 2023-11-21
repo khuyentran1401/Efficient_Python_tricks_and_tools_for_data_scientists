@@ -521,7 +521,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">4.1.8. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-the-missing-values-with-the-most-frequent-categories-in-a-column">4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">4.1.10. Encode Categorical Values in a Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.11. Raise an Exception for a Chained Assignment in pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-your-pandas-code-with-vectorized-operations">4.1.11. Optimize Your Pandas Code with Vectorized Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.12. Raise an Exception for a Chained Assignment in pandas</a></li>
 </ul>
             </nav>
         </div>
@@ -588,10 +589,10 @@ document.write(`
 <p>If you want to apply only one function to a column of a DataFrame, use <code class="docutils literal notranslate"><span class="pre">apply</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
-<span class="n">df</span> 
+<span class="n">df</span>
 </pre></div>
 </div>
 </div>
@@ -714,10 +715,10 @@ document.write(`
 <p>The <code class="docutils literal notranslate"><span class="pre">apply</span></code> method applies a function along an axis of a DataFrame. If you want to apply a function to a DataFrame elementwise, use <code class="docutils literal notranslate"><span class="pre">applymap</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">]})</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -731,7 +732,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="s1">&#39;failed&#39;</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="s1">&#39;passed&#39;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="s2">&quot;failed&quot;</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="s2">&quot;passed&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -750,7 +751,7 @@ document.write(`
 <p>In the code below, I first created <code class="docutils literal notranslate"><span class="pre">col3</span></code> then use <code class="docutils literal notranslate"><span class="pre">col3</span></code> to create <code class="docutils literal notranslate"><span class="pre">col4</span></code>. Everything is in one line of code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;col2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
 
@@ -811,7 +812,7 @@ document.write(`
 <p>If you want to change values of a pandas Series using a dictionary, use <code class="docutils literal notranslate"><span class="pre">pd.Series.map</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">])</span>
 
@@ -831,7 +832,7 @@ dtype: int64
 <p><code class="docutils literal notranslate"><span class="pre">map</span></code> also allows you to insert a string to a pandas Series using <code class="docutils literal notranslate"><span class="pre">format</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s2">&quot;berries&quot;</span><span class="p">,</span> <span class="s2">&quot;apples&quot;</span><span class="p">,</span> <span class="s2">&quot;cherries&quot;</span><span class="p">])</span>
 <span class="n">s</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="s2">&quot;Today I got some </span><span class="si">{}</span><span class="s2"> from my garden.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
@@ -853,7 +854,7 @@ dtype: object
 <p>When working with <code class="docutils literal notranslate"><span class="pre">pandas</span> <span class="pre">DataFrame</span></code>, if you want to transform each element in an iterable to a row, use <code class="docutils literal notranslate"><span class="pre">explode</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">]})</span>
 <span class="n">df</span>
@@ -1068,7 +1069,7 @@ dtype: object
 <p>Now you can split elements in the list into multiple rows using <code class="docutils literal notranslate"><span class="pre">explode</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1127,7 +1128,7 @@ dtype: object
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">df</span>
@@ -1257,7 +1258,7 @@ dtype: object
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
 <span class="n">df</span>
@@ -1396,8 +1397,58 @@ dtype: object
 </div>
 </div>
 </section>
+<section id="optimize-your-pandas-code-with-vectorized-operations">
+<h2><span class="section-number">4.1.11. </span>Optimize Your Pandas Code with Vectorized Operations<a class="headerlink" href="#optimize-your-pandas-code-with-vectorized-operations" title="Permalink to this heading">#</a></h2>
+<p>Use pandas’ vectorized operations instead of performing operations on each column individually. This leverages pandas’ optimized C implementation for better performance, especially with large datasets.</p>
+<p>In the following example, the first approach iterates over each column individually, while the second approach uses a vectorized operation to fill the missing values in one go.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a sample DataFrame with missing values</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">fill_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+<span class="c1"># Iterate over each column and fill missing values with 0</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fill_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Use vectorized operations to fill missing values</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">fill_dict</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     A    B
+0  1.0  1.0
+1  2.0  2.0
+2  3.0  3.0
+3  4.0  1.0
+4  5.0  5.0
+     A    B
+0  1.0  1.0
+1  2.0  2.0
+2  3.0  3.0
+3  4.0  1.0
+4  5.0  5.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="raise-an-exception-for-a-chained-assignment-in-pandas">
-<h2><span class="section-number">4.1.11. </span>Raise an Exception for a Chained Assignment in pandas<a class="headerlink" href="#raise-an-exception-for-a-chained-assignment-in-pandas" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.1.12. </span>Raise an Exception for a Chained Assignment in pandas<a class="headerlink" href="#raise-an-exception-for-a-chained-assignment-in-pandas" title="Permalink to this heading">#</a></h2>
 <p>Pandas allows chained assignments, which involve performing multiple indexing operations in a single statement, but they can lead to unexpected results or errors.</p>
 <p>The statement below fails to modify the values in <code class="docutils literal notranslate"><span class="pre">df</span></code> as intended, but it doesn’t throw an error.</p>
 <div class="cell docutils container">
@@ -1552,7 +1603,8 @@ See<span class="w"> </span>the<span class="w"> </span>caveats<span class="w"> </
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-fill-in-pandas-use-the-previous-value-to-fill-the-current-missing-value">4.1.8. Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replace-the-missing-values-with-the-most-frequent-categories-in-a-column">4.1.9. Replace the Missing Values with the Most Frequent Categories in a Column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-values-in-a-pandas-dataframe">4.1.10. Encode Categorical Values in a Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.11. Raise an Exception for a Chained Assignment in pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-your-pandas-code-with-vectorized-operations">4.1.11. Optimize Your Pandas Code with Vectorized Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raise-an-exception-for-a-chained-assignment-in-pandas">4.1.12. Raise an Exception for a Chained Assignment in pandas</a></li>
 </ul>
   </nav></div>
 
