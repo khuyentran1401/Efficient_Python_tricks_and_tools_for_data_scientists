@@ -520,9 +520,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.7. Encode Categorical Data Using Frequency</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.8. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.9. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.10. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.11. Snorkel — Programmatically Build Training Data in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.12. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-handle-misspellings-in-real-world-datasets">6.2.10. How to Handle Misspellings in Real-World Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.11. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.12. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.13. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
 </ul>
             </nav>
         </div>
@@ -2338,9 +2339,128 @@ Name: education, dtype: object
 </ul>
 <p><a class="reference external" href="https://dirty-cat.github.io/">Link to dirty-cat</a>.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/similarity-encoding-for-dirty-categories-using-dirty-cat-d9f0b581a552">Link to my full article about dirty-cat</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/skrub-data/skrub.git
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-to-handle-misspellings-in-real-world-datasets">
+<h2><span class="section-number">6.2.10. </span>How to Handle Misspellings in Real-World Datasets<a class="headerlink" href="#how-to-handle-misspellings-in-real-world-datasets" title="Permalink to this heading">#</a></h2>
+<p>Real-world datasets often contain misspellings, particularly in manually entered categorical variables.</p>
+<p>To merge multiple variants of the same category, use skub’s deduplicate function, which:</p>
+<ul class="simple">
+<li><p>Measures the distance between strings and groups similar strings together</p></li>
+<li><p>Replaces the strings in each group with the most common string</p></li>
+</ul>
+<p>To demonstrate the deduplicate function, start with generating a duplicated dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub.datasets</span> <span class="kn">import</span> <span class="n">make_deduplication_data</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">duplicated_food</span> <span class="o">=</span> <span class="n">make_deduplication_data</span><span class="p">(</span>
+    <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Chocolate&quot;</span><span class="p">,</span> <span class="s2">&quot;Broccoli&quot;</span><span class="p">,</span> <span class="s1">&#39;Jalapeno&#39;</span><span class="p">,</span> <span class="s1">&#39;Zucchini&#39;</span><span class="p">],</span>  
+    <span class="n">entries_per_example</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>  <span class="c1"># their respective number of occurrences</span>
+    <span class="n">prob_mistake_per_letter</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># 5% probability of typo per letter</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>  <span class="c1"># set seed for reproducibility</span>
+<span class="p">)</span>
+
+<span class="n">duplicated_food</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Chocolate&#39;, &#39;Cgocolate&#39;, &#39;Chocolate&#39;, &#39;Chqcolate&#39;, &#39;Chocoltte&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get the most common food names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">duplicated_food</span><span class="p">)</span>
+<span class="n">counter</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Jalapeno&#39;, 284),
+ (&#39;Zucchini&#39;, 195),
+ (&#39;Broccoli&#39;, 193),
+ (&#39;Chocolate&#39;, 94),
+ (&#39;Jalaoeno&#39;, 2),
+ (&#39;Cgocolate&#39;, 1),
+ (&#39;Chqcolate&#39;, 1),
+ (&#39;Chocoltte&#39;, 1),
+ (&#39;Chocdlate&#39;, 1),
+ (&#39;ehocolate&#39;, 1),
+ (&#39;Chocolatw&#39;, 1),
+ (&#39;Brocroli&#39;, 1),
+ (&#39;Brojcoli&#39;, 1),
+ (&#39;Broccsli&#39;, 1),
+ (&#39;Broccqli&#39;, 1),
+ (&#39;Bxoccoli&#39;, 1),
+ (&#39;sroccoli&#39;, 1),
+ (&#39;Brzccoli&#39;, 1),
+ (&#39;Jylapeno&#39;, 1),
+ (&#39;Jalapony&#39;, 1)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The most common words in the dataset are ‘Jalapeno’, ‘Zucchini’, and ‘Broccoli’. Therefore, skub’s deduplicate function replaces misspelled words with the closest matching word from this set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub</span> <span class="kn">import</span> <span class="n">deduplicate</span>
+
+<span class="n">deduplicated_data</span> <span class="o">=</span> <span class="n">deduplicate</span><span class="p">(</span><span class="n">duplicated_food</span><span class="p">)</span>
+
+<span class="n">counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">deduplicated_data</span><span class="p">)</span>
+<span class="n">counter</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_items([(&#39;Chocolate&#39;, 100), (&#39;Broccoli&#39;, 200), (&#39;Jalapeno&#39;, 300), (&#39;Zucchini&#39;, 200)])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a table that maps original to corrected categories</span>
+<span class="n">translation_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">deduplicated_data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">duplicated_food</span><span class="p">)</span>
+
+<span class="c1"># remove duplicates in the original data</span>
+<span class="n">translation_table</span> <span class="o">=</span> <span class="n">translation_table</span><span class="p">[</span><span class="o">~</span><span class="n">translation_table</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">(</span><span class="n">keep</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="p">)]</span>
+
+<span class="n">translation_table</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Brojcoli      Broccoli
+qalapeno      Jalapeno
+Jalapenh      Jalapeno
+Jalapeto      Jalapeno
+Zucchini      Zucchini
+oalapeno      Jalapeno
+Bxoccoli      Broccoli
+Jalqceno      Jalapeno
+Jzlapeno      Jalapeno
+ehocolate    Chocolate
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="solving-data-mismatches-joining-tables-with-fuzzy-matching">
-<h2><span class="section-number">6.2.10. </span>Solving Data Mismatches: Joining Tables with Fuzzy Matching<a class="headerlink" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.11. </span>Solving Data Mismatches: Joining Tables with Fuzzy Matching<a class="headerlink" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2458,7 +2578,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://github.com/skrub-data/skrub/">Link to skrub</a>.</p>
 </section>
 <section id="snorkel-programmatically-build-training-data-in-python">
-<h2><span class="section-number">6.2.11. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.12. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2886,7 +3006,7 @@ Name: education, dtype: object
 <p><a class="reference external" href="https://towardsdatascience.com/snorkel-programmatically-build-training-data-in-python-712fc39649fe">My full article about Snorkel</a>.</p>
 </section>
 <section id="sketch-ai-code-writing-assistant-that-understands-data-content">
-<h2><span class="section-number">6.2.12. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2.13. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this heading">#</a></h2>
 <p>Wouldn’t it be nice if you could get insights into your data by simply asking a question? Sketch allows you to do exactly that.</p>
 <p>Sketch is an AI code-writing assistant for pandas users that understands the context of your data.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -3625,9 +3745,10 @@ data['pickup_zone_distance'] = data.groupby('pickup_zone')['distance'].transform
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.7. Encode Categorical Data Using Frequency</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-a-dataframe-when-using-a-scikit-learn-s-transformer">6.2.8. Return a DataFrame When Using a scikit-learn’s Transformer</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.9. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.10. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.11. Snorkel — Programmatically Build Training Data in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.12. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-handle-misspellings-in-real-world-datasets">6.2.10. How to Handle Misspellings in Real-World Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.11. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.12. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.13. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
 </ul>
   </nav></div>
 
