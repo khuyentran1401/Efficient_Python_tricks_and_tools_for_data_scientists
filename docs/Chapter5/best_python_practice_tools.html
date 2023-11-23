@@ -512,7 +512,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dont-hard-code-use-hydra-instead">6.11.1. Don’t Hard-Code. Use Hydra Instead</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-dotenv-how-to-load-the-secret-information-from-env-file">6.11.2. python-dotenv: How to Load the Secret Information from .env File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#store-sensitive-information-securely-in-python-with-env-files">6.11.2. Store Sensitive Information Securely in Python with .env Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python">6.11.3. docopt: Create Beautiful Command-line Interfaces for Documentation in Python</a></li>
 </ul>
             </nav>
@@ -598,8 +598,8 @@ Drop features: [&#39;iid&#39;, &#39;id&#39;, &#39;idg&#39;, &#39;wave&#39;]
 <p><a class="reference external" href="https://towardsdatascience.com/introduction-to-hydra-cc-a-powerful-framework-to-configure-your-data-science-projects-ed65713a53c6?sk=eb08126922cc54a40c2fdfaea54c708d">Link to my article about Hydra</a>.</p>
 <p><a class="reference external" href="https://hydra.cc/">Link to Hydra</a>.</p>
 </section>
-<section id="python-dotenv-how-to-load-the-secret-information-from-env-file">
-<h2><span class="section-number">6.11.2. </span>python-dotenv: How to Load the Secret Information from .env File<a class="headerlink" href="#python-dotenv-how-to-load-the-secret-information-from-env-file" title="Permalink to this heading">#</a></h2>
+<section id="store-sensitive-information-securely-in-python-with-env-files">
+<h2><span class="section-number">6.11.2. </span>Store Sensitive Information Securely in Python with .env Files<a class="headerlink" href="#store-sensitive-information-securely-in-python-with-env-files" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -613,35 +613,38 @@ Drop features: [&#39;iid&#39;, &#39;id&#39;, &#39;idg&#39;, &#39;wave&#39;]
 </div>
 </details>
 </div>
-<p>An alternative to saving your secret information to the environment variable is to save it to <code class="docutils literal notranslate"><span class="pre">.env</span></code> file in the same path as the root of your project.</p>
+<p>It’s a good practice to store sensitive information in a .env file and load it into your Python script using python-dotenv.</p>
+<p>This helps protect the information from being exposed in your codebase or version control systems, reducing the risk of unauthorized access.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> .env
-<span class="n">password</span><span class="o">=</span><span class="mi">123</span>
-<span class="n">username</span><span class="o">=</span><span class="n">root</span>
+<span class="n">PASSWORD</span><span class="o">=</span><span class="mi">123</span>
+<span class="n">USERNAME</span><span class="o">=</span><span class="n">myusername</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing .env
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting .env
 </pre></div>
 </div>
 </div>
 </div>
-<p>The easiest way to load the environment variables from <code class="docutils literal notranslate"><span class="pre">.env</span></code> file is to use python-dotenv library.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
 <span class="kn">import</span> <span class="nn">os</span> 
 
 <span class="n">load_dotenv</span><span class="p">()</span>
-<span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;PASSWORD&#39;</span><span class="p">)</span>
+<span class="n">USERNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;USERNAME&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">PASSWORD</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>123
+myusername
 </pre></div>
 </div>
 </div>
@@ -784,7 +787,7 @@ Options:
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dont-hard-code-use-hydra-instead">6.11.1. Don’t Hard-Code. Use Hydra Instead</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-dotenv-how-to-load-the-secret-information-from-env-file">6.11.2. python-dotenv: How to Load the Secret Information from .env File</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#store-sensitive-information-securely-in-python-with-env-files">6.11.2. Store Sensitive Information Securely in Python with .env Files</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#docopt-create-beautiful-command-line-interfaces-for-documentation-in-python">6.11.3. docopt: Create Beautiful Command-line Interfaces for Documentation in Python</a></li>
 </ul>
   </nav></div>
