@@ -523,8 +523,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types">7.2.10. MonkeyType: Automatically Generate Static Type Annotations Based on Runtime Types</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">7.2.11. whereami: Use Machine Learning to Predict Where You Are</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">7.2.12. watchfiles: Rerun Code When a File Changes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.13. Limit the Execution Time of a Function Call with Prefect</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.14. Retry on Failure with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.2.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.14. Limit the Execution Time of a Function Call with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.15. Retry on Failure with Prefect</a></li>
 </ul>
             </nav>
         </div>
@@ -970,8 +971,106 @@ kitchen
 </div>
 <p><a class="reference external" href="https://github.com/samuelcolvin/watchfiles">Link to watchfiles</a>.</p>
 </section>
+<section id="pytube-a-lightweight-python-library-for-downloading-youtube-videos">
+<h2><span class="section-number">7.2.13. </span>PyTube: A Lightweight Python Library for Downloading YouTube Videos<a class="headerlink" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytube
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>pytube is a lightweight Python library that enables you to download YouTube videos and playlists in specific formats and resolutions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the video</span>
+<span class="kn">from</span> <span class="nn">pytube</span> <span class="kn">import</span> <span class="n">YouTube</span>
+
+<span class="n">yt</span> <span class="o">=</span> <span class="n">YouTube</span><span class="p">(</span><span class="s2">&quot;https://youtu.be/UKCTvrJSoL0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">title</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Git for Data Scientists: Learn Git through Examples&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span><span class="o">.</span><span class="n">thumbnail_url</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://i.ytimg.com/vi/UKCTvrJSoL0/hq720.jpg&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># list all streams</span>
+<span class="n">yt</span><span class="o">.</span><span class="n">streams</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Stream: itag=&quot;17&quot; mime_type=&quot;video/3gpp&quot; res=&quot;144p&quot; fps=&quot;8fps&quot; vcodec=&quot;mp4v.20.3&quot; acodec=&quot;mp4a.40.2&quot; progressive=&quot;True&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;18&quot; mime_type=&quot;video/mp4&quot; res=&quot;360p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.42001E&quot; acodec=&quot;mp4a.40.2&quot; progressive=&quot;True&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;22&quot; mime_type=&quot;video/mp4&quot; res=&quot;720p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.64001F&quot; acodec=&quot;mp4a.40.2&quot; progressive=&quot;True&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;136&quot; mime_type=&quot;video/mp4&quot; res=&quot;720p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.64001f&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;247&quot; mime_type=&quot;video/webm&quot; res=&quot;720p&quot; fps=&quot;30fps&quot; vcodec=&quot;vp9&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;135&quot; mime_type=&quot;video/mp4&quot; res=&quot;480p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.4d401f&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;244&quot; mime_type=&quot;video/webm&quot; res=&quot;480p&quot; fps=&quot;30fps&quot; vcodec=&quot;vp9&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;134&quot; mime_type=&quot;video/mp4&quot; res=&quot;360p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.4d401e&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;243&quot; mime_type=&quot;video/webm&quot; res=&quot;360p&quot; fps=&quot;30fps&quot; vcodec=&quot;vp9&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;133&quot; mime_type=&quot;video/mp4&quot; res=&quot;240p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.4d4015&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;242&quot; mime_type=&quot;video/webm&quot; res=&quot;240p&quot; fps=&quot;30fps&quot; vcodec=&quot;vp9&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;160&quot; mime_type=&quot;video/mp4&quot; res=&quot;144p&quot; fps=&quot;30fps&quot; vcodec=&quot;avc1.4d400c&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;278&quot; mime_type=&quot;video/webm&quot; res=&quot;144p&quot; fps=&quot;30fps&quot; vcodec=&quot;vp9&quot; progressive=&quot;False&quot; type=&quot;video&quot;&gt;, &lt;Stream: itag=&quot;139&quot; mime_type=&quot;audio/mp4&quot; abr=&quot;48kbps&quot; acodec=&quot;mp4a.40.5&quot; progressive=&quot;False&quot; type=&quot;audio&quot;&gt;, &lt;Stream: itag=&quot;140&quot; mime_type=&quot;audio/mp4&quot; abr=&quot;128kbps&quot; acodec=&quot;mp4a.40.2&quot; progressive=&quot;False&quot; type=&quot;audio&quot;&gt;, &lt;Stream: itag=&quot;249&quot; mime_type=&quot;audio/webm&quot; abr=&quot;50kbps&quot; acodec=&quot;opus&quot; progressive=&quot;False&quot; type=&quot;audio&quot;&gt;, &lt;Stream: itag=&quot;250&quot; mime_type=&quot;audio/webm&quot; abr=&quot;70kbps&quot; acodec=&quot;opus&quot; progressive=&quot;False&quot; type=&quot;audio&quot;&gt;, &lt;Stream: itag=&quot;251&quot; mime_type=&quot;audio/webm&quot; abr=&quot;160kbps&quot; acodec=&quot;opus&quot; progressive=&quot;False&quot; type=&quot;audio&quot;&gt;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter by MIME type and resolution</span>
+<span class="n">yt</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mime_type</span><span class="o">=</span><span class="s2">&quot;video/mp4&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="s1">&#39;720p&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get a playlist</span>
+<span class="kn">from</span> <span class="nn">pytube</span> <span class="kn">import</span> <span class="n">Playlist</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">Playlist</span><span class="p">(</span><span class="s1">&#39;https://youtube.com/playlist?list=PLnK6m_JBRVNoPnqnVrWaYtZ2G4nFTnGze&amp;si=BK4o05iHmgqsyNK2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download all videos in the playlist</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Downloading: </span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s1"> &#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">video</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">videos</span><span class="p">:</span>
+    <span class="n">video</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">first</span><span class="p">(</span><span class="n">mime_type</span><span class="o">=</span><span class="s2">&quot;video/mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading: Fundamental
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pytube/pytube">Link to pytube</a>.</p>
+</section>
 <section id="limit-the-execution-time-of-a-function-call-with-prefect">
-<h2><span class="section-number">7.2.13. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2.14. </span>Limit the Execution Time of a Function Call with Prefect<a class="headerlink" href="#limit-the-execution-time-of-a-function-call-with-prefect" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1381,7 +1480,7 @@ TimeoutError
 </div>
 </section>
 <section id="retry-on-failure-with-prefect">
-<h2><span class="section-number">7.2.14. </span>Retry on Failure with Prefect<a class="headerlink" href="#retry-on-failure-with-prefect" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2.15. </span>Retry on Failure with Prefect<a class="headerlink" href="#retry-on-failure-with-prefect" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>prefect
@@ -1552,8 +1651,9 @@ RuntimeError: not this time!
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monkeytype-automatically-generate-static-type-annotations-based-on-runtime-types">7.2.10. MonkeyType: Automatically Generate Static Type Annotations Based on Runtime Types</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whereami-use-machine-learning-to-predict-where-you-are">7.2.11. whereami: Use Machine Learning to Predict Where You Are</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">7.2.12. watchfiles: Rerun Code When a File Changes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.13. Limit the Execution Time of a Function Call with Prefect</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.14. Retry on Failure with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.2.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.14. Limit the Execution Time of a Function Call with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.15. Retry on Failure with Prefect</a></li>
 </ul>
   </nav></div>
 
