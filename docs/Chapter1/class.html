@@ -524,6 +524,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.11. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.12. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.13. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-code-readability-with-enums">2.6.14. Improve Code Readability with Enums</a></li>
 </ul>
             </nav>
         </div>
@@ -1354,6 +1355,56 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 </div>
 </div>
 </section>
+<section id="improve-code-readability-with-enums">
+<h2><span class="section-number">2.6.14. </span>Improve Code Readability with Enums<a class="headerlink" href="#improve-code-readability-with-enums" title="Permalink to this heading">#</a></h2>
+<p>Hard-coded values without proper context can decrease code readability.</p>
+<p>By using an Enum, meaningful names can be assigned to these values, improving code readability.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">current_status</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="k">if</span> <span class="n">current_status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can go through the gate.&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">current_status</span> <span class="o">==</span> <span class="mi">500</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can&#39;t go through the gate.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid status code.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>You can go through the gate.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+
+<span class="k">class</span> <span class="nc">StatusCode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">OK</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">ERROR</span> <span class="o">=</span> <span class="mi">500</span>
+
+
+<span class="n">current_status</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="k">if</span> <span class="n">current_status</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">OK</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can go through the gate.&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">current_status</span> <span class="o">==</span> <span class="n">StatusCode</span><span class="o">.</span><span class="n">ERROR</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can&#39;t go through the gate.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid status code.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>You can go through the gate.
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://docs.python.org/3/library/enum.html">Learn more about Enum</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1432,6 +1483,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.11. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.12. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.13. Optimizing Memory Usage in Python with Slots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-code-readability-with-enums">2.6.14. Improve Code Readability with Enums</a></li>
 </ul>
   </nav></div>
 
