@@ -518,6 +518,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-holiday-from-date-column">6.7.5. Extract holiday from date column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workalendar-handle-working-day-computation-in-python">6.7.6. Workalendar: Handle Working-Day Computation in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pmdarima-harness-r-s-auto-arima-power-with-a-scikit-learn-like-interface">6.7.7. Pmdarima: Harness R’s auto.arima Power with a scikit-learn-Like Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
 </ul>
             </nav>
         </div>
@@ -1253,6 +1254,83 @@ Total fit time: 178.878 seconds
 </div>
 <p><a class="reference external" href="https://github.com/alkaline-ml/pmdarima">Link to Pmdarima</a>.</p>
 </section>
+<section id="aeon-the-ultimate-library-for-time-series-forecasting-and-classification">
+<h2><span class="section-number">6.7.8. </span>aeon: The Ultimate Library for Time-Series Forecasting and Classification<a class="headerlink" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>aeon
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>aeon is a library for time-series data that is compatible with scikit-learn and offers a variety of advanced algorithms for learning tasks like forecasting and classification.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">aeon.forecasting.trend</span> <span class="kn">import</span> <span class="n">TrendForecaster</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">])</span>
+<span class="n">forecaster</span> <span class="o">=</span> <span class="n">TrendForecaster</span><span class="p">()</span>
+
+<span class="c1"># fit the forecaster</span>
+<span class="n">forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  
+
+<span class="c1"># forecast the next 3 values</span>
+<span class="n">forecaster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fh</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>5    120.0
+6    140.0
+7    160.0
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">aeon.classification.distance_based</span> <span class="kn">import</span> <span class="n">KNeighborsTimeSeriesClassifier</span>
+
+<span class="c1"># 3 samples and 6 time steps </span>
+<span class="n">X</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+
+<span class="c1"># class labels for each sample</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">])</span>
+
+<span class="c1"># Define the classifier</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsTimeSeriesClassifier</span><span class="p">(</span><span class="n">distance</span><span class="o">=</span><span class="s2">&quot;dtw&quot;</span><span class="p">)</span>
+
+<span class="c1"># fit the classifier on train data</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Test data</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+
+<span class="c1"># Make class predictions on new data</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># Print the predicted classes</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;low&#39; &#39;high&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/aeon-toolkit/aeon">Link to aeon</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1325,6 +1403,7 @@ Total fit time: 178.878 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-holiday-from-date-column">6.7.5. Extract holiday from date column</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workalendar-handle-working-day-computation-in-python">6.7.6. Workalendar: Handle Working-Day Computation in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pmdarima-harness-r-s-auto-arima-power-with-a-scikit-learn-like-interface">6.7.7. Pmdarima: Harness R’s auto.arima Power with a scikit-learn-Like Interface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
 </ul>
   </nav></div>
 
