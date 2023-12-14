@@ -513,7 +513,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-dataframe-combine-first-update-null-elements-using-another-dataframe">4.6.1. pandas.DataFrame.combine_first: Update Null Elements Using Another DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-merge-merge-dataframe-based-on-columns">4.6.2. df.merge: Merge DataFrame Based on Columns</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specify-suffixes-when-using-df-merge">4.6.3. Specify Suffixes When Using df.merge()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-readability-in-dataframe-merging-with-custom-suffixes">4.6.3. Enhancing Readability in DataFrame Merging With Custom Suffixes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#include-all-rows-when-merging-two-dataframes">4.6.4. Include All Rows When Merging Two DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location">4.6.5. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location</a></li>
 </ul>
@@ -838,144 +838,46 @@ document.write(`
 </div></div></div>
 </div>
 </section>
-<section id="specify-suffixes-when-using-df-merge">
-<h2><span class="section-number">4.6.3. </span>Specify Suffixes When Using df.merge()<a class="headerlink" href="#specify-suffixes-when-using-df-merge" title="Permalink to this heading">#</a></h2>
-<p>If you are merging 2 dataframes that have the same features using <code class="docutils literal notranslate"><span class="pre">df.merge()</span></code>, it might be confusing to know which dataframe <code class="docutils literal notranslate"><span class="pre">a_x</span></code> or <code class="docutils literal notranslate"><span class="pre">a_y</span></code> belongs to.</p>
+<section id="enhancing-readability-in-dataframe-merging-with-custom-suffixes">
+<h2><span class="section-number">4.6.3. </span>Enhancing Readability in DataFrame Merging With Custom Suffixes<a class="headerlink" href="#enhancing-readability-in-dataframe-merging-with-custom-suffixes" title="Permalink to this heading">#</a></h2>
+<p>When merging two DataFrames with overlapping columns, the default behavior is to add suffixes “_x” and “_y” to the column names.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;left_key&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;right_key&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]})</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;left_key&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;right_key&quot;</span><span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]})</span>
+
+<span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">merged_df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>left_key</th>
-      <th>a_x</th>
-      <th>right_key</th>
-      <th>a_y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>5</td>
-      <td>2</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>6</td>
-      <td>3</td>
-      <td>7</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id val_x val_y
+0   2     B     X
+1   3     C     Y
+</pre></div>
 </div>
-<p>A better way is to specify suffixes of the features in each Dataframe like below. Now <code class="docutils literal notranslate"><span class="pre">a_x</span></code> becomes <code class="docutils literal notranslate"><span class="pre">a_left</span></code> and <code class="docutils literal notranslate"><span class="pre">a_y</span></code> becomes <code class="docutils literal notranslate"><span class="pre">a_right</span></code>.</p>
+</div>
+</div>
+<p>To improve readability, you can specify custom suffixes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;left_key&quot;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;right_key&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_left&quot;</span><span class="p">,</span> <span class="s2">&quot;_right&quot;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">merged_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_df1&quot;</span><span class="p">,</span> <span class="s2">&quot;_df2&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">merged_df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>left_key</th>
-      <th>a_left</th>
-      <th>right_key</th>
-      <th>a_right</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>4</td>
-      <td>1</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>5</td>
-      <td>2</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>6</td>
-      <td>3</td>
-      <td>7</td>
-    </tr>
-  </tbody>
-</table>
-</div></div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 30;
-                var nbb_unformatted_code = "df1.merge(df2, left_on='left_key', right_on='right_key',\n        suffixes=('_left', '_right'))";
-                var nbb_formatted_code = "df1.merge(df2, left_on=\"left_key\", right_on=\"right_key\", suffixes=(\"_left\", \"_right\"))";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   id val_df1 val_df2
+0   2       B       X
+1   3       C       Y
+</pre></div>
 </div>
-<p>Try it if you want the names of your columns to be less confusing.</p>
+</div>
+</div>
 </section>
 <section id="include-all-rows-when-merging-two-dataframes">
 <h2><span class="section-number">4.6.4. </span>Include All Rows When Merging Two DataFrames<a class="headerlink" href="#include-all-rows-when-merging-two-dataframes" title="Permalink to this heading">#</a></h2>
@@ -1210,7 +1112,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-dataframe-combine-first-update-null-elements-using-another-dataframe">4.6.1. pandas.DataFrame.combine_first: Update Null Elements Using Another DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#df-merge-merge-dataframe-based-on-columns">4.6.2. df.merge: Merge DataFrame Based on Columns</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specify-suffixes-when-using-df-merge">4.6.3. Specify Suffixes When Using df.merge()</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-readability-in-dataframe-merging-with-custom-suffixes">4.6.3. Enhancing Readability in DataFrame Merging With Custom Suffixes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#include-all-rows-when-merging-two-dataframes">4.6.4. Include All Rows When Merging Two DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataframe-insert-insert-a-column-into-a-dataframe-at-a-specified-location">4.6.5. DataFrame.insert: Insert a Column Into a DataFrame at a Specified Location</a></li>
 </ul>
