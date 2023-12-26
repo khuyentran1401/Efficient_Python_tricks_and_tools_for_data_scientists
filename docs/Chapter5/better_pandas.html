@@ -525,8 +525,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.12. Polars: Blazing Fast DataFrame Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.13. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.14. Polars vs. Pandas for CSV Loading and Filtering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.15. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.12.16. Pandas-Friendly Big Data Processing with Spark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.15. Simple and Expressive Data Transformation with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.16. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.12.17. Pandas-Friendly Big Data Processing with Spark</a></li>
 </ul>
             </nav>
         </div>
@@ -2404,8 +2405,102 @@ Polars time: 41.079080 seconds
 </div>
 </div>
 </section>
+<section id="simple-and-expressive-data-transformation-with-polars">
+<h2><span class="section-number">6.12.15. </span>Simple and Expressive Data Transformation with Polars<a class="headerlink" href="#simple-and-expressive-data-transformation-with-polars" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Polars provides a simple and expressive syntax for creating complex data transformation pipelines. Every expression in Polars produces a new expression, and these expressions can be piped together.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">integer_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span>
+<span class="n">other_columns</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;B&quot;</span><span class="p">]]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">integer_columns</span><span class="p">,</span> <span class="n">other_columns</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>A</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>a</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>b</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>6</td>
+      <td>c</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">pl_df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">),</span> <span class="s2">&quot;B&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 2)</small><table border="1" class="dataframe"><thead><tr><th>A</th><th>B</th></tr><tr><td>i64</td><td>str</td></tr></thead><tbody><tr><td>1</td><td>&quot;a&quot;</td></tr><tr><td>2</td><td>&quot;b&quot;</td></tr><tr><td>6</td><td>&quot;c&quot;</td></tr></tbody></table></div></div></div>
+</div>
+</section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.15. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.16. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2626,7 +2721,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="pandas-friendly-big-data-processing-with-spark">
-<h2><span class="section-number">6.12.16. </span>Pandas-Friendly Big Data Processing with Spark<a class="headerlink" href="#pandas-friendly-big-data-processing-with-spark" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.17. </span>Pandas-Friendly Big Data Processing with Spark<a class="headerlink" href="#pandas-friendly-big-data-processing-with-spark" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3041,8 +3136,9 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.12. Polars: Blazing Fast DataFrame Library</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.13. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.14. Polars vs. Pandas for CSV Loading and Filtering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.15. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.12.16. Pandas-Friendly Big Data Processing with Spark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.15. Simple and Expressive Data Transformation with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.16. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.12.17. Pandas-Friendly Big Data Processing with Spark</a></li>
 </ul>
   </nav></div>
 
