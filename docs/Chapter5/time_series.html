@@ -519,6 +519,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workalendar-handle-working-day-computation-in-python">6.7.6. Workalendar: Handle Working-Day Computation in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pmdarima-harness-r-s-auto-arima-power-with-a-scikit-learn-like-interface">6.7.7. Pmdarima: Harness R’s auto.arima Power with a scikit-learn-Like Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ruptures-detecting-change-points-in-non-stationary-signals">6.7.9. Ruptures: Detecting Change Points in Non-Stationary Signals</a></li>
 </ul>
             </nav>
         </div>
@@ -1329,6 +1330,51 @@ dtype: float64
 </div>
 <p><a class="reference external" href="https://github.com/aeon-toolkit/aeon">Link to aeon</a>.</p>
 </section>
+<section id="ruptures-detecting-change-points-in-non-stationary-signals">
+<h2><span class="section-number">6.7.9. </span>Ruptures: Detecting Change Points in Non-Stationary Signals<a class="headerlink" href="#ruptures-detecting-change-points-in-non-stationary-signals" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>ruptures
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Use ruptures to detect change points from non-stationary signals such as trend, seasonality, and variance.</p>
+<p>With change points, you can detect anomalies or deviations from the expected behavior and gain insights into when these transitions occur.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">ruptures</span> <span class="k">as</span> <span class="nn">rpt</span>
+
+<span class="c1"># generate signal</span>
+<span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">num_breakpoints</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">true_breakpoints</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">pw_constant</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">num_breakpoints</span><span class="p">,</span> <span class="n">noise_std</span><span class="o">=</span><span class="n">sigma</span>
+<span class="p">)</span>
+
+<span class="c1"># detection</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">Pelt</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;rbf&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">predicted_breakpoints</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pen</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># display</span>
+<span class="n">rpt</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">predicted_breakpoints</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/1030df48742b5c76a98e591fa5c6c6af542119e8fdedbb53ae82d6daec4163cc.png" src="../_images/1030df48742b5c76a98e591fa5c6c6af542119e8fdedbb53ae82d6daec4163cc.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/deepcharles/ruptures">Link to ruptures</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1402,6 +1448,7 @@ dtype: float64
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workalendar-handle-working-day-computation-in-python">6.7.6. Workalendar: Handle Working-Day Computation in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pmdarima-harness-r-s-auto-arima-power-with-a-scikit-learn-like-interface">6.7.7. Pmdarima: Harness R’s auto.arima Power with a scikit-learn-Like Interface</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ruptures-detecting-change-points-in-non-stationary-signals">6.7.9. Ruptures: Detecting Change Points in Non-Stationary Signals</a></li>
 </ul>
   </nav></div>
 
