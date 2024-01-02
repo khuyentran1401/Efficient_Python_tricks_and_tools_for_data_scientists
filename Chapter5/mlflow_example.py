@@ -7,7 +7,6 @@ from sklearn.ensemble import RandomForestRegressor
 
 import itertools
 
-mlflow.autolog()
 
 db = load_diabetes()
 X_train, X_test, y_train, y_test = train_test_split(db.data, db.target)
@@ -28,5 +27,9 @@ for combination in itertools.product(
     )
     rf.fit(X_train, y_train)
 
-    # Use the model to make predictions on the test dataset.
-    predictions = rf.predict(X_test)
+    # Log the sklearn model and register
+    mlflow.sklearn.log_model(
+        sk_model=rf,
+        artifact_path="sklearn-model",
+        registered_model_name="sk-learn-random-forest-reg-model",
+    )
