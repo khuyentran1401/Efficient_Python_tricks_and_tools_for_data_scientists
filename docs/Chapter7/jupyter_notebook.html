@@ -521,6 +521,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipytest-unit-tests-in-ipython-notebooks">8.1.6. ipytest: Unit Tests in IPython Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-your-jupyter-notebook-s-code-with-snoop">8.1.8. Debug Your Jupyter Notebook’s Code with snoop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab">8.1.9. Integrate Jupyter AI for Seamless Code Creation in Jupyter Notebook and Lab</a></li>
 </ul>
             </nav>
         </div>
@@ -1001,6 +1002,97 @@ df = pd.DataFrame(arr, columns=[&quot;a&quot;, &quot;b&quot;])
 <p>snoop also supports debugging in a Python script.</p>
 <p><a class="reference external" href="https://github.com/alexmojaki/snoop">Link to snoop</a></p>
 </section>
+<section id="integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab">
+<h2><span class="section-number">8.1.9. </span>Integrate Jupyter AI for Seamless Code Creation in Jupyter Notebook and Lab<a class="headerlink" href="#integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>jupyter_ai
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Use Jupyter AI directly within your Jupyter Notebook and Jupyter Lab to effortlessly generate code using generative AI, eliminating the need to import code snippets from other applications.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">env</span> OPENAI_API_KEY=YOUR_API_KEY_HERE
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> jupyter_ai
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">ai</span> chatgpt
+Generate the 2D heat equation
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<p>The 2D heat equation is given by:</p>
+<p><img alt="2D Heat Equation" src="https://latex.codecogs.com/svg.latex?%5Cfrac%7B%5Cpartial%5E2%20u%7D%7B%5Cpartial%20x%5E2%7D%20+%20%5Cfrac%7B%5Cpartial%5E2%20u%7D%7B%5Cpartial%20y%5E2%7D%20=%20%5Cfrac%7B%5Cpartial%20u%7D%7B%5Cpartial%20t%7D" /></p>
+<p>Where:</p>
+<ul class="simple">
+<li><p>u is the temperature distribution as a function of position (x, y) and time t.</p></li>
+<li><p>x and y represent the spatial coordinates.</p></li>
+<li><p>t represents time.</p></li>
+<li><p>The left-hand side of the equation represents the Laplacian of u with respect to x and y, which measures the rate of change of temperature in the system.</p></li>
+<li><p>The right-hand side of the equation represents the rate of change of u with respect to time, which describes how the temperature distribution evolves over time.</p></li>
+</ul>
+<p>This equation is commonly used to model heat conduction in various physical systems.</p>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">ai</span> chatgpt
+Write Python code to create a monthly time series spanning one year.
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a range of dates for one year</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;2022-12-31&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert the dates to strings in the format &#39;YYYY-MM&#39;</span>
+<span class="n">monthly_dates</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">]</span>
+
+<span class="c1"># Print the monthly time series in markdown format</span>
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">monthly_dates</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<ul class="simple">
+<li><p>2022-01</p></li>
+<li><p>2022-02</p></li>
+<li><p>2022-03</p></li>
+<li><p>2022-04</p></li>
+<li><p>2022-05</p></li>
+<li><p>2022-06</p></li>
+<li><p>2022-07</p></li>
+<li><p>2022-08</p></li>
+<li><p>2022-09</p></li>
+<li><p>2022-10</p></li>
+<li><p>2022-11</p></li>
+<li><p>2022-12</p></li>
+</ul>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/jupyterlab/jupyter-ai">Link to jupyter-ai</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1065,6 +1157,7 @@ df = pd.DataFrame(arr, columns=[&quot;a&quot;, &quot;b&quot;])
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipytest-unit-tests-in-ipython-notebooks">8.1.6. ipytest: Unit Tests in IPython Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-your-jupyter-notebook-s-code-with-snoop">8.1.8. Debug Your Jupyter Notebook’s Code with snoop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab">8.1.9. Integrate Jupyter AI for Seamless Code Creation in Jupyter Notebook and Lab</a></li>
 </ul>
   </nav></div>
 
