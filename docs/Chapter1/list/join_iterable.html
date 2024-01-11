@@ -514,8 +514,9 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#join-method-turn-an-iterable-into-a-python-string">2.3.3.1. join method: Turn an Iterable into a Python String</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zip-associate-elements-from-two-iterators-based-on-the-order">2.3.3.2. Zip: Associate Elements from Two Iterators based on the Order</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unzip-a-list-of-iterables">2.3.3.3. Unzip a List of Iterables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-list-append-and-list-extend">2.3.3.4. Difference between list append and list extend</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-3-10-s-strict-true-preventing-data-loss-in-zip-operations">2.3.3.3. Python 3.10’s strict=True: Preventing Data Loss in zip Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unzip-a-list-of-iterables">2.3.3.4. Unzip a List of Iterables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-list-append-and-list-extend">2.3.3.5. Difference between list append and list extend</a></li>
 </ul>
             </nav>
         </div>
@@ -570,8 +571,47 @@ document.write(`
 </div>
 </div>
 </section>
+<section id="python-3-10-s-strict-true-preventing-data-loss-in-zip-operations">
+<h2><span class="section-number">2.3.3.3. </span>Python 3.10’s strict=True: Preventing Data Loss in zip Operations<a class="headerlink" href="#python-3-10-s-strict-true-preventing-data-loss-in-zip-operations" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">zip</span></code> allows you to aggregate elements from each of the iterables. However, if the iterables are not the same length, the remaining elements of the longer iterables are not paired, potentially leading to unnoticed bugs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">]</span>
+<span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Starting with Python 3.10, using the strict keyword argument with <code class="docutils literal notranslate"><span class="pre">zip</span></code> raises a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if the lengths of the iterables are unequal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="ne">ValueError</span>: zip() argument 2 is shorter than argument 1
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="unzip-a-list-of-iterables">
-<h2><span class="section-number">2.3.3.3. </span>Unzip a List of Iterables<a class="headerlink" href="#unzip-a-list-of-iterables" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3.3.4. </span>Unzip a List of Iterables<a class="headerlink" href="#unzip-a-list-of-iterables" title="Permalink to this heading">#</a></h2>
 <p>You can turn a list of iterables into 2 separate iterables using <code class="docutils literal notranslate"><span class="pre">zip(*list)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -595,7 +635,7 @@ document.write(`
 </div>
 </section>
 <section id="difference-between-list-append-and-list-extend">
-<h2><span class="section-number">2.3.3.4. </span>Difference between list append and list extend<a class="headerlink" href="#difference-between-list-append-and-list-extend" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3.3.5. </span>Difference between list append and list extend<a class="headerlink" href="#difference-between-list-append-and-list-extend" title="Permalink to this heading">#</a></h2>
 <p>If you want to add a list to another list, use the <code class="docutils literal notranslate"><span class="pre">append</span></code> method. To add elements of a list to another list, use the <code class="docutils literal notranslate"><span class="pre">extend</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -695,8 +735,9 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#join-method-turn-an-iterable-into-a-python-string">2.3.3.1. join method: Turn an Iterable into a Python String</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#zip-associate-elements-from-two-iterators-based-on-the-order">2.3.3.2. Zip: Associate Elements from Two Iterators based on the Order</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unzip-a-list-of-iterables">2.3.3.3. Unzip a List of Iterables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-list-append-and-list-extend">2.3.3.4. Difference between list append and list extend</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-3-10-s-strict-true-preventing-data-loss-in-zip-operations">2.3.3.3. Python 3.10’s strict=True: Preventing Data Loss in zip Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unzip-a-list-of-iterables">2.3.3.4. Unzip a List of Iterables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#difference-between-list-append-and-list-extend">2.3.3.5. Difference between list append and list extend</a></li>
 </ul>
   </nav></div>
 
