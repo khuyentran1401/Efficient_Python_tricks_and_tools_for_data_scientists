@@ -531,7 +531,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-testing-of-python-class-with-setup-method">6.13.17. Efficient Testing of Python Class with setUp Method</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freeze-dynamic-time-in-unit-testing">6.13.18. FreezeGun: Freeze Dynamic Time in Unit Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.19. Simulate External Services in Testing with Mock Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.20. pyfakefs: Create Fake File System in Memory for Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.13.20. tmp_path: Create a Temporary Directory for Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.21. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.13.22. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.23. DeepDiff Find Deep Differences of Python Objects</a></li>
@@ -1750,58 +1750,62 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 </div>
 <p><a class="reference external" href="https://docs.python.org/3/library/unittest.mock.html">Link to mock</a>.</p>
 </section>
-<section id="pyfakefs-create-fake-file-system-in-memory-for-testing">
-<h2><span class="section-number">6.13.20. </span>pyfakefs: Create Fake File System in Memory for Testing<a class="headerlink" href="#pyfakefs-create-fake-file-system-in-memory-for-testing" title="Permalink to this heading">#</a></h2>
-<p>Sometimes you might want to test if the function that interacts with files is working properly but donâ€™t want the tests to touch the real disk.</p>
-<p>pyfakefs allows your tests to operate on a file system in memory without touching the real disk.</p>
-<p>In the code below, I created a fake directory and tested if <code class="docutils literal notranslate"><span class="pre">save_result</span></code> is creating a new file in the fake directory and writing the result to that file.</p>
+<section id="tmp-path-create-a-temporary-directory-for-testing">
+<h2><span class="section-number">6.13.20. </span>tmp_path: Create a Temporary Directory for Testing<a class="headerlink" href="#tmp-path-create-a-temporary-directory-for-testing" title="Permalink to this heading">#</a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">tmp_path</span></code> fixture in pytest to create a temporary directory for testing the function that interacts with files. This will prevent any changes to the actual filesystem or production files.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_pyfakefs.py
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_tmp_path.py
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
-<span class="k">def</span> <span class="nf">save_result</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">save_result</span><span class="p">(</span><span class="n">folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="c1"># Create new file inside the folder</span>
     <span class="n">file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">file_name</span>
     <span class="n">file</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
 
     <span class="c1"># Write result to the new file</span>
-    <span class="n">file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">test_save_result</span><span class="p">(</span><span class="n">fs</span><span class="p">):</span>
-    <span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;new&quot;</span>
+<span class="k">def</span> <span class="nf">test_save_result</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="c1"># Create a temporary folder</span>
+    <span class="n">folder</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;new&quot;</span>
+    <span class="n">folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span> 
+
     <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;my_file.txt&quot;</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="s2">&quot;The accuracy is 0.9&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Accuracy: 0.9&quot;</span>
 
-    <span class="n">fs</span><span class="o">.</span><span class="n">create_dir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
-
-    <span class="n">save_result</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">save_result</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
     <span class="n">res</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="k">assert</span> <span class="n">res</span> <span class="o">==</span> <span class="n">result</span>
+    <span class="k">assert</span> <span class="n">res</span> <span class="o">==</span> <span class="n">text</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing test_tmp_path.py
 </pre></div>
 </div>
 </div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_pyfakefs.py
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_tmp_path.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.8.9, pytest-7.1.2, pluggy-1.0.0
-rootdir: /Users/khuyen/book/book/Chapter5
-plugins: anyio-3.6.1, pyfakefs-4.6.3, picked-0.4.6
+platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
 collected 1 item                                                               
 
-test_pyfakefs.py <span class=" -Color -Color-Green">.                                                       [100%]</span>
+test_tmp_path.py <span class=" -Color -Color-Green">.                                                       [100%]</span>
 
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.76s ===============================</span>
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
+
 </pre></div>
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://github.com/jmcgeheeiv/pyfakefs/">Link to pyfakefs</a>.</p>
 </section>
 <section id="pandera-a-python-library-to-validate-your-pandas-dataframe">
 <h2><span class="section-number">6.13.21. </span>Pandera: a Python Library to Validate Your Pandas DataFrame<a class="headerlink" href="#pandera-a-python-library-to-validate-your-pandas-dataframe" title="Permalink to this heading">#</a></h2>
@@ -3054,7 +3058,7 @@ Downloading FactualConsistencyModel (may take up to 2 minutes if running for thâ
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-testing-of-python-class-with-setup-method">6.13.17. Efficient Testing of Python Class with setUp Method</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freeze-dynamic-time-in-unit-testing">6.13.18. FreezeGun: Freeze Dynamic Time in Unit Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.19. Simulate External Services in Testing with Mock Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyfakefs-create-fake-file-system-in-memory-for-testing">6.13.20. pyfakefs: Create Fake File System in Memory for Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.13.20. tmp_path: Create a Temporary Directory for Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.13.21. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.13.22. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.13.23. DeepDiff Find Deep Differences of Python Objects</a></li>
