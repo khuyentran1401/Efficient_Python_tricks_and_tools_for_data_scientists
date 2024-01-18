@@ -1,0 +1,26 @@
+name: Convert Issue to Discussion
+on:
+  issues:
+    types:
+      - opened
+    labels:
+      - product-request
+jobs:
+  convert-to-discussion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Convert Issue to Discussion
+        uses: abirismyname/create-discussion@v1.x
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
+        with:
+          title: ${{ github.event.issue.title }}
+          body: ${{ github.event.issue.body }}
+          repository-id: ${{ secrets.REPO_ID }}
+          category-id: ${{ secrets.CAT_ID }}  
+      - name: Print discussion url and id
+        run: |
+          echo discussion-id: ${{steps.create-discussion.outputs.discussion-id}} 
+          echo discussion-url: ${{steps.create-discussion.outputs.discussion-url}}
