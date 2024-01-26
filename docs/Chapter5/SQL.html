@@ -520,7 +520,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlparse-extract-components-from-a-sql-statement-in-python">6.14.9. sqlparse: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.9. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -1039,8 +1039,8 @@ FROM my_table
 </div>
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
 </section>
-<section id="sqlparse-extract-components-from-a-sql-statement-in-python">
-<h2><span class="section-number">6.14.9. </span>sqlparse: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sqlparse-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
+<section id="sql-metadata-extract-components-from-a-sql-statement-in-python">
+<h2><span class="section-number">6.14.9. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1048,73 +1048,40 @@ FROM my_table
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlparse
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sql-metadata
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>If you want to extract specific components of a SQL statement for downstream Python tasks, use sqlparse.</p>
-<p>In the code below, we use sqlparse to extract tables and columns from the SQL statement.</p>
+<p>If you want to extract specific components of a SQL statement for downstream Python tasks, use sql_metdata.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlparse</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sql_metadata</span> <span class="kn">import</span> <span class="n">Parser</span>
 
-<span class="n">sql_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT e.employee_name, d.department_name</span>
-<span class="s2">FROM employees e</span>
-<span class="s2">JOIN departments d ON e.department_id = d.id</span>
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="n">parsed</span> <span class="o">=</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sql_query</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">parsed</span><span class="o">.</span><span class="n">tokens</span>
+<span class="n">parsed_query</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT foo.value as alias1 FROM foo JOIN bar ON foo.id = bar.id LIMIT 10&quot;</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tables: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">tables</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns dict: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">columns_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aliases: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">columns_aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Limit: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">limit_and_offset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;Newline &#39; &#39; at 0x10A13E4C0&gt;,
- &lt;DML &#39;SELECT&#39; at 0x10A1AE040&gt;,
- &lt;Whitespace &#39; &#39; at 0x10A1AE100&gt;,
- &lt;IdentifierList &#39;e.empl...&#39; at 0x10A198E40&gt;,
- &lt;Newline &#39; &#39; at 0x10A1AE580&gt;,
- &lt;Keyword &#39;FROM&#39; at 0x10A1AE5E0&gt;,
- &lt;Whitespace &#39; &#39; at 0x10A1AE640&gt;,
- &lt;Identifier &#39;employ...&#39; at 0x10A198C10&gt;,
- &lt;Newline &#39; &#39; at 0x10A1AE7C0&gt;,
- &lt;Keyword &#39;JOIN&#39; at 0x10A1AE820&gt;,
- &lt;Whitespace &#39; &#39; at 0x10A1AE880&gt;,
- &lt;Identifier &#39;depart...&#39; at 0x10A198CF0&gt;,
- &lt;Whitespace &#39; &#39; at 0x10A1AEA00&gt;,
- &lt;Keyword &#39;ON&#39; at 0x10A1AEA60&gt;,
- &lt;Whitespace &#39; &#39; at 0x10A1AEAC0&gt;,
- &lt;Comparison &#39;e.depa...&#39; at 0x10A198DD0&gt;,
- &lt;Newline &#39; &#39; at 0x10A1AEE80&gt;]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Columns: [&#39;foo.value&#39;, &#39;foo.id&#39;, &#39;bar.id&#39;]
+Tables: [&#39;foo&#39;, &#39;bar&#39;]
+Columns dict: {&#39;select&#39;: [&#39;foo.value&#39;], &#39;join&#39;: [&#39;foo.id&#39;, &#39;bar.id&#39;]}
+Aliases: {&#39;alias1&#39;: &#39;foo.value&#39;}
+Limit: (10, 0)
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">parsed</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">IdentifierList</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">identifier</span><span class="o">.</span><span class="n">get_real_name</span><span class="p">()</span> <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">token</span><span class="o">.</span><span class="n">get_identifiers</span><span class="p">()]</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">sqlparse</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">Identifier</span><span class="p">):</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">get_real_name</span><span class="p">()</span>
-        <span class="n">tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tables: </span><span class="si">{</span><span class="n">tables</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Columns: </span><span class="si">{</span><span class="n">columns</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tables: [&#39;employees&#39;, &#39;departments&#39;]
-Columns: [&#39;employee_name&#39;, &#39;department_name&#39;]
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/andialbrecht/sqlparse">Link to sqlparse</a>.</p>
+<p><a class="reference external" href="https://github.com/macbre/sql-metadata">Link to sql-metadata</a>.</p>
 </section>
 </section>
 
@@ -1189,7 +1156,7 @@ Columns: [&#39;employee_name&#39;, &#39;department_name&#39;]
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlparse-extract-components-from-a-sql-statement-in-python">6.14.9. sqlparse: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.9. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 </ul>
   </nav></div>
 
