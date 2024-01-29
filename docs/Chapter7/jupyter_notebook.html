@@ -522,6 +522,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-your-jupyter-notebook-s-code-with-snoop">8.1.8. Debug Your Jupyter Notebook’s Code with snoop</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab">8.1.9. Integrate Jupyter AI for Seamless Code Creation in Jupyter Notebook and Lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testbook-write-clean-unit-tests-for-notebooks">8.1.10. testbook: Write Clean Unit Tests for Notebooks</a></li>
 </ul>
             </nav>
         </div>
@@ -827,8 +828,7 @@ FAILED tmpospmc1tm.py::test_multiply_by_two[sample1-expected1] - assert [nan] ==
 </div>
 <p>If you want to check the quality of the code in your Jupyter Notebook and automatically format it, use nbQA. With nbQA, you can run isort, black, flake8, and more on your Jupyter Notebooks.</p>
 <p>Imagine the notebook <code class="docutils literal notranslate"><span class="pre">example_notebook.ipnb</span></code> looks like the below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -852,9 +852,8 @@ FAILED tmpospmc1tm.py::test_multiply_by_two[sample1-expected1] - assert [nan] ==
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>reformatted example_notebook.ipynb
-All done! ✨ 🍰 ✨
-1 file reformatted.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>All done! ✨ 🍰 ✨
+1 file left unchanged.
 </pre></div>
 </div>
 </div>
@@ -1093,6 +1092,80 @@ Write Python code to create a monthly time series spanning one year.
 </div>
 <p><a class="reference external" href="https://github.com/jupyterlab/jupyter-ai">Link to jupyter-ai</a>.</p>
 </section>
+<section id="testbook-write-clean-unit-tests-for-notebooks">
+<h2><span class="section-number">8.1.10. </span>testbook: Write Clean Unit Tests for Notebooks<a class="headerlink" href="#testbook-write-clean-unit-tests-for-notebooks" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>testbook
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Writing unit tests for notebooks within the notebooks themselves can lead to a messy notebook.</p>
+<p>testbook allows unit tests to be run against notebooks in separate test files, effectively treating .ipynb files as .py files.</p>
+<p>For example, consider the following code cell in a Jupyter Notebook “example_notebook2.ipynb”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># example_notebook2.ipynb</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">num1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">num2</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
+</pre></div>
+</div>
+<p>With testbook, you can write a unit test using testbook in a Python file “test_example.py” as follows:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_example.py
+<span class="kn">from</span> <span class="nn">testbook</span> <span class="kn">import</span> <span class="n">testbook</span>
+
+<span class="nd">@testbook</span><span class="p">(</span><span class="s1">&#39;example_notebook2.ipynb&#39;</span><span class="p">,</span> <span class="n">execute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_func</span><span class="p">(</span><span class="n">tb</span><span class="p">):</span>
+   <span class="n">add</span> <span class="o">=</span> <span class="n">tb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;add&quot;</span><span class="p">)</span>
+   <span class="k">assert</span> <span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then pytest can be used to run the test:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_example.py
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter7
+plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
+collected 1 item                                                               
+
+test_example.py <span class=" -Color -Color-Green">.</span><span class=" -Color -Color-Yellow">                                                        [100%]</span>
+
+<span class=" -Color -Color-Yellow">=============================== warnings summary ===============================</span>
+../../../.pyenv/versions/3.11.2/lib/python3.11/site-packages/jupyter_client/connect.py:22
+  /Users/khuyentran/.pyenv/versions/3.11.2/lib/python3.11/site-packages/jupyter_client/connect.py:22: DeprecationWarning: Jupyter is migrating its paths to use standard platformdirs
+  given by the platformdirs library.  To remove this warning and
+  see the appropriate new directories, set the environment variable
+  `JUPYTER_PLATFORM_DIRS=1` and then run `jupyter --paths`.
+  The use of platformdirs will be the default in `jupyter_core` v6
+    from jupyter_core.paths import jupyter_data_dir, jupyter_runtime_dir, secure_write
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+<span class=" -Color -Color-Yellow">========================= </span><span class=" -Color -Color-Green">1 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">1 warning</span><span class=" -Color -Color-Yellow"> in 1.48s =========================</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/49dzOJ4">Link to testbook</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1158,6 +1231,7 @@ Write Python code to create a monthly time series spanning one year.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nbqa-run-code-formatter-and-checker-on-your-jupyter-notebooks">8.1.7. nbQA: Run Code Formatter and Checker on Your Jupyter Notebooks</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debug-your-jupyter-notebook-s-code-with-snoop">8.1.8. Debug Your Jupyter Notebook’s Code with snoop</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrate-jupyter-ai-for-seamless-code-creation-in-jupyter-notebook-and-lab">8.1.9. Integrate Jupyter AI for Seamless Code Creation in Jupyter Notebook and Lab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testbook-write-clean-unit-tests-for-notebooks">8.1.10. testbook: Write Clean Unit Tests for Notebooks</a></li>
 </ul>
   </nav></div>
 
