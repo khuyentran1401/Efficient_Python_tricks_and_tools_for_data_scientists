@@ -512,15 +512,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary">7.1.1. Box: Using Dot Notation to Access Keys in a Python Dictionary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-module-write-shorter-python-decorators-without-nested-functions">7.1.2. decorator module: Write Shorter Python Decorators without Nested Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipe-use-inflix-notation-in-python">7.1.3. Pipe: Use Inflix Notation in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">7.1.4. PRegEx: Write Human-Readable Regular Expressions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">7.1.5. parse: Extract Strings Using Brackets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy">7.1.6. Simplify Pattern Matching and Transformation in Python with Pampy</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">7.1.7. Dictdiffer: Find the Differences Between Two Dictionaries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">7.1.8. unyt: Manipulate and Convert Units in NumPy Arrays</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">7.1.9. Map a Function Asynchronously with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-null-checks-in-python-with-the-maybe-container">7.1.1. Simplify Null Checks in Python with the Maybe Container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary">7.1.2. Box: Using Dot Notation to Access Keys in a Python Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-module-write-shorter-python-decorators-without-nested-functions">7.1.3. decorator module: Write Shorter Python Decorators without Nested Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipe-use-inflix-notation-in-python">7.1.4. Pipe: Use Inflix Notation in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">7.1.5. PRegEx: Write Human-Readable Regular Expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">7.1.6. parse: Extract Strings Using Brackets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy">7.1.7. Simplify Pattern Matching and Transformation in Python with Pampy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">7.1.8. Dictdiffer: Find the Differences Between Two Dictionaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">7.1.9. unyt: Manipulate and Convert Units in NumPy Arrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">7.1.10. Map a Function Asynchronously with Prefect</a></li>
 </ul>
             </nav>
         </div>
@@ -535,8 +536,138 @@ document.write(`
   <section id="alternative-approach">
 <h1><span class="section-number">7.1. </span>Alternative Approach<a class="headerlink" href="#alternative-approach" title="Permalink to this heading">#</a></h1>
 <p>This section covers some alternatives approaches to work with Python.</p>
+<section id="simplify-null-checks-in-python-with-the-maybe-container">
+<h2><span class="section-number">7.1.1. </span>Simplify Null Checks in Python with the Maybe Container<a class="headerlink" href="#simplify-null-checks-in-python-with-the-maybe-container" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>returns
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+
+<span class="k">class</span> <span class="nc">Event</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticket</span><span class="p">:</span> <span class="n">Ticket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ticket</span> <span class="o">=</span> <span class="n">ticket</span>
+
+    <span class="k">def</span> <span class="nf">get_ticket</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ticket</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ticket</span>
+
+
+<span class="k">class</span> <span class="nc">Ticket</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">price</span>
+
+    <span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span>
+
+
+<span class="k">class</span> <span class="nc">Discount</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">discount_amount</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discount_amount</span> <span class="o">=</span> <span class="n">discount_amount</span>
+
+    <span class="k">def</span> <span class="nf">apply_discount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">discount_amount</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Having multiple <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">x</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">None:</span></code> conditions can make the code deeply nested and unreadable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_discounted_price</span><span class="p">(</span>
+    <span class="n">event</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">discount</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Discount</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ticket</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get_ticket</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ticket</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="n">ticket</span><span class="o">.</span><span class="n">get_price</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">discount</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">discount</span><span class="o">.</span><span class="n">apply_discount</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="n">ticket</span> <span class="o">=</span> <span class="n">Ticket</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">concert</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">ticket</span><span class="p">)</span>
+<span class="n">discount</span> <span class="o">=</span> <span class="n">Discount</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">calculate_discounted_price</span><span class="p">(</span><span class="n">concert</span><span class="p">,</span> <span class="n">discount</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>80
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calculate_discounted_price</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Maybe</span></code> container from the <code class="docutils literal notranslate"><span class="pre">returns</span></code> library enhances code clarity through the <code class="docutils literal notranslate"><span class="pre">bind_optional</span></code> method, which applies a function to the result of the previous step only when that result is not None.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">returns.maybe</span> <span class="kn">import</span> <span class="n">Maybe</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_discounted_price</span><span class="p">(</span>
+    <span class="n">event</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">discount</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Discount</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">Maybe</span><span class="o">.</span><span class="n">from_optional</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">bind_optional</span><span class="p">(</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get_ticket</span><span class="p">())</span> <span class="c1"># called only when event exists</span>
+        <span class="o">.</span><span class="n">bind_optional</span><span class="p">(</span><span class="k">lambda</span> <span class="n">ticket</span><span class="p">:</span> <span class="n">ticket</span><span class="o">.</span><span class="n">get_price</span><span class="p">())</span> <span class="c1"># called only when ticket exists</span>
+        <span class="o">.</span><span class="n">bind_optional</span><span class="p">(</span><span class="k">lambda</span> <span class="n">price</span><span class="p">:</span> <span class="n">discount</span><span class="o">.</span><span class="n">apply_discount</span><span class="p">(</span><span class="n">price</span><span class="p">))</span> <span class="c1"># called only when price exists</span>
+    <span class="p">)</span>
+
+<span class="n">ticket</span> <span class="o">=</span> <span class="n">Ticket</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">concert</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">ticket</span><span class="p">)</span>
+<span class="n">discount</span> <span class="o">=</span> <span class="n">Discount</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">calculate_discounted_price</span><span class="p">(</span><span class="n">concert</span><span class="p">,</span> <span class="n">discount</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Some: 80&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">calculate_discounted_price</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Nothing&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3vUFdGW">Link to returns</a>.</p>
+</section>
 <section id="box-using-dot-notation-to-access-keys-in-a-python-dictionary">
-<h2><span class="section-number">7.1.1. </span>Box: Using Dot Notation to Access Keys in a Python Dictionary<a class="headerlink" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.2. </span>Box: Using Dot Notation to Access Keys in a Python Dictionary<a class="headerlink" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -612,7 +743,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/cdgriffith/Box">Link to Box</a>.</p>
 </section>
 <section id="decorator-module-write-shorter-python-decorators-without-nested-functions">
-<h2><span class="section-number">7.1.2. </span>decorator module: Write Shorter Python Decorators without Nested Functions<a class="headerlink" href="#decorator-module-write-shorter-python-decorators-without-nested-functions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.3. </span>decorator module: Write Shorter Python Decorators without Nested Functions<a class="headerlink" href="#decorator-module-write-shorter-python-decorators-without-nested-functions" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -723,7 +854,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/micheles/decorator">Check out other things the decorator library can do</a>.</p>
 </section>
 <section id="pipe-use-inflix-notation-in-python">
-<h2><span class="section-number">7.1.3. </span>Pipe: Use Inflix Notation in Python<a class="headerlink" href="#pipe-use-inflix-notation-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.4. </span>Pipe: Use Inflix Notation in Python<a class="headerlink" href="#pipe-use-inflix-notation-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -813,7 +944,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/JulienPalard/Pipe">Link to pipe</a>.</p>
 </section>
 <section id="pregex-write-human-readable-regular-expressions">
-<h2><span class="section-number">7.1.4. </span>PRegEx: Write Human-Readable Regular Expressions<a class="headerlink" href="#pregex-write-human-readable-regular-expressions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.5. </span>PRegEx: Write Human-Readable Regular Expressions<a class="headerlink" href="#pregex-write-human-readable-regular-expressions" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -875,7 +1006,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/manoss96/pregex">Link to PregEx</a>.</p>
 </section>
 <section id="parse-extract-strings-using-brackets">
-<h2><span class="section-number">7.1.5. </span>parse: Extract Strings Using Brackets<a class="headerlink" href="#parse-extract-strings-using-brackets" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.6. </span>parse: Extract Strings Using Brackets<a class="headerlink" href="#parse-extract-strings-using-brackets" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -949,7 +1080,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/r1chardj0n3s/parse">Link to parse</a>.</p>
 </section>
 <section id="simplify-pattern-matching-and-transformation-in-python-with-pampy">
-<h2><span class="section-number">7.1.6. </span>Simplify Pattern Matching and Transformation in Python with Pampy<a class="headerlink" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.7. </span>Simplify Pattern Matching and Transformation in Python with Pampy<a class="headerlink" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1022,7 +1153,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/santinic/pampy">Link to Pampy</a>.</p>
 </section>
 <section id="dictdiffer-find-the-differences-between-two-dictionaries">
-<h2><span class="section-number">7.1.7. </span>Dictdiffer: Find the Differences Between Two Dictionaries<a class="headerlink" href="#dictdiffer-find-the-differences-between-two-dictionaries" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.8. </span>Dictdiffer: Find the Differences Between Two Dictionaries<a class="headerlink" href="#dictdiffer-find-the-differences-between-two-dictionaries" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1119,7 +1250,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/inveniosoftware/dictdiffer">Link to Dictdiffer</a>.</p>
 </section>
 <section id="unyt-manipulate-and-convert-units-in-numpy-arrays">
-<h2><span class="section-number">7.1.8. </span>unyt: Manipulate and Convert Units in NumPy Arrays<a class="headerlink" href="#unyt-manipulate-and-convert-units-in-numpy-arrays" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.9. </span>unyt: Manipulate and Convert Units in NumPy Arrays<a class="headerlink" href="#unyt-manipulate-and-convert-units-in-numpy-arrays" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1188,7 +1319,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/yt-project/unyt">Link to unyt</a>.</p>
 </section>
 <section id="map-a-function-asynchronously-with-prefect">
-<h2><span class="section-number">7.1.9. </span>Map a Function Asynchronously with Prefect<a class="headerlink" href="#map-a-function-asynchronously-with-prefect" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1.10. </span>Map a Function Asynchronously with Prefect<a class="headerlink" href="#map-a-function-asynchronously-with-prefect" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1348,15 +1479,16 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary">7.1.1. Box: Using Dot Notation to Access Keys in a Python Dictionary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-module-write-shorter-python-decorators-without-nested-functions">7.1.2. decorator module: Write Shorter Python Decorators without Nested Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipe-use-inflix-notation-in-python">7.1.3. Pipe: Use Inflix Notation in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">7.1.4. PRegEx: Write Human-Readable Regular Expressions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">7.1.5. parse: Extract Strings Using Brackets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy">7.1.6. Simplify Pattern Matching and Transformation in Python with Pampy</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">7.1.7. Dictdiffer: Find the Differences Between Two Dictionaries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">7.1.8. unyt: Manipulate and Convert Units in NumPy Arrays</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">7.1.9. Map a Function Asynchronously with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-null-checks-in-python-with-the-maybe-container">7.1.1. Simplify Null Checks in Python with the Maybe Container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#box-using-dot-notation-to-access-keys-in-a-python-dictionary">7.1.2. Box: Using Dot Notation to Access Keys in a Python Dictionary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decorator-module-write-shorter-python-decorators-without-nested-functions">7.1.3. decorator module: Write Shorter Python Decorators without Nested Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipe-use-inflix-notation-in-python">7.1.4. Pipe: Use Inflix Notation in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pregex-write-human-readable-regular-expressions">7.1.5. PRegEx: Write Human-Readable Regular Expressions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parse-extract-strings-using-brackets">7.1.6. parse: Extract Strings Using Brackets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-pattern-matching-and-transformation-in-python-with-pampy">7.1.7. Simplify Pattern Matching and Transformation in Python with Pampy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dictdiffer-find-the-differences-between-two-dictionaries">7.1.8. Dictdiffer: Find the Differences Between Two Dictionaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unyt-manipulate-and-convert-units-in-numpy-arrays">7.1.9. unyt: Manipulate and Convert Units in NumPy Arrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#map-a-function-asynchronously-with-prefect">7.1.10. Map a Function Asynchronously with Prefect</a></li>
 </ul>
   </nav></div>
 
