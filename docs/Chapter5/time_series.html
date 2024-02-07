@@ -522,6 +522,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ruptures-detecting-change-points-in-non-stationary-signals">6.7.9. Ruptures: Detecting Change Points in Non-Stationary Signals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gluonts-probabilistic-time-series-modeling-in-python">6.7.10. GluonTS: Probabilistic Time Series Modeling in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfcausalimpact-understand-causal-relationships-in-time-series-data">6.7.11. tfcausalimpact: Understand Causal Relationships in Time Series Data</a></li>
 </ul>
             </nav>
         </div>
@@ -1419,6 +1420,86 @@ dtype: float64
 <p><img alt="" src="../_images/gluonts.png" /></p>
 <p><a class="reference external" href="https://github.com/awslabs/gluonts">Link to GluonTS</a>.</p>
 </section>
+<section id="tfcausalimpact-understand-causal-relationships-in-time-series-data">
+<h2><span class="section-number">6.7.11. </span>tfcausalimpact: Understand Causal Relationships in Time Series Data<a class="headerlink" href="#tfcausalimpact-understand-causal-relationships-in-time-series-data" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>tfcausalimpact
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>You’re running a marketing campaign and see a user increase. But how do you know if it’s due to the campaign or just a coincidence?</p>
+<p>That is when tfcausalimpact comes in handy. It forecasts future data trends using a Bayesian structural model and compares them to actual data to give you meaningful insights.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">causalimpact</span> <span class="kn">import</span> <span class="n">CausalImpact</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/WillianFuks/tfcausalimpact/master/tests/fixtures/arma_data.csv&quot;</span>
+<span class="p">)[[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">70</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">5</span>
+
+
+<span class="n">ci</span> <span class="o">=</span> <span class="n">CausalImpact</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pre_period</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">69</span><span class="p">],</span> <span class="n">post_period</span><span class="o">=</span><span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">99</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ci</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ci</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">output</span><span class="o">=</span><span class="s2">&quot;report&quot;</span><span class="p">))</span>
+<span class="n">ci</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Posterior Inference {Causal Impact}
+Average            Cumulative
+Actual                    125.23             3756.86
+Prediction (s.d.)         120.33 (0.3)       3609.94 (9.11)
+95% CI                    [119.75, 120.94]   [3592.64, 3628.34]</p>
+<p>Absolute effect (s.d.)    4.9 (0.3)          146.93 (9.11)
+95% CI                    [4.28, 5.47]       [128.52, 164.23]</p>
+<p>Relative effect (s.d.)    4.07% (0.25%)      4.07% (0.25%)
+95% CI                    [3.56%, 4.55%]     [3.56%, 4.55%]</p>
+<p>Posterior tail-area probability p: 0.0
+Posterior prob. of a causal effect: 100.0%</p>
+<p>For more details run the command: <code class="docutils literal notranslate"><span class="pre">print(impact.summary('report'))</span></code></p>
+<p>Analysis report {CausalImpact}</p>
+<p>During the post-intervention period, the response variable had
+an average value of approx. 125.23. By contrast, in the absence of an
+intervention, we would have expected an average response of 120.33.
+The 95% interval of this counterfactual prediction is [119.75, 120.94].
+Subtracting this prediction from the observed response yields
+an estimate of the causal effect the intervention had on the
+response variable. This effect is 4.9 with a 95% interval of
+[4.28, 5.47]. For a discussion of the significance of this effect,
+see below.</p>
+<p>Summing up the individual data points during the post-intervention
+period (which can only sometimes be meaningfully interpreted), the
+response variable had an overall value of 3756.86.
+By contrast, had the intervention not taken place, we would have expected
+a sum of 3609.94. The 95% interval of this prediction is [3592.64, 3628.34].</p>
+<p>The above results are given in terms of absolute numbers. In relative
+terms, the response variable showed an increase of +4.07%. The 95%
+interval of this percentage is [3.56%, 4.55%].</p>
+<p>This means that the positive effect observed during the intervention
+period is statistically significant and unlikely to be due to random
+fluctuations. It should be noted, however, that the question of whether
+this increase also bears substantive significance can only be answered
+by comparing the absolute effect (4.9) to the original goal
+of the underlying intervention.</p>
+<p>The probability of obtaining this effect by chance is very small
+(Bayesian one-sided tail-area probability p = 0.0).
+This means the causal effect can be considered statistically
+significant.</p>
+<p><img alt="" src="../_images/causal_impact.png" /></p>
+<p><a class="reference external" href="https://bit.ly/3HSmMFA">Link to tfcausalimpact</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1494,6 +1575,7 @@ dtype: float64
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aeon-the-ultimate-library-for-time-series-forecasting-and-classification">6.7.8. aeon: The Ultimate Library for Time-Series Forecasting and Classification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ruptures-detecting-change-points-in-non-stationary-signals">6.7.9. Ruptures: Detecting Change Points in Non-Stationary Signals</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gluonts-probabilistic-time-series-modeling-in-python">6.7.10. GluonTS: Probabilistic Time Series Modeling in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tfcausalimpact-understand-causal-relationships-in-time-series-data">6.7.11. tfcausalimpact: Understand Causal Relationships in Time Series Data</a></li>
 </ul>
   </nav></div>
 
