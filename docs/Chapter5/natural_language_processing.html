@@ -533,6 +533,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flashtext-extract-and-replace-keywords-in-sentences">6.6.19. FlashText: Extract and Replace Keywords in Sentences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galatic-clean-and-analyze-massive-text-datasets">6.6.22. Galatic: Clean and Analyze Massive Text Datasets</a></li>
 </ul>
             </nav>
         </div>
@@ -2228,6 +2229,143 @@ Reading english - 1grams ...
 </div>
 <p><a class="reference external" href="https://github.com/chroma-core/chroma">Link to Chroma</a>.</p>
 </section>
+<section id="galatic-clean-and-analyze-massive-text-datasets">
+<h2><span class="section-number">6.6.22. </span>Galatic: Clean and Analyze Massive Text Datasets<a class="headerlink" href="#galatic-clean-and-analyze-massive-text-datasets" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>galactic-ai
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to clean, gain insights, and create embeddings from massive unstructured text datasets, use Galatic.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">galactic</span> <span class="kn">import</span> <span class="n">GalacticDataset</span>
+
+
+<span class="n">filter_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">1024</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">GalacticDataset</span><span class="o">.</span><span class="n">from_hugging_face_stream</span><span class="p">(</span>
+    <span class="s2">&quot;tiiuae/falcon-refinedweb&quot;</span><span class="p">,</span>
+    <span class="n">split</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span>
+    <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">filter_func</span><span class="p">],</span>
+    <span class="n">dedup_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">],</span>
+    <span class="n">max_samples</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Detect the language of the text</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">detect_language</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
+<span class="n">Counter</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;__language&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Counter</span><span class="p">({</span><span class="s1">&#39;en&#39;</span><span class="p">:</span> <span class="mi">4975</span><span class="p">,</span>
+         <span class="s1">&#39;es&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+         <span class="s1">&#39;fr&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+         <span class="s1">&#39;de&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+         <span class="s1">&#39;da&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="s1">&#39;ru&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;nl&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;pt&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;sh&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;eo&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;ceb&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get personal information from the text</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">detect_pii</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Email:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;__pii__email&quot;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Phone:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;__pii__phone&quot;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Username/Password:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;__pii__credential&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Map: 100%|██████████| 5000/5000 [00:03&lt;00:00, 1443.36 examples/s]
+INFO: Detected PII in fields: [&#39;content&#39;]; added __pii__email, __pii__phone, __pii__credential, and __pii__any metadata.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Email: 285
+Phone: 242
+Username/Password: 9
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter out all examples that have &quot;blogspot&quot; in the URL.</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">filter_string</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+    <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;blogspot&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Filter: 100%|██████████| 5000/5000 [00:00&lt;00:00, 107937.60 examples/s]
+INFO: Filtered dataset in-place with exact string matching on fields: [&#39;url&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create embeddings</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">get_embeddings</span><span class="p">(</span><span class="n">input_field</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cluster the embeddings with kmeans</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">get_cluster_info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: You already have clusters in field __cluster. Since overwrite=True, these will be overwritten.
+INFO: Embedding dimension is large, which is fine! But consider also experimenting with dimensionality reduction before clustering.
+Map: 100%|██████████| 4902/4902 [00:00&lt;00:00, 31476.11 examples/s]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cluster 1 (1095 items)
+Cluster 4 (1125 items)
+Cluster 0 (709 items)
+Cluster 3 (1224 items)
+Cluster 2 (749 items)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;cluster_id&#39;: 1, &#39;cluster_size&#39;: 1095, &#39;examples&#39;: [{}, {}, {}]},
+ {&#39;cluster_id&#39;: 4, &#39;cluster_size&#39;: 1125, &#39;examples&#39;: [{}, {}, {}]},
+ {&#39;cluster_id&#39;: 0, &#39;cluster_size&#39;: 709, &#39;examples&#39;: [{}, {}, {}]},
+ {&#39;cluster_id&#39;: 3, &#39;cluster_size&#39;: 1224, &#39;examples&#39;: [{}, {}, {}]},
+ {&#39;cluster_id&#39;: 2, &#39;cluster_size&#39;: 749, &#39;examples&#39;: [{}, {}, {}]}]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/taylorai/galactic">Link to Galatic</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2314,6 +2452,7 @@ Reading english - 1grams ...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flashtext-extract-and-replace-keywords-in-sentences">6.6.19. FlashText: Extract and Replace Keywords in Sentences</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galatic-clean-and-analyze-massive-text-datasets">6.6.22. Galatic: Clean and Analyze Massive Text Datasets</a></li>
 </ul>
   </nav></div>
 
