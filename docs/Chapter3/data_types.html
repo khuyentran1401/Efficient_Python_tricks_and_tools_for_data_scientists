@@ -517,6 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable">4.8.3. pandas.Categorical: Turn a List of Strings into a Categorical Variable</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#say-goodbye-to-data-type-conversion-in-pandas-2-0">4.8.5. Say Goodbye to Data Type Conversion in pandas 2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-string-data-handling-in-pandas-2-0-with-pyarrow-arrays">4.8.6. Efficient String Data Handling in pandas 2.0 with PyArrow Arrays</a></li>
 </ul>
             </nav>
         </div>
@@ -850,6 +851,71 @@ Data type with None: int64[pyarrow]
 </div>
 </div>
 </section>
+<section id="efficient-string-data-handling-in-pandas-2-0-with-pyarrow-arrays">
+<h2><span class="section-number">4.8.6. </span>Efficient String Data Handling in pandas 2.0 with PyArrow Arrays<a class="headerlink" href="#efficient-string-data-handling-in-pandas-2-0-with-pyarrow-arrays" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;pandas==2.2&#39;</span><span class="w"> </span>pyarrow
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>As of pandas 2.0, data in pandas can be stored in PyArrow arrays in addition to NumPy arrays. PyArrow arrays provide a wide range of data types compared to NumPy.</p>
+<p>One significant advantage of PyArrow arrays is their string datatype, which offers superior speed and memory efficiency than storing strings using object dtypes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">data_size</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Michael&quot;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">data_size</span><span class="p">)</span>
+<span class="n">s_numpy</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">s_pyarrow</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;string[pyarrow]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Datatype of Series with Numpy backend: </span><span class="si">{</span><span class="n">s_numpy</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Datatype of Series with PyArrow backend: </span><span class="si">{</span><span class="n">s_pyarrow</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Datatype of Series with Numpy backend: object
+Datatype of Series with PyArrow backend: string
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">numpy_memory</span> <span class="o">=</span> <span class="n">s_numpy</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pyarrow_memory</span> <span class="o">=</span> <span class="n">s_pyarrow</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Memory usage for Numpy backend: </span><span class="si">{</span><span class="n">numpy_memory</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Memory usage for PyArrow backend: </span><span class="si">{</span><span class="n">pyarrow_memory</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PyArrow backend consumes approximately </span><span class="si">{</span><span class="n">numpy_memory</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">pyarrow_memory</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> times less memory than Numpy backend.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Memory usage for Numpy backend: 59.45 MB.
+Memory usage for PyArrow backend: 12.72 MB.
+PyArrow backend consumes approximately 4.68 times less memory than Numpy backend.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -920,6 +986,7 @@ Data type with None: int64[pyarrow]
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-categorical-turn-a-list-of-strings-into-a-categorical-variable">4.8.3. pandas.Categorical: Turn a List of Strings into a Categorical Variable</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-a-pandas-dataframe-with-infer-objects">4.8.4. Optimizing Memory Usage in a pandas DataFrame with infer_objects</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#say-goodbye-to-data-type-conversion-in-pandas-2-0">4.8.5. Say Goodbye to Data Type Conversion in pandas 2.0</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-string-data-handling-in-pandas-2-0-with-pyarrow-arrays">4.8.6. Efficient String Data Handling in pandas 2.0 with PyArrow Arrays</a></li>
 </ul>
   </nav></div>
 
