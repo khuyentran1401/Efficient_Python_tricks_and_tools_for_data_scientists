@@ -515,6 +515,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spark-dataframe-avoid-out-of-memory-errors-with-lazy-evaluation">6.15.1. Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.2. Pandas-Friendly Big Data Processing with Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 </ul>
             </nav>
         </div>
@@ -1034,6 +1035,157 @@ only showing top 5 rows
 </div>
 </div>
 </section>
+<section id="working-with-arrays-made-easier-in-spark-3-5">
+<h2><span class="section-number">6.15.4. </span>Working with Arrays Made Easier in Spark 3.5<a class="headerlink" href="#working-with-arrays-made-easier-in-spark-3-5" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Spark 3.5 added new array helper functions that simplify the process of working with array data. Below are a few examples showcasing these new array functions.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting default log level to &quot;WARN&quot;.
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+24/03/06 09:14:50 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Row</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">Row</span><span class="p">(</span><span class="n">customer</span><span class="o">=</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;🍋&quot;</span><span class="p">,</span> <span class="s2">&quot;🍋&quot;</span><span class="p">]),</span>
+        <span class="n">Row</span><span class="p">(</span><span class="n">customer</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;🍊&quot;</span><span class="p">]),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------+
+|customer|  orders|
++--------+--------+
+|    Alex|[🍋, 🍋]|
+|     Bob|    [🍊]|
++--------+--------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">col</span><span class="p">,</span>
+    <span class="n">array_append</span><span class="p">,</span>
+    <span class="n">array_prepend</span><span class="p">,</span>
+    <span class="n">array_contains</span><span class="p">,</span>
+    <span class="n">array_distinct</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">array_append</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">),</span> <span class="s2">&quot;🍇&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+------------+
+|customer|      orders|
++--------+------------+
+|    Alex|[🍋, 🍋, 🍇]|
+|     Bob|    [🍊, 🍇]|
++--------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">array_prepend</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">),</span> <span class="s2">&quot;🍇&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+------------+
+|customer|      orders|
++--------+------------+
+|    Alex|[🍇, 🍋, 🍋]|
+|     Bob|    [🍇, 🍊]|
++--------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">array_distinct</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+------+
+|customer|orders|
++--------+------+
+|    Alex|  [🍋]|
+|     Bob|  [🍊]|
++--------+------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;has_🍋&quot;</span><span class="p">,</span> <span class="n">array_contains</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">),</span> <span class="s2">&quot;🍋&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------+------+
+|customer|  orders|has_🍋|
++--------+--------+------+
+|    Alex|[🍋, 🍋]|  true|
+|     Bob|    [🍊]| false|
++--------+--------+------+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://spark.apache.org/docs/3.1.3/api/python/reference/pyspark.sql.html#functions">View other array functions</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1102,6 +1254,7 @@ only showing top 5 rows
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spark-dataframe-avoid-out-of-memory-errors-with-lazy-evaluation">6.15.1. Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.2. Pandas-Friendly Big Data Processing with Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 </ul>
   </nav></div>
 
