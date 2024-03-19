@@ -529,6 +529,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.15. Polars vs. Pandas for CSV Loading and Filtering</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.16. Simple and Expressive Data Transformation with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.17. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.18. Parallel Execution of Multiple Files with Polars</a></li>
 </ul>
             </nav>
         </div>
@@ -2809,6 +2810,77 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
+<section id="parallel-execution-of-multiple-files-with-polars">
+<h2><span class="section-number">6.12.18. </span>Parallel Execution of Multiple Files with Polars<a class="headerlink" href="#parallel-execution-of-multiple-files-with-polars" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you have multiple files to process, Polars enables you to construct a query plan for each file beforehand. This allows for the efficient execution of multiple files concurrently, maximizing processing speed.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="c1"># Construct a query plan for each file</span>
+<span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;test_data/*.csv&quot;</span><span class="p">):</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">scan_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;Num&quot;</span><span class="p">))</span>
+    <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+
+<span class="c1"># Execute files in parallel</span>
+<span class="n">dataframes</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">collect_all</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
+<span class="n">dataframes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[shape: (3, 2)
+ ┌─────┬─────┐
+ │ Cat ┆ Num │
+ │ --- ┆ --- │
+ │ str ┆ i64 │
+ ╞═════╪═════╡
+ │ A   ┆ 2   │
+ │ C   ┆ 6   │
+ │ B   ┆ 4   │
+ └─────┴─────┘,
+ shape: (3, 2)
+ ┌─────┬─────┐
+ │ Cat ┆ Num │
+ │ --- ┆ --- │
+ │ str ┆ i64 │
+ ╞═════╪═════╡
+ │ B   ┆ 5   │
+ │ A   ┆ 1   │
+ │ C   ┆ 1   │
+ └─────┴─────┘,
+ shape: (3, 2)
+ ┌─────┬─────┐
+ │ Cat ┆ Num │
+ │ --- ┆ --- │
+ │ str ┆ i64 │
+ ╞═════╪═════╡
+ │ C   ┆ 4   │
+ │ A   ┆ 4   │
+ │ B   ┆ 1   │
+ └─────┴─────┘]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2891,6 +2963,7 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.15. Polars vs. Pandas for CSV Loading and Filtering</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.16. Simple and Expressive Data Transformation with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.17. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.18. Parallel Execution of Multiple Files with Polars</a></li>
 </ul>
   </nav></div>
 
