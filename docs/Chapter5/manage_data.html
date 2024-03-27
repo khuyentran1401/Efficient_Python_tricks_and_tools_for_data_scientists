@@ -517,6 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadratic-data-science-speadsheet-with-python-and-sql">6.4.3. quadratic: Data Science Speadsheet with Python and SQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">6.4.4. whylogs: Data Logging Made Easy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors">6.4.6. safetensors: A Simple and Safe Way to Store and Distribute Tensors</a></li>
 </ul>
             </nav>
         </div>
@@ -920,6 +921,45 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 </div>
 <p><a class="reference external" href="https://github.com/manoss96/fluke">Link to Fluke</a>.</p>
 </section>
+<section id="safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors">
+<h2><span class="section-number">6.4.6. </span>safetensors: A Simple and Safe Way to Store and Distribute Tensors<a class="headerlink" href="#safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>safetensors
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>PyTorch defaults to using Pickle for tensor storage, which poses security risks as malicious pickle files can execute arbitrary code upon unpickling. In contrast, safetensors specialize in securely storing tensors, guaranteeing data integrity during storage and retrieval.</p>
+<p>safetensors also uses zero-copy operations, eliminating the need to copy data into new memory locations, thereby enabling fast and efficient data handling.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">safetensors</span> <span class="kn">import</span> <span class="n">safe_open</span>
+<span class="kn">from</span> <span class="nn">safetensors.torch</span> <span class="kn">import</span> <span class="n">save_file</span>
+
+<span class="n">tensors</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="s2">&quot;weight1&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)),</span>
+   <span class="s2">&quot;weight2&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">))</span>
+<span class="p">}</span>
+<span class="n">save_file</span><span class="p">(</span><span class="n">tensors</span><span class="p">,</span> <span class="s2">&quot;model.safetensors&quot;</span><span class="p">)</span>
+
+<span class="n">tensors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">with</span> <span class="n">safe_open</span><span class="p">(</span><span class="s2">&quot;model.safetensors&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+   <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+       <span class="n">tensors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3vqzbhl">Link to safetensors</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -990,6 +1030,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quadratic-data-science-speadsheet-with-python-and-sql">6.4.3. quadratic: Data Science Speadsheet with Python and SQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whylogs-data-logging-made-easy">6.4.4. whylogs: Data Logging Made Easy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors">6.4.6. safetensors: A Simple and Safe Way to Store and Distribute Tensors</a></li>
 </ul>
   </nav></div>
 
