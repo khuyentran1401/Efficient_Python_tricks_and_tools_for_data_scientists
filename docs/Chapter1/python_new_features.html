@@ -512,7 +512,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-switch-statement">2.10.1. Python Switch Statement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-conditional-execution-with-match-statements">2.10.1. Simplify Conditional Execution with Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.10.2. Structural Pattern Matching in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.3. Write Union Types as X|Y in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.4. Walrus Operator: Assign a Variable in an Expression</a></li>
@@ -531,13 +531,13 @@ document.write(`
   <section id="new-features-in-python">
 <h1><span class="section-number">2.10. </span>New Features in Python<a class="headerlink" href="#new-features-in-python" title="Permalink to this heading">#</a></h1>
 <p>This section shows some new features in Python 3.10 and above.</p>
-<section id="python-switch-statement">
-<h2><span class="section-number">2.10.1. </span>Python Switch Statement<a class="headerlink" href="#python-switch-statement" title="Permalink to this heading">#</a></h2>
+<section id="simplify-conditional-execution-with-match-statements">
+<h2><span class="section-number">2.10.1. </span>Simplify Conditional Execution with Match Statements<a class="headerlink" href="#simplify-conditional-execution-with-match-statements" title="Permalink to this heading">#</a></h2>
 <p>It is common to use the if-else statements to execute multiple conditional statements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">food</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;apple&quot;</span> <span class="ow">or</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;peach&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">4</span>
     <span class="k">elif</span> <span class="n">food</span> <span class="o">==</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="mi">3</span>
@@ -547,7 +547,7 @@ document.write(`
         <span class="k">return</span> <span class="s2">&quot;Unknown&quot;</span>
 
 
-<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;peach&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -557,22 +557,23 @@ document.write(`
 </div>
 </div>
 </div>
-<p>In Python 3.10 and above, you can use the switch statement to do the same thing.</p>
-<p>With the switch statement, you don’t need to repeat the same statements multiple times (<code class="docutils literal notranslate"><span class="pre">food==x</span></code>), which makes the code cleaner than using multiple if-else statements.</p>
+<p>In Python 3.10 and above, you can use the match statements to do the same thing.</p>
+<p>Match statements can provide a more concise and readable syntax, especially when dealing with complex pattern matching scenarios.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_price</span><span class="p">(</span><span class="n">food</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="k">match</span> <span class="n">food</span><span class="p">:</span>
-        <span class="k">case</span> <span class="s2">&quot;apple&quot;</span><span class="p">:</span> <span class="c1"># if food == &quot;apple&quot;</span>
+        <span class="k">case</span> <span class="s2">&quot;apple&quot;</span> <span class="o">|</span> <span class="s2">&quot;peach&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">4</span>
         <span class="k">case</span> <span class="s2">&quot;orange&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">3</span>
         <span class="k">case</span> <span class="s2">&quot;grape&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">5</span>
-        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>        <span class="c1"># else</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;Unknown&quot;</span>
 
-<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">)</span>
+
+<span class="n">get_price</span><span class="p">(</span><span class="s2">&quot;peach&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -840,7 +841,7 @@ NameError: name &#39;greetng&#39; is not defined. Did you mean: &#39;greeting&#3
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-switch-statement">2.10.1. Python Switch Statement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-conditional-execution-with-match-statements">2.10.1. Simplify Conditional Execution with Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.10.2. Structural Pattern Matching in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.3. Write Union Types as X|Y in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.4. Walrus Operator: Assign a Variable in an Expression</a></li>
