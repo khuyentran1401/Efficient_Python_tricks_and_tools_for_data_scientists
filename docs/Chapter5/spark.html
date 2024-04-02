@@ -516,6 +516,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.2. Pandas-Friendly Big Data Processing with Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 </ul>
             </nav>
         </div>
@@ -563,14 +564,17 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+----+----+
 |cat|val1|val2|
 +---+----+----+
-|  c|  56|  60|
-|  b|  23|  65|
-|  b|  39|   8|
-|  a|  77|  39|
-|  c|  17|  66|
+|  b|   0|  34|
+|  a|  58|  12|
+|  c|  24|  72|
+|  a|  20|  58|
+|  b|  13|  17|
 +---+----+----+
 only showing top 5 rows
 </pre></div>
@@ -594,9 +598,9 @@ only showing top 5 rows
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Row(cat=&#39;c&#39;, avg(val2)=49.56976095832509),
- Row(cat=&#39;b&#39;, avg(val2)=49.43383865728208),
- Row(cat=&#39;a&#39;, avg(val2)=49.68113195098398)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Row(cat=&#39;c&#39;, avg(val2)=49.54095055783208),
+ Row(cat=&#39;b&#39;, avg(val2)=49.46593810642427),
+ Row(cat=&#39;a&#39;, avg(val2)=49.52092805080465)]
 </pre></div>
 </div>
 </div>
@@ -1179,6 +1183,115 @@ only showing top 5 rows
 </div>
 <p><a class="reference external" href="https://bit.ly/4c0txD1">View other array functions</a>.</p>
 </section>
+<section id="simplify-complex-sql-queries-with-pyspark-udfs">
+<h2><span class="section-number">6.15.5. </span>Simplify Complex SQL Queries with PySpark UDFs<a class="headerlink" href="#simplify-complex-sql-queries-with-pyspark-udfs" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>SQL queries can often become complex and challenging to comprehend.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Smith&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Register the DataFrame as a temporary table or view</span>
+<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+<span class="c1"># Complex SQL query</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) AS modified_name</span>
+<span class="sd">    FROM df</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------------+
+| id|modified_name|
++---+-------------+
+|  1|     John doe|
+|  2|   Jane smith|
+|  3|  Bob johnson|
++---+-------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using PySpark UDFs simplifies complex SQL queries by encapsulating complex operations into a single function call, resulting in cleaner queries. UDFs also allow for the reuse of complex logic across different queries.</p>
+<p>In the code example below, we define a UDF called <code class="docutils literal notranslate"><span class="pre">modify_name</span></code> that converts the name to uppercase.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
+
+
+<span class="c1"># Define a UDF to modify the name</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="n">returnType</span><span class="o">=</span><span class="n">StringType</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">modify_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;modify_name&#39;</span><span class="p">,</span> <span class="n">modify_name</span><span class="p">)</span>
+
+<span class="c1"># Apply the UDF in the spark.sql query</span>
+<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT id, modify_name(name) AS modified_name</span>
+<span class="s2">    FROM df</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>24/03/30 14:36:24 WARN SimpleFunctionRegistry: The function modify_name replaced a previously registered function.
+                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------------+
+| id|modified_name|
++---+-------------+
+|  1|     John doe|
+|  2|   Jane smith|
+|  3|  Bob johnson|
++---+-------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3TEYPHh">Learn more about PySPark UDFs</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1248,6 +1361,7 @@ only showing top 5 rows
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.2. Pandas-Friendly Big Data Processing with Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 </ul>
   </nav></div>
 
