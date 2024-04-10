@@ -1,3 +1,4 @@
+update: build copy git_add
 build: 
 	jb build .
 copy: 
@@ -5,4 +6,3 @@ copy:
 git_add:
 	git add .
 	git status
-update: build copy git_add
