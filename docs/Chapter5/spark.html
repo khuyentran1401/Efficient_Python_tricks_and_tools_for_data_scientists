@@ -517,6 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 </ul>
             </nav>
         </div>
@@ -1292,6 +1293,165 @@ only showing top 5 rows
 </div>
 <p><a class="reference external" href="https://bit.ly/3TEYPHh">Learn more about PySPark UDFs</a>.</p>
 </section>
+<section id="leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">
+<h2><span class="section-number">6.15.6. </span>Leverage Spark UDFs for Reusable Complex Logic in SQL Queries<a class="headerlink" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span><span class="p">,</span> <span class="n">col</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
+
+<span class="c1"># Create SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Duplicated code in SQL queries can lead to inconsistencies if changes are made to one instance of the duplicated code but not to others.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;Product 1&quot;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Product 2&quot;</span><span class="p">,</span> <span class="mf">15.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Product 3&quot;</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)],</span>
+    <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;quantity&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Use df within Spark SQL queries</span>
+<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;products&quot;</span><span class="p">)</span>
+
+<span class="c1"># Select Statement 1</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT name, price, quantity,</span>
+<span class="sd">        CASE</span>
+<span class="sd">            WHEN price &lt; 10.0 THEN &#39;Low&#39;</span>
+<span class="sd">            WHEN price &gt;= 10.0 AND price &lt; 15.0 THEN &#39;Medium&#39;</span>
+<span class="sd">            ELSE &#39;High&#39;</span>
+<span class="sd">        END AS category</span>
+<span class="sd">    FROM products</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Select Statement 2</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT name,</span>
+<span class="sd">        CASE</span>
+<span class="sd">            WHEN price &lt; 10.0 THEN &#39;Low&#39;</span>
+<span class="sd">            WHEN price &gt;= 10.0 AND price &lt; 15.0 THEN &#39;Medium&#39;</span>
+<span class="sd">            ELSE &#39;High&#39;</span>
+<span class="sd">        END AS category</span>
+<span class="sd">    FROM products</span>
+<span class="sd">    WHERE quantity &gt; 3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="n">result1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">result2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+-----+--------+--------+
+|     name|price|quantity|category|
++---------+-----+--------+--------+
+|Product 1| 10.0|       5|  Medium|
+|Product 2| 15.0|       3|    High|
+|Product 3|  8.0|       2|     Low|
++---------+-----+--------+--------+
+
++---------+--------+
+|     name|category|
++---------+--------+
+|Product 1|  Medium|
++---------+--------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Spark UDFs (User-Defined Functions) can help address these issues by encapsulating complex logic that is reused across multiple SQL queries.</p>
+<p>In the code example above, we define a UDF <code class="docutils literal notranslate"><span class="pre">assign_category_label</span></code> that assigns category labels based on price. This UDF is then reused in two different SQL statements.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define UDF to assign category label based on price</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="n">returnType</span><span class="o">=</span><span class="n">StringType</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">assign_category_label</span><span class="p">(</span><span class="n">price</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mf">10.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Low&quot;</span>
+    <span class="k">elif</span> <span class="n">price</span> <span class="o">&gt;=</span> <span class="mf">10.0</span> <span class="ow">and</span> <span class="n">price</span> <span class="o">&lt;</span> <span class="mf">15.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Medium&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;High&quot;</span>
+
+
+<span class="c1"># Register UDF</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;assign_category_label&quot;</span><span class="p">,</span> <span class="n">assign_category_label</span><span class="p">)</span>
+
+<span class="c1"># Select Statement 1</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT name, price, quantity, assign_category_label(price) AS category</span>
+<span class="sd">    FROM products</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Select Statement 2</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT name, assign_category_label(price) AS category</span>
+<span class="sd">    FROM products</span>
+<span class="sd">    WHERE quantity &gt; 3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="n">result1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">result2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>24/04/15 09:28:11 WARN SimpleFunctionRegistry: The function assign_category_label replaced a previously registered function.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+-----+--------+--------+
+|     name|price|quantity|category|
++---------+-----+--------+--------+
+|Product 1| 10.0|       5|  Medium|
+|Product 2| 15.0|       3|    High|
+|Product 3|  8.0|       2|     Low|
++---------+-----+--------+--------+
+
++---------+--------+
+|     name|category|
++---------+--------+
+|Product 1|  Medium|
++---------+--------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1362,6 +1522,7 @@ only showing top 5 rows
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.3. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 </ul>
   </nav></div>
 
