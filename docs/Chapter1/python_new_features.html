@@ -514,9 +514,10 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-conditional-execution-with-match-statements">2.10.1. Simplify Conditional Execution with Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.10.2. Structural Pattern Matching in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.3. Write Union Types as X|Y in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.4. Walrus Operator: Assign a Variable in an Expression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.10.5. Fine-Grained Traceback in Python 3.11</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-python-dataclasses-and-match-statements">2.10.3. Enhance Code Readability with Python Dataclasses and Match Statements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.4. Write Union Types as X|Y in Python 3.10</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.5. Walrus Operator: Assign a Variable in an Expression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.10.6. Fine-Grained Traceback in Python 3.11</a></li>
 </ul>
             </nav>
         </div>
@@ -638,8 +639,97 @@ document.write(`
 </div>
 </div>
 </section>
+<section id="enhance-code-readability-with-python-dataclasses-and-match-statements">
+<h2><span class="section-number">2.10.3. </span>Enhance Code Readability with Python Dataclasses and Match Statements<a class="headerlink" href="#enhance-code-readability-with-python-dataclasses-and-match-statements" title="Permalink to this heading">#</a></h2>
+<p>You can use Python dataclasses with Python match statements to create cleaner and more readable code. This approach can be particularly useful when setting conditions based on multiple attributes of a class, as it can simplify the code and make it easier to understand.</p>
+<p>Using if-else:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SubscriptionPlan</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">def</span> <span class="nf">get_plan_details</span><span class="p">(</span><span class="n">plan</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;basic&quot;</span> <span class="ow">and</span> <span class="n">plan</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;month&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">plan</span><span class="o">.</span><span class="n">price</span><span class="si">}</span><span class="s2"> per month for one month.&quot;</span>
+    <span class="k">elif</span> <span class="n">plan</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;premium&quot;</span> <span class="ow">and</span> <span class="n">plan</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">plan</span><span class="o">.</span><span class="n">price</span><span class="si">}</span><span class="s2"> per year for one year.&quot;</span>
+    <span class="k">elif</span> <span class="n">plan</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="n">plan</span><span class="o">.</span><span class="n">price</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="n">plan</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Invalid subscription plan&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;Unknown subscription plan&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basic_plan</span> <span class="o">=</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">9.99</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">)</span>
+<span class="n">premium_plan</span> <span class="o">=</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">99.99</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">get_plan_details</span><span class="p">(</span><span class="n">basic_plan</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_plan_details</span><span class="p">(</span><span class="n">premium_plan</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$9.99 per month for one month.
+$99.99 per year for one year.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using match statements:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SubscriptionPlan</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">def</span> <span class="nf">get_plan_details</span><span class="p">(</span><span class="n">plan</span><span class="p">):</span>
+    <span class="k">match</span> <span class="n">plan</span><span class="p">:</span>
+        <span class="k">case</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">price</span><span class="si">}</span><span class="s2"> per month for one month.&quot;</span>
+        <span class="k">case</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="n">price</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">price</span><span class="si">}</span><span class="s2"> per year for one year.&quot;</span>
+        <span class="k">case</span> <span class="n">SubscriptionPlan</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s2">&quot;Invalid subscription plan&quot;</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;Unknown subscription plan&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basic_plan</span> <span class="o">=</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;basic&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">9.99</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">)</span>
+<span class="n">premium_plan</span> <span class="o">=</span> <span class="n">SubscriptionPlan</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;premium&quot;</span><span class="p">,</span> <span class="n">price</span><span class="o">=</span><span class="mf">99.99</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">get_plan_details</span><span class="p">(</span><span class="n">basic_plan</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_plan_details</span><span class="p">(</span><span class="n">premium_plan</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>$9.99 per month for one month.
+$99.99 per year for one year.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="write-union-types-as-x-y-in-python-3-10">
-<h2><span class="section-number">2.10.3. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.10.4. </span>Write Union Types as X|Y in Python 3.10<a class="headerlink" href="#write-union-types-as-x-y-in-python-3-10" title="Permalink to this heading">#</a></h2>
 <p>Before Python 3.10, you need to use <code class="docutils literal notranslate"><span class="pre">typing.Union</span></code> to declare that a variable can have one of several different types.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -671,7 +761,7 @@ document.write(`
 </div>
 </section>
 <section id="walrus-operator-assign-a-variable-in-an-expression">
-<h2><span class="section-number">2.10.4. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.10.5. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this heading">#</a></h2>
 <p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
 <ul class="simple">
 <li><p>Debug the components in an expression</p></li>
@@ -727,7 +817,7 @@ document.write(`
 </div>
 </section>
 <section id="fine-grained-traceback-in-python-3-11">
-<h2><span class="section-number">2.10.5. </span>Fine-Grained Traceback in Python 3.11<a class="headerlink" href="#fine-grained-traceback-in-python-3-11" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.10.6. </span>Fine-Grained Traceback in Python 3.11<a class="headerlink" href="#fine-grained-traceback-in-python-3-11" title="Permalink to this heading">#</a></h2>
 <p>Having a clear traceback makes it faster to debug your code. Python 3.11 provides fine-grained error locations in tracebacks, enabling developers to quickly identify the exact location of errors.</p>
 <p>The following examples illustrate the difference in traceback between Python 3.9 and Python 3.11.</p>
 <div class="cell docutils container">
@@ -843,9 +933,10 @@ NameError: name &#39;greetng&#39; is not defined. Did you mean: &#39;greeting&#3
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-conditional-execution-with-match-statements">2.10.1. Simplify Conditional Execution with Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.10.2. Structural Pattern Matching in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.3. Write Union Types as X|Y in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.4. Walrus Operator: Assign a Variable in an Expression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.10.5. Fine-Grained Traceback in Python 3.11</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-python-dataclasses-and-match-statements">2.10.3. Enhance Code Readability with Python Dataclasses and Match Statements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.10.4. Write Union Types as X|Y in Python 3.10</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.10.5. Walrus Operator: Assign a Variable in an Expression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.10.6. Fine-Grained Traceback in Python 3.11</a></li>
 </ul>
   </nav></div>
 
