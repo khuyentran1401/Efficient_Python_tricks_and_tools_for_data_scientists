@@ -521,6 +521,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-a-tree-view-with-rich">7.5.5. Generate a Tree View with rich</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -904,6 +905,172 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 <p><a class="reference external" href="https://github.com/helblazer811/ManimML">Link to ManimML</a>.</p>
 <p>ManimML is built on top of <a class="reference external" href="https://towardsdatascience.com/how-to-create-mathematical-animations-like-3blue1brown-using-python-f571fb9da3d1?sk=67f831edb7de3560020c2ea0296447cf">Manim</a>.</p>
 </section>
+<section id="great-tables-create-scientific-looking-tables-in-python">
+<h2><span class="section-number">7.5.8. </span>Great Tables: Create Scientific-Looking Tables in Python<a class="headerlink" href="#great-tables-create-scientific-looking-tables-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>great_tables<span class="w"> </span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to create visually appealing and scientific-looking tables in Python, use Great Tables. With Great Tables, you can customize your table by mixing and matching various elements such as headers, footers, and cell value formats.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">great_tables</span> <span class="kn">import</span> <span class="n">GT</span><span class="p">,</span> <span class="n">md</span>
+<span class="kn">from</span> <span class="nn">great_tables.data</span> <span class="kn">import</span> <span class="n">islands</span>
+
+<span class="n">islands_mini</span> <span class="o">=</span> <span class="n">islands</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># pandas DataFrame</span>
+
+<span class="p">(</span>
+    <span class="n">GT</span><span class="p">(</span><span class="n">islands_mini</span><span class="p">,</span> <span class="n">rowname_col</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">tab_header</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Large Landmasses of the World&quot;</span><span class="p">,</span>
+        <span class="n">subtitle</span><span class="o">=</span><span class="s2">&quot;The top ten largest are presented&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">tab_source_note</span><span class="p">(</span>
+        <span class="n">source_note</span><span class="o">=</span><span class="s2">&quot;Source: The World Almanac and Book of Facts, 1975, page 406.&quot;</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">tab_source_note</span><span class="p">(</span>
+        <span class="n">source_note</span><span class="o">=</span><span class="n">md</span><span class="p">(</span>
+            <span class="s2">&quot;Reference: McNeil, D. R. (1977) *Interactive Data Analysis*. Wiley.&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">tab_stubhead</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;landmass&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">fmt_number</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="n">sep_mark</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">decimals</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div id="vcnaphavxa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#vcnaphavxa table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#vcnaphavxa thead, tbody, tfoot, tr, td, th { border-style: none !important; }
+ tr { background-color: transparent !important; }
+#vcnaphavxa p { margin: 0 !important; padding: 0 !important; }
+ #vcnaphavxa .gt_table { display: table !important; border-collapse: collapse !important; line-height: normal !important; margin-left: auto !important; margin-right: auto !important; color: #333333 !important; font-size: 16px !important; font-weight: normal !important; font-style: normal !important; background-color: #FFFFFF !important; width: auto !important; border-top-style: solid !important; border-top-width: 2px !important; border-top-color: #A8A8A8 !important; border-right-style: none !important; border-right-width: 2px !important; border-right-color: #D3D3D3 !important; border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #A8A8A8 !important; border-left-style: none !important; border-left-width: 2px !important; border-left-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_caption { padding-top: 4px !important; padding-bottom: 4px !important; }
+ #vcnaphavxa .gt_title { color: #333333 !important; font-size: 125% !important; font-weight: initial !important; padding-top: 4px !important; padding-bottom: 4px !important; padding-left: 5px !important; padding-right: 5px !important; border-bottom-color: #FFFFFF !important; border-bottom-width: 0 !important; }
+ #vcnaphavxa .gt_subtitle { color: #333333 !important; font-size: 85% !important; font-weight: initial !important; padding-top: 3px !important; padding-bottom: 5px !important; padding-left: 5px !important; padding-right: 5px !important; border-top-color: #FFFFFF !important; border-top-width: 0 !important; }
+ #vcnaphavxa .gt_heading { background-color: #FFFFFF !important; text-align: center !important; border-bottom-color: #FFFFFF !important; border-left-style: none !important; border-left-width: 1px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 1px !important; border-right-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_bottom_border { border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_col_headings { border-top-style: solid !important; border-top-width: 2px !important; border-top-color: #D3D3D3 !important; border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; border-left-style: none !important; border-left-width: 1px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 1px !important; border-right-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_col_heading { color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: normal !important; text-transform: inherit !important; border-left-style: none !important; border-left-width: 1px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 1px !important; border-right-color: #D3D3D3 !important; vertical-align: bottom !important; padding-top: 5px !important; padding-bottom: 5px !important; padding-left: 5px !important; padding-right: 5px !important; overflow-x: hidden !important; }
+ #vcnaphavxa .gt_column_spanner_outer { color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: normal !important; text-transform: inherit !important; padding-top: 0 !important; padding-bottom: 0 !important; padding-left: 4px !important; padding-right: 4px !important; }
+ #vcnaphavxa .gt_column_spanner_outer:first-child { padding-left: 0 !important; }
+ #vcnaphavxa .gt_column_spanner_outer:last-child { padding-right: 0 !important; }
+ #vcnaphavxa .gt_column_spanner { border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; vertical-align: bottom !important; padding-top: 5px !important; padding-bottom: 5px !important; overflow-x: hidden !important; display: inline-block !important; width: 100% !important; }
+ #vcnaphavxa .gt_spanner_row { border-bottom-style: hidden !important; }
+ #vcnaphavxa .gt_group_heading { padding-top: 8px !important; padding-bottom: 8px !important; padding-left: 5px !important; padding-right: 5px !important; color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: initial !important; text-transform: inherit !important; border-top-style: solid !important; border-top-width: 2px !important; border-top-color: #D3D3D3 !important; border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; border-left-style: none !important; border-left-width: 1px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 1px !important; border-right-color: #D3D3D3 !important; vertical-align: middle !important; text-align: left !important; }
+ #vcnaphavxa .gt_empty_group_heading { padding: 0.5px !important; color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: initial !important; border-top-style: solid !important; border-top-width: 2px !important; border-top-color: #D3D3D3 !important; border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; vertical-align: middle !important; }
+ #vcnaphavxa .gt_from_md> :first-child { margin-top: 0 !important; }
+ #vcnaphavxa .gt_from_md> :last-child { margin-bottom: 0 !important; }
+ #vcnaphavxa .gt_row { padding-top: 8px !important; padding-bottom: 8px !important; padding-left: 5px !important; padding-right: 5px !important; margin: 10px !important; border-top-style: solid !important; border-top-width: 1px !important; border-top-color: #D3D3D3 !important; border-left-style: none !important; border-left-width: 1px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 1px !important; border-right-color: #D3D3D3 !important; vertical-align: middle !important; overflow-x: hidden !important; }
+ #vcnaphavxa .gt_stub { color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: initial !important; text-transform: inherit !important; border-right-style: solid !important; border-right-width: 2px !important; border-right-color: #D3D3D3 !important; padding-left: 5px !important; padding-right: 5px !important; }
+ #vcnaphavxa .gt_stub_row_group { color: #333333 !important; background-color: #FFFFFF !important; font-size: 100% !important; font-weight: initial !important; text-transform: inherit !important; border-right-style: solid !important; border-right-width: 2px !important; border-right-color: #D3D3D3 !important; padding-left: 5px !important; padding-right: 5px !important; vertical-align: top !important; }
+ #vcnaphavxa .gt_row_group_first td { border-top-width: 2px !important; }
+ #vcnaphavxa .gt_row_group_first th { border-top-width: 2px !important; }
+ #vcnaphavxa .gt_table_body { border-top-style: solid !important; border-top-width: 2px !important; border-top-color: #D3D3D3 !important; border-bottom-style: solid !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_sourcenotes { color: #333333 !important; background-color: #FFFFFF !important; border-bottom-style: none !important; border-bottom-width: 2px !important; border-bottom-color: #D3D3D3 !important; border-left-style: none !important; border-left-width: 2px !important; border-left-color: #D3D3D3 !important; border-right-style: none !important; border-right-width: 2px !important; border-right-color: #D3D3D3 !important; }
+ #vcnaphavxa .gt_sourcenote { font-size: 90% !important; padding-top: 4px !important; padding-bottom: 4px !important; padding-left: 5px !important; padding-right: 5px !important; text-align: left !important; }
+ #vcnaphavxa .gt_left { text-align: left !important; }
+ #vcnaphavxa .gt_center { text-align: center !important; }
+ #vcnaphavxa .gt_right { text-align: right !important; font-variant-numeric: tabular-nums !important; }
+ #vcnaphavxa .gt_font_normal { font-weight: normal !important; }
+ #vcnaphavxa .gt_font_bold { font-weight: bold !important; }
+ #vcnaphavxa .gt_font_italic { font-style: italic !important; }
+ #vcnaphavxa .gt_super { font-size: 65% !important; }
+ #vcnaphavxa .gt_footnote_marks { font-size: 75% !important; vertical-align: 0.4em !important; position: initial !important; }
+ #vcnaphavxa .gt_asterisk { font-size: 100% !important; vertical-align: 0 !important; }
+ 
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead class="gt_header">
+  <tr>
+    <th colspan="2" class="gt_heading gt_title gt_font_normal">Large Landmasses of the World</th>
+  </tr>
+  <tr>
+    <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">The top ten largest are presented</th>
+  </tr>
+</thead>
+<tr class="gt_col_headings">
+  <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="landmass">landmass</th>
+  <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="size">size</th>
+</tr>
+<tbody class="gt_table_body">
+<tr>
+  <th class="gt_row gt_left gt_stub">Asia</th>
+  <td class="gt_row gt_right">16,988</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Africa</th>
+  <td class="gt_row gt_right">11,506</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Antarctica</th>
+  <td class="gt_row gt_right">5,500</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Australia</th>
+  <td class="gt_row gt_right">2,968</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Borneo</th>
+  <td class="gt_row gt_right">280</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Baffin</th>
+  <td class="gt_row gt_right">184</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Britain</th>
+  <td class="gt_row gt_right">84</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Celebes</th>
+  <td class="gt_row gt_right">73</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Banks</th>
+  <td class="gt_row gt_right">23</td>
+</tr>
+<tr>
+  <th class="gt_row gt_left gt_stub">Axel Heiberg</th>
+  <td class="gt_row gt_right">16</td>
+</tr>
+</tbody>
+  <tfoot class="gt_sourcenotes">
+  
+  <tr>
+    <td class="gt_sourcenote" colspan="2">Source: The World Almanac and Book of Facts, 1975, page 406.</td>
+  </tr>
+
+
+  <tr>
+    <td class="gt_sourcenote" colspan="2">Reference: McNeil, D. R. (1977) <em>Interactive Data Analysis</em>. Wiley.</td>
+  </tr>
+
+</tfoot>
+
+</table>
+
+</div>
+        </div></div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3U58fvP">Link to Great Tables</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -976,6 +1143,7 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-a-tree-view-with-rich">7.5.5. Generate a Tree View with rich</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 </ul>
   </nav></div>
 
