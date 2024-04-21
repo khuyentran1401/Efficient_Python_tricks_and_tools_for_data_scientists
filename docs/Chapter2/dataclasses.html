@@ -516,6 +516,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">3.7.2. frozen=True: Make Your Data Classes Read-Only</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-between-two-data-classes">3.7.3. Compare Between Two Data Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">3.7.4. Post-init: Add Init Method to a Data Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-data-validation-with-pydantic">3.7.5. Simplify Data Validation with Pydantic</a></li>
 </ul>
             </nav>
         </div>
@@ -720,6 +721,76 @@ document.write(`
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
+    <span class="n">names</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="s2">&quot;Bim&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;ten&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dog</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dog&#39;s age must be an integer.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">12</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="s2">&quot;Bim&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;ten&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dog</span><span class="o">.</span><span class="n">age</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">12</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Dog&#39;s age must be an integer.&quot;</span><span class="p">)</span>
+
+<span class="ne">ValueError</span>: Dog&#39;s age must be an integer.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simplify-data-validation-with-pydantic">
+<h2><span class="section-number">3.7.5. </span>Simplify Data Validation with Pydantic<a class="headerlink" href="#simplify-data-validation-with-pydantic" title="Permalink to this heading">#</a></h2>
+<p>Dataclasses require manual implementation of validation.</p>
+<p>On the other hand, Pydantic offers built-in validation that automatically validates data and provides informative error messages. This makes Pydantic particularly useful when working with data from external sources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span> <span class="nc">Dog</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">names</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="s2">&quot;Bim&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;ten&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValidationError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">names</span><span class="p">:</span> <span class="nb">str</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+<span class="ne">----&gt; </span><span class="mi">9</span> <span class="n">dog</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="s2">&quot;Bim&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;ten&quot;</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.11/site-packages/pydantic/main.py:164,</span> in <span class="ni">BaseModel.__init__</span><span class="nt">(__pydantic_self__, **data)</span>
+<span class="g g-Whitespace">    </span><span class="mi">162</span> <span class="c1"># `__tracebackhide__` tells pytest and some other tools to omit this function from tracebacks</span>
+<span class="g g-Whitespace">    </span><span class="mi">163</span> <span class="n">__tracebackhide__</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="ne">--&gt; </span><span class="mi">164</span> <span class="n">__pydantic_self__</span><span class="o">.</span><span class="n">__pydantic_validator__</span><span class="o">.</span><span class="n">validate_python</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">self_instance</span><span class="o">=</span><span class="n">__pydantic_self__</span><span class="p">)</span>
+
+<span class="ne">ValidationError</span>: 1 validation error for Dog
+<span class="n">age</span>
+  <span class="n">Input</span> <span class="n">should</span> <span class="n">be</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">integer</span><span class="p">,</span> <span class="n">unable</span> <span class="n">to</span> <span class="n">parse</span> <span class="n">string</span> <span class="k">as</span> <span class="n">an</span> <span class="n">integer</span> <span class="p">[</span><span class="nb">type</span><span class="o">=</span><span class="n">int_parsing</span><span class="p">,</span> <span class="n">input_value</span><span class="o">=</span><span class="s1">&#39;ten&#39;</span><span class="p">,</span> <span class="n">input_type</span><span class="o">=</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">For</span> <span class="n">further</span> <span class="n">information</span> <span class="n">visit</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">errors</span><span class="o">.</span><span class="n">pydantic</span><span class="o">.</span><span class="n">dev</span><span class="o">/</span><span class="mf">2.5</span><span class="o">/</span><span class="n">v</span><span class="o">/</span><span class="n">int_parsing</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -790,6 +861,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">3.7.2. frozen=True: Make Your Data Classes Read-Only</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-between-two-data-classes">3.7.3. Compare Between Two Data Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">3.7.4. Post-init: Add Init Method to a Data Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-data-validation-with-pydantic">3.7.5. Simplify Data Validation with Pydantic</a></li>
 </ul>
   </nav></div>
 
