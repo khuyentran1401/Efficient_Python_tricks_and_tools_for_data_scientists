@@ -519,6 +519,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-groupby-group-elements-in-an-iterable-by-a-key">3.2.5. itertools.groupby: Group Elements in an Iterable by a Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-zip-longest-zip-iterables-of-different-lengths">3.2.6. itertools.zip_longest: Zip Iterables of Different Lengths</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">3.2.7. itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-islice-efficient-data-processing-for-large-data-streams">3.2.8. itertools.islice: Efficient Data Processing for Large Data Streams</a></li>
 </ul>
             </nav>
         </div>
@@ -894,6 +895,29 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </div>
 </div>
 </section>
+<section id="itertools-islice-efficient-data-processing-for-large-data-streams">
+<h2><span class="section-number">3.2.8. </span>itertools.islice: Efficient Data Processing for Large Data Streams<a class="headerlink" href="#itertools-islice-efficient-data-processing-for-large-data-streams" title="Permalink to this heading">#</a></h2>
+<p>Working with large data streams or files can be challenging due to memory limitations. Index slicing is not feasible for extremely large data sets as it requires the entire list to reside in memory.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load all log entries into memory as a list</span>
+<span class="n">large_log</span> <span class="o">=</span> <span class="p">[</span><span class="n">log_entry</span> <span class="k">for</span> <span class="n">log_entry</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;large_log_file.log&quot;</span><span class="p">)]</span>
+
+<span class="c1"># Iterate over the first 100 entries of the list</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">large_log</span><span class="p">[:</span><span class="mi">100</span><span class="p">]:</span>
+    <span class="n">process_log_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>itertools.islice() allows you to process only a portion of the data stream at a time, without the need to load the entire dataset. This approach enables efficient data processing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="c1"># Lazily read file lines with a generator</span>
+<span class="n">large_log</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_entry</span> <span class="k">for</span> <span class="n">log_entry</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;large_log_file.log&quot;</span><span class="p">))</span>
+
+<span class="c1"># Get the first 100 entries from the generator</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">large_log</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">process_log_entry</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -966,6 +990,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-groupby-group-elements-in-an-iterable-by-a-key">3.2.5. itertools.groupby: Group Elements in an Iterable by a Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-zip-longest-zip-iterables-of-different-lengths">3.2.6. itertools.zip_longest: Zip Iterables of Different Lengths</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-dropwhile-drop-elements-in-an-iterable-until-a-condition-is-false">3.2.7. itertools.dropwhile: Drop Elements in an Iterable Until a Condition Is False</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itertools-islice-efficient-data-processing-for-large-data-streams">3.2.8. itertools.islice: Efficient Data Processing for Large Data Streams</a></li>
 </ul>
   </nav></div>
 
