@@ -529,6 +529,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-google-news-using-python">6.3.10. Get Google News Using Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#people-also-ask-python-wrapper-for-google-people-also-ask">6.3.11. people_also_ask: Python Wrapper for Google People Also Ask</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrape-facebook-public-pages-without-an-api-key">6.3.12. Scrape Facebook Public Pages Without an API Key</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-scrapers-automate-recipe-data-extraction">6.3.13. Recipe-Scrapers: Automate Recipe Data Extraction</a></li>
 </ul>
             </nav>
         </div>
@@ -1539,6 +1540,125 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <p><a class="reference external" href="https://github.com/kevinzg/facebook-scraper">Link to facebook-scraper</a>.</p>
 </section>
+<section id="recipe-scrapers-automate-recipe-data-extraction">
+<h2><span class="section-number">6.3.13. </span>Recipe-Scrapers: Automate Recipe Data Extraction<a class="headerlink" href="#recipe-scrapers-automate-recipe-data-extraction" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>recipe-scrapers
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Manually searching for recipes and compiling information can be time-consuming. recipe-scrapers is a Python library that automates this process, quickly extracting data from multiple sources and presenting it in a consolidated format.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">recipe_scrapers</span> <span class="kn">import</span> <span class="n">scrape_me</span>
+
+<span class="n">scraper</span> <span class="o">=</span> <span class="n">scrape_me</span><span class="p">(</span><span class="s1">&#39;https://cookieandkate.com/thai-red-curry-recipe/&#39;</span><span class="p">)</span>
+
+<span class="n">scraper</span><span class="o">.</span><span class="n">host</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;cookieandkate.com&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Thai Red Curry with Vegetables&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">total_time</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>40
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">ingredients</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;1 ¼ cups brown jasmine rice or long-grain brown rice, rinsed&#39;,
+ &#39;1 tablespoon coconut oil or olive oil&#39;,
+ &#39;1 small white onion, chopped (about 1 cup)&#39;,
+ &#39;Pinch of salt, more to taste&#39;,
+ &#39;1 tablespoon finely grated fresh ginger (about a 1-inch nub of ginger)&#39;,
+ &#39;2 cloves garlic, pressed or minced&#39;,
+ &#39;1 red bell pepper, sliced into thin 2-inch long strips&#39;,
+ &#39;1 yellow, orange or green bell pepper, sliced into thin 2-inch long strips&#39;,
+ &#39;3 carrots, peeled and sliced on the diagonal into ¼-inch thick rounds (about 1 cup)&#39;,
+ &#39;2 tablespoons Thai red curry paste*&#39;,
+ &#39;1 can (14 ounces) regular coconut milk**&#39;,
+ &#39;1/2 cup water&#39;,
+ &#39;1 1/2 cups packed thinly sliced kale (tough ribs removed first), preferably the Tuscan/lacinato/dinosaur variety&#39;,
+ &#39;1 1/2 teaspoons coconut sugar or turbinado (raw) sugar or brown sugar&#39;,
+ &#39;1 tablespoon tamari or soy sauce***&#39;,
+ &#39;2 teaspoons rice vinegar or fresh lime juice&#39;,
+ &#39;Garnishes/sides: handful of chopped fresh basil or cilantro, optional red pepper flakes, optional sriracha or chili garlic sauce&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;To cook the rice, bring a large pot of water to boil. Add the rinsed rice and continue boiling for 30 minutes, reducing heat as necessary to prevent overflow. Remove from heat, drain the rice and return the rice to pot. Cover and let the rice rest for 10 minutes or longer, until you’re ready to serve. Just before serving, season the rice to taste with salt and fluff it with a fork.\nTo make the curry, warm a large skillet with deep sides over medium heat. Once it’s hot, add the oil. Add the onion and a sprinkle of salt and cook, stirring often, until the onion has softened and is turning translucent, about 5 minutes. Add the ginger and garlic and cook until fragrant, about 30 seconds, while stirring continuously.\nAdd the bell peppers and carrots. Cook until the bell peppers are fork-tender, 3 to 5 more minutes, stirring occasionally. Then add the curry paste and cook, stirring often, for 2 minutes.\nAdd the coconut milk, water, kale and sugar, and stir to combine. Bring the mixture to a simmer over medium heat. Reduce heat as necessary to maintain a gentle simmer and cook until the peppers, carrots and kale have softened to your liking, about 5 to 10 minutes, stirring occasionally.\nRemove the pot from the heat and season with tamari and rice vinegar. Add salt (I added 1/4 teaspoon for optimal flavor), to taste. If the curry needs a little more punch, add 1/2 teaspoon more tamari, or for more acidity, add 1/2 teaspoon more rice vinegar. Divide rice and curry into bowls and garnish with chopped cilantro and a sprinkle of red pepper flakes, if you’d like. If you love spicy curries, serve with sriracha or chili garlic sauce on the side.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">nutrients</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;calories&#39;: &#39;340 calories&#39;,
+ &#39;sugarContent&#39;: &#39;9.3 g&#39;,
+ &#39;sodiumContent&#39;: &#39;473.3 mg&#39;,
+ &#39;fatContent&#39;: &#39;11.3 g&#39;,
+ &#39;saturatedFatContent&#39;: &#39;8 g&#39;,
+ &#39;transFatContent&#39;: &#39;0 g&#39;,
+ &#39;carbohydrateContent&#39;: &#39;56.3 g&#39;,
+ &#39;fiberContent&#39;: &#39;5.6 g&#39;,
+ &#39;proteinContent&#39;: &#39;8.3 g&#39;,
+ &#39;cholesterolContent&#39;: &#39;0 mg&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3U6vw0w">Link to recipe-scrapers</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1621,6 +1741,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-google-news-using-python">6.3.10. Get Google News Using Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#people-also-ask-python-wrapper-for-google-people-also-ask">6.3.11. people_also_ask: Python Wrapper for Google People Also Ask</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrape-facebook-public-pages-without-an-api-key">6.3.12. Scrape Facebook Public Pages Without an API Key</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-scrapers-automate-recipe-data-extraction">6.3.13. Recipe-Scrapers: Automate Recipe Data Extraction</a></li>
 </ul>
   </nav></div>
 
