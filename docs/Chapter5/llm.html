@@ -514,6 +514,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-llm-integration-with-magentic-s-prompt-decorator">6.16.1. Simplify LLM Integration with Magentic’s @prompt Decorator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlines-ensuring-consistent-outputs-from-language-models">6.16.2. Outlines: Ensuring Consistent Outputs from Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirascope-extract-structured-data-extraction-from-llm-outputs">6.16.3. Mirascope: Extract Structured Data Extraction From LLM Outputs</a></li>
 </ul>
             </nav>
         </div>
@@ -660,6 +661,74 @@ document.write(`
 </div>
 <p><a class="reference external" href="https://github.com/outlines-dev/outlines">Link to Outlines</a>.</p>
 </section>
+<section id="mirascope-extract-structured-data-extraction-from-llm-outputs">
+<h2><span class="section-number">6.16.3. </span>Mirascope: Extract Structured Data Extraction From LLM Outputs<a class="headerlink" href="#mirascope-extract-structured-data-extraction-from-llm-outputs" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mirascope
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Large Language Models (LLMs) are powerful at producing human-like text, but their outputs lack structure, which can limit their usefulness in many practical applications that require organized data.</p>
+<p>Mirascope offers a solution by enabling the extraction of structured information from LLM outputs reliably.</p>
+<p>The following code uses Mirascope to extract meeting details such as topic, date, time, and participants.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_API_KEY&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">mirascope.openai</span> <span class="kn">import</span> <span class="n">OpenAIExtractor</span>
+
+
+<span class="k">class</span> <span class="nc">MeetingDetails</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">topic</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">date</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">time</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">participants</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">MeetingExtractor</span><span class="p">(</span><span class="n">OpenAIExtractor</span><span class="p">[</span><span class="n">MeetingDetails</span><span class="p">]):</span>
+    <span class="n">extract_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">MeetingDetails</span><span class="p">]</span> <span class="o">=</span> <span class="n">MeetingDetails</span>
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Extract the meeting details from the following description:</span>
+<span class="s2">    </span><span class="si">{description}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="c1"># Example usage:</span>
+<span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Discuss the upcoming product launch on June 15th at 3 PM with John, Sarah, and Mike.&quot;</span>
+<span class="n">meeting_details</span> <span class="o">=</span> <span class="n">MeetingExtractor</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meeting_details</span><span class="p">,</span> <span class="n">MeetingDetails</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">meeting_details</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topic=&#39;Upcoming product launch&#39; date=&#39;June 15th&#39; time=&#39;3 PM&#39; participants=[&#39;John&#39;, &#39;Sarah&#39;, &#39;Mike&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4bkciv3">Link to Mirascope</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -727,6 +796,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-llm-integration-with-magentic-s-prompt-decorator">6.16.1. Simplify LLM Integration with Magentic’s @prompt Decorator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlines-ensuring-consistent-outputs-from-language-models">6.16.2. Outlines: Ensuring Consistent Outputs from Language Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirascope-extract-structured-data-extraction-from-llm-outputs">6.16.3. Mirascope: Extract Structured Data Extraction From LLM Outputs</a></li>
 </ul>
   </nav></div>
 
