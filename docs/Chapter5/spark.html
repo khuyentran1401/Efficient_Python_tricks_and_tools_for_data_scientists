@@ -518,6 +518,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.7. Simplify Unit Testing of SQL Queries with PySpark</a></li>
 </ul>
             </nav>
         </div>
@@ -1452,6 +1453,73 @@ only showing top 5 rows
 </div>
 </div>
 </section>
+<section id="simplify-unit-testing-of-sql-queries-with-pyspark">
+<h2><span class="section-number">6.15.7. </span>Simplify Unit Testing of SQL Queries with PySpark<a class="headerlink" href="#simplify-unit-testing-of-sql-queries-with-pyspark" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>ipytest<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Testing your SQL queries helps to ensure that they are correct and functioning as intended.</p>
+<p>PySpark enables users to parameterize queries, which simplifies unit testing of SQL queries. In this example, the <code class="docutils literal notranslate"><span class="pre">df</span></code> and <code class="docutils literal notranslate"><span class="pre">amount</span></code> variables are parameterized to verify whether the <code class="docutils literal notranslate"><span class="pre">actual_df</span></code> matches the <code class="docutils literal notranslate"><span class="pre">expected_df</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">ipytest</span> -qq
+import pytest
+from pyspark.testing import assertDataFrameEqual
+
+
+@pytest.fixture
+def query():
+    return &quot;SELECT * from {df} where price &gt; {amount} AND name LIKE &#39;%Product%&#39;;&quot;
+
+
+def test_query_return_correct_number_of_rows(query):
+
+    spark = SparkSession.builder.getOrCreate()
+
+    # Create a sample DataFrame
+    df = spark.createDataFrame(
+        [
+            (&quot;Product 1&quot;, 10.0, 5),
+            (&quot;Product 2&quot;, 15.0, 3),
+            (&quot;Product 3&quot;, 8.0, 2),
+        ],
+        [&quot;name&quot;, &quot;price&quot;, &quot;quantity&quot;],
+    )
+
+    # Execute the query
+    actual_df = spark.sql(query, df=df, amount=10)
+
+    # Assert the result
+    expected_df = spark.createDataFrame(
+        [
+            (&quot;Product 2&quot;, 15.0, 3),
+        ],
+        [&quot;name&quot;, &quot;price&quot;, &quot;quantity&quot;],
+    )
+    assertDataFrameEqual(actual_df, expected_df)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">.                                                                                            [100%]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1523,6 +1591,7 @@ only showing top 5 rows
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.4. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.5. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.7. Simplify Unit Testing of SQL Queries with PySpark</a></li>
 </ul>
   </nav></div>
 
