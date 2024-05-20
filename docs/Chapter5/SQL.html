@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -520,7 +521,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.9. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -1039,8 +1041,89 @@ FROM my_table
 </div>
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
 </section>
+<section id="simplify-csv-data-management-with-duckdb">
+<h2><span class="section-number">6.14.9. </span>Simplify CSV Data Management with DuckDB<a class="headerlink" href="#simplify-csv-data-management-with-duckdb" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb<span class="w"> </span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create a sample dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="s2">&quot;Eve&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">38</span><span class="p">],</span>
+    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">,</span> <span class="s2">&quot;Tokyo&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Save the dataframe as a CSV file</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;customers.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Traditional database systems, such as Postgres, require a predefined table schema and a subsequent data import process when working with CSV data.</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="k">COPY</span><span class="w"> </span><span class="n">customers</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;customers.csv&#39;</span>
+<span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span>
+<span class="n">CSV</span><span class="w"> </span><span class="n">HEADER</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In contrast, DuckDB allows for direct reading of CSV files from disk, eliminating the need for explicit table creation and data loading.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+
+<span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM &#39;customers.csv&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>┌─────────┬───────┬──────────┐
+│  name   │  age  │   city   │
+│ varchar │ int64 │ varchar  │
+├─────────┼───────┼──────────┤
+│ Alice   │    25 │ New York │
+│ Bob     │    32 │ London   │
+│ Charlie │    45 │ Paris    │
+│ David   │    19 │ Berlin   │
+│ Eve     │    38 │ Tokyo    │
+└─────────┴───────┴──────────┘
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4dJxNHV">Link to DuckDB</a>.</p>
+</section>
 <section id="sql-metadata-extract-components-from-a-sql-statement-in-python">
-<h2><span class="section-number">6.14.9. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.14.10. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1156,7 +1239,8 @@ Limit: (10, 0)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.14.6. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.14.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.9. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 </ul>
   </nav></div>
 
