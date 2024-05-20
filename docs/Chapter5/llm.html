@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -515,6 +516,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-llm-integration-with-magentic-s-prompt-decorator">6.16.1. Simplify LLM Integration with Magentic’s @prompt Decorator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlines-ensuring-consistent-outputs-from-language-models">6.16.2. Outlines: Ensuring Consistent Outputs from Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirascope-extract-structured-data-extraction-from-llm-outputs">6.16.3. Mirascope: Extract Structured Data Extraction From LLM Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximize-accuracy-and-relevance-with-external-data-and-llms">6.16.4. Maximize Accuracy and Relevance with External Data and LLMs</a></li>
 </ul>
             </nav>
         </div>
@@ -729,6 +731,131 @@ document.write(`
 </div>
 <p><a class="reference external" href="https://bit.ly/4bkciv3">Link to Mirascope</a>.</p>
 </section>
+<section id="maximize-accuracy-and-relevance-with-external-data-and-llms">
+<h2><span class="section-number">6.16.4. </span>Maximize Accuracy and Relevance with External Data and LLMs<a class="headerlink" href="#maximize-accuracy-and-relevance-with-external-data-and-llms" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>mirascope
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Combining external data and an LLM offers the best of both worlds: accuracy and relevance. External data provides up-to-date information, while an LLM can generate text based on input prompts. Together, they enable a system to respond helpfully to a wider range of queries.</p>
+<p>Mirascope simplifies this combination with Pythonic code. In the example below, we use an LLM to process natural language prompts and query the database for data.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="c1"># Set up database and table for the example below</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;grocery.db&quot;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># Create the &#39;grocery_items&#39; table</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    CREATE TABLE IF NOT EXISTS grocery_items (</span>
+<span class="sd">        id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="sd">        name TEXT NOT NULL,</span>
+<span class="sd">        category TEXT NOT NULL,</span>
+<span class="sd">        price REAL NOT NULL</span>
+<span class="sd">    )</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Insert some sample data</span>
+<span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;Fruits&quot;</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;Fruits&quot;</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;carrot&quot;</span><span class="p">,</span> <span class="s2">&quot;Vegetables&quot;</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+    <span class="s2">&quot;INSERT INTO grocery_items (name, category, price) VALUES (?, ?, ?)&quot;</span><span class="p">,</span> <span class="n">items</span>
+<span class="p">)</span>
+
+<span class="c1"># Commit the changes and close the connection</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database created with sample data.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Database created with sample data.
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_API_KEY&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mirascope.openai</span> <span class="kn">import</span> <span class="n">OpenAICall</span><span class="p">,</span> <span class="n">OpenAICallParams</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="c1"># Assume you have a SQLite database with a &#39;grocery_items&#39; table</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;grocery.db&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_item_info</span><span class="p">(</span><span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get `info` from the `table_name` database table based on `name`.&quot;&quot;&quot;</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> WHERE name = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">item_name</span><span class="p">,)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">item_name</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Sorry but </span><span class="si">{</span><span class="n">item_name</span><span class="si">}</span><span class="s2"> doesn&#39;t exist in the database.&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">GroceryItemQuery</span><span class="p">(</span><span class="n">OpenAICall</span><span class="p">):</span>
+    <span class="n">prompt_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SYSTEM:</span>
+<span class="s2">    Your task is properly query a database given a user&#39;s input.</span>
+
+<span class="s2">    USER:</span>
+<span class="s2">    </span><span class="si">{input}</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="nb">input</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">call_params</span> <span class="o">=</span> <span class="n">OpenAICallParams</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_item_info</span><span class="p">])</span>
+
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;What&#39;s the price for apple in the grocery_items table?&quot;</span>
+<span class="n">query_tool</span> <span class="o">=</span> <span class="n">GroceryItemQuery</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">call</span><span class="p">()</span><span class="o">.</span><span class="n">tool</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">query_tool</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">**</span><span class="n">query_tool</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The price for apple is 0.75.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4awfNhg">Link to Mirascope</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -797,6 +924,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-llm-integration-with-magentic-s-prompt-decorator">6.16.1. Simplify LLM Integration with Magentic’s @prompt Decorator</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outlines-ensuring-consistent-outputs-from-language-models">6.16.2. Outlines: Ensuring Consistent Outputs from Language Models</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mirascope-extract-structured-data-extraction-from-llm-outputs">6.16.3. Mirascope: Extract Structured Data Extraction From LLM Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximize-accuracy-and-relevance-with-external-data-and-llms">6.16.4. Maximize Accuracy and Relevance with External Data and LLMs</a></li>
 </ul>
   </nav></div>
 
