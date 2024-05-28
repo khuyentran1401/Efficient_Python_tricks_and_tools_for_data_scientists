@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -527,6 +528,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantstats-simplify-stock-performance-analysis-in-python">6.7.13. QuantStats: Simplify Stock Performance Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.16. Generative Pre-trained Forecasting with TimeGPT</a></li>
 </ul>
             </nav>
         </div>
@@ -1864,6 +1866,189 @@ HPU available: False, using: 0 HPUs
 </div>
 <p><a class="reference external" href="https://bit.ly/44h9KM7">Link to NeuralForecast</a>.</p>
 </section>
+<section id="generative-pre-trained-forecasting-with-timegpt">
+<h2><span class="section-number">6.7.16. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>nixtla
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>TimeGPT is a powerful generative pre-trained forecasting model that can generate accurate forecasts for new time series without the need for training. TimeGPT can be used across a variety of tasks including demand forecasting, anomaly detection, financial forecasting, and more.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nixtla</span> <span class="kn">import</span> <span class="n">NixtlaClient</span>
+
+<span class="n">nixtla_client</span> <span class="o">=</span> <span class="n">NixtlaClient</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;my_api_key_provided_by_nixtla&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">time_column</span> <span class="o">=</span> <span class="s2">&quot;Month&quot;</span>
+<span class="n">value_column</span> <span class="o">=</span> <span class="s2">&quot;Sales&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/jbrownlee/Datasets/master/monthly-car-sales.csv&quot;</span><span class="p">,</span>
+    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="n">time_column</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Month</th>
+      <th>Sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1960-01-01</td>
+      <td>6550</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1960-02-01</td>
+      <td>8728</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1960-03-01</td>
+      <td>12026</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1960-04-01</td>
+      <td>14395</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1960-05-01</td>
+      <td>14587</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nixtla_client</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_column</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="n">value_column</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/02af13078cc214a465c7479146e5b3f39f55720c07660db6fd5f271df5187ada.png" src="../_images/02af13078cc214a465c7479146e5b3f39f55720c07660db6fd5f271df5187ada.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timegpt_fcst_df</span> <span class="o">=</span> <span class="n">nixtla_client</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;MS&quot;</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_column</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="n">value_column</span>
+<span class="p">)</span>
+<span class="n">timegpt_fcst_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO:nixtla.nixtla_client:Validating inputs...
+INFO:nixtla.nixtla_client:Preprocessing dataframes...
+INFO:nixtla.nixtla_client:Restricting input...
+INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Month</th>
+      <th>TimeGPT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1969-01-01</td>
+      <td>14672.101562</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1969-02-01</td>
+      <td>15793.253906</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1969-03-01</td>
+      <td>21517.191406</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1969-04-01</td>
+      <td>22996.332031</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1969-05-01</td>
+      <td>25959.019531</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nixtla_client</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timegpt_fcst_df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_column</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span> <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6ec4c570eb2332f0e21fd89161365ee9af76f6c1be3a04ea87223cf18f5a2515.png" src="../_images/6ec4c570eb2332f0e21fd89161365ee9af76f6c1be3a04ea87223cf18f5a2515.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Nixtla/nixtla">Link to TimeGPT</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1944,6 +2129,7 @@ HPU available: False, using: 0 HPUs
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantstats-simplify-stock-performance-analysis-in-python">6.7.13. QuantStats: Simplify Stock Performance Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.16. Generative Pre-trained Forecasting with TimeGPT</a></li>
 </ul>
   </nav></div>
 
