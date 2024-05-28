@@ -817,22 +817,22 @@ document.write(`
 <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;grocery.db&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">get_item_info</span><span class="p">(</span><span class="n">table_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get `info` from the `table_name` database table based on `name`.&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">get_item_info</span><span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">info</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get `info` from the `table` table based on `item`.&quot;&quot;&quot;</span>
     <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> WHERE name = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">item_name</span><span class="p">,)</span>
+            <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> WHERE name = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">item</span><span class="p">,)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">item_name</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;The </span><span class="si">{</span><span class="n">info</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Sorry but </span><span class="si">{</span><span class="n">item_name</span><span class="si">}</span><span class="s2"> doesn&#39;t exist in the database.&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Sorry but </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2"> doesn&#39;t exist in the database.&quot;</span>
 
 
 <span class="k">class</span> <span class="nc">GroceryItemQuery</span><span class="p">(</span><span class="n">OpenAICall</span><span class="p">):</span>
     <span class="n">prompt_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    SYSTEM:</span>
-<span class="s2">    Your task is properly query a database given a user&#39;s input.</span>
+<span class="s2">    Your task is to query a database given a user&#39;s input.</span>
 
 <span class="s2">    USER:</span>
 <span class="s2">    </span><span class="si">{input}</span>
@@ -841,7 +841,7 @@ document.write(`
     <span class="n">call_params</span> <span class="o">=</span> <span class="n">OpenAICallParams</span><span class="p">(</span><span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">get_item_info</span><span class="p">])</span>
 
 
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;What&#39;s the price for apple in the grocery_items table?&quot;</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;What&#39;s the price for banana in the grocery_items table?&quot;</span>
 <span class="n">query_tool</span> <span class="o">=</span> <span class="n">GroceryItemQuery</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">call</span><span class="p">()</span><span class="o">.</span><span class="n">tool</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">query_tool</span><span class="o">.</span><span class="n">fn</span><span class="p">(</span><span class="o">**</span><span class="n">query_tool</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
 <span class="n">result</span>
@@ -849,7 +849,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The price for apple is 0.75.&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The price for banana is 0.5.&#39;
 </pre></div>
 </div>
 </div>
