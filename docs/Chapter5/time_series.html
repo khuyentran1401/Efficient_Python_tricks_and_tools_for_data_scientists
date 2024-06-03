@@ -528,7 +528,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantstats-simplify-stock-performance-analysis-in-python">6.7.13. QuantStats: Simplify Stock Performance Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.16. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.17. Generative Pre-trained Forecasting with TimeGPT</a></li>
 </ul>
             </nav>
         </div>
@@ -1866,8 +1867,118 @@ HPU available: False, using: 0 HPUs
 </div>
 <p><a class="reference external" href="https://bit.ly/44h9KM7">Link to NeuralForecast</a>.</p>
 </section>
+<section id="scaling-time-series-forecasting-with-statsforecast-and-spark">
+<h2><span class="section-number">6.7.16. </span>Scaling Time-Series Forecasting with StatsForecast and Spark<a class="headerlink" href="#scaling-time-series-forecasting-with-statsforecast-and-spark" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>statsforecast<span class="w"> </span>pyspark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span> 
+
+<span class="c1"># this makes it so that the outputs of the predict methods have the id as a column </span>
+<span class="c1"># instead of as the index</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;NIXTLA_ID_AS_COL&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Traditional time series libraries are typically built to run in-memory on single machines, which poses challenges when handling extremely large datasets.</p>
+<p>StatsForecast, however, provides seamless compatibility with Spark, allowing users to perform scalable and efficient time-series forecasting on large datasets directly within Spark.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">statsforecast.core</span> <span class="kn">import</span> <span class="n">StatsForecast</span>
+<span class="kn">from</span> <span class="nn">statsforecast.models</span> <span class="kn">import</span> <span class="n">AutoETS</span>
+<span class="kn">from</span> <span class="nn">statsforecast.utils</span> <span class="kn">import</span> <span class="n">generate_series</span>
+<span class="kn">from</span> <span class="nn">tqdm.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">n_series</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">horizon</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="n">series</span> <span class="o">=</span> <span class="n">generate_series</span><span class="p">(</span><span class="n">n_series</span><span class="p">)</span>
+
+<span class="c1"># Convert to Spark</span>
+<span class="n">spark_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+<span class="n">spark_df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+-------------------+-------------------+
+|unique_id|                 ds|                  y|
++---------+-------------------+-------------------+
+|        0|2000-01-01 00:00:00|0.30138168803582194|
+|        0|2000-01-02 00:00:00| 1.2724415914984484|
+|        0|2000-01-03 00:00:00|  2.211827399669452|
+|        0|2000-01-04 00:00:00|  3.322947056533328|
+|        0|2000-01-05 00:00:00|  4.218793605631347|
++---------+-------------------+-------------------+
+only showing top 5 rows
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sf</span> <span class="o">=</span> <span class="n">StatsForecast</span><span class="p">(</span><span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">AutoETS</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">7</span><span class="p">)],</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+
+<span class="c1"># Returns a Spark DataFrame</span>
+<span class="n">sf</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">spark_df</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">90</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/.pyenv/versions/3.8.16/lib/python3.8/site-packages/statsforecast/core.py:485: FutureWarning: In a future version the predictions will have the id as a column. You can set the `NIXTLA_ID_AS_COL` environment variable to adopt the new behavior and to suppress this warning.
+  warnings.warn(
+/Users/khuyentran/.pyenv/versions/3.8.16/lib/python3.8/site-packages/statsforecast/core.py:485: FutureWarning: In a future version the predictions will have the id as a column. You can set the `NIXTLA_ID_AS_COL` environment variable to adopt the new behavior and to suppress this warning.
+  warnings.warn(
+/Users/khuyentran/.pyenv/versions/3.8.16/lib/python3.8/site-packages/statsforecast/core.py:485: FutureWarning: In a future version the predictions will have the id as a column. You can set the `NIXTLA_ID_AS_COL` environment variable to adopt the new behavior and to suppress this warning.
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------+-------------------+----------+-------------+-------------+
+|unique_id|                 ds|   AutoETS|AutoETS-lo-90|AutoETS-hi-90|
++---------+-------------------+----------+-------------+-------------+
+|        0|2000-08-10 00:00:00|  5.261609|    5.0255513|    5.4976664|
+|        0|2000-08-11 00:00:00| 6.1963573|       5.9603|     6.432415|
+|        0|2000-08-12 00:00:00|0.28230855|   0.04625102|    0.5183661|
+|        0|2000-08-13 00:00:00| 1.2641948|    1.0281373|    1.5002524|
+|        0|2000-08-14 00:00:00| 2.2624528|    2.0263953|    2.4985104|
++---------+-------------------+----------+-------------+-------------+
+only showing top 5 rows
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/.pyenv/versions/3.8.16/lib/python3.8/site-packages/statsforecast/core.py:485: FutureWarning: In a future version the predictions will have the id as a column. You can set the `NIXTLA_ID_AS_COL` environment variable to adopt the new behavior and to suppress this warning.
+  warnings.warn(
+/Users/khuyentran/.pyenv/versions/3.8.16/lib/python3.8/multiprocessing/resource_tracker.py:216: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn(&#39;resource_tracker: There appear to be %d &#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3KNsl9P">Link to StatsForecast.</a></p>
+</section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
-<h2><span class="section-number">6.7.16. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.17. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2129,7 +2240,8 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantstats-simplify-stock-performance-analysis-in-python">6.7.13. QuantStats: Simplify Stock Performance Analysis in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.16. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.17. Generative Pre-trained Forecasting with TimeGPT</a></li>
 </ul>
   </nav></div>
 
