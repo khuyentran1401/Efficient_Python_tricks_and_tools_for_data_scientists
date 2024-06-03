@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -625,39 +626,41 @@ document.write(`
 </section>
 <section id="abstract-classes-declare-methods-without-implementation">
 <h2><span class="section-number">2.6.2. </span>Abstract Classes: Declare Methods without Implementation<a class="headerlink" href="#abstract-classes-declare-methods-without-implementation" title="Permalink to this heading">#</a></h2>
-<p>Sometimes you might want different classes to use the same attributes and methods. But the implementation of those methods can be slightly different in each class.</p>
-<p>A good way to implement this is to use abstract classes. An abstract class contains one or more abstract methods.</p>
-<p>An abstract method is a method that is declared but contains no implementation. The abstract method requires subclasses to provide implementations.</p>
+<p>To ensure that all subclasses implement a set of methods and properties, use abstract methods within an abstract class. This promotes code reusability and a consistent interface across different implementations.</p>
+<p>In the following code, Drink serves as an abstract class with an abstract method consume.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
-<span class="k">class</span> <span class="nc">Animal</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span> 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Drink</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">volume</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volume</span>
 
-    <span class="nd">@abstractmethod</span> 
-    <span class="k">def</span> <span class="nf">make_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span> 
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
 
-<span class="k">class</span> <span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">make_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> says: Woof&#39;</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">Cat</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">make_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> says: Meows&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Tea</span><span class="p">(</span><span class="n">Drink</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Drinking </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> tea...&quot;</span><span class="p">)</span>
 
-<span class="n">Dog</span><span class="p">(</span><span class="s1">&#39;Pepper&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">make_sound</span><span class="p">()</span>
-<span class="n">Cat</span><span class="p">(</span><span class="s1">&#39;Bella&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">make_sound</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Smoothie</span><span class="p">(</span><span class="n">Drink</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">consume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Drinking </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> smoothie...&quot;</span><span class="p">)</span>
+
+
+<span class="n">Tea</span><span class="p">(</span><span class="s2">&quot;English Breakfast&quot;</span><span class="p">,</span> <span class="mi">250</span><span class="p">)</span><span class="o">.</span><span class="n">consume</span><span class="p">()</span>
+<span class="n">Smoothie</span><span class="p">(</span><span class="s2">&quot;Tropical Blast&quot;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">consume</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pepper says: Woof
-Bella says: Meows
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Drinking English Breakfast tea...
+Drinking Tropical Blast smoothie...
 </pre></div>
 </div>
 </div>
