@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -975,7 +976,7 @@ catch(err) {
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>umap-learn<span class="o">[</span>plot<span class="o">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;umap-learn[plot]&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -985,18 +986,15 @@ catch(err) {
 <p>To understand how UMAP works, let’s try with the <a class="reference external" href="https://raw.githubusercontent.com/susanli2016/Machine-Learning-with-Python/master/fruit_data_with_colors.txt">fruit dataset</a>. In this dataset, we have the features of different fruits, such as mass, width, height, and color score. Our task is to classify which fruit a sample belongs to based on its features.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
 <span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s1">&#39;notebook&#39;</span><span class="p">,</span> <span class="n">rc</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">:(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">)})</span>
 </pre></div>
 </div>
 </div>
@@ -1145,14 +1143,12 @@ catch(err) {
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fruit_label&#39;</span><span class="p">,</span> <span class="s1">&#39;fruit_subtype&#39;</span><span class="p">]),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;fruit_name&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;seaborn.axisgrid.PairGrid at 0x7f30a3be1a30&gt;
-</pre></div>
-</div>
-<img alt="../_images/5da75cc94fafc6bb23ce572f5c6cc7352e0d1640591a71740e41782a211a2276.png" src="../_images/5da75cc94fafc6bb23ce572f5c6cc7352e0d1640591a71740e41782a211a2276.png" />
+<img alt="../_images/e06e74134a420e3616c31ec312773a4e44501c63efae6143bb7397f7e0d8456d.png" src="../_images/e06e74134a420e3616c31ec312773a4e44501c63efae6143bb7397f7e0d8456d.png" />
 </div>
 </div>
 <p>We can see some distinctions between different fruits in the pairwise feature scatterplot matrix. Now to visualize all 4 features in a 2D plot, we start with creating a UMAP object.</p>
@@ -1161,6 +1157,12 @@ catch(err) {
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">umap</span>
 
 <span class="n">reducer</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/book/venv/lib/python3.11/site-packages/tqdm/auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
 </pre></div>
 </div>
 </div>
@@ -1190,20 +1192,30 @@ catch(err) {
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dimension 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Dimension 2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;~/Downloads/embedding.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#72BEFA&quot;</span><span class="p">,</span> <span class="s2">&quot;#E583B6&quot;</span><span class="p">,</span> <span class="s2">&quot;#72FCDB&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">]</span>
+<span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">fruit_label</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
     <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">fruit_label</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;UMAP projection of the fruit dataset&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">color_list</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;UMAP projection of the fruit dataset&#39;)
-</pre></div>
-</div>
-<img alt="../_images/4aebdd42175e0ddb502b5aa3ef2418ffc74b7b608e414c0364f46d2c8437f2b9.png" src="../_images/4aebdd42175e0ddb502b5aa3ef2418ffc74b7b608e414c0364f46d2c8437f2b9.png" />
+<img alt="../_images/873242685f5edbcace0a49ecf078284b33e202baf8b43b5476005e5151380b74.png" src="../_images/873242685f5edbcace0a49ecf078284b33e202baf8b43b5476005e5151380b74.png" />
 </div>
 </div>
 <p>Now we can see some distinctions in features between 4 different fruits in a 2D plot.</p>
