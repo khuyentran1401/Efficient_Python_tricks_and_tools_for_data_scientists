@@ -521,6 +521,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.7. Simplify Unit Testing of SQL Queries with PySpark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.8. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.9. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
 </ul>
             </nav>
         </div>
@@ -1629,6 +1630,124 @@ def test_query_return_correct_number_of_rows(query):
 </div>
 </div>
 </section>
+<section id="vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">
+<h2><span class="section-number">6.15.9. </span>Vectorized Operations in PySpark: pandas_udf vs Standard UDF<a class="headerlink" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pyspark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Standard UDF functions process data row-by-row, resulting in Python function call overhead.</p>
+<p>In contrast, pandas_udf utilizes Pandas’ vectorized operations to process entire columns in a single operation, significantly improving performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">1.0</span><span class="p">,),</span> <span class="p">(</span><span class="mf">2.0</span><span class="p">,),</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,),</span> <span class="p">(</span><span class="mf">4.0</span><span class="p">,)]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;val1&quot;</span><span class="p">])</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+
+|val1|
++----+
+| 1.0|
+| 2.0|
+| 3.0|
+| 4.0|
++----+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
+
+<span class="c1"># Standard UDF</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plus_one</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># Apply the Standard UDF</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;val2&#39;</span><span class="p">,</span> <span class="n">plus_one</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">val1</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+----+
+|val1|val2|
++----+----+
+| 1.0| 2.0|
+| 2.0| 3.0|
+| 3.0| 4.0|
+| 4.0| 5.0|
++----+----+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="c1"># Pandas UDF</span>
+<span class="nd">@pandas_udf</span><span class="p">(</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pandas_plus_one</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+<span class="c1"># Apply the Pandas UDF</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;val2&quot;</span><span class="p">,</span> <span class="n">pandas_plus_one</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">val1</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+----+
+|val1|val2|
++----+----+
+| 1.0| 2.0|
+| 2.0| 3.0|
+| 3.0| 4.0|
+| 4.0| 5.0|
++----+----+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4aRBNTX">Learn more about pandas_udf</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1702,6 +1821,7 @@ def test_query_return_correct_number_of_rows(query):
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.6. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.7. Simplify Unit Testing of SQL Queries with PySpark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.8. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.9. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
 </ul>
   </nav></div>
 
