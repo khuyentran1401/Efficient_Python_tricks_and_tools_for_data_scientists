@@ -535,6 +535,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galatic-clean-and-analyze-massive-text-datasets">6.6.22. Galatic: Clean and Analyze Massive Text Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-keyword-extraction-and-replacement-with-flashtext">6.6.23. Efficient Keyword Extraction and Replacement with FlashText</a></li>
 </ul>
             </nav>
         </div>
@@ -2368,6 +2369,46 @@ Cluster 2 (749 items)
 </div>
 <p><a class="reference external" href="https://github.com/taylorai/galactic">Link to Galatic</a>.</p>
 </section>
+<section id="efficient-keyword-extraction-and-replacement-with-flashtext">
+<h2><span class="section-number">6.6.23. </span>Efficient Keyword Extraction and Replacement with FlashText<a class="headerlink" href="#efficient-keyword-extraction-and-replacement-with-flashtext" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>flashtext
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to perform fast keyword extraction and replacement in text, use FlashText.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flashtext</span> <span class="kn">import</span> <span class="n">KeywordProcessor</span>
+
+<span class="n">keyword_processor</span> <span class="o">=</span> <span class="n">KeywordProcessor</span><span class="p">()</span>
+
+<span class="c1"># Adding keywords with replacements</span>
+<span class="n">keyword_processor</span><span class="o">.</span><span class="n">add_keyword</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="s2">&quot;Python&quot;</span><span class="p">)</span>
+<span class="n">keyword_processor</span><span class="o">.</span><span class="n">add_keyword</span><span class="p">(</span><span class="n">keyword</span><span class="o">=</span><span class="s2">&quot;DS&quot;</span><span class="p">,</span> <span class="n">clean_name</span><span class="o">=</span><span class="s2">&quot;data science&quot;</span><span class="p">)</span>
+
+<span class="c1"># Replacing keywords in text</span>
+<span class="n">new_sentence</span> <span class="o">=</span> <span class="n">keyword_processor</span><span class="o">.</span><span class="n">replace_keywords</span><span class="p">(</span><span class="s2">&quot;PYTHON is essential for DS.&quot;</span><span class="p">)</span>
+<span class="n">new_sentence</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Python is essential for data science.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4bQ1eqt">Link to FlashText</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2455,6 +2496,7 @@ Cluster 2 (749 items)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekphrasis-text-processing-tool-for-social-media-text">6.6.20. ekphrasis: Text Processing Tool For Social Media Text</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chroma-the-lightning-fast-solution-to-text-embeddings-and-querying">6.6.21. Chroma: The Lightning-Fast Solution to Text Embeddings and Querying</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#galatic-clean-and-analyze-massive-text-datasets">6.6.22. Galatic: Clean and Analyze Massive Text Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-keyword-extraction-and-replacement-with-flashtext">6.6.23. Efficient Keyword Extraction and Replacement with FlashText</a></li>
 </ul>
   </nav></div>
 
