@@ -234,6 +234,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -527,6 +528,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.2.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.14. Limit the Execution Time of a Function Call with Prefect</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.15. Retry on Failure with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magika-detect-file-content-types-with-deep-learning">7.2.16. Magika: Detect File Content Types with Deep Learning</a></li>
 </ul>
             </nav>
         </div>
@@ -1575,6 +1577,84 @@ RuntimeError: not this time!
 </details>
 </div>
 </section>
+<section id="magika-detect-file-content-types-with-deep-learning">
+<h2><span class="section-number">7.2.16. </span>Magika: Detect File Content Types with Deep Learning<a class="headerlink" href="#magika-detect-file-content-types-with-deep-learning" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>magika
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Detecting file types helps identify malicious files disguised with false extensions, such as a .jpg that is actually malware.</p>
+<p>Magika, Google’s AI-powered file type detection tool, uses deep learning for precise detection. In the following code, files have misleading extensions, but Magika still accurately detects their correct types.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="c1"># Define the directory where files will be created</span>
+<span class="n">directory</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;examples&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ensure the directory exists</span>
+<span class="n">directory</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Empty the directory if it is not empty</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">item</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+
+<span class="c1"># Define the filenames and their respective content</span>
+<span class="n">files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;plain_text.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;This is a plain text file.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;csv.json&quot;</span><span class="p">,</span> <span class="s2">&quot;id,name,age</span><span class="se">\n</span><span class="s2">1,John Doe,30&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;json.xml&quot;</span><span class="p">,</span> <span class="s1">&#39;{&quot;name&quot;: &quot;John&quot;, &quot;age&quot;: 30}&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;markdown.js&quot;</span><span class="p">,</span> <span class="s2">&quot;# Heading 1</span><span class="se">\n</span><span class="s2">Some text.&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;python.ini&quot;</span><span class="p">,</span> <span class="s1">&#39;print(&quot;Hello, World!&quot;)&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;js.yml&quot;</span><span class="p">,</span> <span class="s1">&#39;console.log(&quot;Hello, World!&quot;);&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;yml.js&quot;</span><span class="p">,</span> <span class="s2">&quot;name: John</span><span class="se">\n</span><span class="s2">age: 30&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Create each file with the specified content</span>
+<span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="p">(</span><span class="n">directory</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Created </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files in the &#39;</span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">&#39; directory.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Created 7 files in the &#39;examples&#39; directory.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>magika<span class="w"> </span>-r<span class="w"> </span>examples
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">examples/csv.json: CSV document (code)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">examples/js.yml: JavaScript source (code)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">examples/json.xml: JSON document (code)</span>
+<span class=" -Color -Color-Bold -Color-Bold-White">examples/markdown.js: Markdown document (text)</span>
+<span class=" -Color -Color-Bold -Color-Bold-White">examples/plain_text.csv: Generic text document (text)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">examples/python.ini: Python source (code)</span>
+<span class=" -Color -Color-Bold -Color-Bold-Blue">examples/yml.js: YAML source (code)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/45tdw5O">Link to Magika</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1655,6 +1735,7 @@ RuntimeError: not this time!
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.2.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limit-the-execution-time-of-a-function-call-with-prefect">7.2.14. Limit the Execution Time of a Function Call with Prefect</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#retry-on-failure-with-prefect">7.2.15. Retry on Failure with Prefect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magika-detect-file-content-types-with-deep-learning">7.2.16. Magika: Detect File Content Types with Deep Learning</a></li>
 </ul>
   </nav></div>
 
