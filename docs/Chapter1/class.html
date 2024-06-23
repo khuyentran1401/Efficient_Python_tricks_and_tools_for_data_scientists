@@ -521,7 +521,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensure-data-integrity-with-getters-and-setters-in-python">2.6.9. Ensure Data Integrity with Getters and Setters in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
@@ -995,80 +995,78 @@ Instance is called
 </div>
 </div>
 </section>
-<section id="property-decorator-a-pythonic-way-to-use-getters-and-setters">
-<h2><span class="section-number">2.6.9. </span>Property Decorator: A Pythonic Way to Use Getters and Setters<a class="headerlink" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters" title="Permalink to this heading">#</a></h2>
-<p>To define the behaviors that are executed when a class attribute is set, use the <code class="docutils literal notranslate"><span class="pre">property</span></code> decorator.</p>
-<p>In the code below, the getter method gets the value of the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute and the setter method restricts the <code class="docutils literal notranslate"><span class="pre">color</span></code> attribute modification to string data types only.</p>
+<section id="ensure-data-integrity-with-getters-and-setters-in-python">
+<h2><span class="section-number">2.6.9. </span>Ensure Data Integrity with Getters and Setters in Python<a class="headerlink" href="#ensure-data-integrity-with-getters-and-setters-in-python" title="Permalink to this heading">#</a></h2>
+<p>In Python, the property decorator controls property access and modification through getters and setters.</p>
+<p>For example, in a <code class="docutils literal notranslate"><span class="pre">BankAccount</span></code> class, without getters and setters, the balance can be directly modified, potentially leading to an invalid state.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Fruit</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">color</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BankAccount</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_balance</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="n">initial_balance</span>
 
-    <span class="nd">@property</span> <span class="c1"># getter method</span>
-    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">BankAccount</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">balance</span><span class="p">)</span> 
 
-    <span class="nd">@color</span><span class="o">.</span><span class="n">setter</span> <span class="c1"># setter method</span>
-    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting value of color...&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Fruit&#39;s color must be a string.&quot;</span><span class="p">)</span>
-
-
-<span class="n">fruit</span> <span class="o">=</span> <span class="n">Fruit</span><span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">)</span>
-<span class="n">fruit</span><span class="o">.</span><span class="n">color</span>
+<span class="c1"># Directly modifying the balance (no validation)</span>
+<span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">balance</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;red&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100
+-50
 </pre></div>
 </div>
 </div>
 </div>
+<p>Using getters and setters ensures the balance cannot be set to an invalid value.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;yellow&quot;</span>
-<span class="n">fruit</span><span class="o">.</span><span class="n">color</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">BankAccount</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_balance</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">initial_balance</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">balance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span>
+
+    <span class="nd">@balance</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">balance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Balance cannot be negative&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="c1"># Example usage</span>
+<span class="n">account</span> <span class="o">=</span> <span class="n">BankAccount</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">balance</span><span class="p">)</span> 
+
+<span class="c1"># Attempting to set an invalid balance</span>
+<span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span> 
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting value of color...
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;yellow&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="mi">1</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting value of color...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_78260/1033431134.py</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fruit</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">21</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="nb">print</span><span class="p">(</span><span class="n">account</span><span class="o">.</span><span class="n">balance</span><span class="p">)</span> 
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># Attempting to set an invalid balance</span>
+<span class="ne">---&gt; </span><span class="mi">21</span> <span class="n">account</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="o">-</span><span class="mi">50</span> 
 
-<span class="nn">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_78260/3888926808.py</span> in <span class="ni">color</span><span class="nt">(self, value)</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">value</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span>         <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">16</span>             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Fruit&#39;s color must be a string.&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> 
-<span class="g g-Whitespace">     </span><span class="mi">18</span> 
+<span class="nn">Cell In[6], line 12,</span> in <span class="ni">BankAccount.balance</span><span class="nt">(self, value)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="nd">@balance</span><span class="o">.</span><span class="n">setter</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">def</span> <span class="nf">balance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">12</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Balance cannot be negative&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_balance</span> <span class="o">=</span> <span class="n">value</span>
 
-<span class="ne">AttributeError</span>: Fruit&#39;s color must be a string.
+<span class="ne">ValueError</span>: Balance cannot be negative
 </pre></div>
 </div>
 </div>
@@ -1844,7 +1842,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-comparison-in-python-classes">2.6.6. Instance Comparison in Python Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#static-method-use-the-function-without-adding-the-attributes-required-for-a-new-instance">2.6.7. Static method: use the function without adding the attributes required for a new instance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.6.8. Minimize Data Risks with Python Private Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#property-decorator-a-pythonic-way-to-use-getters-and-setters">2.6.9. Property Decorator: A Pythonic Way to Use Getters and Setters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensure-data-integrity-with-getters-and-setters-in-python">2.6.9. Ensure Data Integrity with Getters and Setters in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.6.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.6.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.6.12. Optimizing Memory Usage in Python with Slots</a></li>
