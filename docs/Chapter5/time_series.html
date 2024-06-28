@@ -529,8 +529,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.17. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.18. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
 </ul>
             </nav>
         </div>
@@ -1780,8 +1781,358 @@ only showing top 5 rows
 </div>
 <p><a class="reference external" href="https://bit.ly/3KNsl9P">Link to StatsForecast.</a></p>
 </section>
+<section id="beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">
+<h2><span class="section-number">6.7.17. </span>Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting<a class="headerlink" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mlforecast<span class="w"> </span>utilsforecast
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Generating a forecast typically produces a single point estimate, which does not reflect the uncertainty associated with the prediction.</p>
+<p>To quantify this uncertainty, we need prediction intervals - a range of values the forecast can take with a given probability. MLForecast allows you to train sklearn models to generate both point forecasts and prediction intervals.</p>
+<p>To demonstrate this, let’s consider the following example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">utilsforecast.plotting</span> <span class="kn">import</span> <span class="n">plot_series</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://auto-arima-results.s3.amazonaws.com/M4-Hourly.csv&quot;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://auto-arima-results.s3.amazonaws.com/M4-Hourly-test.csv&quot;</span><span class="p">)</span>
+<span class="n">train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>1</td>
+      <td>605.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>2</td>
+      <td>586.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>3</td>
+      <td>586.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>4</td>
+      <td>559.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>5</td>
+      <td>511.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>We’ll only use the first series of the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_series</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">uids</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="n">n_series</span><span class="p">]</span>  
+<span class="n">train</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;unique_id in @uids&quot;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;unique_id in @uids&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot these series using the <code class="docutils literal notranslate"><span class="pre">plot_series</span></code> function from the utilsforecast library</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plot_series</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">train</span><span class="p">,</span>
+    <span class="n">forecasts_df</span><span class="o">=</span><span class="n">test</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;y_test&quot;</span><span class="p">}),</span>
+    <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;y_test&quot;</span><span class="p">],</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/08e1e247888cd50ff3265ddef8d4a0b5752ae26e14b4ec07daa1ab6ff86126ef.png" src="../_images/08e1e247888cd50ff3265ddef8d4a0b5752ae26e14b4ec07daa1ab6ff86126ef.png" />
+</div>
+</div>
+<p>Train multiple models that follow the sklearn syntax:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlforecast</span> <span class="kn">import</span> <span class="n">MLForecast</span>
+<span class="kn">from</span> <span class="nn">mlforecast.target_transforms</span> <span class="kn">import</span> <span class="n">Differences</span>
+<span class="kn">from</span> <span class="nn">mlforecast.utils</span> <span class="kn">import</span> <span class="n">PredictionIntervals</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlf</span> <span class="o">=</span> <span class="n">MLForecast</span><span class="p">(</span>
+    <span class="n">models</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">LinearRegression</span><span class="p">(),</span>
+        <span class="n">KNeighborsRegressor</span><span class="p">(),</span>
+    <span class="p">],</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">target_transforms</span><span class="o">=</span><span class="p">[</span><span class="n">Differences</span><span class="p">([</span><span class="mi">1</span><span class="p">])],</span>
+    <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">24</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Apply the feature engineering and train the models:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mlf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">train</span><span class="p">,</span>
+    <span class="n">prediction_intervals</span><span class="o">=</span><span class="n">PredictionIntervals</span><span class="p">(</span><span class="n">n_windows</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mi">48</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MLForecast(models=[LinearRegression, KNeighborsRegressor], freq=1, lag_features=[&#39;lag24&#39;, &#39;lag48&#39;, &#39;lag72&#39;, &#39;lag96&#39;, &#39;lag120&#39;, &#39;lag144&#39;, &#39;lag168&#39;], date_features=[], num_threads=1)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generate forecasts with prediction intervals:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># A list of floats with the confidence levels of the prediction intervals</span>
+<span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+
+<span class="c1"># Predict the next 48 hours</span>
+<span class="n">horizon</span> <span class="o">=</span> <span class="mi">48</span>
+
+<span class="c1"># Generate forecasts with prediction intervals</span>
+<span class="n">forecasts</span> <span class="o">=</span> <span class="n">mlf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="n">horizon</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">levels</span><span class="p">)</span>
+<span class="n">forecasts</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>LinearRegression</th>
+      <th>KNeighborsRegressor</th>
+      <th>LinearRegression-lo-95</th>
+      <th>LinearRegression-lo-80</th>
+      <th>LinearRegression-lo-50</th>
+      <th>LinearRegression-hi-50</th>
+      <th>LinearRegression-hi-80</th>
+      <th>LinearRegression-hi-95</th>
+      <th>KNeighborsRegressor-lo-95</th>
+      <th>KNeighborsRegressor-lo-80</th>
+      <th>KNeighborsRegressor-lo-50</th>
+      <th>KNeighborsRegressor-hi-50</th>
+      <th>KNeighborsRegressor-hi-80</th>
+      <th>KNeighborsRegressor-hi-95</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>H1</td>
+      <td>701</td>
+      <td>612.454151</td>
+      <td>615.2</td>
+      <td>597.550958</td>
+      <td>601.310692</td>
+      <td>604.037187</td>
+      <td>620.871115</td>
+      <td>623.597610</td>
+      <td>627.357344</td>
+      <td>599.090</td>
+      <td>603.20</td>
+      <td>609.45</td>
+      <td>620.95</td>
+      <td>627.20</td>
+      <td>631.310</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>H1</td>
+      <td>702</td>
+      <td>538.415217</td>
+      <td>551.6</td>
+      <td>491.913415</td>
+      <td>508.094072</td>
+      <td>527.337321</td>
+      <td>549.493112</td>
+      <td>568.736361</td>
+      <td>584.917018</td>
+      <td>505.675</td>
+      <td>534.04</td>
+      <td>535.85</td>
+      <td>567.35</td>
+      <td>569.16</td>
+      <td>597.525</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>H1</td>
+      <td>703</td>
+      <td>496.797892</td>
+      <td>509.6</td>
+      <td>458.432874</td>
+      <td>472.483280</td>
+      <td>481.705219</td>
+      <td>511.890565</td>
+      <td>521.112505</td>
+      <td>535.162911</td>
+      <td>475.020</td>
+      <td>488.28</td>
+      <td>492.70</td>
+      <td>526.50</td>
+      <td>530.92</td>
+      <td>544.180</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>H1</td>
+      <td>704</td>
+      <td>462.689475</td>
+      <td>474.6</td>
+      <td>414.114933</td>
+      <td>435.849278</td>
+      <td>442.808787</td>
+      <td>482.570164</td>
+      <td>489.529672</td>
+      <td>511.264017</td>
+      <td>423.700</td>
+      <td>444.52</td>
+      <td>451.00</td>
+      <td>498.20</td>
+      <td>504.68</td>
+      <td>525.500</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>H1</td>
+      <td>705</td>
+      <td>439.784731</td>
+      <td>451.6</td>
+      <td>384.182476</td>
+      <td>400.101658</td>
+      <td>419.176045</td>
+      <td>460.393416</td>
+      <td>479.467803</td>
+      <td>495.386986</td>
+      <td>394.555</td>
+      <td>411.28</td>
+      <td>428.15</td>
+      <td>475.05</td>
+      <td>491.92</td>
+      <td>508.645</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Merge the test data with forecasts:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_with_forecasts</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">forecasts</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">,</span> <span class="s2">&quot;ds&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the point and the prediction intervals:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plot_series</span><span class="p">(</span>
+    <span class="n">train</span><span class="p">,</span>
+    <span class="n">test_with_forecasts</span><span class="p">,</span>
+    <span class="n">plot_random</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;KNeighborsRegressor&quot;</span><span class="p">],</span>
+    <span class="n">level</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span>
+    <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f9dd84ef015aa6a2c31bfde0c69daac1dd76196da6fe0e75d024bce954ad7552.png" src="../_images/f9dd84ef015aa6a2c31bfde0c69daac1dd76196da6fe0e75d024bce954ad7552.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4bsUQ7o">Link to MLForecast</a>.</p>
+</section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
-<h2><span class="section-number">6.7.17. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.18. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1964,7 +2315,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/Nixtla/nixtla">Link to TimeGPT</a>.</p>
 </section>
 <section id="automate-time-series-feature-engineering-with-tsfresh">
-<h2><span class="section-number">6.7.18. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.19. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2198,8 +2549,9 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kneed-knee-point-detection-in-time-series">6.7.14. kneed: Knee-Point Detection in Time Series</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.17. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.18. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
 </ul>
   </nav></div>
 
