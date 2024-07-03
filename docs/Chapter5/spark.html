@@ -523,6 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.8. Update Multiple Columns in Spark 3.3 and Later</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.9. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.10. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.11. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
 </ul>
             </nav>
         </div>
@@ -1847,6 +1848,119 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <li><p><strong>Complexity of Transformations</strong>: The DataFrame API is more flexible for complex manipulations, while SQL is more concise for simpler queries.</p></li>
 </ul>
 </section>
+<section id="enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">
+<h2><span class="section-number">6.15.11. </span>Enhance Code Modularity and Reusability with Temporary Views in PySpark<a class="headerlink" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pyspark[sql]&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>In PySpark, temporary views enable SQL query operations on a DataFrame. They are stored in memory, resulting in faster query times compared to accessing the original DataFrame directly.</p>
+<p>To demonstrate this, let’s create a PySpark DataFrame called <code class="docutils literal notranslate"><span class="pre">orders_df</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a sample DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">1001</span><span class="p">,</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="mf">500.0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1002</span><span class="p">,</span> <span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span> <span class="mf">750.0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1003</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1004</span><span class="p">,</span> <span class="s2">&quot;Sarah Lee&quot;</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1005</span><span class="p">,</span> <span class="s2">&quot;Tom Wilson&quot;</span><span class="p">,</span> <span class="mf">600.0</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_name&quot;</span><span class="p">,</span> <span class="s2">&quot;revenue&quot;</span><span class="p">]</span>
+<span class="n">orders_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, create a temporary view called <code class="docutils literal notranslate"><span class="pre">orders</span></code> from the <code class="docutils literal notranslate"><span class="pre">orders_df</span></code> DataFrame using the <code class="docutils literal notranslate"><span class="pre">createOrReplaceTempView</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a temporary view</span>
+<span class="n">orders_df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>With the temporary view created, we can perform various operations on it using SQL queries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform operations on the temporary view</span>
+<span class="n">total_revenue</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT SUM(revenue) AS total_revenue FROM orders&quot;</span><span class="p">)</span>
+<span class="n">top_customers</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT customer_id, SUM(revenue) AS total_revenue FROM orders GROUP BY customer_id ORDER BY total_revenue DESC LIMIT 10&quot;</span>
+<span class="p">)</span>
+<span class="n">order_count</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT COUNT(*) AS order_count FROM orders&quot;</span><span class="p">)</span>
+
+<span class="c1"># Display the results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total Revenue:&quot;</span><span class="p">)</span>
+<span class="n">total_revenue</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top 10 Customers by Total Revenue:&quot;</span><span class="p">)</span>
+<span class="n">top_customers</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Number of Orders:&quot;</span><span class="p">)</span>
+<span class="n">order_count</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Revenue:
++-------------+
+|total_revenue|
++-------------+
+|       2550.0|
++-------------+
+
+
+Top 10 Customers by Total Revenue:
++-----------+-------------+
+|customer_id|total_revenue|
++-----------+-------------+
+|       1002|        750.0|
+|       1005|        600.0|
+|       1001|        500.0|
+|       1004|        400.0|
+|       1003|        300.0|
++-----------+-------------+
+
+
+Number of Orders:
++-----------+
+|order_count|
++-----------+
+|          5|
++-----------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1922,6 +2036,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.8. Update Multiple Columns in Spark 3.3 and Later</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.9. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.10. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.11. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
 </ul>
   </nav></div>
 
