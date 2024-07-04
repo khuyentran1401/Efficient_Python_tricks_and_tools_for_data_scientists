@@ -532,6 +532,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
 </ul>
             </nav>
         </div>
@@ -2468,6 +2469,87 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 </div>
 <p><a class="reference external" href="https://bit.ly/3VXi3Ks">Link to tsfresh</a>.</p>
 </section>
+<section id="tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">
+<h2><span class="section-number">6.7.20. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">tsmoothie</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Exponential smoothing is useful for capturing the underlying pattern in the data, especially for data with a strong trend or seasonal component.</p>
+<p>tsmoothie is designed to be fast and efficient and provides a wide range of smoothing techniques.</p>
+<p>To see how tsmoothie works, let’s generate a single random walk time series of length 200 using the <code class="docutils literal notranslate"><span class="pre">sim_randomwalk()</span></code> function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">tsmoothie.utils_func</span> <span class="kn">import</span> <span class="n">sim_randomwalk</span>
+<span class="kn">from</span> <span class="nn">tsmoothie.smoother</span> <span class="kn">import</span> <span class="n">LowessSmoother</span>
+
+<span class="c1"># generate a random walk of length 200</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">sim_randomwalk</span><span class="p">(</span><span class="n">n_series</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">timesteps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">process_noise</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">measure_noise</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, create a <code class="docutils literal notranslate"><span class="pre">LowessSmoother</span></code> object with a <code class="docutils literal notranslate"><span class="pre">smooth_fraction</span></code> of <code class="docutils literal notranslate"><span class="pre">0.1</span></code> (i.e., 10% of the data points are used for local regression) and 1 iteration. We then apply the smoothing operation to the data using the <code class="docutils literal notranslate"><span class="pre">smooth()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># operate smoothing</span>
+<span class="n">smoother</span> <span class="o">=</span> <span class="n">LowessSmoother</span><span class="p">(</span><span class="n">smooth_fraction</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">smoother</span><span class="o">.</span><span class="n">smooth</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;tsmoothie.smoother.LowessSmoother&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>After smoothing the data, we use the <code class="docutils literal notranslate"><span class="pre">get_intervals()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">LowessSmoother</span></code> object to calculate the lower and upper bounds of the prediction interval for the smoothed time series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate intervals</span>
+<span class="n">low</span><span class="p">,</span> <span class="n">up</span> <span class="o">=</span> <span class="n">smoother</span><span class="o">.</span><span class="n">get_intervals</span><span class="p">(</span><span class="s2">&quot;prediction_interval&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we plot the smoothed time series (as a blue line), and the prediction interval (as a shaded region) using matplotlib.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the smoothed time series with intervals</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">smoother</span><span class="o">.</span><span class="n">smooth_data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">smoother</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;.k&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;timeseries&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">smoother</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">low</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">up</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PolyCollection at 0x15b25a8e0&gt;
+</pre></div>
+</div>
+<img alt="../_images/840e0ccc6c7a2320f574a46fe4268a67c7d9ae598452c43ea0f50d604fc8c185.png" src="../_images/840e0ccc6c7a2320f574a46fe4268a67c7d9ae598452c43ea0f50d604fc8c185.png" />
+</div>
+</div>
+<p>This graph effectively highlights the trend and seasonal components present in the time series data through the use of a smoothed representation.</p>
+<p><a class="reference external" href="https://bit.ly/3L8KXky">Link to tsmoothie</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2552,6 +2634,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
 </ul>
   </nav></div>
 
