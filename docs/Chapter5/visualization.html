@@ -539,6 +539,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.26. Vizro: Create Modular Data Visualization Applications in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-and-drop-visualizations-with-pygwalker">6.10.27. Drag-and-Drop Visualizations with PyGWalker</a></li>
 </ul>
             </nav>
         </div>
@@ -3004,6 +3005,292 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <p><img alt="" src="../_images/vizro.png" /></p>
 <p><a class="reference external" href="https://github.com/mckinsey/vizro">Link to vizro</a>.</p>
 </section>
+<section id="drag-and-drop-visualizations-with-pygwalker">
+<h2><span class="section-number">6.10.27. </span>Drag-and-Drop Visualizations with PyGWalker<a class="headerlink" href="#drag-and-drop-visualizations-with-pygwalker" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pygwalker<span class="w"> </span>-q
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> A new release of pip is available: <span class=" -Color -Color-Red">23.1.2</span> -&gt; <span class=" -Color -Color-Green">24.1.1</span>
+<span class=" -Color -Color-Bold">[</span><span class=" -Color -Color-Blue">notice</span><span class=" -Color -Color-Bold">]</span> To update, run: <span class=" -Color -Color-Green">pip install --upgrade pip</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>EDA is a crucial step in any Data Science project. For large datasets, EDA can be time-consuming.</p>
+<p>PyGWalker simplifies the process of creating visualizations by allowing users to drag and drop variables to create charts without writing much code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygwalker</span> <span class="k">as</span> <span class="nn">pyg</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use pygwalker without changing your existing workflow. For example, you can call up Graphic Walker with the dataframe loaded in this way:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://kanaries-app.s3.ap-northeast-1.amazonaws.com/public-datasets/bike_sharing_dc.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>month</th>
+      <th>season</th>
+      <th>hour</th>
+      <th>year</th>
+      <th>holiday</th>
+      <th>temperature</th>
+      <th>feeling_temp</th>
+      <th>humidity</th>
+      <th>winspeed</th>
+      <th>casual</th>
+      <th>registered</th>
+      <th>count</th>
+      <th>work yes or not</th>
+      <th>am or pm</th>
+      <th>Day of the week</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>0</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>3.28</td>
+      <td>3.0014</td>
+      <td>81.0</td>
+      <td>0.0000</td>
+      <td>3</td>
+      <td>13</td>
+      <td>16</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>1</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>2.34</td>
+      <td>1.9982</td>
+      <td>80.0</td>
+      <td>0.0000</td>
+      <td>8</td>
+      <td>32</td>
+      <td>40</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>2</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>2.34</td>
+      <td>1.9982</td>
+      <td>80.0</td>
+      <td>0.0000</td>
+      <td>5</td>
+      <td>27</td>
+      <td>32</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>3</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>3.28</td>
+      <td>3.0014</td>
+      <td>75.0</td>
+      <td>0.0000</td>
+      <td>3</td>
+      <td>10</td>
+      <td>13</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>4</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>3.28</td>
+      <td>3.0014</td>
+      <td>75.0</td>
+      <td>0.0000</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>5</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>3.28</td>
+      <td>1.0016</td>
+      <td>75.0</td>
+      <td>6.0032</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>6</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>2.34</td>
+      <td>1.9982</td>
+      <td>80.0</td>
+      <td>0.0000</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>7</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>1.40</td>
+      <td>1.0016</td>
+      <td>86.0</td>
+      <td>0.0000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>8</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>3.28</td>
+      <td>3.0014</td>
+      <td>75.0</td>
+      <td>0.0000</td>
+      <td>1</td>
+      <td>7</td>
+      <td>8</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2011-01-01</td>
+      <td>1</td>
+      <td>winter</td>
+      <td>9</td>
+      <td>2011</td>
+      <td>no</td>
+      <td>7.04</td>
+      <td>7.0010</td>
+      <td>76.0</td>
+      <td>0.0000</td>
+      <td>8</td>
+      <td>6</td>
+      <td>14</td>
+      <td>0</td>
+      <td>am</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>And then just walk around!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyg</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "fd25287ee9c74122b6fba8be13618e63", "version_major": 2, "version_minor": 0}</script><div class="output text_html"></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pygwalker.api.pygwalker.PygWalker at 0x137d39650&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3Li6KGp">Link to PygWalker</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3095,6 +3382,7 @@ Manhattan vs. Queens: t-test independent samples, P_val:7.643e-171 t=-2.880e+01
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.24. Visualize the Frequency Tokens in a Text Corpora</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.25. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.26. Vizro: Create Modular Data Visualization Applications in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-and-drop-visualizations-with-pygwalker">6.10.27. Drag-and-Drop Visualizations with PyGWalker</a></li>
 </ul>
   </nav></div>
 
