@@ -533,6 +533,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.21. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2550,6 +2551,209 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p>This graph effectively highlights the trend and seasonal components present in the time series data through the use of a smoothed representation.</p>
 <p><a class="reference external" href="https://bit.ly/3L8KXky">Link to tsmoothie</a>.</p>
 </section>
+<section id="backtesting-assess-trading-strategy-performance-effortlessly-in-python">
+<h2><span class="section-number">6.7.21. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>backtesting
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Evaluating trading strategies’ effectiveness is crucial for financial decision-making, but it’s challenging due to the complexities of historical data analysis and strategy testing.</p>
+<p>Backtesting allows users to simulate trades based on historical data and visualize the outcomes through interactive plots in three lines of code.</p>
+<p>To see how Backtesting works, let’s create our first strategy to backtest on these Google data, a simple moving average (MA) cross-over strategy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">backtesting.test</span> <span class="kn">import</span> <span class="n">GOOG</span>
+
+<span class="n">GOOG</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Open</th>
+      <th>High</th>
+      <th>Low</th>
+      <th>Close</th>
+      <th>Volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2013-02-25</th>
+      <td>802.3</td>
+      <td>808.41</td>
+      <td>790.49</td>
+      <td>790.77</td>
+      <td>2303900</td>
+    </tr>
+    <tr>
+      <th>2013-02-26</th>
+      <td>795.0</td>
+      <td>795.95</td>
+      <td>784.40</td>
+      <td>790.13</td>
+      <td>2202500</td>
+    </tr>
+    <tr>
+      <th>2013-02-27</th>
+      <td>794.8</td>
+      <td>804.75</td>
+      <td>791.11</td>
+      <td>799.78</td>
+      <td>2026100</td>
+    </tr>
+    <tr>
+      <th>2013-02-28</th>
+      <td>801.1</td>
+      <td>806.99</td>
+      <td>801.03</td>
+      <td>801.20</td>
+      <td>2265800</td>
+    </tr>
+    <tr>
+      <th>2013-03-01</th>
+      <td>797.8</td>
+      <td>807.14</td>
+      <td>796.15</td>
+      <td>806.19</td>
+      <td>2175400</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">SMA</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return simple moving average of `values`, at</span>
+<span class="sd">    each step taking into account `n` previous values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">backtesting</span> <span class="kn">import</span> <span class="n">Strategy</span>
+<span class="kn">from</span> <span class="nn">backtesting.lib</span> <span class="kn">import</span> <span class="n">crossover</span>
+
+
+<span class="k">class</span> <span class="nc">SmaCross</span><span class="p">(</span><span class="n">Strategy</span><span class="p">):</span>
+    <span class="c1"># Define the two MA lags as *class variables*</span>
+    <span class="c1"># for later optimization</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="mi">20</span>
+
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Precompute the two moving averages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sma1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">(</span><span class="n">SMA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sma2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">(</span><span class="n">SMA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># If sma1 crosses above sma2, close any existing</span>
+        <span class="c1"># short trades, and buy the asset</span>
+        <span class="k">if</span> <span class="n">crossover</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sma1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sma2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buy</span><span class="p">()</span>
+
+        <span class="c1"># Else, if sma1 crosses below sma2, close any existing</span>
+        <span class="c1"># long trades, and sell the asset</span>
+        <span class="k">elif</span> <span class="n">crossover</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sma2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sma1</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sell</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To assess the performance of our investment strategy, we will instantiate a <code class="docutils literal notranslate"><span class="pre">Backtest</span></code> object, using Google stock data as our asset of interest and incorporating the <code class="docutils literal notranslate"><span class="pre">SmaCross</span></code> strategy class. We’ll start with an initial cash balance of 10,000 units and set the broker’s commission to a realistic rate of 0.2%.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">backtesting</span> <span class="kn">import</span> <span class="n">Backtest</span>
+
+<span class="n">bt</span> <span class="o">=</span> <span class="n">Backtest</span><span class="p">(</span><span class="n">GOOG</span><span class="p">,</span> <span class="n">SmaCross</span><span class="p">,</span> <span class="n">cash</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">commission</span><span class="o">=</span><span class="mf">.002</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">stats</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Start                     2004-08-19 00:00:00
+End                       2013-03-01 00:00:00
+Duration                   3116 days 00:00:00
+Exposure Time [%]                   97.067039
+Equity Final [$]                  68221.96986
+Equity Peak [$]                   68991.21986
+Return [%]                         582.219699
+Buy &amp; Hold Return [%]              703.458242
+Return (Ann.) [%]                   25.266427
+Volatility (Ann.) [%]               38.383008
+Sharpe Ratio                         0.658271
+Sortino Ratio                        1.288779
+Calmar Ratio                         0.763748
+Max. Drawdown [%]                  -33.082172
+Avg. Drawdown [%]                   -5.581506
+Max. Drawdown Duration      688 days 00:00:00
+Avg. Drawdown Duration       41 days 00:00:00
+# Trades                                   94
+Win Rate [%]                        54.255319
+Best Trade [%]                       57.11931
+Worst Trade [%]                    -16.629898
+Avg. Trade [%]                       2.074326
+Max. Trade Duration         121 days 00:00:00
+Avg. Trade Duration          33 days 00:00:00
+Profit Factor                        2.190805
+Expectancy [%]                       2.606294
+SQN                                  1.990216
+_strategy                            SmaCross
+_equity_curve                             ...
+_trades                       Size  EntryB...
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the outcomes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bt</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/backtesting.png" /></p>
+<p><a class="reference external" href="https://bit.ly/3zwi0g3">Link to Backtesting</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2635,6 +2839,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.21. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
   </nav></div>
 
