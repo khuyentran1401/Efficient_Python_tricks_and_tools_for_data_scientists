@@ -530,10 +530,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.21. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.19. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.20. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.21. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.22. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2133,8 +2134,154 @@ only showing top 5 rows
 </div>
 <p><a class="reference external" href="https://bit.ly/4bsUQ7o">Link to MLForecast</a>.</p>
 </section>
+<section id="sliding-window-approach-to-time-series-cross-validation">
+<h2><span class="section-number">6.7.18. </span>Sliding Window Approach to Time Series Cross-Validation<a class="headerlink" href="#sliding-window-approach-to-time-series-cross-validation" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mlforecast
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Time series cross-validation evaluates a model’s predictive performance by training on past data and testing on subsequent time periods using a sliding window approach.</p>
+<p>MLForecast offers an efficient and easy-to-use implementation of this technique.</p>
+<p>To see how to implement time series cross-validation with MLForecast, let’s start reading a subset of the M4 Competition hourly dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">utilsforecast.plotting</span> <span class="kn">import</span> <span class="n">plot_series</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://datasets-nixtla.s3.amazonaws.com/m4-hourly.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="s2">&quot;unique_id == &#39;H1&#39;&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Y_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    unique_id   ds      y
+0          H1    1  605.0
+1          H1    2  586.0
+2          H1    3  586.0
+3          H1    4  559.0
+4          H1    5  511.0
+..        ...  ...    ...
+743        H1  744  785.0
+744        H1  745  756.0
+745        H1  746  719.0
+746        H1  747  703.0
+747        H1  748  659.0
+
+[748 rows x 3 columns]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plot the time series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plot_series</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">plot_random</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d1e74ef1167defcd842de2f93c72a58ea5e62c240ddfc7386a8a67e914e2f749.png" src="../_images/d1e74ef1167defcd842de2f93c72a58ea5e62c240ddfc7386a8a67e914e2f749.png" />
+</div>
+</div>
+<p>Instantiate a new MLForecast object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mlforecast</span> <span class="kn">import</span> <span class="n">MLForecast</span>
+<span class="kn">from</span> <span class="nn">mlforecast.target_transforms</span> <span class="kn">import</span> <span class="n">Differences</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+
+
+<span class="n">mlf</span> <span class="o">=</span> <span class="n">MLForecast</span><span class="p">(</span>
+    <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">LinearRegression</span><span class="p">()],</span>
+    <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">target_transforms</span><span class="o">=</span><span class="p">[</span><span class="n">Differences</span><span class="p">([</span><span class="mi">24</span><span class="p">])],</span>
+    <span class="n">lags</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once the MLForecast object has been instantiated, we can use the <code class="docutils literal notranslate"><span class="pre">cross_validation</span></code> method.</p>
+<p>For this particular example, we’ll use 3 windows of 24 hours.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># use 3 windows of 24 hours</span>
+<span class="n">cross_validation_df</span> <span class="o">=</span> <span class="n">mlf</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">Y_df</span><span class="p">,</span>
+    <span class="n">h</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+    <span class="n">n_windows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cross_validation_df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  unique_id   ds  cutoff      y  LinearRegression
+0        H1  677     676  691.0        676.726797
+1        H1  678     676  618.0        559.559522
+2        H1  679     676  563.0        549.167938
+3        H1  680     676  529.0        505.930997
+4        H1  681     676  504.0        481.981893
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll now plot the forecast for each cutoff period.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="k">def</span> <span class="nf">plot_cv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_cv</span><span class="p">,</span> <span class="n">last_n</span><span class="o">=</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">14</span><span class="p">):</span>
+    <span class="n">cutoffs</span> <span class="o">=</span> <span class="n">df_cv</span><span class="p">[</span><span class="s2">&quot;cutoff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+        <span class="n">nrows</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">axi</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cutoffs</span><span class="p">,</span> <span class="n">ax</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="n">last_n</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axi</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+        <span class="n">df_cv</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;cutoff == @cutoff&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">axi</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="s2">&quot;LinearRegression&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cutoff</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="n">plot_cv</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">cross_validation_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/e7ac75d7a3789e521ef4f5dd5d26dd61a3276e10d56ee7b6c05bea6184ed4791.png" src="../_images/e7ac75d7a3789e521ef4f5dd5d26dd61a3276e10d56ee7b6c05bea6184ed4791.png" />
+</div>
+</div>
+<p>Notice that in each cutoff period, we generated a forecast for the next 24 hours using only the data y before said period.</p>
+<p><a class="reference external" href="https://bit.ly/3LnNrM5">Link to MLForecast</a>.</p>
+</section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
-<h2><span class="section-number">6.7.18. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.19. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2317,7 +2464,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/Nixtla/nixtla">Link to TimeGPT</a>.</p>
 </section>
 <section id="automate-time-series-feature-engineering-with-tsfresh">
-<h2><span class="section-number">6.7.19. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.20. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2471,7 +2618,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://bit.ly/3VXi3Ks">Link to tsfresh</a>.</p>
 </section>
 <section id="tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">
-<h2><span class="section-number">6.7.20. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.21. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2552,7 +2699,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://bit.ly/3L8KXky">Link to tsmoothie</a>.</p>
 </section>
 <section id="backtesting-assess-trading-strategy-performance-effortlessly-in-python">
-<h2><span class="section-number">6.7.21. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.22. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2776,10 +2923,11 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">6.7.15. NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.18. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.19. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.20. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.21. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.19. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.20. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.21. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.22. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
   </nav></div>
 
