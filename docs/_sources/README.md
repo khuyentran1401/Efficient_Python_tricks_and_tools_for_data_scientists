@@ -1,4 +1,4 @@
-[<img src="img/codecut.jpg">](https://mathdatasimplified.com/)
+[<img src="img/codecut.jpg">](https://codecut.ai/)
 
 <div align="center">
 <h1 align="center">
@@ -27,10 +27,10 @@ This book expects you to have some basic knowledge of Python and data science.
 You should also expect bite-size code snippets for each section. This will allow you to obtain multiple pieces of knowledge in fewer than one minute. I included the link to the resources for every tools introduced in case you want to explore them further. 
 
 ## About This Book
-This book includes more than 700 tips and tools I have shared daily on my website, [Data Science Simplified](https://mathdatasimplified.com/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
+This book includes more than 700 tips and tools I have shared daily on my website, [CodeCut](https://codecut.ai/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
 
 ## About The Author
 
 ![image](img/mypic.jpeg)
 
-Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 500+ daily data science tips at [Data Science Simplified](https://mathdatasimplified.com/). Her current mission is to make open-source more accessible to the data science community. 
+Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 500+ daily data science tips at [CodeCut](https://codecut.ai/). Her current mission is to make open-source more accessible to the data science community. 
