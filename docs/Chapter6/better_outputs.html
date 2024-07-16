@@ -236,6 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -522,6 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.9. Camelot: PDF Table Extraction for Humans</a></li>
 </ul>
             </nav>
         </div>
@@ -1071,6 +1073,158 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 </div>
 <p><a class="reference external" href="https://bit.ly/3U58fvP">Link to Great Tables</a>.</p>
 </section>
+<section id="camelot-pdf-table-extraction-for-humans">
+<h2><span class="section-number">7.5.9. </span>Camelot: PDF Table Extraction for Humans<a class="headerlink" href="#camelot-pdf-table-extraction-for-humans" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;camelot-py[base]&quot;</span><span class="w"> </span><span class="s2">&quot;opencv-python&quot;</span><span class="w"> </span><span class="s2">&quot;pypdf2&lt;3&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>With Camelot, you can extract tables from PDFs using Python and convert the data into a more structured format, such as a pandas DataFrame or a CSV file for efficient analysis, manipulation, and integration.</p>
+<p>To see how Camelot works, start with reading the PDF file named ‘foo.pdf’ and extracts all the tables present in the file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">camelot</span>
+<span class="n">tables</span> <span class="o">=</span> <span class="n">camelot</span><span class="o">.</span><span class="n">read_pdf</span><span class="p">(</span><span class="s1">&#39;foo.pdf&#39;</span><span class="p">)</span>
+<span class="n">tables</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;TableList n=1&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output shows that there is one table extracted from the PDF file.</p>
+<p>Export the extracted tables to a CSV file named ‘foo.csv’. Camelot also supports exporting tables to other formats like JSON, Excel, HTML, Markdown, and SQLite databases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parsing_report</span>
+<span class="p">{</span>
+    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="mf">99.02</span><span class="p">,</span>
+    <span class="s1">&#39;whitespace&#39;</span><span class="p">:</span> <span class="mf">12.24</span><span class="p">,</span>
+    <span class="s1">&#39;order&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+<span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;foo.csv&#39;</span><span class="p">)</span> <span class="c1"># to_json, to_excel, to_html, to_markdown, to_sqlite</span>
+<span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">df</span> <span class="c1"># get a pandas DataFrame!</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Cycle \nName</td>
+      <td>KI \n(1/km)</td>
+      <td>Distance \n(mi)</td>
+      <td>Percent Fuel Savings</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>Improved \nSpeed</td>
+      <td>Decreased \nAccel</td>
+      <td>Eliminate \nStops</td>
+      <td>Decreased \nIdle</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2012_2</td>
+      <td>3.30</td>
+      <td>1.3</td>
+      <td>5.9%</td>
+      <td>9.5%</td>
+      <td>29.2%</td>
+      <td>17.4%</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2145_1</td>
+      <td>0.68</td>
+      <td>11.2</td>
+      <td>2.4%</td>
+      <td>0.1%</td>
+      <td>9.5%</td>
+      <td>2.7%</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4234_1</td>
+      <td>0.59</td>
+      <td>58.7</td>
+      <td>8.5%</td>
+      <td>1.3%</td>
+      <td>8.5%</td>
+      <td>3.3%</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2032_2</td>
+      <td>0.17</td>
+      <td>57.8</td>
+      <td>21.7%</td>
+      <td>0.3%</td>
+      <td>2.7%</td>
+      <td>1.2%</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>4171_1</td>
+      <td>0.07</td>
+      <td>173.9</td>
+      <td>58.1%</td>
+      <td>1.6%</td>
+      <td>2.1%</td>
+      <td>0.5%</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3xPBw6L">Link to Camelot</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1144,6 +1298,7 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latexify-py-generates-a-latex-math-description-from-a-python-function">7.5.6. latexify_py: Generates a LaTex Math Description From a Python Function</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.9. Camelot: PDF Table Extraction for Humans</a></li>
 </ul>
   </nav></div>
 
