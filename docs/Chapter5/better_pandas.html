@@ -533,6 +533,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.18. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.19. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.20. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.21. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 </ul>
             </nav>
         </div>
@@ -2965,6 +2966,249 @@ Polars time: 41.079080 seconds
 </div>
 <p><a class="reference external" href="https://bit.ly/3wlTZXR">Learn more about Streaming API in Polars</a>.</p>
 </section>
+<section id="pandas-vs-polars-syntax-comparison-for-data-scientists">
+<h2><span class="section-number">6.12.21. </span>Pandas vs Polars: Syntax Comparison for Data Scientists<a class="headerlink" href="#pandas-vs-polars-syntax-comparison-for-data-scientists" title="Permalink to this heading">#</a></h2>
+<p>As a data scientist, you’re likely familiar with the popular data analysis libraries Pandas and Polars. Both provide powerful tools for working with tabular data, but how do their syntaxes compare?</p>
+<p>To begin, we’ll create equivalent dataframes in both Pandas and Polars:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="c1"># Create a Pandas DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Electronics&quot;</span><span class="p">,</span> <span class="s2">&quot;Clothing&quot;</span><span class="p">,</span> <span class="s2">&quot;Electronics&quot;</span><span class="p">,</span> <span class="s2">&quot;Clothing&quot;</span><span class="p">,</span> <span class="s2">&quot;Electronics&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;Price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">pandas_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">polars_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Key Operations Comparison:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pandas_df</span><span class="p">[[</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="s2">&quot;Price&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Electronics</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Clothing</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Electronics</td>
+      <td>150</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Clothing</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Electronics</td>
+      <td>300</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polars_df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="s2">&quot;Price&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (5, 2)</small><table border="1" class="dataframe"><thead><tr><th>Category</th><th>Price</th></tr><tr><td>str</td><td>i64</td></tr></thead><tbody><tr><td>&quot;Electronics&quot;</td><td>200</td></tr><tr><td>&quot;Clothing&quot;</td><td>30</td></tr><tr><td>&quot;Electronics&quot;</td><td>150</td></tr><tr><td>&quot;Clothing&quot;</td><td>20</td></tr><tr><td>&quot;Electronics&quot;</td><td>300</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtering rows where Quantity &gt; 3</span>
+<span class="n">pandas_df</span><span class="p">[</span><span class="n">pandas_df</span><span class="p">[</span><span class="s2">&quot;Quantity&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Category</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Electronics</td>
+      <td>5</td>
+      <td>200</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Clothing</td>
+      <td>10</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Electronics</td>
+      <td>4</td>
+      <td>300</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polars_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Quantity&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 3)</small><table border="1" class="dataframe"><thead><tr><th>Category</th><th>Quantity</th><th>Price</th></tr><tr><td>str</td><td>i64</td><td>i64</td></tr></thead><tbody><tr><td>&quot;Electronics&quot;</td><td>5</td><td>200</td></tr><tr><td>&quot;Clothing&quot;</td><td>10</td><td>20</td></tr><tr><td>&quot;Electronics&quot;</td><td>4</td><td>300</td></tr></tbody></table></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pandas_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Price&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> 
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+    <tr>
+      <th>Category</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Clothing</th>
+      <td>12</td>
+      <td>25.000000</td>
+    </tr>
+    <tr>
+      <th>Electronics</th>
+      <td>12</td>
+      <td>216.666667</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polars_df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Quantity&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr > th,
+.dataframe > tbody > tr > td {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (2, 3)</small><table border="1" class="dataframe"><thead><tr><th>Category</th><th>Quantity</th><th>Price</th></tr><tr><td>str</td><td>i64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Clothing&quot;</td><td>12</td><td>25.0</td></tr><tr><td>&quot;Electronics&quot;</td><td>12</td><td>216.666667</td></tr></tbody></table></div></div></div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3050,6 +3294,7 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.18. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.19. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.20. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.21. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 </ul>
   </nav></div>
 
