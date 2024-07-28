@@ -531,10 +531,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.19. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.20. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.21. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.22. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.19. Hierarchical Forecasting in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.20. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2280,8 +2281,340 @@ only showing top 5 rows
 <p>Notice that in each cutoff period, we generated a forecast for the next 24 hours using only the data y before said period.</p>
 <p><a class="reference external" href="https://bit.ly/3LnNrM5">Link to MLForecast</a>.</p>
 </section>
+<section id="hierarchical-forecasting-in-python">
+<h2><span class="section-number">6.7.19. </span>Hierarchical Forecasting in Python<a class="headerlink" href="#hierarchical-forecasting-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%capture
+!pip install hierarchicalforecast
+!pip install -U statsforecast numba
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>In complex datasets, forecasts at detailed levels (e.g., regions, products) should align with higher-level forecasts (e.g., countries, categories). Inconsistent forecasts can lead to poor decisions.</p>
+<p>Hierarchical forecasting ensures forecasts are consistent across all levels to reconcile and match forecasts from lower to higher levels.</p>
+<p>HierarchicalForecast, an open-source library from Nixtla, offers tools and methods specifically designed for creating and reconciling hierarchical forecasts.</p>
+<p>For illustrative purposes, consider a sales dataset with the following columns:</p>
+<ul class="simple">
+<li><p><strong>Country</strong>: The country where the sales occurred.</p></li>
+<li><p><strong>Region</strong>: The region within the country.</p></li>
+<li><p><strong>State</strong>: The state within the region.</p></li>
+<li><p><strong>Purpose</strong>: The purpose of the sale (e.g., Business, Leisure).</p></li>
+<li><p><strong>ds</strong>: The date of the sale.</p></li>
+<li><p><strong>y</strong>: The sales amount.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/tourism.csv&#39;</span><span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;Trips&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;Quarter&#39;</span><span class="p">:</span> <span class="s1">&#39;ds&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Australia&#39;</span><span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;ds&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]]</span>
+<span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+) (Q\d)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1-\2&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">])</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The dataset can be grouped in the following non-strictly hierarchical structure:</p>
+<ul class="simple">
+<li><p><strong>Country</strong></p></li>
+<li><p><strong>Country, State</strong></p></li>
+<li><p><strong>Country, Purpose</strong></p></li>
+<li><p><strong>Country, State, Region</strong></p></li>
+<li><p><strong>Country, State, Purpose</strong></p></li>
+<li><p><strong>Country, State, Region, Purpose</strong></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spec</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> 
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">],</span> 
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">],</span> 
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">],</span> 
+    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using the aggregate function from HierarchicalForecast we can get the full set of time series.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hierarchicalforecast.utils</span> <span class="kn">import</span> <span class="n">aggregate</span>
+
+<span class="n">Y_df</span><span class="p">,</span> <span class="n">S_df</span><span class="p">,</span> <span class="n">tags</span> <span class="o">=</span> <span class="n">aggregate</span><span class="p">(</span><span class="n">Y_df</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>unique_id</th>
+      <th>ds</th>
+      <th>y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>12251</th>
+      <td>Australia/New South Wales/Outback NSW/Business</td>
+      <td>2000-10-01</td>
+      <td>23.780860</td>
+    </tr>
+    <tr>
+      <th>33131</th>
+      <td>Australia/Western Australia/Australia's North ...</td>
+      <td>2000-10-01</td>
+      <td>45.648865</td>
+    </tr>
+    <tr>
+      <th>22034</th>
+      <td>Australia/South Australia/Fleurieu Peninsula/O...</td>
+      <td>2006-07-01</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>31119</th>
+      <td>Australia/Victoria/Phillip Island/Visiting</td>
+      <td>2017-10-01</td>
+      <td>58.063034</td>
+    </tr>
+    <tr>
+      <th>7671</th>
+      <td>Australia/New South Wales/Other</td>
+      <td>2015-10-01</td>
+      <td>405.891206</td>
+    </tr>
+    <tr>
+      <th>18339</th>
+      <td>Australia/Queensland/Mackay/Business</td>
+      <td>2002-10-01</td>
+      <td>54.135284</td>
+    </tr>
+    <tr>
+      <th>23043</th>
+      <td>Australia/South Australia/Limestone Coast/Visi...</td>
+      <td>1998-10-01</td>
+      <td>32.604546</td>
+    </tr>
+    <tr>
+      <th>22129</th>
+      <td>Australia/South Australia/Fleurieu Peninsula/V...</td>
+      <td>2010-04-01</td>
+      <td>44.738053</td>
+    </tr>
+    <tr>
+      <th>11349</th>
+      <td>Australia/New South Wales/Hunter/Business</td>
+      <td>2015-04-01</td>
+      <td>132.226040</td>
+    </tr>
+    <tr>
+      <th>16599</th>
+      <td>Australia/Queensland/Brisbane/Other</td>
+      <td>2007-10-01</td>
+      <td>70.490809</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Get all the distinct ‘Country/Purpose’ combinations present in the dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;Country/Purpose&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Australia/Business&#39;, &#39;Australia/Holiday&#39;, &#39;Australia/Other&#39;,
+       &#39;Australia/Visiting&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use the final two years (8 quarters) as test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">Y_train_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">Y_test_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_test_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span>
+<span class="n">Y_train_df</span> <span class="o">=</span> <span class="n">Y_train_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_train_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unique_id
+Australia                                                72
+Australia/ACT                                            72
+Australia/ACT/Business                                   72
+Australia/ACT/Canberra                                   72
+Australia/ACT/Canberra/Business                          72
+                                                         ..
+Australia/Western Australia/Experience Perth/Other       72
+Australia/Western Australia/Experience Perth/Visiting    72
+Australia/Western Australia/Holiday                      72
+Australia/Western Australia/Other                        72
+Australia/Western Australia/Visiting                     72
+Length: 425, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<p>The following cell generates <strong>base forecasts</strong> for each time series in <code class="docutils literal notranslate"><span class="pre">Y_df</span></code> using the <code class="docutils literal notranslate"><span class="pre">ETS</span></code> model. The forecasts and fitted values are stored in <code class="docutils literal notranslate"><span class="pre">Y_hat_df</span></code> and <code class="docutils literal notranslate"><span class="pre">Y_fitted_df</span></code>, respectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="kn">from</span> <span class="nn">statsforecast.models</span> <span class="kn">import</span> <span class="n">ETS</span>
+<span class="kn">from</span> <span class="nn">statsforecast.core</span> <span class="kn">import</span> <span class="n">StatsForecast</span>
+
+<span class="n">fcst</span> <span class="o">=</span> <span class="n">StatsForecast</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">Y_train_df</span><span class="p">,</span> 
+                     <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">ETS</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;ZZA&#39;</span><span class="p">)],</span> 
+                     <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;QS&#39;</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Y_hat_df</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fitted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Y_fitted_df</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">forecast_fitted_values</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">Y_hat_df</span></code> contains forecasts that are not coherent—meaning forecasts at detailed levels (e.g., by State, Region, Purpose) may not align with those at higher levels (e.g., by Country, State, Purpose)—we will use the <code class="docutils literal notranslate"><span class="pre">HierarchicalReconciliation</span></code> class with the <code class="docutils literal notranslate"><span class="pre">BottomUp</span></code> approach to ensure coherence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hierarchicalforecast.methods</span> <span class="kn">import</span> <span class="n">BottomUp</span>
+<span class="kn">from</span> <span class="nn">hierarchicalforecast.core</span> <span class="kn">import</span> <span class="n">HierarchicalReconciliation</span>
+
+<span class="n">reconcilers</span> <span class="o">=</span> <span class="p">[</span><span class="n">BottomUp</span><span class="p">()]</span>
+<span class="n">hrec</span> <span class="o">=</span> <span class="n">HierarchicalReconciliation</span><span class="p">(</span><span class="n">reconcilers</span><span class="o">=</span><span class="n">reconcilers</span><span class="p">)</span>
+<span class="n">Y_rec_df</span> <span class="o">=</span> <span class="n">hrec</span><span class="o">.</span><span class="n">reconcile</span><span class="p">(</span><span class="n">Y_hat_df</span><span class="o">=</span><span class="n">Y_hat_df</span><span class="p">,</span> <span class="n">Y_df</span><span class="o">=</span><span class="n">Y_fitted_df</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="n">S_df</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="n">tags</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The dataframe <code class="docutils literal notranslate"><span class="pre">Y_rec_df</span></code> contains the reconciled forecasts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_rec_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ds</th>
+      <th>ETS</th>
+      <th>ETS/BottomUp</th>
+    </tr>
+    <tr>
+      <th>unique_id</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Australia</th>
+      <td>2016-01-01</td>
+      <td>25990.068359</td>
+      <td>24380.257812</td>
+    </tr>
+    <tr>
+      <th>Australia</th>
+      <td>2016-04-01</td>
+      <td>24458.490234</td>
+      <td>22902.765625</td>
+    </tr>
+    <tr>
+      <th>Australia</th>
+      <td>2016-07-01</td>
+      <td>23974.056641</td>
+      <td>22412.982422</td>
+    </tr>
+    <tr>
+      <th>Australia</th>
+      <td>2016-10-01</td>
+      <td>24563.455078</td>
+      <td>23127.439453</td>
+    </tr>
+    <tr>
+      <th>Australia</th>
+      <td>2017-01-01</td>
+      <td>25990.068359</td>
+      <td>24516.759766</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4cYEFjJ">Link to Hierarchical Forecast</a></p>
+</section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
-<h2><span class="section-number">6.7.19. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.20. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2464,7 +2797,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/Nixtla/nixtla">Link to TimeGPT</a>.</p>
 </section>
 <section id="automate-time-series-feature-engineering-with-tsfresh">
-<h2><span class="section-number">6.7.20. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.21. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2618,7 +2951,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://bit.ly/3VXi3Ks">Link to tsfresh</a>.</p>
 </section>
 <section id="tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">
-<h2><span class="section-number">6.7.21. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.22. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2699,7 +3032,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://bit.ly/3L8KXky">Link to tsmoothie</a>.</p>
 </section>
 <section id="backtesting-assess-trading-strategy-performance-effortlessly-in-python">
-<h2><span class="section-number">6.7.22. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.23. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2924,10 +3257,11 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.19. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.20. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.21. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.22. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.19. Hierarchical Forecasting in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.20. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
 </ul>
   </nav></div>
 
