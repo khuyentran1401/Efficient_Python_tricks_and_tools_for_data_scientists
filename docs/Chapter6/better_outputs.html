@@ -265,16 +265,18 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/manage_data.html">6.4. Manage Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/machine_learning.html">6.5. Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/natural_language_processing.html">6.6. Natural Language Processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/time_series.html">6.7. Time Series</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/sharing_downloading.html">6.8. Sharing and Downloading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/speed_up_code.html">6.9. Tools to Speed Up Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/visualization.html">6.10. Visualization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/best_python_practice_tools.html">6.11. Tools for Best Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/time_series.html">6.9. Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/sharing_downloading.html">6.10. Sharing and Downloading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/speed_up_code.html">6.11. Tools to Speed Up Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/visualization.html">6.12. Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/best_python_practice_tools.html">6.13. Tools for Best Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.14. Better Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.15. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.16. SQL Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.17. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.18. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter6.html">7. Cool Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -524,6 +526,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.9. Camelot: PDF Table Extraction for Humans</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-python-command-line-interface-tools-argparse-click-and-typer">7.5.10. Comparing Python Command Line Interface Tools: Argparse, Click, and Typer</a></li>
 </ul>
             </nav>
         </div>
@@ -1225,6 +1228,111 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 </div>
 <p><a class="reference external" href="https://bit.ly/3xPBw6L">Link to Camelot</a>.</p>
 </section>
+<section id="comparing-python-command-line-interface-tools-argparse-click-and-typer">
+<h2><span class="section-number">7.5.10. </span>Comparing Python Command Line Interface Tools: Argparse, Click, and Typer<a class="headerlink" href="#comparing-python-command-line-interface-tools-argparse-click-and-typer" title="Permalink to this heading">#</a></h2>
+<p>Python has several tools for creating CLIs, each with its own approach and syntax. Three popular choices for parsing command-line arguments and options are argparse, click, and typer.</p>
+<ul class="simple">
+<li><p><strong>argparse</strong>: Requires manual argument parsing setup with verbose syntax.</p></li>
+<li><p><strong>click</strong>: Offers a more concise and declarative way to define commands with decorators.</p></li>
+<li><p><strong>typer</strong>: Utilizes Python type hints to create a clean and modern CLI interface with minimal boilerplate.</p></li>
+</ul>
+<p>Here’s a comparison of how to create a simple CLI application with a single command that accepts a string argument using argparse, click, and typer.</p>
+<p>argparse:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> argparse_example.py
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;A simple CLI with argparse&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The message to print&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing argparse_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>argparse_example.py<span class="w"> </span><span class="s2">&quot;Hello, World!&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Message: Hello, World!
+</pre></div>
+</div>
+</div>
+</div>
+<p>click:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> click_example.py
+<span class="kn">import</span> <span class="nn">click</span>
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing click_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>click_example.py<span class="w"> </span><span class="s2">&quot;Hello, World!&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Message: Hello, World!
+</pre></div>
+</div>
+</div>
+</div>
+<p>typer:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> typer_example.py
+<span class="kn">import</span> <span class="nn">typer</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Message: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">typer</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing typer_example.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>typer_example.py<span class="w"> </span><span class="s2">&quot;Hello, World!&quot;</span>
+</pre></div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Message: Hello, World!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1299,6 +1407,7 @@ Error: Invalid value for &#39;X&#39;: &#39;hello&#39; is not a valid float.
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manimml-create-animations-of-common-ml-concepts-in-python">7.5.7. ManimML: Create Animations of Common ML Concepts in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.8. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.9. Camelot: PDF Table Extraction for Humans</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-python-command-line-interface-tools-argparse-click-and-typer">7.5.10. Comparing Python Command Line Interface Tools: Argparse, Click, and Typer</a></li>
 </ul>
   </nav></div>
 
