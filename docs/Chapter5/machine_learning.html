@@ -531,6 +531,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-machine-learning-with-mllib">6.5.16. Distributed Machine Learning with MLlib</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rapid-prototyping-and-comparison-of-basic-models-with-lazy-predict">6.5.17. Rapid Prototyping and Comparison of Basic Models with Lazy Predict</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autogluon-fast-and-accurate-ml-in-3-lines-of-code">6.5.18. AutoGluon: Fast and Accurate ML in 3 Lines of Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.19. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 </ul>
             </nav>
         </div>
@@ -1990,6 +1991,182 @@ features=[0.0,2.2,-1.5], label=1.0 -&gt; prob=[0.01200463023637096,0.98799536976
 </div>
 <p><a class="reference external" href="https://bit.ly/45ljoOd">Link to AutoGluon</a>.</p>
 </section>
+<section id="model-logging-made-easy-mlflow-vs-pickle">
+<h2><span class="section-number">6.5.19. </span>Model Logging Made Easy: MLflow vs. Pickle<a class="headerlink" href="#model-logging-made-easy-mlflow-vs-pickle" title="Permalink to this heading">#</a></h2>
+<p>Here is why using MLflow to log model is superior to using pickle to save model:</p>
+<ol class="arabic simple">
+<li><p>Managing Library Versions:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Problem: Different models may require different versions of the same library, which can lead to conflicts. Manually tracking and setting up the correct environment for each model is time-consuming and error-prone.</p></li>
+<li><p>Solution: By automatically logging dependencies, MLflow ensures that anyone can recreate the exact environment needed to run the model.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Documenting Inputs and Outputs:</p></li>
+</ol>
+<ul class="simple">
+<li><p>Problem: Often, the expected inputs and outputs of a model are not well-documented, making it difficult for others to use the model correctly.</p></li>
+<li><p>Solution: By defining a clear schema for inputs and outputs, MLflow ensures that anyone using the model knows exactly what data to provide and what to expect in return.</p></li>
+</ul>
+<p>To demonstrate the advantages of MLflow, let’s implement a simple logistic regression model and log it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
+<span class="kn">from</span> <span class="nn">mlflow.models</span> <span class="kn">import</span> <span class="n">infer_signature</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+    <span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">infer_signature</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+
+    <span class="n">model_info</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">sklearn</span><span class="o">.</span><span class="n">log_model</span><span class="p">(</span>
+        <span class="n">sk_model</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">artifact_path</span><span class="o">=</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="n">signature</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving data to </span><span class="si">{</span><span class="n">model_info</span><span class="o">.</span><span class="n">model_uri</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Saving data to runs:/f8b0fc900aa14cf0ade8d0165c5a9f11/model
+</pre></div>
+</div>
+</div>
+</div>
+<p>The output indicates where the model has been saved. To use the logged model later, you can load it with the <code class="docutils literal notranslate"><span class="pre">model_uri</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">model_uri</span> <span class="o">=</span> <span class="s2">&quot;runs:/1e20d72afccf450faa3b8a9806a97e83/model&quot;</span>
+<span class="n">sklearn_pyfunc</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">pyfunc</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_uri</span><span class="o">=</span><span class="n">model_uri</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">sklearn_pyfunc</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s inspect the artifacts saved with the model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> mlruns/0/1e20d72afccf450faa3b8a9806a97e83/artifacts/model
+<span class="o">%</span><span class="k">ls</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/mlruns/0/1e20d72afccf450faa3b8a9806a97e83/artifacts/model
+MLmodel           model.pkl         requirements.txt
+conda.yaml        python_env.yaml
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">MLmodel</span></code> file provides essential information about the model, including dependencies and input/output specifications:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> MLmodel
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.6
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.4.1.post1
+mlflow_version: 2.15.0
+model_size_bytes: 722
+model_uuid: e7487bc3c4ab417c965144efcecaca2f
+run_id: 1e20d72afccf450faa3b8a9806a97e83
+signature:
+  inputs: &#39;[{&quot;type&quot;: &quot;tensor&quot;, &quot;tensor-spec&quot;: {&quot;dtype&quot;: &quot;int64&quot;, &quot;shape&quot;: [-1, 1]}}]&#39;
+  outputs: &#39;[{&quot;type&quot;: &quot;tensor&quot;, &quot;tensor-spec&quot;: {&quot;dtype&quot;: &quot;int64&quot;, &quot;shape&quot;: [-1]}}]&#39;
+  params: null
+utc_time_created: &#39;2024-08-02 20:58:16.516963&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">conda.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">python_env.yaml</span></code> files outline the environment dependencies, ensuring that the model runs in a consistent setup:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> conda.yaml
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>channels:
+- conda-forge
+dependencies:
+- python=3.11.6
+- pip&lt;=24.2
+- pip:
+  - mlflow==2.15.0
+  - cloudpickle==2.2.1
+  - numpy==1.23.5
+  - psutil==5.9.6
+  - scikit-learn==1.4.1.post1
+  - scipy==1.11.3
+name: mlflow-env
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> python_env.yaml
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: 3.11.6
+build_dependencies:
+- pip==24.2
+- setuptools
+- wheel==0.40.0
+dependencies:
+- -r requirements.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mlflow==2.15.0
+cloudpickle==2.2.1
+numpy==1.23.5
+psutil==5.9.6
+scikit-learn==1.4.1.post1
+scipy==1.11.3
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/46y6gpF">Learn more about MLFlow Models</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2073,6 +2250,7 @@ features=[0.0,2.2,-1.5], label=1.0 -&gt; prob=[0.01200463023637096,0.98799536976
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distributed-machine-learning-with-mllib">6.5.16. Distributed Machine Learning with MLlib</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rapid-prototyping-and-comparison-of-basic-models-with-lazy-predict">6.5.17. Rapid Prototyping and Comparison of Basic Models with Lazy Predict</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autogluon-fast-and-accurate-ml-in-3-lines-of-code">6.5.18. AutoGluon: Fast and Accurate ML in 3 Lines of Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.19. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 </ul>
   </nav></div>
 
