@@ -1815,8 +1815,104 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 <h2><span class="section-number">6.13.20. </span>Simulate External Services in Testing with Mock Objects<a class="headerlink" href="#simulate-external-services-in-testing-with-mock-objects" title="Permalink to this heading">#</a></h2>
 <p>Testing code that relies on external services, like a database, can be difficult since the behaviors of these services can change.</p>
 <p>A mock object can control the behavior of a real object in a testing environment by simulating responses from external services.</p>
-<p>The following code uses a mock object to test the <code class="docutils literal notranslate"><span class="pre">get_data</span></code> function’s behavior when calling an API that may either succeed or fail.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<p>Here are two common use cases with examples:</p>
+<ol class="arabic simple">
+<li><p><strong>Mocking Time-Dependent Functions</strong></p></li>
+</ol>
+<p>When testing functions that depend on the current time or date, you can mock the time to ensure consistent results.</p>
+<p>Example: Testing a function that returns data for the last week</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+
+<span class="k">def</span> <span class="nf">get_data_for_last_week</span><span class="p">():</span>
+    <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;start_date&quot;</span><span class="p">:</span> <span class="n">start_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">end_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting main.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s create a test for this function using mock:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_main.py
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">get_data_for_last_week</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;main.datetime&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_get_data_for_last_week</span><span class="p">(</span><span class="n">mock_datetime</span><span class="p">):</span>
+    <span class="c1"># Set a fixed date for the test</span>
+    <span class="n">mock_datetime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="c1"># Call the function</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">get_data_for_last_week</span><span class="p">()</span>
+
+    <span class="c1"># Assert the results</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;start_date&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2024-07-29&quot;</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;end_date&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2024-08-05&quot;</span>
+
+    <span class="c1"># Verify that datetime.now() was called</span>
+    <span class="n">mock_datetime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_main.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>This test mocks the <code class="docutils literal notranslate"><span class="pre">datetime.now()</span></code> method to return a fixed date, allowing for predictable and consistent test results.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>-sv<span class="w"> </span>test_main.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0 -- /Users/khuyentran/.pyenv/versions/3.11.2/bin/python3
+cachedir: .pytest_cache
+hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(PosixPath(&#39;/Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/.hypothesis/examples&#39;))
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
+collected 1 item                                                               
+
+test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PASSED</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.09s ===============================</span>
+
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Mocking API calls</strong></p></li>
+</ol>
+<p>When testing code that makes external API calls, mocking helps avoid actual network requests during testing.</p>
+<p>Example: Testing a function that makes an API call</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span>
 
@@ -1828,28 +1924,75 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">ConnectionError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting main.py
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_main.py
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span>
+<span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">get_data</span>
 
 
-<span class="k">def</span> <span class="nf">test_get_data_fails</span><span class="p">():</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;main.requests.get&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_get_data_fails</span><span class="p">(</span><span class="n">mock_get</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the get_data function when the API call fails&quot;&quot;&quot;</span>
-    <span class="c1"># Mock the requests.get function</span>
-    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;requests.get&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_get</span><span class="p">:</span>
-        <span class="c1"># Define what happens when the function is called</span>
-        <span class="n">mock_get</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="ne">ConnectionError</span>
-        <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
+    <span class="c1"># Define what happens when the function is called</span>
+    <span class="n">mock_get</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="ne">ConnectionError</span>
+    <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
 
 
-<span class="k">def</span> <span class="nf">test_get_data_succeeds</span><span class="p">():</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;main.requests.get&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_get_data_succeeds</span><span class="p">(</span><span class="n">mock_get</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the get_data function when the API call succeeds&quot;&quot;&quot;</span>
-    <span class="c1"># Mock the requests.get function</span>
-    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;requests.get&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_get</span><span class="p">:</span>
-        <span class="c1"># Define the return value of the function</span>
-        <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
-        <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
+    <span class="c1"># Define the return value of the function</span>
+    <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="n">get_data</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_main.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>These tests mock the <code class="docutils literal notranslate"><span class="pre">requests.get()</span></code> function to simulate both successful and failed API calls, allowing us to test our function’s behavior in different scenarios without making actual network requests.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>test_main.py
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
+platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
+rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
+plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
+collected 2 items                                                              
+
+test_main.py <span class=" -Color -Color-Green">..                                                          [100%]</span>
+
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">2 passed</span><span class=" -Color -Color-Green"> in 0.12s ===============================</span>
 
 </pre></div>
 </div>
-<p><a class="reference external" href="https://docs.python.org/3/library/unittest.mock.html">Link to mock</a>.</p>
+</div>
+</details>
+</div>
+<p>By using mocks in these ways, we can create more reliable and controlled unit tests for our data projects, ensuring that our code behaves correctly under various conditions.</p>
 </section>
 <section id="tmp-path-create-a-temporary-directory-for-testing">
 <h2><span class="section-number">6.13.21. </span>tmp_path: Create a Temporary Directory for Testing<a class="headerlink" href="#tmp-path-create-a-temporary-directory-for-testing" title="Permalink to this heading">#</a></h2>
