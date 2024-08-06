@@ -2166,6 +2166,148 @@ scipy==1.11.3
 </div>
 </div>
 <p><a class="reference external" href="https://bit.ly/46y6gpF">Learn more about MLFlow Models</a>.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span>joblib<span class="w"> </span><span class="s2">&quot;fastapi[standard]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Imagine this scenario: You have just built a machine learning (ML) model with great performance, and you want to share this model with your team members so that they can develop a web application on top of your model.</p>
+<p>One way to share the model with your team members is to save the model to a file (e.g., using pickle, joblib, or framework-specific methods) and share the file directly</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">joblib</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="o">...</span>
+
+<span class="c1"># Save model</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;model.joblib&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, this approach requires the same environment and dependencies, and it can pose potential security risks.</p>
+<p>An alternative is creating an API for your ML model. APIs define how software components interact, allowing:</p>
+<ol class="arabic simple">
+<li><p>Access from various programming languages and platforms</p></li>
+<li><p>Easier integration for developers unfamiliar with ML or Python</p></li>
+<li><p>Versatile use across different applications (web, mobile, etc.)</p></li>
+</ol>
+<p>This approach simplifies model sharing and usage, making it more accessible for diverse development needs.</p>
+<p>Let’s learn how to create an ML API with FastAPI, a modern and fast web framework for building APIs with Python.</p>
+<p>Before we begin constructing an API for a machine learning model, let’s first develop a basic model that our API will use. In this example, we’ll create a model that predicts the median house price in California.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+
+<span class="c1"># Load dataset</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Split dataset into training and test sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="c1"># Initialize and train the logistic regression model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Predict and evaluate the model</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean squared error: </span><span class="si">{</span><span class="n">mse</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Save model</span>
+<span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;lr.joblib&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean squared error: 0.56
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;lr.joblib&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once we have our model, we can create an API for it using FastAPI. We’ll define a POST endpoint for making predictions and use the model to make predictions.</p>
+<p>Here’s an example of how to create an API for a machine learning model using FastAPI:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> ml_app.py
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+
+<span class="c1"># Create a FastAPI application instance</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="c1"># Load the pre-trained machine learning model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;lr.joblib&quot;</span><span class="p">)</span>
+
+<span class="c1"># Define a POST endpoint for making predictions</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/predict/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
+    <span class="c1"># Define the column names for the input features</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;MedInc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;HouseAge&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;AveRooms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;AveBedrms&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Population&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;AveOccup&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Latitude&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Longitude&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    
+    <span class="c1"># Create a pandas DataFrame from the input data</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">data</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+    
+    <span class="c1"># Use the model to make a prediction</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">features</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    
+    <span class="c1"># Return the prediction as a JSON object, rounding to 2 decimal places</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting ml_app.py
+</pre></div>
+</div>
+</div>
+</div>
+<p>To run your FastAPI app for development, use the <code class="docutils literal notranslate"><span class="pre">fastapi</span> <span class="pre">dev</span></code> command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>fastapi<span class="w"> </span>dev<span class="w"> </span>ml_app.py
+</pre></div>
+</div>
+<p>This will start the development server and open the API documentation in your default browser.</p>
+<p>You can now use the API to make predictions by sending a POST request to the <code class="docutils literal notranslate"><span class="pre">/predict/</span></code> endpoint with the input data. For example:</p>
+<p>Running this cURL command on your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span><span class="s1">&#39;POST&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s1">&#39;http://127.0.0.1:8000/predict/&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;accept: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;[</span>
+<span class="s1">  1.68, 25, 4, 2, 1400, 3, 36.06, -119.01</span>
+<span class="s1">]&#39;</span>
+</pre></div>
+</div>
+<p>This will return the predicted price as a JSON object, rounded to 2 decimal places:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span><span class="mf">1.51</span><span class="p">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 
