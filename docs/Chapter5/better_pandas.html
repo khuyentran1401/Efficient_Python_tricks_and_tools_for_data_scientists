@@ -524,16 +524,17 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.12.9. Enforce Data Quality with Delta Lake Constraints</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.12.10. Efficient Data Updates and Scanning with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.11. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.12. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.13. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.14. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.15. Polars vs. Pandas for CSV Loading and Filtering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.12.16. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.17. Simple and Expressive Data Transformation with Polars</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.18. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.19. Parallel Execution of Multiple Files with Polars</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.20. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.21. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.12.12. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.13. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.14. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.15. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.16. Polars vs. Pandas for CSV Loading and Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.12.17. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.18. Simple and Expressive Data Transformation with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.19. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.20. Parallel Execution of Multiple Files with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.21. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.22. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 </ul>
             </nav>
         </div>
@@ -2037,8 +2038,159 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
+<section id="from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">
+<h2><span class="section-number">6.12.12. </span>From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution<a class="headerlink" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>delta-spark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Traditionally, implementing upsert (update or insert) logic requires separate UPDATE and INSERT statements or complex SQL. This approach can be error-prone and inefficient, especially for large datasets.</p>
+<p>Delta Lake’s merge operation solves this problem by allowing you to specify different actions for matching and non-matching records in a single, declarative statement.</p>
+<p>Here’s an example that demonstrates the power and simplicity of Delta Lake’s merge operation:</p>
+<p>First, let’s set up our initial data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create sample data for &#39;customers&#39; DataFrame</span>
+<span class="n">customers_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-01 10:00:00&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span> <span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-02 11:00:00&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">,</span> <span class="s2">&quot;bob@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-03 12:00:00&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">customers_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;last_updated&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Create sample data for &#39;updates&#39; DataFrame</span>
+<span class="n">updates_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;jane.doe@example.com&quot;</span><span class="p">),</span>  <span class="c1"># Existing customer with updates</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">,</span> <span class="s2">&quot;bob@example.com&quot;</span><span class="p">),</span>  <span class="c1"># Existing customer without changes</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Alice Brown&quot;</span><span class="p">,</span> <span class="s2">&quot;alice@example.com&quot;</span><span class="p">),</span>  <span class="c1"># New customer</span>
+<span class="p">]</span>
+<span class="n">updates</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">updates_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">])</span>
+
+<span class="c1"># Show the initial data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial Customers:&quot;</span><span class="p">)</span>
+<span class="n">customers</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updates:&quot;</span><span class="p">)</span>
+<span class="n">updates</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial Customers:
++-----------+-----------+----------------+-------------------+
+|customer_id|       name|           email|       last_updated|
++-----------+-----------+----------------+-------------------+
+|          1|   John Doe|john@example.com|2023-01-01 10:00:00|
+|          2| Jane Smith|jane@example.com|2023-01-02 11:00:00|
+|          3|Bob Johnson| bob@example.com|2023-01-03 12:00:00|
++-----------+-----------+----------------+-------------------+
+
+Updates:
++-----------+-----------+--------------------+
+|customer_id|       name|               email|
++-----------+-----------+--------------------+
+|          2|   Jane Doe|jane.doe@example.com|
+|          3|Bob Johnson|     bob@example.com|
+|          4|Alice Brown|   alice@example.com|
++-----------+-----------+--------------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we create a Delta table from our initial customer data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the path where you want to save the Delta table</span>
+<span class="n">delta_table_path</span> <span class="o">=</span> <span class="s2">&quot;customers_delta&quot;</span>
+
+<span class="c1"># Write the DataFrame as a Delta table</span>
+<span class="n">customers</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">delta_table_path</span><span class="p">)</span>
+
+<span class="c1"># Create a DeltaTable object</span>
+<span class="n">customers_delta</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">delta_table_path</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Customers Delta Table created successfully&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Customers Delta Table created successfully
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, here’s the key part - the merge operation that handles both updates and inserts in a single statement:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assume &#39;customers_delta&#39; is your target table and &#39;updates&#39; is your source of new data</span>
+<span class="n">customers_delta</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">updates</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;target.customer_id = source.customer_id&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenMatchedUpdate</span><span class="p">(</span><span class="nb">set</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source.name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;source.email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;current_timestamp()&quot;</span>
+<span class="p">})</span><span class="o">.</span><span class="n">whenNotMatchedInsert</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="s2">&quot;source.customer_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source.name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;source.email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;current_timestamp()&quot;</span>
+<span class="p">})</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify the updated data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updated Customers Delta Table:&quot;</span><span class="p">)</span>
+<span class="n">customers_delta</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Updated Customers Delta Table:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----------+-----------+--------------------+--------------------+
+|customer_id|       name|               email|        last_updated|
++-----------+-----------+--------------------+--------------------+
+|          2|   Jane Doe|jane.doe@example.com|2024-08-20 16:05:...|
+|          3|Bob Johnson|     bob@example.com|2024-08-20 16:05:...|
+|          4|Alice Brown|   alice@example.com|2024-08-20 16:05:...|
+|          1|   John Doe|    john@example.com| 2023-01-01 10:00:00|
++-----------+-----------+--------------------+--------------------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="the-best-way-to-append-mismatched-data-to-parquet-tables">
-<h2><span class="section-number">6.12.12. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.13. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this heading">#</a></h2>
 <p>Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.</p>
 <p>In the following code, the datatype of <code class="docutils literal notranslate"><span class="pre">col3</span></code> is supposed to be <code class="docutils literal notranslate"><span class="pre">int64</span></code> instead of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
 <div class="cell docutils container">
@@ -2195,7 +2347,7 @@ dtype: object
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="polars-blazing-fast-dataframe-library">
-<h2><span class="section-number">6.12.13. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.14. </span>Polars: Blazing Fast DataFrame Library<a class="headerlink" href="#polars-blazing-fast-dataframe-library" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2269,7 +2421,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="polars-speed-up-data-processing-12x-with-lazy-execution">
-<h2><span class="section-number">6.12.14. </span>Polars: Speed Up Data Processing 12x with Lazy Execution<a class="headerlink" href="#polars-speed-up-data-processing-12x-with-lazy-execution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.15. </span>Polars: Speed Up Data Processing 12x with Lazy Execution<a class="headerlink" href="#polars-speed-up-data-processing-12x-with-lazy-execution" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2431,7 +2583,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="polars-vs-pandas-for-csv-loading-and-filtering">
-<h2><span class="section-number">6.12.15. </span>Polars vs. Pandas for CSV Loading and Filtering<a class="headerlink" href="#polars-vs-pandas-for-csv-loading-and-filtering" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.16. </span>Polars vs. Pandas for CSV Loading and Filtering<a class="headerlink" href="#polars-vs-pandas-for-csv-loading-and-filtering" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2500,7 +2652,7 @@ Polars time: 41.079080 seconds
 </div>
 </section>
 <section id="pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">
-<h2><span class="section-number">6.12.16. </span>Pandas vs Polars: Harnessing Parallelism for Faster Data Processing<a class="headerlink" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.17. </span>Pandas vs Polars: Harnessing Parallelism for Faster Data Processing<a class="headerlink" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2547,7 +2699,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://bit.ly/3v9dmCT">Link to Polars</a>.</p>
 </section>
 <section id="simple-and-expressive-data-transformation-with-polars">
-<h2><span class="section-number">6.12.17. </span>Simple and Expressive Data Transformation with Polars<a class="headerlink" href="#simple-and-expressive-data-transformation-with-polars" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.18. </span>Simple and Expressive Data Transformation with Polars<a class="headerlink" href="#simple-and-expressive-data-transformation-with-polars" title="Permalink to this heading">#</a></h2>
 <p>Extract features and select only relevant features for each time series.</p>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
@@ -2642,7 +2794,7 @@ Polars time: 41.079080 seconds
 </div>
 </section>
 <section id="harness-polars-and-delta-lake-for-blazing-fast-performance">
-<h2><span class="section-number">6.12.18. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.19. </span>Harness Polars and Delta Lake for Blazing Fast Performance<a class="headerlink" href="#harness-polars-and-delta-lake-for-blazing-fast-performance" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2863,7 +3015,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a>.</p>
 </section>
 <section id="parallel-execution-of-multiple-files-with-polars">
-<h2><span class="section-number">6.12.19. </span>Parallel Execution of Multiple Files with Polars<a class="headerlink" href="#parallel-execution-of-multiple-files-with-polars" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.20. </span>Parallel Execution of Multiple Files with Polars<a class="headerlink" href="#parallel-execution-of-multiple-files-with-polars" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2934,7 +3086,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 </section>
 <section id="polars-streaming-mode-a-solution-for-large-data-sets">
-<h2><span class="section-number">6.12.20. </span>Polars’ Streaming Mode: A Solution for Large Data Sets<a class="headerlink" href="#polars-streaming-mode-a-solution-for-large-data-sets" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.21. </span>Polars’ Streaming Mode: A Solution for Large Data Sets<a class="headerlink" href="#polars-streaming-mode-a-solution-for-large-data-sets" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2967,7 +3119,7 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://bit.ly/3wlTZXR">Learn more about Streaming API in Polars</a>.</p>
 </section>
 <section id="pandas-vs-polars-syntax-comparison-for-data-scientists">
-<h2><span class="section-number">6.12.21. </span>Pandas vs Polars: Syntax Comparison for Data Scientists<a class="headerlink" href="#pandas-vs-polars-syntax-comparison-for-data-scientists" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.22. </span>Pandas vs Polars: Syntax Comparison for Data Scientists<a class="headerlink" href="#pandas-vs-polars-syntax-comparison-for-data-scientists" title="Permalink to this heading">#</a></h2>
 <p>As a data scientist, you’re likely familiar with the popular data analysis libraries Pandas and Polars. Both provide powerful tools for working with tabular data, but how do their syntaxes compare?</p>
 <p>To begin, we’ll create equivalent dataframes in both Pandas and Polars:</p>
 <div class="cell docutils container">
@@ -3285,16 +3437,17 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.12.9. Enforce Data Quality with Delta Lake Constraints</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.12.10. Efficient Data Updates and Scanning with Delta Lake</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.12.11. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.12. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.13. Polars: Blazing Fast DataFrame Library</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.14. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.15. Polars vs. Pandas for CSV Loading and Filtering</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.12.16. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.17. Simple and Expressive Data Transformation with Polars</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.18. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.19. Parallel Execution of Multiple Files with Polars</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.20. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.21. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.12.12. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.12.13. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-blazing-fast-dataframe-library">6.12.14. Polars: Blazing Fast DataFrame Library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-speed-up-data-processing-12x-with-lazy-execution">6.12.15. Polars: Speed Up Data Processing 12x with Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-vs-pandas-for-csv-loading-and-filtering">6.12.16. Polars vs. Pandas for CSV Loading and Filtering</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.12.17. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.12.18. Simple and Expressive Data Transformation with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.12.19. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.20. Parallel Execution of Multiple Files with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.21. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.22. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 </ul>
   </nav></div>
 
