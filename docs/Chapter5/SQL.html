@@ -523,6 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.14.11. SQLGlot: Write Once, Run Anywhere SQL</a></li>
 </ul>
             </nav>
         </div>
@@ -1166,6 +1167,66 @@ Limit: (10, 0)
 </div>
 <p><a class="reference external" href="https://github.com/macbre/sql-metadata">Link to sql-metadata</a>.</p>
 </section>
+<section id="sqlglot-write-once-run-anywhere-sql">
+<h2><span class="section-number">6.14.11. </span>SQLGlot: Write Once, Run Anywhere SQL<a class="headerlink" href="#sqlglot-write-once-run-anywhere-sql" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;sqlglot[rs]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>SQL dialects vary across databases, making it challenging to port queries between different database systems.</p>
+<p>SQLGlot addresses this by providing a parser and transpiler supporting 21 dialects. This enables automatic SQL translation between systems, eliminating the need for manual query rewrites.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlglot</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert a DuckDB-specific date formatting query into an equivalent query in Hive SQL:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="s2">&quot;SELECT STRFTIME(x, &#39;%y-%-m-%S&#39;)&quot;</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="s2">&quot;duckdb&quot;</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;SELECT DATE_FORMAT(x, &#39;yy-M-ss&#39;)&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Convert a SQL query to Spark SQL:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`</span>
+<span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, name, CAST(price AS REAL) AS converted_price FROM products&quot;</span>
+
+<span class="c1"># Translates the query into Spark SQL, formats it, and delimits all of its identifiers</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;spark&quot;</span><span class="p">,</span> <span class="n">identify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
+  `id`,
+  `name`,
+  CAST(`price` AS FLOAT) AS `converted_price`
+FROM `products`
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/4dGyTmP">Link to SQLGlot</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1241,6 +1302,7 @@ Limit: (10, 0)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.14.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.14.11. SQLGlot: Write Once, Run Anywhere SQL</a></li>
 </ul>
   </nav></div>
 
