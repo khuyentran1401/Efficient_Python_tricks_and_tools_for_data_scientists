@@ -1380,41 +1380,105 @@ For example, in this code, It’s impossible to discern the meanings of <code cl
 </section>
 <section id="efficiently-checking-object-types-in-python">
 <h2><span class="section-number">2.9.19. </span>Efficiently Checking Object Types in Python<a class="headerlink" href="#efficiently-checking-object-types-in-python" title="Permalink to this heading">#</a></h2>
-<p>To simplify checking if a Python object is of different types, you can group those types into a tuple within an instance call.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">isinstance()</span></code> function in Python is used to check if an object is an instance of a specified type or class. When checking for multiple types, we can optimize our code by using a tuple of types instead of multiple <code class="docutils literal notranslate"><span class="pre">isinstance()</span></code> calls or conditions.</p>
+<p>Let’s break it down:</p>
+<ol class="arabic simple">
+<li><p>Traditional approach (less efficient):</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>    <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">))</span>  <span class="c1"># False</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 True
+False
 </pre></div>
 </div>
 </div>
 </div>
+<ol class="arabic simple" start="2">
+<li><p>Optimized approach using a tuple:</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>    <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="mf">1.5</span><span class="p">))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_number</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">))</span>  <span class="c1"># False</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 True
+False
 </pre></div>
 </div>
 </div>
 </div>
+<p>Benefits of using a tuple:</p>
+<ol class="arabic simple">
+<li><p>Conciseness: The code is more readable and compact.</p></li>
+<li><p>Performance: It’s slightly more efficient, especially when checking against many types.</p></li>
+<li><p>Maintainability: Easier to add or remove types to check against.</p></li>
+</ol>
+<p>You can extend this concept to check for more types:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_sequence</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">str</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">))</span>      <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">(</span><span class="mi">123</span><span class="p">))</span>        <span class="c1"># False</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+True
+True
+False
+</pre></div>
+</div>
+</div>
+</div>
+<p>For broader type checking, use Python’s abstract base classes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
+
+<span class="k">def</span> <span class="nf">is_sequence</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>  <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">))</span>      <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_sequence</span><span class="p">(</span><span class="mi">123</span><span class="p">))</span>        <span class="c1"># False</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+True
+True
+False
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, we’re checking if an object is either a Sequence (like lists, tuples, strings) or a Mapping (like dictionaries).</p>
 </section>
 <section id="try-except-vs-if-else">
 <h2><span class="section-number">2.9.20. </span>try-except vs if-else<a class="headerlink" href="#try-except-vs-if-else" title="Permalink to this heading">#</a></h2>
