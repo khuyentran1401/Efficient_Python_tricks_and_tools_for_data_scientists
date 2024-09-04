@@ -1,4 +1,4 @@
-[<img src="img/codecut.jpg">](https://codecut.ai/)
+[<img src="img/codecut.jpg">](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=github_banner)
 
 <div align="center">
 <h1 align="center">
@@ -27,10 +27,10 @@ This book expects you to have some basic knowledge of Python and data science.
 You should also expect bite-size code snippets for each section. This will allow you to obtain multiple pieces of knowledge in fewer than one minute. I included the link to the resources for every tools introduced in case you want to explore them further. 
 
 ## About This Book
-This book includes more than 700 tips and tools I have shared daily on my website, [CodeCut](https://codecut.ai/). If you want to get the updated of new tips on your mailbox, you can subscribe to my website. 
+This book includes more than 800 tips and tools I have shared daily on my website, [CodeCut](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=about_this_book). If you want to get the updated of new tips on your mailbox, you can subscribe to [my newsletter](https://codecut.ai/daily-tips-form/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=subscribe_to_newsletter). 
 
 ## About The Author
 
 ![image](img/mypic.jpeg)
 
-Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 500+ daily data science tips at [CodeCut](https://codecut.ai/). Her current mission is to make open-source more accessible to the data science community. 
+Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 800+ daily data science tips at [CodeCut](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=about_khuyen_tran). Her current mission is to make open-source more accessible to the data science community. 
