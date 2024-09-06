@@ -831,26 +831,34 @@ Only day: 18
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
 
-<span class="c1"># Get current time in Paris</span>
-<span class="n">paris_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;Europe/Paris&quot;</span><span class="p">))</span>
+<span class="c1"># Creating a datetime</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current time: </span><span class="si">{</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Convert Paris time to Toronto time</span>
-<span class="n">toronto_timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;America/Toronto&quot;</span><span class="p">)</span>
-<span class="n">toronto_time</span> <span class="o">=</span> <span class="n">paris_time</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">toronto_timezone</span><span class="p">)</span>
+<span class="c1"># Date arithmetic</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;7 days from now: </span><span class="si">{</span><span class="n">future</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Add two days</span>
-<span class="n">future_datetime</span> <span class="o">=</span> <span class="n">toronto_time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Timezone handling</span>
+<span class="n">utc_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
+<span class="n">tokyo_tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;Asia/Tokyo&#39;</span><span class="p">)</span>
+<span class="n">tokyo_time</span> <span class="o">=</span> <span class="n">utc_now</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tokyo_tz</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time in Tokyo: </span><span class="si">{</span><span class="n">tokyo_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Toronto Time:&quot;</span><span class="p">,</span> <span class="n">toronto_time</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Paris Time:&quot;</span><span class="p">,</span> <span class="n">paris_time</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Future datetime (after adding two days):&quot;</span><span class="p">,</span> <span class="n">future_datetime</span><span class="p">)</span>
+<span class="c1"># Parsing (requires exact format)</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;2023-05-15 14:30:00&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+
+<span class="c1"># Time difference (not human-readable)</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">parsed</span> <span class="o">-</span> <span class="n">now</span> 
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Toronto Time: 2024-03-26 10:19:01.843320-04:00
-Paris Time: 2024-03-26 15:19:01.843320+01:00
-Future datetime (after adding two days): 2024-03-28 10:19:01.843320-04:00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Current time: 2024-09-02 19:18:13.589774
+7 days from now: 2024-09-09 19:18:13.589774
+Time in Tokyo: 2024-09-03 09:18:13.590063+09:00
+Difference: -477 days, 19:11:46.410226
 </pre></div>
 </div>
 </div>
@@ -860,25 +868,34 @@ Future datetime (after adding two days): 2024-03-28 10:19:01.843320-04:00
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pendulum</span>
 
-<span class="c1"># Get current time in Paris</span>
-<span class="n">paris_time</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="s2">&quot;Europe/Paris&quot;</span><span class="p">)</span>
+<span class="c1"># Creating a datetime</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current time: </span><span class="si">{</span><span class="n">now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Convert Paris time to Toronto time</span>
-<span class="n">toronto_time</span> <span class="o">=</span> <span class="n">paris_time</span><span class="o">.</span><span class="n">in_timezone</span><span class="p">(</span><span class="s2">&quot;America/Toronto&quot;</span><span class="p">)</span>
+<span class="c1"># Date arithmetic (more intuitive than datetime)</span>
+<span class="n">future</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;7 days from now: </span><span class="si">{</span><span class="n">future</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Add two days</span>
-<span class="n">future_datetime</span> <span class="o">=</span> <span class="n">toronto_time</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># Timezone handling</span>
+<span class="n">tokyo_time</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">in_timezone</span><span class="p">(</span><span class="s2">&quot;Asia/Tokyo&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time in Tokyo: </span><span class="si">{</span><span class="n">tokyo_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Toronto Time:&quot;</span><span class="p">,</span> <span class="n">toronto_time</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Paris Time:&quot;</span><span class="p">,</span> <span class="n">paris_time</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Future datetime (after adding two days):&quot;</span><span class="p">,</span> <span class="n">future_datetime</span><span class="p">)</span>
+<span class="c1"># Parsing without specifying format</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">pendulum</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;2023-05-15 14:30:00&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsed date: </span><span class="si">{</span><span class="n">parsed</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Human-readable differences</span>
+<span class="n">diff</span> <span class="o">=</span> <span class="n">parsed</span> <span class="o">-</span> <span class="n">now</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="n">diff</span><span class="o">.</span><span class="n">in_words</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Toronto Time: 2024-03-26 10:19:03.398059-04:00
-Paris Time: 2024-03-26 15:19:03.398059+01:00
-Future datetime (after adding two days): 2024-03-28 10:19:03.398059-04:00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Current time: 2024-09-02 18:58:20.467988-05:00
+7 days from now: 2024-09-09 18:58:20.467988-05:00
+Time in Tokyo: 2024-09-03 08:58:20.467988+09:00
+Parsed date: 2023-05-15 14:30:00+00:00
+Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </pre></div>
 </div>
 </div>

@@ -705,6 +705,48 @@ Test data:
 </div>
 </div>
 </div>
+<p>Time series data is unique because it has a temporal order. This means that data from the future shouldn’t influence predictions about the past. However, standard cross-validation techniques like K-Fold randomly shuffle the data, potentially using future information to predict past events.</p>
+<p>scikit-learn provides us with a powerful tool designed specifically for time series data: TimeSeriesSplit. This clever cross-validator respects the temporal order of our data, ensuring that we always train on past data and test on future data.</p>
+<p>Let’s explore how to use TimeSeriesSplit with a simple example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">TimeSeriesSplit</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">tscv</span> <span class="o">=</span> <span class="n">TimeSeriesSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tscv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fold </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Train: index=</span><span class="si">{</span><span class="n">train_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Test:  index=</span><span class="si">{</span><span class="n">test_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fold 0:
+  Train: index=[0 1 2]
+  Test:  index=[3]
+Fold 1:
+  Train: index=[0 1 2 3]
+  Test:  index=[4]
+Fold 2:
+  Train: index=[0 1 2 3 4]
+  Test:  index=[5]
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the outputs, we can see that:</p>
+<ol class="arabic simple">
+<li><p>Temporal Integrity: The split always respects the original order of the data.</p></li>
+<li><p>Growing Training Set: With each fold, the training set expands to include more historical data.</p></li>
+<li><p>Forward-Moving Test Set: The test set is always a single future sample, progressing with each fold.</p></li>
+<li><p>No Data Leakage: Future information is never used to predict past events.</p></li>
+</ol>
+<p>This approach mimics real-world forecasting scenarios, where models use historical data to predict future outcomes.</p>
 </section>
 <section id="enhancing-data-handling-with-scikit-learn-s-dataframe-support">
 <h2><span class="section-number">6.2.3. </span>Enhancing Data Handling with scikit-learn’s DataFrame Support<a class="headerlink" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support" title="Permalink to this heading">#</a></h2>
@@ -3763,16 +3805,16 @@ data['pickup_zone_distance'] = data.groupby('pickup_zone')['distance'].transform
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "data-science"
         },
         kernelOptions: {
-            name: "python3",
+            name: "data-science",
             path: "./Chapter5"
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'data-science'</script>
 
                 </article>
               
