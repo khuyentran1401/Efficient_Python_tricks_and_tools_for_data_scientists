@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -516,8 +516,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fastai-s-df-shrink-shrink-dataframe-s-memory-usage-in-one-line-of-code">6.9.1. Fastai’s df_shrink: Shrink DataFrame’s Memory Usage in One Line of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swifter-add-one-word-to-make-your-pandas-apply-23-times-faster">6.9.2. Swifter: Add One Word to Make Your Pandas Apply 23 Times Faster</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinstrument-readable-python-profiler">6.9.3. pyinstrument: Readable Python Profiler</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-your-python-code-with-concurrency">6.9.4. Speed Up Your Python Code with Concurrency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covalent-pythonic-tool-to-iterate-quickly-on-large-ml-models">6.9.5. Covalent: Pythonic Tool to Iterate Quickly on Large ML Models</a></li>
 </ul>
             </nav>
         </div>
@@ -547,8 +545,13 @@ document.write(`
 </div>
 </details>
 </div>
-<p>Changing data types of DataFrame columns to smaller data types can significantly reduce the memory usage of the DataFrame. Instead of manually choosing smaller data types, is there a way that you can automatically change data types in one line of code?</p>
-<p>That is when the <code class="docutils literal notranslate"><span class="pre">df_shrink</span></code> method of Fastai comes in handy. In the code below, the memory usage of the DataFrame decreases from 200 bytes to 146 bytes.</p>
+<p>Data analysts often struggle with large datasets that consume excessive memory, making it challenging to work efficiently, especially on machines with limited resources.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">df_shrink</span></code> method in <code class="docutils literal notranslate"><span class="pre">fastai</span></code> helps address this issue by:</p>
+<ul class="simple">
+<li><p>Automatically reducing the memory usage of a pandas DataFrame</p></li>
+<li><p>Downcasting numeric columns to the smallest possible dtype without losing information</p></li>
+</ul>
+<p>Here’s a short code example to demonstrate the utility of <code class="docutils literal notranslate"><span class="pre">df_shrink</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastai.tabular.core</span> <span class="kn">import</span> <span class="n">df_shrink</span>
@@ -626,6 +629,7 @@ None
             }, 500);
             </script></div>
 </div>
+<p>In this example, the memory usage of the DataFrame decreases from 200 bytes to 146 bytes.</p>
 <p><a class="reference external" href="https://docs.fast.ai/">Link to Fastai</a>.</p>
 </section>
 <section id="swifter-add-one-word-to-make-your-pandas-apply-23-times-faster">
@@ -643,7 +647,7 @@ None
 </div>
 </details>
 </div>
-<p>If you want to have faster pandas apply when working with large data, try swifter. To use swifter, simply add <code class="docutils literal notranslate"><span class="pre">.swifter</span></code> before <code class="docutils literal notranslate"><span class="pre">.apply</span></code>. Everything else is the same.</p>
+<p>To have faster pandas apply when working with large data, use swifter. To use swifter, simply add <code class="docutils literal notranslate"><span class="pre">.swifter</span></code> before <code class="docutils literal notranslate"><span class="pre">.apply</span></code>. Everything else is the same.</p>
 <p>In the code below, I compared the speed of Pandas’ <code class="docutils literal notranslate"><span class="pre">apply</span></code> and the speed of swifter’s <code class="docutils literal notranslate"><span class="pre">apply</span></code> using the California housing dataset of 20640 rows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -712,108 +716,13 @@ None
 </div>
 </details>
 </div>
-<p>Have you ever wanted to get statistics of how long various parts of your code are executed to optimize your code? profile and CProfile allow you to profile your code, but the outputs are long and hard to understand, especially when using high-level libraries like pandas.</p>
-<p>For example, applying cProfile to the code using pandas will me the output like below:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> cprofilers_example.py
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;nums&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)})</span>
-<span class="k">def</span> <span class="nf">is_even</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">num</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">is_even</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df_</span><span class="p">:</span> <span class="n">is_even</span><span class="p">(</span><span class="n">df_</span><span class="o">.</span><span class="n">nums</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing cprofilers_example.py
-</pre></div>
-</div>
-</div>
-</div>
-<p>On your terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>cProfile<span class="w"> </span>cprofilers_example.py
-</pre></div>
-</div>
-<p>A small portion of the output:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">         </span><span class="m">246355</span><span class="w"> </span><span class="k">function</span><span class="w"> </span>calls<span class="w"> </span><span class="o">(</span><span class="m">240252</span><span class="w"> </span>primitive<span class="w"> </span>calls<span class="o">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.311<span class="w"> </span>seconds
-
-<span class="w">   </span>Ordered<span class="w"> </span>by:<span class="w"> </span>standard<span class="w"> </span>name
-
-<span class="w">   </span>ncalls<span class="w">  </span>tottime<span class="w">  </span>percall<span class="w">  </span>cumtime<span class="w">  </span>percall<span class="w"> </span>filename:lineno<span class="o">(</span><span class="k">function</span><span class="o">)</span>
-<span class="w">        </span><span class="m">1</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>&lt;module&gt;<span class="o">)</span>
-<span class="w">        </span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>append<span class="o">)</span>
-<span class="w">        </span><span class="m">1</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>bincount<span class="o">)</span>
-<span class="w">        </span><span class="m">5</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>concatenate<span class="o">)</span>
-<span class="w">        </span><span class="m">4</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>copyto<span class="o">)</span>
-<span class="w">        </span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>ndim<span class="o">)</span>
-<span class="w">        </span><span class="m">1</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>prod<span class="o">)</span>
-<span class="w">        </span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;__array_function__<span class="w"> </span>internals&gt;:2<span class="o">(</span>ravel<span class="o">)</span>
-<span class="w">        </span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:1002<span class="o">(</span>_gcd_import<span class="o">)</span>
-<span class="w">  </span><span class="m">610</span>/353<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.144<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:1017<span class="o">(</span>_handle_fromlist<span class="o">)</span>
-<span class="w">     </span><span class="m">1208</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:103<span class="o">(</span>release<span class="o">)</span>
-<span class="w">      </span><span class="m">527</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:143<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">      </span><span class="m">527</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.004<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:147<span class="o">(</span>__enter__<span class="o">)</span>
-<span class="w">      </span><span class="m">527</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:151<span class="o">(</span>__exit__<span class="o">)</span>
-<span class="w">     </span><span class="m">1208</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:157<span class="o">(</span>_get_module_lock<span class="o">)</span>
-<span class="w">      </span><span class="m">524</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:176<span class="o">(</span>cb<span class="o">)</span>
-<span class="w">      </span><span class="m">681</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:194<span class="o">(</span>_lock_unlock_module<span class="o">)</span>
-<span class="w">    </span><span class="m">681</span>/1<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.310<span class="w">    </span><span class="m">0</span>.310<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:211<span class="o">(</span>_call_with_frames_removed<span class="o">)</span>
-<span class="w">     </span><span class="m">4196</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:222<span class="o">(</span>_verbose_message<span class="o">)</span>
-<span class="w">       </span><span class="m">23</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:232<span class="o">(</span>_requires_builtin_wrapper<span class="o">)</span>
-<span class="w">      </span><span class="m">521</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:342<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">      </span><span class="m">406</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:35<span class="o">(</span>_new_module<span class="o">)</span>
-<span class="w">      </span><span class="m">880</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.005<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:376<span class="o">(</span>cached<span class="o">)</span>
-<span class="w">      </span><span class="m">727</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:389<span class="o">(</span>parent<span class="o">)</span>
-<span class="w">      </span><span class="m">498</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:397<span class="o">(</span>has_location<span class="o">)</span>
-<span class="w">       </span><span class="m">24</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:406<span class="o">(</span>spec_from_loader<span class="o">)</span>
-<span class="w">      </span><span class="m">498</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.009<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:477<span class="o">(</span>_init_module_attrs<span class="o">)</span>
-<span class="w">  </span><span class="m">498</span>/495<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.032<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:549<span class="o">(</span>module_from_spec<span class="o">)</span>
-<span class="w">      </span><span class="m">524</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:58<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">    </span><span class="m">498</span>/1<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.310<span class="w">    </span><span class="m">0</span>.310<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:650<span class="o">(</span>_load_unlocked<span class="o">)</span>
-<span class="w">      </span><span class="m">520</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:725<span class="o">(</span>find_spec<span class="o">)</span>
-<span class="w">       </span><span class="m">23</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:746<span class="o">(</span>create_module<span class="o">)</span>
-<span class="w">       </span><span class="m">23</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:754<span class="o">(</span>exec_module<span class="o">)</span>
-<span class="w">       </span><span class="m">23</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:771<span class="o">(</span>is_package<span class="o">)</span>
-<span class="w">     </span><span class="m">1208</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:78<span class="o">(</span>acquire<span class="o">)</span>
-<span class="w">      </span><span class="m">497</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:800<span class="o">(</span>find_spec<span class="o">)</span>
-<span class="w">     </span><span class="m">1530</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:863<span class="o">(</span>__enter__<span class="o">)</span>
-<span class="w">     </span><span class="m">1530</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:867<span class="o">(</span>__exit__<span class="o">)</span>
-<span class="w">      </span><span class="m">520</span><span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.032<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:890<span class="o">(</span>_find_spec<span class="o">)</span>
-<span class="w">        </span><span class="m">2</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:937<span class="o">(</span>_sanity_check<span class="o">)</span>
-<span class="w">    </span><span class="m">527</span>/1<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.311<span class="w">    </span><span class="m">0</span>.311<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:956<span class="o">(</span>_find_and_load_unlocked<span class="o">)</span>
-<span class="w">    </span><span class="m">527</span>/1<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.311<span class="w">    </span><span class="m">0</span>.311<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap&gt;:986<span class="o">(</span>_find_and_load<span class="o">)</span>
-<span class="w">      </span><span class="m">406</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1004<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">      </span><span class="m">406</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1029<span class="o">(</span>get_filename<span class="o">)</span>
-<span class="w">      </span><span class="m">406</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.011<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1034<span class="o">(</span>get_data<span class="o">)</span>
-<span class="w">      </span><span class="m">406</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1075<span class="o">(</span>path_stats<span class="o">)</span>
-<span class="w">       </span><span class="m">68</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1153<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">       </span><span class="m">68</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.021<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1164<span class="o">(</span>create_module<span class="o">)</span>
-<span class="w">    </span><span class="m">68</span>/39<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.058<span class="w">    </span><span class="m">0</span>.001<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1172<span class="o">(</span>exec_module<span class="o">)</span>
-<span class="w">     </span><span class="m">3858</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.006<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:121<span class="o">(</span>_path_join<span class="o">)</span>
-<span class="w">     </span><span class="m">3858</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:123<span class="o">(</span>&lt;listcomp&gt;<span class="o">)</span>
-<span class="w">      </span><span class="m">812</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:127<span class="o">(</span>_path_split<span class="o">)</span>
-<span class="w">     </span><span class="m">1624</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:129<span class="o">(</span>&lt;genexpr&gt;<span class="o">)</span>
-<span class="w">       </span><span class="m">53</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1317<span class="o">(</span>_path_hooks<span class="o">)</span>
-<span class="w">      </span><span class="m">820</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1330<span class="o">(</span>_path_importer_cache<span class="o">)</span>
-<span class="w">     </span><span class="m">1896</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.007<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:135<span class="o">(</span>_path_stat<span class="o">)</span>
-<span class="w">      </span><span class="m">497</span><span class="w">    </span><span class="m">0</span>.002<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.026<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1367<span class="o">(</span>_get_spec<span class="o">)</span>
-<span class="w">      </span><span class="m">497</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.026<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1399<span class="o">(</span>find_spec<span class="o">)</span>
-<span class="w">      </span><span class="m">704</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:145<span class="o">(</span>_path_is_mode_type<span class="o">)</span>
-<span class="w">       </span><span class="m">53</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1459<span class="o">(</span>__init__<span class="o">)</span>
-<span class="w">      </span><span class="m">424</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1465<span class="o">(</span>&lt;genexpr&gt;<span class="o">)</span>
-<span class="w">      </span><span class="m">474</span><span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1493<span class="o">(</span>_get_spec<span class="o">)</span>
-<span class="w">      </span><span class="m">733</span><span class="w">    </span><span class="m">0</span>.006<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.022<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1498<span class="o">(</span>find_spec<span class="o">)</span>
-<span class="w">      </span><span class="m">651</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.003<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:154<span class="o">(</span>_path_isfile<span class="o">)</span>
-<span class="w">       </span><span class="m">53</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1549<span class="o">(</span>_fill_cache<span class="o">)</span>
-<span class="w">       </span><span class="m">53</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:159<span class="o">(</span>_path_isdir<span class="o">)</span>
-<span class="w">       </span><span class="m">53</span><span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.000<span class="w">    </span><span class="m">0</span>.001<span class="w">    </span><span class="m">0</span>.000<span class="w"> </span>&lt;frozen<span class="w"> </span>importlib._bootstrap_external&gt;:1590<span class="o">(</span>path_hook_for_FileFinder<span class="o">)</span>
-</pre></div>
-</div>
-<p>You can get a more readable output using pyinstrument. To use pyinstrument, simply insert the piece of code you want to profile between <code class="docutils literal notranslate"><span class="pre">profiler.start</span></code> and <code class="docutils literal notranslate"><span class="pre">profile.end</span></code>:</p>
+<p>Identifying performance bottlenecks in Python code can be challenging, especially with complex applications or time-consuming processes. While cProfile and profile are useful, their outputs can be lengthy and difficult to interpret, particularly when using high-level libraries like pandas.</p>
+<p><code class="docutils literal notranslate"><span class="pre">pyinstrument</span></code> helps solve this problem by:</p>
+<ul class="simple">
+<li><p>Providing a low-overhead profiler that shows where time is being spent in Python programs</p></li>
+<li><p>Generating easy-to-read, hierarchical output that highlights the most time-consuming parts of the code</p></li>
+</ul>
+<p>Here’s a short code example to demonstrate the utility of <code class="docutils literal notranslate"><span class="pre">pyinstrument</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pyinstrument_example.py
@@ -898,166 +807,6 @@ To view this report with different options, run:
 </div>
 <p><a class="reference external" href="https://github.com/joerick/pyinstrument">Link to pyinstrument</a></p>
 </section>
-<section id="speed-up-your-python-code-with-concurrency">
-<h2><span class="section-number">6.9.4. </span>Speed Up Your Python Code with Concurrency<a class="headerlink" href="#speed-up-your-python-code-with-concurrency" title="Permalink to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>prefect<span class="w"> </span>
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>If you want to speed up the execution of functions that are not related to each other, you might consider running your code concurrently. Concurrency refers to a system that can do more than one thing simultaneously.</p>
-<p>For example, imagine a restaurant with one employee who is both the cook and waiter. While food cooks on the stove, the employee can take orders.</p>
-<p><img alt="" src="../_images/concurrent.png" /></p>
-<p>If you want to run your code concurrently with a few additional code, simply add the <code class="docutils literal notranslate"><span class="pre">&#64;task</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;flow</span></code> decorators from Prefect.</p>
-<p>Let’s compare the execution time between running code sequentially and running code concurrently.</p>
-<p>Running code sequentially:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
-
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span><span class="p">,</span> <span class="n">seed</span>
-
-<span class="k">def</span> <span class="nf">shout</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
-    <span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">count_to</span><span class="p">(</span><span class="n">highest_number</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">highest_number</span><span class="p">):</span>
-        <span class="n">shout</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-
-
-<span class="n">count_to</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#0
-#1
-#2
-#3
-#4
-CPU times: user 7.88 ms, sys: 6.35 ms, total: 14.2 ms
-Wall time: 30 s
-</pre></div>
-</div>
-</div>
-</div>
-<p>Running code concurrently:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
-
-<span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">flow</span><span class="p">,</span> <span class="n">task</span>
-
-<span class="nd">@task</span>
-<span class="k">def</span> <span class="nf">shout</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
-    <span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-
-<span class="nd">@flow</span>
-<span class="k">def</span> <span class="nf">count_to</span><span class="p">(</span><span class="n">highest_number</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">highest_number</span><span class="p">):</span>
-        <span class="n">shout</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
-
-
-<span class="n">count_to</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:15</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">862</span> | INFO    | prefect.engine - Created flow run <span style="color: #008000; text-decoration-color: #008000">'olive-manul'</span> for flow <span style="color: #008000; text-decoration-color: #008000">'count-to'</span> 
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">706</span> | INFO    | prefect.flow_runs - Created task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-0'</span> for task    
-<span style="color: #008000; text-decoration-color: #008000">'shout'</span>                                                                                      
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">713</span> | INFO    | prefect.flow_runs - Submitted task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-0'</span> for       
-execution.                                                                                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">776</span> | INFO    | prefect.flow_runs - Created task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-1'</span> for task    
-<span style="color: #008000; text-decoration-color: #008000">'shout'</span>                                                                                      
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">781</span> | INFO    | prefect.flow_runs - Submitted task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-1'</span> for       
-execution.                                                                                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">824</span> | INFO    | prefect.flow_runs - Created task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-4'</span> for task    
-<span style="color: #008000; text-decoration-color: #008000">'shout'</span>                                                                                      
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">829</span> | INFO    | prefect.flow_runs - Submitted task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-4'</span> for       
-execution.                                                                                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">837</span> | INFO    | prefect.flow_runs - Created task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-3'</span> for task    
-<span style="color: #008000; text-decoration-color: #008000">'shout'</span>                                                                                      
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">840</span> | INFO    | prefect.flow_runs - Submitted task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-3'</span> for       
-execution.                                                                                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">848</span> | INFO    | prefect.flow_runs - Created task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-2'</span> for task    
-<span style="color: #008000; text-decoration-color: #008000">'shout'</span>                                                                                      
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:16</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">850</span> | INFO    | prefect.flow_runs - Submitted task run <span style="color: #008000; text-decoration-color: #008000">'shout-58a68b34-2'</span> for       
-execution.                                                                                   
-</pre>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>#0
-#1
-#2
-#4
-#3
-</pre></div>
-</div>
-<div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:20</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">138</span> | INFO    | prefect.task_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">()</span>                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:20</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">147</span> | INFO    | prefect.task_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">()</span>                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:20</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">154</span> | INFO    | prefect.task_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">()</span>                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:21</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">043</span> | INFO    | prefect.task_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">()</span>                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:21</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">062</span> | INFO    | prefect.task_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">()</span>                   
-</pre>
-</div><div class="output text_html"><pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00; font-weight: bold">09:26:21</span>.<span style="color: #008080; text-decoration-color: #008080; font-weight: bold">157</span> | INFO    | prefect.flow_runs - Finished in state <span style="color: #800080; text-decoration-color: #800080; font-weight: bold">Completed</span><span style="font-weight: bold">(</span><span style="color: #008000; text-decoration-color: #008000">'All states </span>        
-<span style="color: #008000; text-decoration-color: #008000">completed.'</span><span style="font-weight: bold">)</span>                                                                                 
-</pre>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.18 s, sys: 178 ms, total: 1.36 s
-Wall time: 6.78 s
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Completed(message=None, type=COMPLETED, result=None),
- Completed(message=None, type=COMPLETED, result=None),
- Completed(message=None, type=COMPLETED, result=None),
- Completed(message=None, type=COMPLETED, result=None),
- Completed(message=None, type=COMPLETED, result=None)]
-</pre></div>
-</div>
-</div>
-</div>
-<p>We can see that it is faster to run code concurrently than sequentially.</p>
-<p><a class="reference external" href="https://github.com/PrefectHQ/prefect">Link to Prefect</a></p>
-</section>
-<section id="covalent-pythonic-tool-to-iterate-quickly-on-large-ml-models">
-<h2><span class="section-number">6.9.5. </span>Covalent: Pythonic Tool to Iterate Quickly on Large ML Models<a class="headerlink" href="#covalent-pythonic-tool-to-iterate-quickly-on-large-ml-models" title="Permalink to this heading">#</a></h2>
-<p>Iterating quickly on large ML models in a local environment can be a daunting task for any ML project. Using advanced computing hardware can facilitate this process, but it can be costly, especially when it’s only necessary for a specific portion of the code.</p>
-<p>Covalent makes it easy to:</p>
-<ul class="simple">
-<li><p>Assign resource-intensive functions to advanced hardware.</p></li>
-<li><p>Test these functions on local servers before deploying them to expensive hardware.</p></li>
-</ul>
-<p><img alt="" src="../_images/covalent.gif" /></p>
-<p><a class="reference external" href="https://github.com/AgnostiqHQ/covalent">Link to Covalent</a>.</p>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1126,8 +875,6 @@ Wall time: 6.78 s
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fastai-s-df-shrink-shrink-dataframe-s-memory-usage-in-one-line-of-code">6.9.1. Fastai’s df_shrink: Shrink DataFrame’s Memory Usage in One Line of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swifter-add-one-word-to-make-your-pandas-apply-23-times-faster">6.9.2. Swifter: Add One Word to Make Your Pandas Apply 23 Times Faster</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyinstrument-readable-python-profiler">6.9.3. pyinstrument: Readable Python Profiler</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-up-your-python-code-with-concurrency">6.9.4. Speed Up Your Python Code with Concurrency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covalent-pythonic-tool-to-iterate-quickly-on-large-ml-models">6.9.5. Covalent: Pythonic Tool to Iterate Quickly on Large ML Models</a></li>
 </ul>
   </nav></div>
 

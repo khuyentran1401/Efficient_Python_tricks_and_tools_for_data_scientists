@@ -211,17 +211,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">2.3.4. Interaction Between 2 Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.5. Apply Functions to Elements in a List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.4. Dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.5. Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.6. Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.7. Datetime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.8. Code Speed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.9. Good Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.10. New Features in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -566,7 +566,7 @@ document.write(`
 </div>
 </details>
 </div>
-<p>If you want to automatically find date and time with different formats in a Python string, try datefinder.</p>
+<p>To automatically find date and time with different formats in a Python string, use datefinder.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datefinder</span> <span class="kn">import</span> <span class="n">find_dates</span>
@@ -609,8 +609,7 @@ Only day: 18
 </div>
 </details>
 </div>
-<p>When working with time series, other features such as year, month, week, day of the week, day of the year, whether it is the end of the year or not, can be really helpful to predict future events. Is there a way that you can get all of those features in one line of code?</p>
-<p>Fastai’s add_datepart method allows you to do exactly that.</p>
+<p>Time series analysis often benefits from date-based features like year, month, and day of week. Fastai’s <code class="docutils literal notranslate"><span class="pre">add_datepart</span></code> method generates these features in one line of code, simplifying data preparation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -744,8 +743,7 @@ Only day: 18
 </div>
 </details>
 </div>
-<p>If you want to convert a string type to a datetime type, the common way is to use <code class="docutils literal notranslate"><span class="pre">strptime(date_string,</span> <span class="pre">format)</span></code>. But it is quite inconvenient to specify the structure of your datetime string, such as ‘ %Y-%m-%d %H:%M:%S’.</p>
-<p>There is a tool that helps you convert the string to datetime automatically called maya. You just need to parse the string and maya will figure out the structure of your string.</p>
+<p>Date string conversion to datetime can be tedious using <code class="docutils literal notranslate"><span class="pre">strptime()</span></code>. The <code class="docutils literal notranslate"><span class="pre">maya</span></code> library simplifies this process by automatically parsing date strings without needing to specify the format.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">maya</span>
@@ -823,7 +821,7 @@ Only day: 18
 </details>
 </div>
 <p>While native datetime instances are sufficient for simple cases, they can become difficult to work with when dealing with more complex scenarios.</p>
-<p>Pendulum, on the other hand, offers a more intuitive and user-friendly API, making it a convenient drop-in replacement for the standard datetime class.</p>
+<p>Conversely, Pendulum offers a more intuitive and user-friendly API, making it a convenient drop-in replacement for the standard datetime class.</p>
 <p>The examples below demonstrate the syntax differences between using the standard datetime library and Pendulum.</p>
 <p>Datetime:</p>
 <div class="cell docutils container">
@@ -917,8 +915,8 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </details>
 </div>
-<p>If you are working with unevenly-spaced time series, try traces. traces allows you to get the values of the datetimes not specified in your time series based on the values of other datetimes.</p>
-<p>For example, while logging our working hours for each date, we forgot to log the working hours for some dates.</p>
+<p>To analyze unevenly-spaced time series, you can use the <code class="docutils literal notranslate"><span class="pre">traces</span></code> library. It allows you to infer missing values in your time series based on the data you already have.</p>
+<p>Here’s an example where we log working hours for several dates but miss a few:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Log working hours for each date</span>
@@ -934,7 +932,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </div>
 </div>
-<p>We can get the working hours of dates we forgot to log using traces.</p>
+<p>To retrieve the hours for dates where no data was logged, <code class="docutils literal notranslate"><span class="pre">traces</span></code> fills in the gaps using neighboring values:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get value on 2021/09/11</span>
@@ -961,7 +959,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </div>
 </div>
-<p>We can also get the distribution of our working hours from <code class="docutils literal notranslate"><span class="pre">2021-9-10</span></code> to <code class="docutils literal notranslate"><span class="pre">2021-9-16</span></code> using <code class="docutils literal notranslate"><span class="pre">distribution</span></code>:</p>
+<p>You can also calculate the distribution of working hours over a range of dates:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span> <span class="o">=</span> <span class="n">working_hours</span><span class="o">.</span><span class="n">distribution</span><span class="p">(</span>
@@ -978,8 +976,8 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </div>
 </div>
-<p>From the output above, it seems like we work 6 hours per day 50% of the time.</p>
-<p>Get the median working hours:</p>
+<p>From this, we can infer that 50% of the time, 6 hours were logged per day.</p>
+<p>To get the median and mean working hours across the range:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
@@ -992,7 +990,6 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </div>
 </div>
-<p>Get the mean working hours:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1022,8 +1019,8 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </details>
 </div>
-<p>You have a date column and you think the holidays might affect the target of your data. Is there an easy way to extract the holidays from the date? That is when holidays package comes in handy.</p>
-<p>Holidays package provides a dictionary of holidays for different countries. The code below is to confirm whether 2020-07-04 is a US holiday and extract the name of the holiday.</p>
+<p>To identify holidays from a date, use the <code class="docutils literal notranslate"><span class="pre">holidays</span></code> package. This package offers a dictionary of holidays for various countries.</p>
+<p>The following code checks if “2020-07-04” is a US holiday and retrieves its name:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
@@ -1056,7 +1053,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
             }, 500);
             </script></div>
 </div>
-<p>The great thing about this package is that you can write the date in whatever way you want and the package is still able to detect which date you are talking about.</p>
+<p>The package handles various date formats:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">us_holidays</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;2014-7-4&quot;</span><span class="p">)</span>
@@ -1128,7 +1125,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 </details>
 </div>
-<p>If you want to handle calendars, holidays, and working-day-related computations, use Workalendar. Workalendar supports nearly 100 countries over the world.</p>
+<p>To manage calendars, holidays, and working-day computations, use the <code class="docutils literal notranslate"><span class="pre">workalendar</span></code> package. It supports nearly 100 countries worldwide.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span> 
@@ -1143,30 +1140,28 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all holidays in the US</span>
 
 <span class="n">US_cal</span> <span class="o">=</span> <span class="n">UnitedStates</span><span class="p">()</span>
-<span class="n">US_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">US_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2024</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2021, 12, 31), &#39;New year (Observed)&#39;),
- (datetime.date(2022, 1, 1), &#39;New year&#39;),
- (datetime.date(2022, 1, 17), &#39;Birthday of Martin Luther King, Jr.&#39;),
- (datetime.date(2022, 2, 21), &quot;Washington&#39;s Birthday&quot;),
- (datetime.date(2022, 5, 30), &#39;Memorial Day&#39;),
- (datetime.date(2022, 7, 4), &#39;Independence Day&#39;),
- (datetime.date(2022, 9, 5), &#39;Labor Day&#39;),
- (datetime.date(2022, 10, 10), &#39;Columbus Day&#39;),
- (datetime.date(2022, 11, 11), &#39;Veterans Day&#39;),
- (datetime.date(2022, 11, 24), &#39;Thanksgiving Day&#39;),
- (datetime.date(2022, 12, 25), &#39;Christmas Day&#39;),
- (datetime.date(2022, 12, 26), &#39;Christmas Day (Observed)&#39;)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2024, 1, 1), &#39;New year&#39;),
+ (datetime.date(2024, 1, 15), &#39;Birthday of Martin Luther King, Jr.&#39;),
+ (datetime.date(2024, 2, 19), &quot;Washington&#39;s Birthday&quot;),
+ (datetime.date(2024, 5, 27), &#39;Memorial Day&#39;),
+ (datetime.date(2024, 7, 4), &#39;Independence Day&#39;),
+ (datetime.date(2024, 9, 2), &#39;Labor Day&#39;),
+ (datetime.date(2024, 10, 14), &#39;Columbus Day&#39;),
+ (datetime.date(2024, 11, 11), &#39;Veterans Day&#39;),
+ (datetime.date(2024, 11, 28), &#39;Thanksgiving Day&#39;),
+ (datetime.date(2024, 12, 25), &#39;Christmas Day&#39;)]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">22</span><span class="p">))</span> <span class="c1"># Saturday</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span> <span class="c1"># Sunday</span>
 </pre></div>
 </div>
 </div>
@@ -1178,7 +1173,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span> <span class="c1"># Thanksgiving Day</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c1"># Labor Day</span>
 </pre></div>
 </div>
 </div>
@@ -1190,13 +1185,13 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate working days between 2022/1/19 and 2022/5/15</span>
-<span class="n">US_cal</span><span class="o">.</span><span class="n">get_working_days_delta</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate working days between 2024/1/19 and 2024/5/15</span>
+<span class="n">US_cal</span><span class="o">.</span><span class="n">get_working_days_delta</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span> <span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>81
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>82
 </pre></div>
 </div>
 </div>
@@ -1205,27 +1200,27 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get holidays in Japan</span>
 <span class="n">JA_cal</span> <span class="o">=</span> <span class="n">Japan</span><span class="p">()</span>
-<span class="n">JA_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">JA_cal</span><span class="o">.</span><span class="n">holidays</span><span class="p">(</span><span class="mi">2024</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2022, 1, 1), &#39;New year&#39;),
- (datetime.date(2022, 1, 10), &#39;Coming of Age Day&#39;),
- (datetime.date(2022, 2, 11), &#39;Foundation Day&#39;),
- (datetime.date(2022, 2, 23), &quot;The Emperor&#39;s Birthday&quot;),
- (datetime.date(2022, 3, 21), &#39;Vernal Equinox Day&#39;),
- (datetime.date(2022, 4, 29), &#39;Showa Day&#39;),
- (datetime.date(2022, 5, 3), &#39;Constitution Memorial Day&#39;),
- (datetime.date(2022, 5, 4), &#39;Greenery Day&#39;),
- (datetime.date(2022, 5, 5), &quot;Children&#39;s Day&quot;),
- (datetime.date(2022, 7, 18), &#39;Marine Day&#39;),
- (datetime.date(2022, 8, 11), &#39;Mountain Day&#39;),
- (datetime.date(2022, 9, 19), &#39;Respect-for-the-Aged Day&#39;),
- (datetime.date(2022, 9, 23), &#39;Autumnal Equinox Day&#39;),
- (datetime.date(2022, 10, 10), &#39;Sports Day&#39;),
- (datetime.date(2022, 11, 3), &#39;Culture Day&#39;),
- (datetime.date(2022, 11, 23), &#39;Labour Thanksgiving Day&#39;)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(datetime.date(2024, 1, 1), &#39;New year&#39;),
+ (datetime.date(2024, 1, 8), &#39;Coming of Age Day&#39;),
+ (datetime.date(2024, 2, 11), &#39;Foundation Day&#39;),
+ (datetime.date(2024, 2, 23), &quot;The Emperor&#39;s Birthday&quot;),
+ (datetime.date(2024, 3, 20), &#39;Vernal Equinox Day&#39;),
+ (datetime.date(2024, 4, 29), &#39;Showa Day&#39;),
+ (datetime.date(2024, 5, 3), &#39;Constitution Memorial Day&#39;),
+ (datetime.date(2024, 5, 4), &#39;Greenery Day&#39;),
+ (datetime.date(2024, 5, 5), &quot;Children&#39;s Day&quot;),
+ (datetime.date(2024, 7, 15), &#39;Marine Day&#39;),
+ (datetime.date(2024, 8, 11), &#39;Mountain Day&#39;),
+ (datetime.date(2024, 9, 16), &#39;Respect-for-the-Aged Day&#39;),
+ (datetime.date(2024, 9, 22), &#39;Autumnal Equinox Day&#39;),
+ (datetime.date(2024, 10, 14), &#39;Sports Day&#39;),
+ (datetime.date(2024, 11, 3), &#39;Culture Day&#39;),
+ (datetime.date(2024, 11, 23), &#39;Labour Thanksgiving Day&#39;)]
 </pre></div>
 </div>
 </div>
@@ -1606,7 +1601,7 @@ of the underlying intervention.</p>
 This means the causal effect can be considered statistically
 significant.</p>
 <p><img alt="" src="../_images/causal_impact.png" /></p>
-<p><a class="reference external" href="https://bit.ly/3HSmMFA">Link to tfcausalimpact</a>.</p>
+<p><a class="reference external" href="https://github.com/WillianFuks/tfcausalimpact">Link to tfcausalimpact</a>.</p>
 </section>
 <section id="quantstats-simplify-stock-performance-analysis-in-python">
 <h2><span class="section-number">6.7.13. </span>QuantStats: Simplify Stock Performance Analysis in Python<a class="headerlink" href="#quantstats-simplify-stock-performance-analysis-in-python" title="Permalink to this heading">#</a></h2>
@@ -1655,7 +1650,7 @@ significant.</p>
 </div>
 <p>Running the code above will generate a report that looks similar to this:</p>
 <p><img alt="" src="../_images/quanstats.png" /></p>
-<p><a class="reference external" href="https://bit.ly/4adDSdn">Link to QuantStats</a>.</p>
+<p><a class="reference external" href="https://github.com/ranaroussi/quantstats">Link to QuantStats</a>.</p>
 </section>
 <section id="kneed-knee-point-detection-in-time-series">
 <h2><span class="section-number">6.7.14. </span>kneed: Knee-Point Detection in Time Series<a class="headerlink" href="#kneed-knee-point-detection-in-time-series" title="Permalink to this heading">#</a></h2>
@@ -1689,7 +1684,7 @@ significant.</p>
 <img alt="../_images/5faaf85607e549cde6ceb7ea2c20b7e64fdec801c6ad304f664018113f273e09.png" src="../_images/5faaf85607e549cde6ceb7ea2c20b7e64fdec801c6ad304f664018113f273e09.png" />
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/49tFa2J">Link to kneed</a>.</p>
+<p><a class="reference external" href="https://github.com/arvkevi/kneed">Link to kneed</a>.</p>
 </section>
 <section id="neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax">
 <h2><span class="section-number">6.7.15. </span>NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax<a class="headerlink" href="#neuralforecast-streamline-neural-forecasting-with-familiar-sklearn-syntax" title="Permalink to this heading">#</a></h2>
@@ -1722,7 +1717,7 @@ significant.</p>
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/44h9KM7">Link to NeuralForecast</a>.</p>
+<p><a class="reference external" href="https://github.com/Nixtla/neuralforecast">Link to NeuralForecast</a>.</p>
 </section>
 <section id="scaling-time-series-forecasting-with-statsforecast-and-spark">
 <h2><span class="section-number">6.7.16. </span>Scaling Time-Series Forecasting with StatsForecast and Spark<a class="headerlink" href="#scaling-time-series-forecasting-with-statsforecast-and-spark" title="Permalink to this heading">#</a></h2>
@@ -1800,7 +1795,7 @@ only showing top 5 rows
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/3KNsl9P">Link to StatsForecast.</a></p>
+<p><a class="reference external" href="https://github.com/Nixtla/statsforecast/">Link to StatsForecast.</a></p>
 </section>
 <section id="beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">
 <h2><span class="section-number">6.7.17. </span>Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting<a class="headerlink" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting" title="Permalink to this heading">#</a></h2>
@@ -2150,7 +2145,7 @@ only showing top 5 rows
 <img alt="../_images/f9dd84ef015aa6a2c31bfde0c69daac1dd76196da6fe0e75d024bce954ad7552.png" src="../_images/f9dd84ef015aa6a2c31bfde0c69daac1dd76196da6fe0e75d024bce954ad7552.png" />
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/4bsUQ7o">Link to MLForecast</a>.</p>
+<p><a class="reference external" href="https://github.com/Nixtla/mlforecast">Link to MLForecast</a>.</p>
 </section>
 <section id="sliding-window-approach-to-time-series-cross-validation">
 <h2><span class="section-number">6.7.18. </span>Sliding Window Approach to Time Series Cross-Validation<a class="headerlink" href="#sliding-window-approach-to-time-series-cross-validation" title="Permalink to this heading">#</a></h2>
@@ -2296,7 +2291,7 @@ only showing top 5 rows
 </div>
 </div>
 <p>Notice that in each cutoff period, we generated a forecast for the next 24 hours using only the data y before said period.</p>
-<p><a class="reference external" href="https://bit.ly/3LnNrM5">Link to MLForecast</a>.</p>
+<p><a class="reference external" href="https://github.com/Nixtla/mlforecast">Link to MLForecast</a>.</p>
 </section>
 <section id="hierarchical-forecasting-in-python">
 <h2><span class="section-number">6.7.19. </span>Hierarchical Forecasting in Python<a class="headerlink" href="#hierarchical-forecasting-in-python" title="Permalink to this heading">#</a></h2>
@@ -2628,7 +2623,7 @@ Length: 425, dtype: int64
 </table>
 </div></div></div>
 </div>
-<p><a class="reference external" href="https://bit.ly/4cYEFjJ">Link to Hierarchical Forecast</a></p>
+<p><a class="reference external" href="https://github.com/Nixtla/hierarchicalforecast">Link to Hierarchical Forecast</a></p>
 </section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
 <h2><span class="section-number">6.7.20. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
@@ -2965,7 +2960,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/3VXi3Ks">Link to tsfresh</a>.</p>
+<p><a class="reference external" href="https://github.com/blue-yonder/tsfresh">Link to tsfresh</a>.</p>
 </section>
 <section id="tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">
 <h2><span class="section-number">6.7.22. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
@@ -3046,7 +3041,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 </div>
 </div>
 <p>This graph effectively highlights the trend and seasonal components present in the time series data through the use of a smoothed representation.</p>
-<p><a class="reference external" href="https://bit.ly/3L8KXky">Link to tsmoothie</a>.</p>
+<p><a class="reference external" href="https://github.com/cerlymarco/tsmoothie">Link to tsmoothie</a>.</p>
 </section>
 <section id="backtesting-assess-trading-strategy-performance-effortlessly-in-python">
 <h2><span class="section-number">6.7.23. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
@@ -3189,7 +3184,7 @@ dtype: object
 </div>
 </div>
 <p><img alt="" src="../_images/backtesting.png" /></p>
-<p><a class="reference external" href="https://bit.ly/3zwi0g3">Link to Backtesting</a>.</p>
+<p><a class="reference external" href="https://github.com/kernc/backtesting.py">Link to Backtesting</a>.</p>
 </section>
 </section>
 

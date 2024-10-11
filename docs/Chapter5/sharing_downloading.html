@@ -211,17 +211,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">2.3.4. Interaction Between 2 Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.5. Apply Functions to Elements in a List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.4. Dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.5. Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.6. Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.7. Datetime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.8. Code Speed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.9. Good Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.10. New Features in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -513,10 +513,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.4. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.1. gdown: Download a File from Google Drive in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.2. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.3. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
 </ul>
             </nav>
         </div>
@@ -531,80 +530,8 @@ document.write(`
   <section id="sharing-and-downloading">
 <h1><span class="section-number">6.8. </span>Sharing and Downloading<a class="headerlink" href="#sharing-and-downloading" title="Permalink to this heading">#</a></h1>
 <p>This section covers some tools to share and download your data.</p>
-<section id="datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">
-<h2><span class="section-number">6.8.1. </span>Datapane: Publish your Python Objects on the Web in 2 Lines of Code<a class="headerlink" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code" title="Permalink to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>datapane<span class="w"> </span>plotly
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>If you want to put together your pandas.DataFrame, interactive charts such as Plotly, Bokeh, Altair, or markdown into a nice report and publish it on the web, try Datapane. The code below shows how you can publish your Python objects using Datapane in a few lines of code.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datapane</span> <span class="k">as</span> <span class="nn">dp</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-
-<span class="c1"># Scripts to create df and chart</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">gapminder</span><span class="p">()</span>
-
-<span class="n">chart</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;year==2007&quot;</span><span class="p">),</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;gdpPercap&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;lifeExp&quot;</span><span class="p">,</span>
-    <span class="n">size</span><span class="o">=</span><span class="s2">&quot;pop&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;continent&quot;</span><span class="p">,</span>
-    <span class="n">hover_name</span><span class="o">=</span><span class="s2">&quot;country&quot;</span><span class="p">,</span>
-    <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">size_max</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="c1"># Once you have the df and the chart, simply use</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">dp</span><span class="o">.</span><span class="n">Report</span><span class="p">(</span>
-    <span class="n">dp</span><span class="o">.</span><span class="n">Text</span><span class="p">(</span><span class="s2">&quot;my simple report&quot;</span><span class="p">),</span>  <span class="c1"># add description</span>
-    <span class="n">dp</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span><span class="n">df</span><span class="p">),</span>  <span class="c1"># create a table</span>
-    <span class="n">dp</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">chart</span><span class="p">),</span>  <span class="c1"># create a chart</span>
-<span class="p">)</span>
-
-<span class="c1"># Publish your report</span>
-<span class="n">r</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<p>Uploading report and associated data - <em>please wait…</em></p>
-<p>Report successfully uploaded, click <a class="reference external" href="https://datapane.com/u/khuyentran1401/reports/P3XvvkQ/example/">here</a> to view and share your report</p>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "import datapane as dp \nimport pandas as pd \nimport numpy as np \nimport plotly.express as px\n\n# Scripts to create df and chart \ndf = px.data.gapminder()\n\nchart = px.scatter(df.query(\"year==2007\"), x=\"gdpPercap\", y=\"lifeExp\",\n\t         size=\"pop\", color=\"continent\",\n                 hover_name=\"country\", log_x=True, size_max=60)\n\n# Once you have the df and the chart, simply use\nr = dp.Report(\n    dp.Text(\"my simple report\"), # add description\n    dp.DataTable(df), # create a table\n    dp.Plot(chart) # create a chart\n)\n\n# Publish your report\nr.upload(name='example')";
-                var nbb_formatted_code = "import datapane as dp\nimport pandas as pd\nimport numpy as np\nimport plotly.express as px\n\n# Scripts to create df and chart\ndf = px.data.gapminder()\n\nchart = px.scatter(\n    df.query(\"year==2007\"),\n    x=\"gdpPercap\",\n    y=\"lifeExp\",\n    size=\"pop\",\n    color=\"continent\",\n    hover_name=\"country\",\n    log_x=True,\n    size_max=60,\n)\n\n# Once you have the df and the chart, simply use\nr = dp.Report(\n    dp.Text(\"my simple report\"),  # add description\n    dp.DataTable(df),  # create a table\n    dp.Plot(chart),  # create a chart\n)\n\n# Publish your report\nr.upload(name=\"example\")";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
-</div>
-<p><a class="reference external" href="https://datapane.com/">Link to Datapane</a></p>
-<p><a class="reference external" href="https://towardsdatascience.com/introduction-to-datapane-a-python-library-to-build-interactive-reports-4593fd3cb9c8?sk=b8dd5203d1a37b0f08ed15ea65524d89">Link to my article about Datapane</a></p>
-</section>
 <section id="gdown-download-a-file-from-google-drive-in-python">
-<h2><span class="section-number">6.8.2. </span>gdown: Download a File from Google Drive in Python<a class="headerlink" href="#gdown-download-a-file-from-google-drive-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.8.1. </span>gdown: Download a File from Google Drive in Python<a class="headerlink" href="#gdown-download-a-file-from-google-drive-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -667,7 +594,7 @@ To: /home/khuyen/book/book/Chapter4/Twitter.zip
 <p><a class="reference external" href="https://pypi.org/project/gdown/">Link to gdown</a>.</p>
 </section>
 <section id="pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">
-<h2><span class="section-number">6.8.3. </span>pyserde: Effortless Serialization and Deserialization of Dataclass Objects<a class="headerlink" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.8.2. </span>pyserde: Effortless Serialization and Deserialization of Dataclass Objects<a class="headerlink" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -755,7 +682,7 @@ name: user1
 <p><a class="reference external" href="https://github.com/yukinarit/pyserde">Link to pyserde</a>.</p>
 </section>
 <section id="itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">
-<h2><span class="section-number">6.8.4. </span>ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back<a class="headerlink" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.8.3. </span>ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back<a class="headerlink" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -868,10 +795,9 @@ name: user1
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datapane-publish-your-python-objects-on-the-web-in-2-lines-of-code">6.8.1. Datapane: Publish your Python Objects on the Web in 2 Lines of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.2. gdown: Download a File from Google Drive in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.3. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.4. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gdown-download-a-file-from-google-drive-in-python">6.8.1. gdown: Download a File from Google Drive in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyserde-effortless-serialization-and-deserialization-of-dataclass-objects">6.8.2. pyserde: Effortless Serialization and Deserialization of Dataclass Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#itsdangerous-safely-pass-trusted-data-to-untrusted-environments-and-back">6.8.3. ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back</a></li>
 </ul>
   </nav></div>
 

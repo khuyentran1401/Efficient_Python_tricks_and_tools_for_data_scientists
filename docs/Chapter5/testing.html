@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -541,12 +541,10 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.26. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.27. hypothesis: Property-based Testing in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.28. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.29. Check Conflicting Labels with Deepchecks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.30. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.31. leAB: AB Testing Analysis in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.32. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.33. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.34. DeepEval: Unit Testing for Your LLM Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.29. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.30. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.31. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.32. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
             </nav>
         </div>
@@ -2860,192 +2858,8 @@ Results (0.38s):
 </div>
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
-<section id="check-conflicting-labels-with-deepchecks">
-<h2><span class="section-number">6.13.29. </span>Check Conflicting Labels with Deepchecks<a class="headerlink" href="#check-conflicting-labels-with-deepchecks" title="Permalink to this heading">#</a></h2>
-<p>Sometimes, your data might have identical samples with different labels. This might be because the data was mislabeled.</p>
-<p>It is good to identify these conflicting labels in your data before using the data to train your ML model. To check conflicting labels in your data, use deepchecks.</p>
-<p>In the example below, deepchecks identified that samples 0 and 1 have the same features but different labels.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
-<span class="kn">from</span> <span class="nn">deepchecks.tabular</span> <span class="kn">import</span> <span class="n">Dataset</span> 
-<span class="kn">from</span> <span class="nn">deepchecks.tabular.checks</span> <span class="kn">import</span> <span class="n">ConflictingLabels</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;value1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> 
-    <span class="s2">&quot;value2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
-    <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]</span>
-<span class="p">})</span>
-<span class="n">df</span> 
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>value1</th>
-      <th>value2</th>
-      <th>label</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>2</td>
-      <td>a</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>1</td>
-      <td>2</td>
-      <td>b</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>4</td>
-      <td>c</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;label&#39;</span><span class="p">)</span>
-<span class="n">ConflictingLabels</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>deepchecks - WARNING - It is recommended to initialize Dataset with categorical features by doing &quot;Dataset(df, cat_features=categorical_list)&quot;. No categorical features were passed, therefore heuristically inferring categorical features in the data. 2 categorical features were inferred.: value1, value2
-</pre></div>
-</div>
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "00283018bced42abab72ff96033fcac1", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-</section>
-<section id="evaluate-your-ml-model-performance-with-simple-model-comparison">
-<h2><span class="section-number">6.13.30. </span>Evaluate Your ML Model Performance with Simple Model Comparison<a class="headerlink" href="#evaluate-your-ml-model-performance-with-simple-model-comparison" title="Permalink to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deepchecks
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>How do you check if your ML model is trained properly? One approach is to use a simple model for comparison.</p>
-<p>A simple model establishes a minimum performance benchmark for the given task. A model achieving less or a similar score to the simple model indicates a possible problem with the model.</p>
-<p>The following code shows how to evaluate a model’s performance using Deepchecks’ simple model comparison.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.tabular.datasets.classification.phishing</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">load_data</span><span class="p">,</span> <span class="n">load_fitted_model</span><span class="p">)</span>
-
-<span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">load_fitted_model</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">steps</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;preprocessing&#39;,
-  ColumnTransformer(transformers=[(&#39;num&#39;, SimpleImputer(),
-                                   [&#39;urlLength&#39;, &#39;numDigits&#39;, &#39;numParams&#39;,
-                                    &#39;num_%20&#39;, &#39;num_@&#39;, &#39;entropy&#39;, &#39;hasHttp&#39;,
-                                    &#39;hasHttps&#39;, &#39;dsr&#39;, &#39;dse&#39;, &#39;bodyLength&#39;,
-                                    &#39;numTitles&#39;, &#39;numImages&#39;, &#39;numLinks&#39;,
-                                    &#39;specialChars&#39;, &#39;scriptLength&#39;, &#39;sbr&#39;, &#39;bscr&#39;,
-                                    &#39;sscr&#39;]),
-                                  (&#39;cat&#39;,
-                                   Pipeline(steps=[(&#39;imputer&#39;,
-                                                    SimpleImputer(strategy=&#39;most_frequent&#39;)),
-                                                   (&#39;encoder&#39;, OneHotEncoder())]),
-                                   [&#39;ext&#39;])])),
- (&#39;model&#39;,
-  RandomForestClassifier(criterion=&#39;entropy&#39;, n_estimators=40, random_state=0))]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.tabular.checks</span> <span class="kn">import</span> <span class="n">SimpleModelComparison</span>
-
-<span class="c1"># Using tree model as a simple model</span>
-<span class="n">check</span> <span class="o">=</span> <span class="n">SimpleModelComparison</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;tree&#39;</span><span class="p">)</span>
-<span class="n">check</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "18c5dbd0a25d4e25a03f577c98ee641a", "version_major": 2, "version_minor": 0}</script></div>
-</div>
-<p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
-<span class="c1"># Original data</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]])</span>
-
-<span class="c1"># Scaling transformation</span>
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">scaled_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Inverse transformation</span>
-<span class="n">original_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">scaled_data</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original data:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Scaled data:&quot;</span><span class="p">,</span> <span class="n">scaled_data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Restored data:&quot;</span><span class="p">,</span> <span class="n">original_data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original data: [[1 3 5 7 9]]
-Scaled data: [[0. 0. 0. 0. 0.]]
-Restored data: [[1. 3. 5. 7. 9.]]
-</pre></div>
-</div>
-</div>
-</div>
-</section>
 <section id="leab-ab-testing-analysis-in-python">
-<h2><span class="section-number">6.13.31. </span>leAB: AB Testing Analysis in Python<a class="headerlink" href="#leab-ab-testing-analysis-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.29. </span>leAB: AB Testing Analysis in Python<a class="headerlink" href="#leab-ab-testing-analysis-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3153,7 +2967,7 @@ Restored data: [[1. 3. 5. 7. 9.]]
 <p><a class="reference external" href="https://github.com/tlentali/leab">Link to leAB</a>.</p>
 </section>
 <section id="pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">
-<h2><span class="section-number">6.13.32. </span>pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite<a class="headerlink" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.30. </span>pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite<a class="headerlink" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3207,7 +3021,7 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://github.com/ClearcodeHQ/pytest-postgresql">Link to pytest-postgresql</a>.</p>
 </section>
 <section id="maintain-the-accuracy-of-docstring-examples-with-doctest">
-<h2><span class="section-number">6.13.33. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.31. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this heading">#</a></h2>
 <p>Including examples in a docstring is helpful. However, examples can become obsolete as the function evolves.</p>
 <p>To ensure that the examples remain accurate, use doctest.</p>
 <div class="cell tag_remove-output docutils container">
@@ -3266,7 +3080,7 @@ Test passed.
 </div>
 </section>
 <section id="deepeval-unit-testing-for-your-llm-model">
-<h2><span class="section-number">6.13.34. </span>DeepEval: Unit Testing for Your LLM Model<a class="headerlink" href="#deepeval-unit-testing-for-your-llm-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.32. </span>DeepEval: Unit Testing for Your LLM Model<a class="headerlink" href="#deepeval-unit-testing-for-your-llm-model" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3431,12 +3245,10 @@ Downloading FactualConsistencyModel (may take up to 2 minutes if running for th�
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.13.26. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.13.27. hypothesis: Property-based Testing in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.13.28. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-conflicting-labels-with-deepchecks">6.13.29. Check Conflicting Labels with Deepchecks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate-your-ml-model-performance-with-simple-model-comparison">6.13.30. Evaluate Your ML Model Performance with Simple Model Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.31. leAB: AB Testing Analysis in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.32. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.33. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.34. DeepEval: Unit Testing for Your LLM Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.13.29. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.13.30. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.13.31. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.13.32. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
   </nav></div>
 
