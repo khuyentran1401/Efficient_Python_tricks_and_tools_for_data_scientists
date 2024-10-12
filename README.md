@@ -26,11 +26,14 @@ This book expects you to have some basic knowledge of Python and data science.
 
 You should also expect bite-size code snippets for each section. This will allow you to obtain multiple pieces of knowledge in fewer than one minute. I included the link to the resources for every tools introduced in case you want to explore them further. 
 
-## About This Book
-This book includes more than 800 tips and tools I have shared daily on my website, [CodeCut](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=about_this_book). If you want to get the updated of new tips on your mailbox, you can subscribe to [my newsletter](https://codecut.ai/daily-tips-form/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=subscribe_to_newsletter). 
+## Printable PDF Guide
+
+For a printer-friendly version of the tools mentioned in this book, sign up for [CodeCut's free PDF guide](https://codecut.ai/data-scientist-toolkit/?utm_source=github&utm_medium=defficient_python_tricks&utm_campaign=free_pdf). This comprehensive 264-page document covers over 100 essential data science tools, providing you with a valuable reference that you can print and keep at your desk.
 
 ## About The Author
 
 ![image](img/mypic.jpeg)
 
 Khuyen Tran wrote over 150 data science articles with 100k+ views per month on Towards Data Science. She also wrote 800+ daily data science tips at [CodeCut](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=about_khuyen_tran). Her current mission is to make open-source more accessible to the data science community. 
+
+
