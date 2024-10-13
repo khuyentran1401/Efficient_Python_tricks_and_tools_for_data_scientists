@@ -517,7 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-dataframe-transformations-select-vs-withcolumn">6.15.2. PySpark DataFrame Transformations: select vs withColumn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spark-dataframe-avoid-out-of-memory-errors-with-lazy-evaluation">6.15.3. Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.4. Pandas-Friendly Big Data Processing with Spark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.5. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-safer-and-cleaner-spark-sql-with-pyspark-s-parameterized-queries">6.15.5. Writing Safer and Cleaner Spark SQL with PySpark’s Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.6. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.7. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.8. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
@@ -1226,8 +1226,8 @@ only showing top 5 rows
 </div>
 </div>
 </section>
-<section id="pyspark-sql-enhancing-reusability-with-parameterized-queries">
-<h2><span class="section-number">6.15.5. </span>PySpark SQL: Enhancing Reusability with Parameterized Queries<a class="headerlink" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries" title="Permalink to this heading">#</a></h2>
+<section id="writing-safer-and-cleaner-spark-sql-with-pyspark-s-parameterized-queries">
+<h2><span class="section-number">6.15.5. </span>Writing Safer and Cleaner Spark SQL with PySpark’s Parameterized Queries<a class="headerlink" href="#writing-safer-and-cleaner-spark-sql-with-pyspark-s-parameterized-queries" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1241,83 +1241,107 @@ only showing top 5 rows
 </div>
 </details>
 </div>
-<p>In PySpark, parametrized queries enable the same query structure to be reused with different inputs, without rewriting the SQL.</p>
-<p>Additionally, they safeguard against SQL injection attacks by treating input data as parameters rather than as executable code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>When working with Spark SQL queries, using regular Python string interpolation can lead to security vulnerabilities and require extra steps like creating temporary views. PySpark offers a better solution with parameterized queries, which:</p>
+<ul class="simple">
+<li><p>Protect against SQL injection</p></li>
+<li><p>Allow using DataFrame objects directly in queries</p></li>
+<li><p>Automatically handle date formatting</p></li>
+<li><p>Provide a more expressive way to write SQL queries</p></li>
+</ul>
+<p>Let’s compare the traditional approach with parameterized queries:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Spark DataFrame</span>
-<span class="n">item_price_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+<span class="n">item_price_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="s2">&quot;transaction_date&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+
 <span class="n">item_price</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">item_price_pandas</span><span class="p">)</span>
 <span class="n">item_price</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+
-|item_id|price|
-+-------+-----+
-|      1|    4|
-|      2|    2|
-|      3|    5|
-|      4|    1|
-+-------+-----+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+----------------+
+|item_id|price|transaction_date|
++-------+-----+----------------+
+|      1|    4|      2023-01-15|
+|      2|    2|      2023-02-01|
+|      3|    5|      2023-03-10|
+|      4|    1|      2023-04-22|
++-------+-----+----------------+
 </pre></div>
 </div>
 </div>
 </div>
+<p>Traditional approach (less secure, requires temp view and wrapping the date in quotes):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT item_id, price </span>
-<span class="s2">FROM </span><span class="si">{item_price}</span><span class="s2"> </span>
-<span class="s2">WHERE item_id = </span><span class="si">{id_val}</span><span class="s2"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">item_price</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;item_price_view&quot;</span><span class="p">)</span>
+<span class="n">transaction_date</span> <span class="o">=</span> <span class="s2">&quot;2023-02-15&quot;</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;SELECT *</span>
+<span class="s2">FROM item_price_view </span>
+<span class="s2">WHERE transaction_date &gt; &#39;</span><span class="si">{</span><span class="n">transaction_date</span><span class="si">}</span><span class="s2">&#39;</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">id_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">item_price</span><span class="o">=</span><span class="n">item_price</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+----------------+
+|item_id|price|transaction_date|
++-------+-----+----------------+
+|      3|    5|      2023-03-10|
+|      4|    1|      2023-04-22|
++-------+-----+----------------+
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+
-|item_id|price|
-+-------+-----+
-|      1|    4|
-+-------+-----+
-</pre></div>
 </div>
 </div>
-</div>
+<p>PySpark’s parameterized query approach (secure, no temp view and quotes needed):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">id_val</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">item_price</span><span class="o">=</span><span class="n">item_price</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;SELECT *</span>
+<span class="s2">FROM </span><span class="si">{item_price}</span><span class="s2"> </span>
+<span class="s2">WHERE transaction_date &gt; </span><span class="si">{transaction_date}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">item_price</span><span class="o">=</span><span class="n">item_price</span><span class="p">,</span> <span class="n">transaction_date</span><span class="o">=</span><span class="n">transaction_date</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+
-|item_id|price|
-+-------+-----+
-|      2|    2|
-+-------+-----+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+----------------+
+|item_id|price|transaction_date|
++-------+-----+----------------+
+|      3|    5|      2023-03-10|
+|      4|    1|      2023-04-22|
++-------+-----+----------------+
 </pre></div>
 </div>
 </div>
 </div>
+<p>This method allows for easy parameter substitution and direct use of DataFrames, making your Spark SQL queries both safer and more convenient to write and maintain.</p>
 </section>
 <section id="working-with-arrays-made-easier-in-spark-3-5">
 <h2><span class="section-number">6.15.6. </span>Working with Arrays Made Easier in Spark 3.5<a class="headerlink" href="#working-with-arrays-made-easier-in-spark-3-5" title="Permalink to this heading">#</a></h2>
@@ -2297,7 +2321,7 @@ Number of Orders:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-dataframe-transformations-select-vs-withcolumn">6.15.2. PySpark DataFrame Transformations: select vs withColumn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spark-dataframe-avoid-out-of-memory-errors-with-lazy-evaluation">6.15.3. Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-friendly-big-data-processing-with-spark">6.15.4. Pandas-Friendly Big Data Processing with Spark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-sql-enhancing-reusability-with-parameterized-queries">6.15.5. PySpark SQL: Enhancing Reusability with Parameterized Queries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-safer-and-cleaner-spark-sql-with-pyspark-s-parameterized-queries">6.15.5. Writing Safer and Cleaner Spark SQL with PySpark’s Parameterized Queries</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.6. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.7. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.8. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
