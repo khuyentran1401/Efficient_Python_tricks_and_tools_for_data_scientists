@@ -531,7 +531,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-steps-share-data-between-tests">6.13.16. pytest-steps: Share Data Between Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">6.13.17. pytest-picked: Run the Tests Related to the Unstaged Files in Git</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-testing-of-python-class-with-setup-method">6.13.18. Efficient Testing of Python Class with setUp Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freeze-dynamic-time-in-unit-testing">6.13.19. FreezeGun: Freeze Dynamic Time in Unit Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freezing-time-for-reliable-python-testing">6.13.19. FreezeGun: Freezing Time for Reliable Python Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.20. Simulate External Services in Testing with Mock Objects</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-mock-vs-unittest-mock-simplifying-mocking-in-python-tests">6.13.21. pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.13.22. tmp_path: Create a Temporary Directory for Testing</a></li>
@@ -1758,8 +1758,8 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </div>
 </div>
 </section>
-<section id="freezegun-freeze-dynamic-time-in-unit-testing">
-<h2><span class="section-number">6.13.19. </span>FreezeGun: Freeze Dynamic Time in Unit Testing<a class="headerlink" href="#freezegun-freeze-dynamic-time-in-unit-testing" title="Permalink to this heading">#</a></h2>
+<section id="freezegun-freezing-time-for-reliable-python-testing">
+<h2><span class="section-number">6.13.19. </span>FreezeGun: Freezing Time for Reliable Python Testing<a class="headerlink" href="#freezegun-freezing-time-for-reliable-python-testing" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1773,7 +1773,8 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </div>
 </details>
 </div>
-<p>Unit tests require static input, but time is dynamic and constantly changing. With FreezeGun, you can freeze time to a specific point, ensuring accurate verification of the tested features.</p>
+<p>Testing time-dependent functions can be challenging and unreliable as the results may vary based on when the test is executed. This results in flaky tests that pass or fail inconsistently.</p>
+<p>With FreezeGun, you can freeze time at a particular point, ensuring your tests always run with the same date context.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_freezegun.py
@@ -1783,9 +1784,14 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <span class="k">def</span> <span class="nf">get_day_of_week</span><span class="p">():</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
 
-<span class="nd">@freeze_time</span><span class="p">(</span><span class="s2">&quot;2023-06-13&quot;</span><span class="p">)</span>
+<span class="nd">@freeze_time</span><span class="p">(</span><span class="s2">&quot;2024-10-13&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">test_get_day_of_week</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">get_day_of_week</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">get_day_of_week</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_freezegun.py
 </pre></div>
 </div>
 </div>
@@ -1796,18 +1802,21 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0
+platform darwin -- Python 3.11.6, pytest-8.2.0, pluggy-1.5.0
+Fugue tests will be initialized with options:
 rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-3.6.2
+plugins: anyio-4.0.0, dash-2.17.1, fugue-0.9.1, Faker-19.13.0, returns-0.22.0
 collected 1 item                                                               
 
 test_freezegun.py <span class=" -Color -Color-Green">.                                                      [100%]</span>
 
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.03s ===============================</span>
+<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.07s ===============================</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>This code uses <code class="docutils literal notranslate"><span class="pre">get_day_of_week()</span></code> to return the current weekday (0-6). The <code class="docutils literal notranslate"><span class="pre">&#64;freeze_time(&quot;2024-10-13&quot;)</span></code> decorator sets a fixed date (Sunday, October 13, 2024).</p>
+<p>The test calls <code class="docutils literal notranslate"><span class="pre">get_day_of_week()</span></code> and checks if it returns 6 (Sunday). This test will consistently pass because FreezeGun ensures <code class="docutils literal notranslate"><span class="pre">datetime.datetime.now()</span></code> always returns the specified frozen date.</p>
 <p><a class="reference external" href="https://github.com/spulec/freezegun">Link to FreezeGun</a>.</p>
 </section>
 <section id="simulate-external-services-in-testing-with-mock-objects">
@@ -3235,7 +3244,7 @@ Downloading FactualConsistencyModel (may take up to 2 minutes if running for thâ
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-steps-share-data-between-tests">6.13.16. pytest-steps: Share Data Between Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-picked-run-the-tests-related-to-the-unstaged-files-in-git">6.13.17. pytest-picked: Run the Tests Related to the Unstaged Files in Git</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-testing-of-python-class-with-setup-method">6.13.18. Efficient Testing of Python Class with setUp Method</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freeze-dynamic-time-in-unit-testing">6.13.19. FreezeGun: Freeze Dynamic Time in Unit Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezegun-freezing-time-for-reliable-python-testing">6.13.19. FreezeGun: Freezing Time for Reliable Python Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulate-external-services-in-testing-with-mock-objects">6.13.20. Simulate External Services in Testing with Mock Objects</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-mock-vs-unittest-mock-simplifying-mocking-in-python-tests">6.13.21. pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.13.22. tmp_path: Create a Temporary Directory for Testing</a></li>
