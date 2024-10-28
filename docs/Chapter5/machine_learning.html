@@ -531,6 +531,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autogluon-fast-and-accurate-ml-in-3-lines-of-code">6.5.16. AutoGluon: Fast and Accurate ML in 3 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.17. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-ml-model-integration-with-fastapi">6.5.18. Simplifying ML Model Integration with FastAPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imodels-simplifying-machine-learning-with-interpretable-models">6.5.19. imodels: Simplifying Machine Learning with Interpretable Models</a></li>
 </ul>
             </nav>
         </div>
@@ -2058,6 +2059,69 @@ scipy==1.11.3
 </pre></div>
 </div>
 </section>
+<section id="imodels-simplifying-machine-learning-with-interpretable-models">
+<h2><span class="section-number">6.5.19. </span>imodels: Simplifying Machine Learning with Interpretable Models<a class="headerlink" href="#imodels-simplifying-machine-learning-with-interpretable-models" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>imodels
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Interpreting decisions made by complex modern machine learning models can be challenging.</p>
+<p>imodels, a Python package, replaces black-box models (e.g. random forests) with simpler and interpretable alternatives (e.g. rule lists) without losing accuracy.</p>
+<p>imodels works like scikit-learn models, making it easy to integrate into existing workflows.</p>
+<p>Here’s an example of fitting an interpretable decision tree to predict juvenile delinquency:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">imodels</span> <span class="kn">import</span> <span class="n">get_clean_dataset</span><span class="p">,</span> <span class="n">HSTreeClassifierCV</span> 
+
+<span class="c1"># Prepare data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">feature_names</span> <span class="o">=</span> <span class="n">get_clean_dataset</span><span class="p">(</span><span class="s1">&#39;juvenile&#39;</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Initialize a tree model and specify only 4 leaf nodes</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">HSTreeClassifierCV</span><span class="p">(</span><span class="n">max_leaf_nodes</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>  
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="n">feature_names</span><span class="p">)</span>  
+
+<span class="c1"># Make predictions</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> 
+
+<span class="c1"># Print the model</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>fetching juvenile_clean from imodels
+&gt; ------------------------------
+&gt; Decision Tree with Hierarchical Shrinkage
+&gt; 	Prediction is made by looking at the value in the appropriate leaf of the tree
+&gt; ------------------------------
+|--- friends_broken_in_steal:1 &lt;= 0.50
+|   |--- physically_ass:0 &lt;= 0.50
+|   |   |--- weights: [0.71, 0.29] class: 0.0
+|   |--- physically_ass:0 &gt;  0.50
+|   |   |--- weights: [0.95, 0.05] class: 0.0
+|--- friends_broken_in_steal:1 &gt;  0.50
+|   |--- non-exp_past_year_marijuana:0 &lt;= 0.50
+|   |   |--- weights: [0.33, 0.67] class: 1.0
+|   |--- non-exp_past_year_marijuana:0 &gt;  0.50
+|   |   |--- weights: [0.60, 0.40] class: 0.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>This tree structure clearly shows how predictions are made based on feature values, providing transparency into the model’s decision-making process. The hierarchical shrinkage technique also improves predictive performance compared to standard decision trees.</p>
+<p><a class="reference external" href="https://github.com/csinva/imodels">Link to imodels</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2141,6 +2205,7 @@ scipy==1.11.3
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autogluon-fast-and-accurate-ml-in-3-lines-of-code">6.5.16. AutoGluon: Fast and Accurate ML in 3 Lines of Code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.17. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-ml-model-integration-with-fastapi">6.5.18. Simplifying ML Model Integration with FastAPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imodels-simplifying-machine-learning-with-interpretable-models">6.5.19. imodels: Simplifying Machine Learning with Interpretable Models</a></li>
 </ul>
   </nav></div>
 

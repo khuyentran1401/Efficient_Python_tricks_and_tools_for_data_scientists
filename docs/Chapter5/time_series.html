@@ -536,6 +536,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.24. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
 </ul>
             </nav>
         </div>
@@ -3186,6 +3187,52 @@ dtype: object
 <p><img alt="" src="../_images/backtesting.png" /></p>
 <p><a class="reference external" href="https://github.com/kernc/backtesting.py">Link to Backtesting</a>.</p>
 </section>
+<section id="chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">
+<h2><span class="section-number">6.7.24. </span>Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting<a class="headerlink" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/amazon-science/chronos-forecasting.git
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Probabilistic time series forecasting helps data scientists and analysts predict future values with uncertainty estimates. To leverage pre-trained language models for accurate time series predictions, use Chronos.</p>
+<p>The power of Chronos lies in its ability to generate accurate forecasts right out of the box, eliminating the need for extensive model training or fine-tuning in many cases.</p>
+<p>Here’s a quick example of using Chronos for forecasting:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">chronos</span> <span class="kn">import</span> <span class="n">ChronosPipeline</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">ChronosPipeline</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s2">&quot;amazon/chronos-t5-small&quot;</span><span class="p">,</span> <span class="n">torch_dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/AileenNielsen/TimeSeriesAnalysisWithPython/master/data/AirPassengers.csv&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># forecast shape: [num_series, num_samples, prediction_length]</span>
+<span class="n">forecast</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="n">context</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;#Passengers&quot;</span><span class="p">]),</span> <span class="n">prediction_length</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">20</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "fc9f31923fc5459693eb71c7202ff32d", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>This code loads the air passenger data, uses the pretrained Chronos model to generate 20 possible forecasts for the next 12 months, and then calculates the median forecast along with a 90% prediction interval.</p>
+<p>The Chronos model internally transforms the numerical time series into tokens, processes them through a language model architecture, and then converts the output back into numerical forecasts. This approach allows it to capture complex patterns and dependencies in the data, potentially outperforming traditional forecasting methods, especially in zero-shot scenarios where the model hasn’t been specifically trained on the target time series.</p>
+<p><a class="reference external" href="https://github.com/amazon-science/chronos-forecasting">Link to Chronos</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3274,6 +3321,7 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.24. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
 </ul>
   </nav></div>
 
