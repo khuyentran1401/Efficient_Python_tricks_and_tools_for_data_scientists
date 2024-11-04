@@ -1227,28 +1227,25 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>imbalanced-learn<span class="o">==</span><span class="m">0</span>.10.0<span class="w"> </span><span class="nv">mlxtend</span><span class="o">==</span><span class="m">0</span>.21.0
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>imbalanced-learn<span class="o">==</span><span class="m">0</span>.10.0<span class="w"> </span><span class="nv">mlxtend</span><span class="o">==</span><span class="m">0</span>.21.0<span class="w"> </span>scikit-learn<span class="o">==</span><span class="m">1</span>.2.2
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>To address issues with imbalanced datasets, where one class significantly outweighs others, you can use the <code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code> library to generate additional samples for under-represented classes.</p>
-<p>Here’s how you can use the <code class="docutils literal notranslate"><span class="pre">RandomOverSampler</span></code> from <code class="docutils literal notranslate"><span class="pre">imbalanced-learn</span></code> to create a balanced dataset by oversampling the minority class:</p>
+<p>In machine learning, imbalanced datasets can lead to biased models that perform poorly on minority classes. This is particularly problematic in critical applications like fraud detection or disease diagnosis.</p>
+<p>With imbalanced-learn, you can rebalance your dataset using various sampling techniques that work seamlessly with scikit-learn.</p>
+<p>To demonstrate this, let’s generate a sample dataset with 5000 samples, 2 features, and 4 classes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Libraries for plotting</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">from</span> <span class="nn">mlxtend.plotting</span> <span class="kn">import</span> <span class="n">plot_decision_regions</span>
-<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
 
 <span class="c1"># Libraries for machine learning</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-
-<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">RandomOverSampler</span>
 </pre></div>
 </div>
 </div>
@@ -1271,17 +1268,16 @@ document.write(`
 </div>
 </div>
 </div>
+<p>Resample the dataset using the <code class="docutils literal notranslate"><span class="pre">RandomOverSampler</span></code> class from imbalanced-learn to balance the class distribution. This technique works by duplicating minority samples until they match the majority class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">RandomOverSampler</span>
-
-
-<span class="n">ros</span> <span class="o">=</span> <span class="n">RandomOverSampler</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ros</span> <span class="o">=</span> <span class="n">RandomOverSampler</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">ros</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Plot the decision regions of the dataset before and after resampling using a LinearSVC classifier:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plotting Decision Regions</span>
@@ -1295,15 +1291,23 @@ document.write(`
 <span class="p">):</span>
     <span class="n">clf</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">()</span>
     <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">)</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">Xi</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yi</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;#A3D9B1,#06B1CF,#F8D347,#E48789&#39;</span><span class="p">)</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plot_decision_regions</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">Xi</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">yi</span><span class="p">,</span> <span class="n">clf</span><span class="o">=</span><span class="n">clf</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;#E583B6,#72FCDB,#72BEFA,#FFFF99&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#000000&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/63d1f487cb4b70c31a65541021dd7a53a6786273a8d698f5e3c373f190e97dc6.png" src="../_images/63d1f487cb4b70c31a65541021dd7a53a6786273a8d698f5e3c373f190e97dc6.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/book/venv/lib/python3.11/site-packages/mlxtend/plotting/decision_regions.py:300: UserWarning: You passed a edgecolor/edgecolors (&#39;black&#39;) for an unfilled marker (&#39;x&#39;).  Matplotlib is ignoring the edgecolor in favor of the facecolor.  This behavior may change in the future.
+  ax.scatter(
+/Users/khuyentran/book/venv/lib/python3.11/site-packages/mlxtend/plotting/decision_regions.py:300: UserWarning: You passed a edgecolor/edgecolors (&#39;black&#39;) for an unfilled marker (&#39;x&#39;).  Matplotlib is ignoring the edgecolor in favor of the facecolor.  This behavior may change in the future.
+  ax.scatter(
+</pre></div>
+</div>
+<img alt="../_images/e43620bfb9013971379f44ef7fd72ada3ee7a94c58e698b515b15ee4101cfa2c.png" src="../_images/e43620bfb9013971379f44ef7fd72ada3ee7a94c58e698b515b15ee4101cfa2c.png" />
 </div>
 </div>
+<p>The plot reveals that the resampling process has added more data points to the minority class (green), effectively balancing the class distribution.</p>
 <p><a class="reference external" href="https://github.com/scikit-learn-contrib/imbalanced-learn">Link to imbalanced-learn</a>.</p>
 </section>
 <section id="estimate-prediction-intervals-in-scikit-learn-models-with-mapie">
