@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -523,7 +523,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.7.8. Minimize Data Risks with Python Private Variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensure-data-integrity-with-getters-and-setters-in-python">2.7.9. Ensure Data Integrity with Getters and Setters in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.7.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.7.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-custom-object-operations-with-python-magic-methods">2.7.11. Simplify Custom Object Operations with Python Magic Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.7.12. Optimizing Memory Usage in Python with Slots</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-code-readability-with-enums">2.7.13. Improve Code Readability with Enums</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embrace-the-open-closed-principle-to-design-extensible-classes">2.7.14. Embrace the Open-Closed Principle to Design Extensible Classes</a></li>
@@ -1146,39 +1146,62 @@ Instance is called
             </script></div>
 </div>
 </section>
-<section id="add-add-the-attributes-of-two-class-instances">
-<h2><span class="section-number">2.7.11. </span><code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances<a class="headerlink" href="#add-add-the-attributes-of-two-class-instances" title="Permalink to this heading">#</a></h2>
-<p>If you want to add the attributes of class instances, use <code class="docutils literal notranslate"><span class="pre">__add__</span></code>. In the code below, I use <code class="docutils literal notranslate"><span class="pre">__add__</span></code> to add the ages of two class instances <code class="docutils literal notranslate"><span class="pre">bim</span></code> and <code class="docutils literal notranslate"><span class="pre">coco</span></code> when calling <code class="docutils literal notranslate"><span class="pre">bim</span> <span class="pre">+</span> <span class="pre">coco</span></code>.</p>
+<section id="simplify-custom-object-operations-with-python-magic-methods">
+<h2><span class="section-number">2.7.11. </span>Simplify Custom Object Operations with Python Magic Methods<a class="headerlink" href="#simplify-custom-object-operations-with-python-magic-methods" title="Permalink to this heading">#</a></h2>
+<p>Manually defining arithmetic operations between custom objects can make code less readable and harder to understand.</p>
+<p>Python’s special methods, such as <code class="docutils literal notranslate"><span class="pre">__add__</span></code>, enable natural arithmetic syntax between custom objects, making code more readable and intuitive, and allowing you to focus on program logic.</p>
+<p>Let’s consider an example to illustrate the problem. Suppose we have a class <code class="docutils literal notranslate"><span class="pre">Animal</span></code> with attributes <code class="docutils literal notranslate"><span class="pre">species</span></code> and <code class="docutils literal notranslate"><span class="pre">weight</span></code>, and we want to calculate the total weight of two animals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
-
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
 
 
-<span class="k">class</span> <span class="nc">Cat</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">age</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+<span class="n">lion</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s2">&quot;Lion&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">tiger</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s2">&quot;Tiger&quot;</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">age</span>
-
-
-<span class="n">bim</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-<span class="n">coco</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">bim</span> <span class="o">+</span> <span class="n">coco</span>
+<span class="c1"># Messy calculations</span>
+<span class="n">total_weight</span> <span class="o">=</span> <span class="n">lion</span><span class="o">.</span><span class="n">weight</span> <span class="o">+</span> <span class="n">tiger</span><span class="o">.</span><span class="n">weight</span>
+<span class="n">total_weight</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>380
 </pre></div>
 </div>
 </div>
 </div>
+<p>In this example, we have to manually access the <code class="docutils literal notranslate"><span class="pre">weight</span></code> attribute of each <code class="docutils literal notranslate"><span class="pre">Animal</span></code> object and perform the addition. This approach is not only verbose but also error-prone, as we might accidentally access the wrong attribute or perform the wrong operation.</p>
+<p>To enable natural arithmetic syntax, we can implement the <code class="docutils literal notranslate"><span class="pre">__add__</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Animal</span></code> class. This method will be called when we use the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator between two <code class="docutils literal notranslate"><span class="pre">Animal</span></code> objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">species</span> <span class="o">=</span> <span class="n">species</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="c1"># Combine weights</span>
+        <span class="k">return</span> <span class="n">Animal</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">species</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+
+
+<span class="n">lion</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s2">&quot;Lion&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">tiger</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s2">&quot;Tiger&quot;</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="n">lion</span> <span class="o">+</span> <span class="n">tiger</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">combined</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>380
+</pre></div>
+</div>
+</div>
+</div>
+<p>By implementing the <code class="docutils literal notranslate"><span class="pre">__add__</span></code> method, we can now use the <code class="docutils literal notranslate"><span class="pre">+</span></code> operator to combine the weights of two <code class="docutils literal notranslate"><span class="pre">Animal</span></code> objects. This approach is not only more readable but also more intuitive.</p>
 </section>
 <section id="optimizing-memory-usage-in-python-with-slots">
 <h2><span class="section-number">2.7.12. </span>Optimizing Memory Usage in Python with Slots<a class="headerlink" href="#optimizing-memory-usage-in-python-with-slots" title="Permalink to this heading">#</a></h2>
@@ -2017,7 +2040,7 @@ Standard Deviation: 1.4142135623730951
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimize-data-risks-with-python-private-variables">2.7.8. Minimize Data Risks with Python Private Variables</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensure-data-integrity-with-getters-and-setters-in-python">2.7.9. Ensure Data Integrity with Getters and Setters in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#str-and-repr-create-a-string-representation-of-a-python-object">2.7.10. <code class="docutils literal notranslate"><span class="pre">__str__</span></code> and <code class="docutils literal notranslate"><span class="pre">__repr__</span></code>: Create a String Representation of a Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-add-the-attributes-of-two-class-instances">2.7.11. <code class="docutils literal notranslate"><span class="pre">__add__</span></code>: Add the Attributes of Two Class Instances</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-custom-object-operations-with-python-magic-methods">2.7.11. Simplify Custom Object Operations with Python Magic Methods</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-memory-usage-in-python-with-slots">2.7.12. Optimizing Memory Usage in Python with Slots</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-code-readability-with-enums">2.7.13. Improve Code Readability with Enums</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#embrace-the-open-closed-principle-to-design-extensible-classes">2.7.14. Embrace the Open-Closed Principle to Design Extensible Classes</a></li>

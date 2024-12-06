@@ -526,6 +526,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#people-also-ask-python-wrapper-for-google-people-also-ask">6.3.11. people_also_ask: Python Wrapper for Google People Also Ask</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrape-facebook-public-pages-without-an-api-key">6.3.12. Scrape Facebook Public Pages Without an API Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-scrapers-automate-recipe-data-extraction">6.3.13. Recipe-Scrapers: Automate Recipe Data Extraction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsera-natural-language-web-scraping-with-llms">6.3.14. Parsera: Natural Language Web Scraping with LLMs</a></li>
 </ul>
             </nav>
         </div>
@@ -1589,6 +1590,140 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <p><a class="reference external" href="https://bit.ly/3U6vw0w">Link to recipe-scrapers</a>.</p>
 </section>
+<section id="parsera-natural-language-web-scraping-with-llms">
+<h2><span class="section-number">6.3.14. </span>Parsera: Natural Language Web Scraping with LLMs<a class="headerlink" href="#parsera-natural-language-web-scraping-with-llms" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>parsera
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>playwright<span class="w"> </span>install
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Writing and maintaining web scraping code requires constant updates due to changing HTML structures and complex selectors, which results in brittle code and frequent breakages.</p>
+<p>With Parsera, you can scrape websites by simply describing what data you want to extract in plain language, letting LLMs handle the complexity of finding the right elements.</p>
+<p>Here’s an example that scrapes GitHub’s trending Python repositories page to collect:</p>
+<ul class="simple">
+<li><p>Repository names</p></li>
+<li><p>Repository owners</p></li>
+<li><p>Star counts</p></li>
+<li><p>Fork counts</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_OPENAI_API_KEY_HERE&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">parsera</span> <span class="kn">import</span> <span class="n">Parsera</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/trending/python?since=daily&quot;</span>
+<span class="n">elements</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Repository&quot;</span><span class="p">:</span> <span class="s2">&quot;Name of the repository&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Owner&quot;</span><span class="p">:</span> <span class="s2">&quot;Owner of the repository&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Stars&quot;</span><span class="p">:</span> <span class="s2">&quot;Number of stars&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Forks&quot;</span><span class="p">:</span> <span class="s2">&quot;Number of forks&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">scraper</span> <span class="o">=</span> <span class="n">Parsera</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">scraper</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;Forks&#39;: &#39;272&#39;, &#39;Owner&#39;: &#39;DS4SD&#39;, &#39;Repository&#39;: &#39;docling&#39;, &#39;Stars&#39;: &#39;5,264&#39;},
+ {&#39;Forks&#39;: &#39;2,502&#39;,
+  &#39;Owner&#39;: &#39;mingrammer&#39;,
+  &#39;Repository&#39;: &#39;diagrams&#39;,
+  &#39;Stars&#39;: &#39;38,714&#39;},
+ {&#39;Forks&#39;: &#39;3,883&#39;,
+  &#39;Owner&#39;: &#39;All-Hands-AI&#39;,
+  &#39;Repository&#39;: &#39;OpenHands&#39;,
+  &#39;Stars&#39;: &#39;34,095&#39;},
+ {&#39;Forks&#39;: &#39;7,288&#39;,
+  &#39;Owner&#39;: &#39;frappe&#39;,
+  &#39;Repository&#39;: &#39;erpnext&#39;,
+  &#39;Stars&#39;: &#39;21,616&#39;},
+ {&#39;Forks&#39;: &#39;7,249&#39;,
+  &#39;Owner&#39;: &#39;abi&#39;,
+  &#39;Repository&#39;: &#39;screenshot-to-code&#39;,
+  &#39;Stars&#39;: &#39;58,574&#39;},
+ {&#39;Forks&#39;: &#39;46,154&#39;,
+  &#39;Owner&#39;: &#39;donnemartin&#39;,
+  &#39;Repository&#39;: &#39;system-design-primer&#39;,
+  &#39;Stars&#39;: &#39;274,420&#39;},
+ {&#39;Forks&#39;: &#39;1,259&#39;,
+  &#39;Owner&#39;: &#39;Cinnamon&#39;,
+  &#39;Repository&#39;: &#39;kotaemon&#39;,
+  &#39;Stars&#39;: &#39;16,395&#39;},
+ {&#39;Forks&#39;: &#39;927&#39;,
+  &#39;Owner&#39;: &#39;vanna-ai&#39;,
+  &#39;Repository&#39;: &#39;vanna&#39;,
+  &#39;Stars&#39;: &#39;11,585&#39;},
+ {&#39;Forks&#39;: &#39;1,792&#39;,
+  &#39;Owner&#39;: &#39;roboflow&#39;,
+  &#39;Repository&#39;: &#39;supervision&#39;,
+  &#39;Stars&#39;: &#39;24,005&#39;},
+ {&#39;Forks&#39;: &#39;323&#39;,
+  &#39;Owner&#39;: &#39;instructlab&#39;,
+  &#39;Repository&#39;: &#39;instructlab&#39;,
+  &#39;Stars&#39;: &#39;899&#39;},
+ {&#39;Forks&#39;: &#39;1,006&#39;,
+  &#39;Owner&#39;: &#39;VikParuchuri&#39;,
+  &#39;Repository&#39;: &#39;marker&#39;,
+  &#39;Stars&#39;: &#39;17,520&#39;},
+ {&#39;Forks&#39;: &#39;12,228&#39;,
+  &#39;Owner&#39;: &#39;geekcomputers&#39;,
+  &#39;Repository&#39;: &#39;Python&#39;,
+  &#39;Stars&#39;: &#39;31,470&#39;},
+ {&#39;Forks&#39;: &#39;2,820&#39;,
+  &#39;Owner&#39;: &#39;Azure&#39;,
+  &#39;Repository&#39;: &#39;azure-sdk-for-python&#39;,
+  &#39;Stars&#39;: &#39;4,610&#39;},
+ {&#39;Forks&#39;: &#39;1,589&#39;,
+  &#39;Owner&#39;: &#39;BerriAI&#39;,
+  &#39;Repository&#39;: &#39;litellm&#39;,
+  &#39;Stars&#39;: &#39;13,574&#39;},
+ {&#39;Forks&#39;: &#39;74&#39;,
+  &#39;Owner&#39;: &#39;homebrewltd&#39;,
+  &#39;Repository&#39;: &#39;ichigo&#39;,
+  &#39;Stars&#39;: &#39;1,616&#39;},
+ {&#39;Forks&#39;: &#39;4,348&#39;,
+  &#39;Owner&#39;: &#39;d2l-ai&#39;,
+  &#39;Repository&#39;: &#39;d2l-en&#39;,
+  &#39;Stars&#39;: &#39;23,811&#39;},
+ {&#39;Forks&#39;: &#39;2,456&#39;, &#39;Owner&#39;: &#39;psf&#39;, &#39;Repository&#39;: &#39;black&#39;, &#39;Stars&#39;: &#39;38,902&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/raznem/parsera">Link to Parsera</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1667,6 +1802,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#people-also-ask-python-wrapper-for-google-people-also-ask">6.3.11. people_also_ask: Python Wrapper for Google People Also Ask</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scrape-facebook-public-pages-without-an-api-key">6.3.12. Scrape Facebook Public Pages Without an API Key</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe-scrapers-automate-recipe-data-extraction">6.3.13. Recipe-Scrapers: Automate Recipe Data Extraction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parsera-natural-language-web-scraping-with-llms">6.3.14. Parsera: Natural Language Web Scraping with LLMs</a></li>
 </ul>
   </nav></div>
 

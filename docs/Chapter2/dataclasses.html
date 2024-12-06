@@ -211,17 +211,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">2.3.4. Interaction Between 2 Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.5. Apply Functions to Elements in a List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.4. Dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.5. Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.6. Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.7. Datetime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.8. Code Speed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.9. Good Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.10. New Features in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter2.html">3. Python Utility Libraries</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -517,6 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">3.7.2. frozen=True: Make Your Data Classes Read-Only</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-between-two-data-classes">3.7.3. Compare Between Two Data Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">3.7.4. Post-init: Add Init Method to a Data Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-best-practices-using-default-factory-for-mutable-defaults">3.7.5. Python Best Practices: Using default_factory for Mutable Defaults</a></li>
 </ul>
             </nav>
         </div>
@@ -752,6 +753,61 @@ document.write(`
 </div>
 </div>
 </section>
+<section id="python-best-practices-using-default-factory-for-mutable-defaults">
+<h2><span class="section-number">3.7.5. </span>Python Best Practices: Using default_factory for Mutable Defaults<a class="headerlink" href="#python-best-practices-using-default-factory-for-mutable-defaults" title="Permalink to this heading">#</a></h2>
+<p>When defining classes in Python, using mutable default values for instance variables can lead to unexpected behavior.</p>
+<p>For example, if you use a list as a default value in a class’s <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method, all instances of the class will share the same list object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">authors</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span>
+
+
+<span class="n">book1</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s2">&quot;Book 1&quot;</span><span class="p">)</span>
+<span class="n">book1</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Author 1&quot;</span><span class="p">)</span>
+
+<span class="n">book2</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s2">&quot;Book 2&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">book2</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Author 1&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">book1</span></code> and <code class="docutils literal notranslate"><span class="pre">book2</span></code> share the same list object, which is why modifying the list in <code class="docutils literal notranslate"><span class="pre">book1</span></code> affects <code class="docutils literal notranslate"><span class="pre">book2</span></code>.</p>
+<p>To avoid this issue, you can use the <code class="docutils literal notranslate"><span class="pre">default_factory</span></code> parameter in dataclasses, which creates a new object for each instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Book</span><span class="p">:</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authors</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+
+<span class="n">book1</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s2">&quot;Book 1&quot;</span><span class="p">)</span>
+<span class="n">book1</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Author 1&quot;</span><span class="p">)</span>
+
+<span class="n">book2</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="s2">&quot;Book 2&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">book2</span><span class="o">.</span><span class="n">authors</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, each instance has its own separate list object, and modifying one instance’s list does not affect others.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -821,6 +877,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frozen-true-make-your-data-classes-read-only">3.7.2. frozen=True: Make Your Data Classes Read-Only</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-between-two-data-classes">3.7.3. Compare Between Two Data Classes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#post-init-add-init-method-to-a-data-class">3.7.4. Post-init: Add Init Method to a Data Class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-best-practices-using-default-factory-for-mutable-defaults">3.7.5. Python Best Practices: Using default_factory for Mutable Defaults</a></li>
 </ul>
   </nav></div>
 

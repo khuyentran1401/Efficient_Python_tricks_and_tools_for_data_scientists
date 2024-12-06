@@ -521,11 +521,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.6. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.7. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.8. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.9. Simplify Unit Testing of SQL Queries with PySpark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.10. Update Multiple Columns in Spark 3.3 and Later</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.11. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.12. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.13. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-single-inputs-into-tables-using-pyspark-udtfs">6.15.9. Transform Single Inputs into Tables Using PySpark UDTFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.10. Simplify Unit Testing of SQL Queries with PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.11. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.12. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.13. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.14. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.15.15. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.15.16. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
             </nav>
         </div>
@@ -793,7 +796,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><code class="docutils literal notranslate"><span class="pre">withColumn</span></code> retains all original columns plus the new/modified one.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_withColumn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;upper_city&#39;</span><span class="p">,</span> <span class="n">upper</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;city&#39;</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_withColumn</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;upper_city&quot;</span><span class="p">,</span> <span class="n">upper</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">)))</span>
 <span class="n">df_withColumn</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -838,7 +841,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s1">&#39;test_data.parquet&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;test_data.parquet&quot;</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -932,7 +935,7 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psdf</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psdf</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -989,7 +992,7 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">psdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1147,18 +1150,21 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([</span>
-    <span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>
-<span class="p">],</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">],</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1176,7 +1182,7 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1199,7 +1205,7 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1263,16 +1269,18 @@ only showing top 5 rows
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Spark DataFrame</span>
-<span class="n">item_price_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-    <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="s2">&quot;transaction_date&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
-        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-        <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
-    <span class="p">]</span>
-<span class="p">})</span>
+<span class="n">item_price_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;transaction_date&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+            <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+            <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 
 <span class="n">item_price</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">item_price_pandas</span><span class="p">)</span>
 <span class="n">item_price</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1565,15 +1573,17 @@ only showing top 5 rows
 <span class="k">def</span> <span class="nf">modify_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
-<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;modify_name&#39;</span><span class="p">,</span> <span class="n">modify_name</span><span class="p">)</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;modify_name&quot;</span><span class="p">,</span> <span class="n">modify_name</span><span class="p">)</span>
 
 <span class="c1"># Apply the UDF in the spark.sql query</span>
 <span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;df&quot;</span><span class="p">)</span>
 
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT id, modify_name(name) AS modified_name</span>
-<span class="s2">    FROM df</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT id, modify_name(name) AS modified_name</span>
+<span class="sd">    FROM df</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1755,8 +1765,120 @@ only showing top 5 rows
 </div>
 </div>
 </section>
+<section id="transform-single-inputs-into-tables-using-pyspark-udtfs">
+<h2><span class="section-number">6.15.9. </span>Transform Single Inputs into Tables Using PySpark UDTFs<a class="headerlink" href="#transform-single-inputs-into-tables-using-pyspark-udtfs" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting default log level to &quot;WARN&quot;.
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+24/11/24 20:07:53 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>In PySpark, User-Defined Functions (UDFs) and User-Defined Table Functions (UDTFs) are custom functions that perform complex data transformations.</p>
+<p>UDFs take input columns and return a single value. However, they are cumbersome when returning multiple rows and columns, resulting in complex and inefficient code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span><span class="p">,</span> <span class="n">explode</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">ArrayType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">IntegerType</span>
+
+<span class="c1"># Define the schema of the output</span>
+<span class="n">schema</span> <span class="o">=</span> <span class="n">ArrayType</span><span class="p">(</span>
+    <span class="n">StructType</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;num&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;squared&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="c1"># Define the UDF</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="n">returnType</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">square_numbers_udf</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">num</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span> <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+
+<span class="c1"># Use in Python</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">])</span>
+<span class="n">result_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">explode</span><span class="p">(</span><span class="n">square_numbers_udf</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">end</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">))</span>
+<span class="n">result_df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;result.num&quot;</span><span class="p">,</span> <span class="s2">&quot;result.squared&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+
+|num|squared|
++---+-------+
+|  1|      1|
+|  2|      4|
+|  3|      9|
++---+-------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>With UDTFs, you can create functions that return entire tables from a single input, making it easier to work with multiple rows and columns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udtf</span><span class="p">,</span> <span class="n">lit</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
+
+
+<span class="nd">@udtf</span><span class="p">(</span><span class="n">returnType</span><span class="o">=</span><span class="s2">&quot;num: int, squared: int&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SquareNumbers</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">num</span> <span class="o">*</span> <span class="n">num</span><span class="p">)</span>
+
+
+<span class="n">SquareNumbers</span><span class="p">(</span><span class="n">lit</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">lit</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+
+|num|squared|
++---+-------+
+|  1|      1|
+|  2|      4|
+|  3|      9|
++---+-------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="simplify-unit-testing-of-sql-queries-with-pyspark">
-<h2><span class="section-number">6.15.9. </span>Simplify Unit Testing of SQL Queries with PySpark<a class="headerlink" href="#simplify-unit-testing-of-sql-queries-with-pyspark" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.15.10. </span>Simplify Unit Testing of SQL Queries with PySpark<a class="headerlink" href="#simplify-unit-testing-of-sql-queries-with-pyspark" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1823,7 +1945,7 @@ def test_query_return_correct_number_of_rows(query):
 </div>
 </section>
 <section id="update-multiple-columns-in-spark-3-3-and-later">
-<h2><span class="section-number">6.15.10. </span>Update Multiple Columns in Spark 3.3 and Later<a class="headerlink" href="#update-multiple-columns-in-spark-3-3-and-later" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.15.11. </span>Update Multiple Columns in Spark 3.3 and Later<a class="headerlink" href="#update-multiple-columns-in-spark-3-3-and-later" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1879,11 +2001,10 @@ def test_query_return_correct_number_of_rows(query):
 <p>Prior to PySpark 3.3, appending multiple columns to a Spark DataFrame required chaining multiple <code class="docutils literal notranslate"><span class="pre">withColumn</span></code> calls.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before Spark 3.3 </span>
-<span class="n">new_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
-          <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">trim</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">)))</span>
-          <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;age_after_10_years&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
-         <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before Spark 3.3</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">trim</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">&quot;age_after_10_years&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="p">)</span>
 
 <span class="n">new_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -1930,7 +2051,7 @@ def test_query_return_correct_number_of_rows(query):
 </div>
 </section>
 <section id="vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">
-<h2><span class="section-number">6.15.11. </span>Vectorized Operations in PySpark: pandas_udf vs Standard UDF<a class="headerlink" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.15.12. </span>Vectorized Operations in PySpark: pandas_udf vs Standard UDF<a class="headerlink" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1993,13 +2114,15 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
 
+
 <span class="c1"># Standard UDF</span>
-<span class="nd">@udf</span><span class="p">(</span><span class="s1">&#39;double&#39;</span><span class="p">)</span>
+<span class="nd">@udf</span><span class="p">(</span><span class="s2">&quot;double&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">plus_one</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">1</span>
 
+
 <span class="c1"># Apply the Standard UDF</span>
-<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s1">&#39;val2&#39;</span><span class="p">,</span> <span class="n">plus_one</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">val1</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;val2&quot;</span><span class="p">,</span> <span class="n">plus_one</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">val1</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2055,7 +2178,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://bit.ly/4aRBNTX">Learn more about pandas_udf</a>.</p>
 </section>
 <section id="optimizing-pyspark-queries-dataframe-api-or-sql">
-<h2><span class="section-number">6.15.12. </span>Optimizing PySpark Queries: DataFrame API or SQL?<a class="headerlink" href="#optimizing-pyspark-queries-dataframe-api-or-sql" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.15.13. </span>Optimizing PySpark Queries: DataFrame API or SQL?<a class="headerlink" href="#optimizing-pyspark-queries-dataframe-api-or-sql" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2146,7 +2269,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </ul>
 </section>
 <section id="enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">
-<h2><span class="section-number">6.15.13. </span>Enhance Code Modularity and Reusability with Temporary Views in PySpark<a class="headerlink" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.15.14. </span>Enhance Code Modularity and Reusability with Temporary Views in PySpark<a class="headerlink" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2252,6 +2375,417 @@ Number of Orders:
 </div>
 </div>
 </section>
+<section id="pyspark-best-practices-simplifying-logical-chain-conditions">
+<h2><span class="section-number">6.15.15. </span>PySpark Best Practices: Simplifying Logical Chain Conditions<a class="headerlink" href="#pyspark-best-practices-simplifying-logical-chain-conditions" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pyspark[sql]&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Long chains of logical conditions in PySpark can make code difficult to understand and modify.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;total_purchases&quot;</span><span class="p">,</span> <span class="s2">&quot;loyalty_years&quot;</span><span class="p">,</span> <span class="s2">&quot;returns&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
+
+
+<span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">&quot;discount_eligible&quot;</span><span class="p">,</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;total_purchases&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;loyalty_years&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;returns&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------------+-------------+-------+-----------------+
+|total_purchases|loyalty_years|returns|discount_eligible|
++---------------+-------------+-------+-----------------+
+|           1200|            3|      1|             true|
+|           2000|            2|      0|             true|
+|           1500|            3|      2|             true|
+|           1100|            2|      1|             true|
++---------------+-------------+-------+-----------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>To improve readability and maintainability, break down complex logic into meaningful variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define loyal customer conditions</span>
+<span class="n">has_high_spend</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;total_purchases&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1000</span>
+<span class="n">is_long_term</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;loyalty_years&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+<span class="n">has_few_returns</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;returns&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span>
+
+<span class="c1"># Combine conditions for discount eligibility</span>
+<span class="n">loyal_customer_condition</span> <span class="o">=</span> <span class="n">has_high_spend</span> <span class="o">&amp;</span> <span class="n">is_long_term</span> <span class="o">&amp;</span> <span class="n">has_few_returns</span>
+
+<span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+        <span class="s2">&quot;discount_eligible&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">loyal_customer_condition</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---------------+-------------+-------+-----------------+
+|total_purchases|loyalty_years|returns|discount_eligible|
++---------------+-------------+-------+-----------------+
+|           1200|            3|      1|             true|
+|           2000|            2|      0|             true|
+|           1500|            3|      2|             true|
+|           1100|            2|      1|             true|
++---------------+-------------+-------+-----------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Benefits of this approach:</p>
+<ul class="simple">
+<li><p>Business logic is clearly documented through function names.</p></li>
+<li><p>Easier to add new conditions without cluttering main logic.</p></li>
+</ul>
+</section>
+<section id="tempo-simplified-time-series-analysis-in-pyspark">
+<h2><span class="section-number">6.15.16. </span>Tempo: Simplified Time Series Analysis in PySpark<a class="headerlink" href="#tempo-simplified-time-series-analysis-in-pyspark" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pyspark[sql]&#39;</span><span class="w"> </span><span class="s1">&#39;dbl-tempo&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">Window</span>
+<span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting default log level to &quot;WARN&quot;.
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+24/12/05 13:57:04 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+24/12/05 13:57:06 WARN Utils: Service &#39;SparkUI&#39; could not bind on port 4040. Attempting port 4041.
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Tempo is a high-level API built on top of Apache Spark that simplifies the process of working with time-series data. While PySpark provides a robust foundation for data processing, Tempo provides a more intuitive API for working with time-series data, making it easier to perform common tasks like resampling and aggregating time-series data</p>
+<p>Here are some examples that compare PySpark and Tempo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Window</span>
+
+<span class="c1"># Create sample market data</span>
+<span class="n">market_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:00&quot;</span><span class="p">,</span> <span class="mf">180.50</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">180.45</span><span class="p">,</span> <span class="mf">180.55</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:05&quot;</span><span class="p">,</span> <span class="mf">180.52</span><span class="p">,</span> <span class="mi">1200</span><span class="p">,</span> <span class="mf">180.48</span><span class="p">,</span> <span class="mf">180.58</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:10&quot;</span><span class="p">,</span> <span class="mf">180.48</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mf">180.45</span><span class="p">,</span> <span class="mf">180.52</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;AAPL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:15&quot;</span><span class="p">,</span> <span class="mf">180.55</span><span class="p">,</span> <span class="mi">1500</span><span class="p">,</span> <span class="mf">180.50</span><span class="p">,</span> <span class="mf">180.60</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;GOOGL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:00&quot;</span><span class="p">,</span> <span class="mf">140.25</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mf">140.20</span><span class="p">,</span> <span class="mf">140.30</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;GOOGL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:05&quot;</span><span class="p">,</span> <span class="mf">140.30</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mf">140.25</span><span class="p">,</span> <span class="mf">140.35</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;GOOGL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:10&quot;</span><span class="p">,</span> <span class="mf">140.28</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mf">140.25</span><span class="p">,</span> <span class="mf">140.32</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;GOOGL&quot;</span><span class="p">,</span> <span class="s2">&quot;2024-01-01 09:30:15&quot;</span><span class="p">,</span> <span class="mf">140.32</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mf">140.28</span><span class="p">,</span> <span class="mf">140.38</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Create DataFrame</span>
+<span class="n">market_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">market_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;volume&quot;</span><span class="p">,</span> <span class="s2">&quot;bid&quot;</span><span class="p">,</span> <span class="s2">&quot;ask&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert timestamp string to timestamp type</span>
+<span class="n">market_df</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">to_timestamp</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tempo</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Create Tempo TSDF</span>
+<span class="n">market_tsdf</span> <span class="o">=</span> <span class="n">TSDF</span><span class="p">(</span><span class="n">market_df</span><span class="p">,</span> <span class="n">ts_col</span><span class="o">=</span><span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="n">partition_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;symbol&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get data at specific time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PySpark Version</span>
+<span class="n">target_time</span> <span class="o">=</span> <span class="s2">&quot;2024-01-01 09:30:10&quot;</span>
+<span class="n">pyspark_at_target</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">target_time</span><span class="p">)</span>
+<span class="n">pyspark_at_target</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tempo Version</span>
+<span class="n">tempo_at_target</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">target_time</span><span class="p">)</span>
+<span class="n">tempo_at_target</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:10|180.48|   800|180.45|180.52|
+| GOOGL|2024-01-01 09:30:10|140.28|   450|140.25|140.32|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+<div class="output text_html"><style>pre { white-space: pre !important; }</style></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:10|180.48|   800|180.45|180.52|
+| GOOGL|2024-01-01 09:30:10|140.28|   450|140.25|140.32|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get data between time interval:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PySpark Version</span>
+<span class="n">start_ts</span> <span class="o">=</span> <span class="s2">&quot;2024-01-01 09:30:05&quot;</span>
+<span class="n">end_ts</span> <span class="o">=</span> <span class="s2">&quot;2024-01-01 09:30:15&quot;</span>
+<span class="n">pyspark_interval</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">start_ts</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">end_ts</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">pyspark_interval</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tempo Version</span>
+<span class="n">tempo_interval</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_ts</span><span class="p">,</span> <span class="n">end_ts</span><span class="p">)</span>
+<span class="n">tempo_interval</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:05|180.52|  1200|180.48|180.58|
+|  AAPL|2024-01-01 09:30:10|180.48|   800|180.45|180.52|
+|  AAPL|2024-01-01 09:30:15|180.55|  1500| 180.5| 180.6|
+| GOOGL|2024-01-01 09:30:05| 140.3|   600|140.25|140.35|
+| GOOGL|2024-01-01 09:30:10|140.28|   450|140.25|140.32|
+| GOOGL|2024-01-01 09:30:15|140.32|   700|140.28|140.38|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+<div class="output text_html"><style>pre { white-space: pre !important; }</style></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:05|180.52|  1200|180.48|180.58|
+|  AAPL|2024-01-01 09:30:10|180.48|   800|180.45|180.52|
+|  AAPL|2024-01-01 09:30:15|180.55|  1500| 180.5| 180.6|
+| GOOGL|2024-01-01 09:30:05| 140.3|   600|140.25|140.35|
+| GOOGL|2024-01-01 09:30:10|140.28|   450|140.25|140.32|
+| GOOGL|2024-01-01 09:30:15|140.32|   700|140.28|140.38|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get oldest n records per symbol:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PySpark Version</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">windowSpec</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">)</span>
+<span class="n">pyspark_oldest</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">market_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;row_num&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">row_number</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">windowSpec</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;row_num&quot;</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;row_num&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">pyspark_oldest</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tempo Version</span>
+<span class="n">tempo_oldest</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">earliest</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">tempo_oldest</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:00| 180.5|  1000|180.45|180.55|
+|  AAPL|2024-01-01 09:30:05|180.52|  1200|180.48|180.58|
+| GOOGL|2024-01-01 09:30:00|140.25|   500| 140.2| 140.3|
+| GOOGL|2024-01-01 09:30:05| 140.3|   600|140.25|140.35|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+<div class="output text_html"><style>pre { white-space: pre !important; }</style></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------+------+------+
+|symbol|           event_ts| price|volume|   bid|   ask|
++------+-------------------+------+------+------+------+
+|  AAPL|2024-01-01 09:30:00| 180.5|  1000|180.45|180.55|
+|  AAPL|2024-01-01 09:30:05|180.52|  1200|180.48|180.58|
+| GOOGL|2024-01-01 09:30:00|140.25|   500| 140.2| 140.3|
+| GOOGL|2024-01-01 09:30:05| 140.3|   600|140.25|140.35|
++------+-------------------+------+------+------+------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Moving averages (10-second window):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PySpark Version</span>
+<span class="n">market_df</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;event_ts_seconds&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">unix_timestamp</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">))</span>
+<span class="n">movingWindowSpec</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;event_ts_seconds&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">rangeBetween</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">pyspark_moving_stats</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">&quot;mean_price&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">movingWindowSpec</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">pyspark_moving_stats</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tempo Version</span>
+<span class="n">tempo_moving_stats</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">withRangeStats</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="n">rangeBackWindowSecs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tempo_moving_stats</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------------------+
+|symbol|           event_ts| price|        mean_price|
++------+-------------------+------+------------------+
+|  AAPL|2024-01-01 09:30:00| 180.5|             180.5|
+|  AAPL|2024-01-01 09:30:05|180.52|            180.51|
+|  AAPL|2024-01-01 09:30:10|180.48|             180.5|
+|  AAPL|2024-01-01 09:30:15|180.55|180.51666666666665|
+| GOOGL|2024-01-01 09:30:00|140.25|            140.25|
+| GOOGL|2024-01-01 09:30:05| 140.3|           140.275|
+| GOOGL|2024-01-01 09:30:10|140.28|140.27666666666667|
+| GOOGL|2024-01-01 09:30:15|140.32|             140.3|
++------+-------------------+------+------------------+
+</pre></div>
+</div>
+<div class="output text_html"><style>pre { white-space: pre !important; }</style></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+------+------------------+
+|symbol|           event_ts| price|        mean_price|
++------+-------------------+------+------------------+
+|  AAPL|2024-01-01 09:30:00| 180.5|             180.5|
+|  AAPL|2024-01-01 09:30:05|180.52|            180.51|
+|  AAPL|2024-01-01 09:30:10|180.48|             180.5|
+|  AAPL|2024-01-01 09:30:15|180.55|180.51666666666665|
+| GOOGL|2024-01-01 09:30:00|140.25|            140.25|
+| GOOGL|2024-01-01 09:30:05| 140.3|           140.275|
+| GOOGL|2024-01-01 09:30:10|140.28|140.27666666666667|
+| GOOGL|2024-01-01 09:30:15|140.32|             140.3|
++------+-------------------+------+------------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Grouped statistics:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># PySpark Version</span>
+<span class="n">pyspark_grouped</span> <span class="o">=</span> <span class="n">market_df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">window</span><span class="p">(</span><span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="s2">&quot;5 seconds&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;mean_price&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;min_price&quot;</span><span class="p">),</span>
+    <span class="n">F</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;max_price&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">pyspark_grouped</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tempo Version</span>
+<span class="n">tempo_grouped</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">withGroupedStats</span><span class="p">(</span>
+    <span class="n">metricCols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;5 seconds&quot;</span>
+<span class="p">)</span>
+<span class="n">tempo_grouped</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;event_ts&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_price&#39;</span><span class="p">,</span> <span class="s1">&#39;min_price&#39;</span><span class="p">,</span> <span class="s1">&#39;max_price&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+--------------------+----------+---------+---------+
+|symbol|              window|mean_price|min_price|max_price|
++------+--------------------+----------+---------+---------+
+|  AAPL|{2024-01-01 09:30...|     180.5|    180.5|    180.5|
+|  AAPL|{2024-01-01 09:30...|    180.52|   180.52|   180.52|
+|  AAPL|{2024-01-01 09:30...|    180.48|   180.48|   180.48|
+|  AAPL|{2024-01-01 09:30...|    180.55|   180.55|   180.55|
+| GOOGL|{2024-01-01 09:30...|    140.25|   140.25|   140.25|
+| GOOGL|{2024-01-01 09:30...|     140.3|    140.3|    140.3|
+| GOOGL|{2024-01-01 09:30...|    140.28|   140.28|   140.28|
+| GOOGL|{2024-01-01 09:30...|    140.32|   140.32|   140.32|
++------+--------------------+----------+---------+---------+
+</pre></div>
+</div>
+<div class="output text_html"><style>pre { white-space: pre !important; }</style></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+------+-------------------+----------+---------+---------+
+|symbol|           event_ts|mean_price|min_price|max_price|
++------+-------------------+----------+---------+---------+
+|  AAPL|2024-01-01 09:30:00|     180.5|    180.5|    180.5|
+|  AAPL|2024-01-01 09:30:05|    180.52|   180.52|   180.52|
+|  AAPL|2024-01-01 09:30:10|    180.48|   180.48|   180.48|
+|  AAPL|2024-01-01 09:30:15|    180.55|   180.55|   180.55|
+| GOOGL|2024-01-01 09:30:00|    140.25|   140.25|   140.25|
+| GOOGL|2024-01-01 09:30:05|     140.3|    140.3|    140.3|
+| GOOGL|2024-01-01 09:30:10|    140.28|   140.28|   140.28|
+| GOOGL|2024-01-01 09:30:15|    140.32|   140.32|   140.32|
++------+-------------------+----------+---------+---------+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/databrickslabs/tempo">Link to Tempo</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2325,11 +2859,14 @@ Number of Orders:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-arrays-made-easier-in-spark-3-5">6.15.6. Working with Arrays Made Easier in Spark 3.5</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.15.7. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.15.8. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.9. Simplify Unit Testing of SQL Queries with PySpark</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.10. Update Multiple Columns in Spark 3.3 and Later</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.11. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.12. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.13. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-single-inputs-into-tables-using-pyspark-udtfs">6.15.9. Transform Single Inputs into Tables Using PySpark UDTFs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.15.10. Simplify Unit Testing of SQL Queries with PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.15.11. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.15.12. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.15.13. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.15.14. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.15.15. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.15.16. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
   </nav></div>
 

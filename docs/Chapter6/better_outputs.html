@@ -213,17 +213,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">2.3.4. Interaction Between 2 Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.5. Apply Functions to Elements in a List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.4. Dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.5. Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.6. Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.7. Datetime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.8. Code Speed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.9. Good Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.10. New Features in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -273,7 +273,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -526,6 +526,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.9. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.10. Camelot: PDF Table Extraction for Humans</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-python-command-line-interface-tools-argparse-click-and-typer">7.5.11. Comparing Python Command Line Interface Tools: Argparse, Click, and Typer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-report-generation-with-jinja-templates">7.5.12. Dynamic Report Generation with Jinja Templates</a></li>
 </ul>
             </nav>
         </div>
@@ -1433,6 +1434,163 @@ c &amp;= a + b  = 4.600 + 13.990 &amp;= 18.590
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>snoop
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> snoop
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">snoop</span>
+import snoop
+
+
+@snoop
+def factorial(x: int):
+    if x == 1:
+        return 1
+    else:
+        return x * factorial(x - 1)
+
+
+if __name__ == &quot;__main__&quot;:
+    num = 2
+    print(f&quot;The factorial of {num} is {factorial(num)}&quot;)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11:33:04.31 &gt;&gt;&gt; Call to &lt;module&gt; in File &quot;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_23035/2084541889.py&quot;, line 0
+11:33:04.31 ...... __name__ = &#39;__main__&#39;
+11:33:04.31    0 |     print(f&quot;The factorial of {num} is {factorial(num)}&quot;)
+11:33:04.31    1 | import snoop
+11:33:04.31 ...... snoop = &lt;class &#39;snoop.configuration.Config.__init__.&lt;locals&gt;.ConfiguredTracer&#39;&gt;
+11:33:04.31    4 | @snoop
+11:33:04.31    5 | def factorial(x: int):
+11:33:04.31    4 | @snoop
+11:33:04.31    5 | def factorial(x: int):
+11:33:04.31 ...... factorial = &lt;function factorial at 0x109d1c860&gt;
+11:33:04.31   12 | if __name__ == &quot;__main__&quot;:
+11:33:04.32   13 |     num = 2
+11:33:04.32   14 |     print(f&quot;The factorial of {num} is {factorial(num)}&quot;)
+    11:33:04.32 &gt;&gt;&gt; Call to factorial in File &quot;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_23035/2084541889.py&quot;, line 5
+    11:33:04.32 ...... x = 2
+    11:33:04.32    5 | def factorial(x: int):
+    11:33:04.32    6 |     if x == 1:
+    11:33:04.32    9 |         return x * factorial(x - 1)
+        11:33:04.32 &gt;&gt;&gt; Call to factorial in File &quot;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_23035/2084541889.py&quot;, line 5
+        11:33:04.32 ...... x = 1
+        11:33:04.32    5 | def factorial(x: int):
+        11:33:04.32    6 |     if x == 1:
+        11:33:04.32    7 |         return 1
+        11:33:04.32 &lt;&lt;&lt; Return value from factorial: 1
+    11:33:04.32    9 |         return x * factorial(x - 1)
+    11:33:04.32 &lt;&lt;&lt; Return value from factorial: 2
+11:33:04.32   14 |     print(f&quot;The factorial of {num} is {factorial(num)}&quot;)
+11:33:04.32 &lt;&lt;&lt; Return value from &lt;module&gt;: None
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 2 is 2
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dynamic-report-generation-with-jinja-templates">
+<h2><span class="section-number">7.5.12. </span>Dynamic Report Generation with Jinja Templates<a class="headerlink" href="#dynamic-report-generation-with-jinja-templates" title="Permalink to this heading">#</a></h2>
+<p>F-strings are convenient for simple string interpolation, but they are tightly coupled with the surrounding Python code. They are typically used for a single, specific task.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>
+    <span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="mf">0.88</span><span class="p">,</span>
+    <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="mf">0.92</span><span class="p">,</span>
+    <span class="s1">&#39;f1_score&#39;</span><span class="p">:</span> <span class="mf">0.89</span><span class="p">,</span>
+    <span class="s1">&#39;auc_roc&#39;</span><span class="p">:</span> <span class="mf">0.93</span><span class="p">,</span>
+    <span class="s1">&#39;specificity&#39;</span><span class="p">:</span> <span class="mf">0.87</span>
+<span class="p">}</span>
+
+<span class="n">metrics_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+        <span class="n">metrics_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (Excellent)</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">metrics_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> (Needs Improvement)</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">metrics_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accuracy: 0.950 (Excellent)
+precision: 0.880 (Needs Improvement)
+recall: 0.920 (Excellent)
+f1_score: 0.890 (Needs Improvement)
+auc_roc: 0.930 (Excellent)
+specificity: 0.870 (Needs Improvement)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Jinja’s templating engine is more versatile and powerful. It allows you to define templates with placeholders for dynamic data and supports conditionals, loops, and reuse across multiple contexts.</p>
+<p>Use Jinja to perform complex templating tasks or generate dynamic reports.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jinja template version</span>
+<span class="kn">from</span> <span class="nn">jinja2</span> <span class="kn">import</span> <span class="n">Template</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">{</span><span class="si">% f</span><span class="s2">or metric, value in metrics.items() %}</span>
+<span class="s2">    {</span><span class="si">% i</span><span class="s2">f value &gt; 0.9 %}</span>
+<span class="s2">    {{ metric }}: {{ value | round(3) }} (Excellent)</span>
+<span class="s2">    {</span><span class="si">% e</span><span class="s2">lse %}</span>
+<span class="s2">    {{ metric }}: {{ value | round(3) }} (Needs Improvement)</span>
+<span class="s2">    {</span><span class="si">% e</span><span class="s2">ndif %}</span>
+<span class="s2">{</span><span class="si">% e</span><span class="s2">ndfor %}</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    
+    accuracy: 0.95 (Excellent)
+    
+
+    
+    precision: 0.88 (Needs Improvement)
+    
+
+    
+    recall: 0.92 (Excellent)
+    
+
+    
+    f1_score: 0.89 (Needs Improvement)
+    
+
+    
+    auc_roc: 0.93 (Excellent)
+    
+
+    
+    specificity: 0.87 (Needs Improvement)
+    
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/pallets/jinja">Link to Jinja</a></p>
 </section>
 </section>
 
@@ -1510,6 +1668,7 @@ c &amp;= a + b  = 4.600 + 13.990 &amp;= 18.590
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#great-tables-create-scientific-looking-tables-in-python">7.5.9. Great Tables: Create Scientific-Looking Tables in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camelot-pdf-table-extraction-for-humans">7.5.10. Camelot: PDF Table Extraction for Humans</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-python-command-line-interface-tools-argparse-click-and-typer">7.5.11. Comparing Python Command Line Interface Tools: Argparse, Click, and Typer</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamic-report-generation-with-jinja-templates">7.5.12. Dynamic Report Generation with Jinja Templates</a></li>
 </ul>
   </nav></div>
 

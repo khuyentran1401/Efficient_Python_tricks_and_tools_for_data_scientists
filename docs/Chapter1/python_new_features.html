@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -517,7 +517,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.11.2. Structural Pattern Matching in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-python-dataclasses-and-match-statements">2.11.3. Enhance Code Readability with Python Dataclasses and Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.11.4. Write Union Types as X|Y in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.11.5. Walrus Operator: Assign a Variable in an Expression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-cleaner-python-with-the-walrus-operatorn">2.11.5. Write Cleaner Python with the Walrus Operatorn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.11.6. Fine-Grained Traceback in Python 3.11</a></li>
 </ul>
             </nav>
@@ -820,33 +820,32 @@ $99.99 per year for one year.
 </div>
 </div>
 </section>
-<section id="walrus-operator-assign-a-variable-in-an-expression">
-<h2><span class="section-number">2.11.5. </span>Walrus Operator: Assign a Variable in an Expression<a class="headerlink" href="#walrus-operator-assign-a-variable-in-an-expression" title="Permalink to this heading">#</a></h2>
-<p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8 and above allows you to assign a variable in an expression. The walrus operator is useful when you want to:</p>
-<ul class="simple">
-<li><p>Debug the components in an expression</p></li>
-<li><p>Avoid repeated computations</p></li>
-<li><p>Assign a meaningful name to an expression</p></li>
-</ul>
+<section id="write-cleaner-python-with-the-walrus-operatorn">
+<h2><span class="section-number">2.11.5. </span>Write Cleaner Python with the Walrus Operatorn<a class="headerlink" href="#write-cleaner-python-with-the-walrus-operatorn" title="Permalink to this heading">#</a></h2>
+<p>The walrus operator (<code class="docutils literal notranslate"><span class="pre">:=</span></code>) in Python 3.8+ allows you to assign a variable in an expression, making your code more readable and efficient. It’s useful in two main scenarios:</p>
+<ol class="arabic simple">
+<li><p>Giving a meaningful name to a complex expression for better readability.</p></li>
+<li><p>Avoiding repeated computations by reusing a variable instead of recomputing the expression.</p></li>
+</ol>
+<p>Let’s consider an example where we want to calculate the radius, area, and volume of a circle given its diameter and height:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
 
 <span class="n">diameter</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">height</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Without the walrus operator, we might compute the radius and area multiple times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># without Walrus operator</span>
-
-<span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># computed twice</span>
-    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># computed twice</span>
+    <span class="s2">&quot;volume&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">height</span><span class="p">,</span>
 <span class="p">}</span>
-
-<span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
@@ -856,21 +855,49 @@ $99.99 per year for one year.
 </div>
 </div>
 </div>
+<p>To avoid repeated computations, we can assign the radius and area to variables before creating the dictionary:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># with Walrus operator</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">radius</span> <span class="o">=</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">area</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
 
 <span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">radius</span> <span class="o">:=</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="n">area</span><span class="p">,</span>
+    <span class="s2">&quot;volume&quot;</span><span class="p">:</span> <span class="n">area</span> <span class="o">*</span> <span class="n">height</span><span class="p">,</span>
 <span class="p">}</span>
-
-<span class="n">radius</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>To make the code more concise, we can use the walrus operator to assign the radius and area to variables while creating the dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circle</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">radius</span> <span class="o">:=</span> <span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">area</span> <span class="o">:=</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;volume&quot;</span><span class="p">:</span> <span class="n">area</span> <span class="o">*</span> <span class="n">height</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>After executing the code with the walrus operator, we can access the assigned variables:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.0
+12.566370614359172
 </pre></div>
 </div>
 </div>
@@ -995,7 +1022,7 @@ NameError: name &#39;greetng&#39; is not defined. Did you mean: &#39;greeting&#3
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structural-pattern-matching-in-python-3-10">2.11.2. Structural Pattern Matching in Python 3.10</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-readability-with-python-dataclasses-and-match-statements">2.11.3. Enhance Code Readability with Python Dataclasses and Match Statements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-union-types-as-x-y-in-python-3-10">2.11.4. Write Union Types as X|Y in Python 3.10</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#walrus-operator-assign-a-variable-in-an-expression">2.11.5. Walrus Operator: Assign a Variable in an Expression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-cleaner-python-with-the-walrus-operatorn">2.11.5. Write Cleaner Python with the Walrus Operatorn</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fine-grained-traceback-in-python-3-11">2.11.6. Fine-Grained Traceback in Python 3.11</a></li>
 </ul>
   </nav></div>
