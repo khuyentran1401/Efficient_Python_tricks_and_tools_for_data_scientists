@@ -524,6 +524,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.14.11. SQLGlot: Write Once, Run Anywhere SQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.14.12. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
             </nav>
         </div>
@@ -607,6 +608,64 @@ WHERE
 
 <span class="c1"># Read a SQL table into a DataFrame</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table_name&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Create a SQLAlchemy engine</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="s2">&quot;postgresql://username:password@host:port/database_name&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1"># Read a SQL table into a DataFrame</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table_name&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File &lt;string&gt;:2,</span> in <span class="ni">create_engine</span><span class="nt">(url, **kwargs)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/util/deprecations.py:281,</span> in <span class="ni">deprecated_params.&lt;locals&gt;.decorate.&lt;locals&gt;.warned</span><span class="nt">(fn, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">274</span>     <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">275</span>         <span class="n">_warn_with_version</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">276</span>             <span class="n">messages</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">277</span>             <span class="n">versions</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span>             <span class="n">version_warnings</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">279</span>             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">280</span>         <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">281</span> <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/create.py:548,</span> in <span class="ni">create_engine</span><span class="nt">(url, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">545</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;empty_in_strategy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="c1"># create url.URL object</span>
+<span class="ne">--&gt; </span><span class="mi">548</span> <span class="n">u</span> <span class="o">=</span> <span class="n">_url</span><span class="o">.</span><span class="n">make_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">550</span> <span class="n">u</span><span class="p">,</span> <span class="n">plugins</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_instantiate_plugins</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_get_entrypoint</span><span class="p">()</span>
+
+<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/url.py:838,</span> in <span class="ni">make_url</span><span class="nt">(name_or_url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">822</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Given a string, produce a new URL instance.</span>
+<span class="g g-Whitespace">    </span><span class="mi">823</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">824</span><span class="sd"> The format of the URL generally follows `RFC-1738</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">834</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">835</span><span class="sd"> &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">837</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">838</span>     <span class="k">return</span> <span class="n">_parse_url</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">839</span> <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">,</span> <span class="n">URL</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">840</span>     <span class="n">name_or_url</span><span class="p">,</span> <span class="s2">&quot;_sqla_is_testing_if_this_is_a_mock_object&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">841</span> <span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">842</span>     <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">ArgumentError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">843</span>         <span class="sa">f</span><span class="s2">&quot;Expected string or URL object, got </span><span class="si">{</span><span class="n">name_or_url</span><span class="si">!r}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">844</span>     <span class="p">)</span>
+
+<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/url.py:899,</span> in <span class="ni">_parse_url</span><span class="nt">(name)</span>
+<span class="g g-Whitespace">    </span><span class="mi">896</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">898</span>     <span class="k">if</span> <span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]:</span>
+<span class="ne">--&gt; </span><span class="mi">899</span>         <span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">901</span>     <span class="k">return</span> <span class="n">URL</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">components</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+<span class="g g-Whitespace">    </span><span class="mi">903</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">ValueError</span>: invalid literal for int() with base 10: &#39;port&#39;
 </pre></div>
 </div>
 </div>
@@ -1230,6 +1289,107 @@ FROM `products`
 </div>
 <p><a class="reference external" href="https://bit.ly/4dGyTmP">Link to SQLGlot</a>.</p>
 </section>
+<section id="sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">
+<h2><span class="section-number">6.14.12. </span>SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations<a class="headerlink" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlitedict
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Writing data to SQLite directly and reading it back requires verbose SQL statements, schema definitions, and type handling, which can be tedious when storing complex Python objects or making frequent changes results in complex code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="n">products_to_update</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;P1&quot;</span><span class="p">,</span> <span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="mf">999.99</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;P2&quot;</span><span class="p">,</span> <span class="s2">&quot;Mouse&quot;</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;P3&quot;</span><span class="p">,</span> <span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="mf">59.99</span><span class="p">,</span> <span class="mi">75</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;example.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS products </span>
+<span class="sd">                     (id TEXT PRIMARY KEY, name TEXT, price REAL, stock INTEGER)&quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">executemany</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;INSERT OR REPLACE INTO products (id, name, price, stock) </span>
+<span class="sd">                         VALUES (?, ?, ?, ?)&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">products_to_update</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;example.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id, name, price, stock FROM products&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+        <span class="n">product_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;stock&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">product_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P1={&#39;name&#39;: &#39;Laptop&#39;, &#39;price&#39;: 999.99, &#39;stock&#39;: 50}
+P2={&#39;name&#39;: &#39;Mouse&#39;, &#39;price&#39;: 29.99, &#39;stock&#39;: 100}
+P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;: 75}
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use SqliteDict to handle all the SQL and serialization complexity with a familiar dictionary interface:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlitedict</span> <span class="kn">import</span> <span class="n">SqliteDict</span>
+
+<span class="n">products_to_update</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;P1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">999.99</span><span class="p">,</span> <span class="s2">&quot;stock&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="s2">&quot;P2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mouse&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">29.99</span><span class="p">,</span> <span class="s2">&quot;stock&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+    <span class="s2">&quot;P3&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Keyboard&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">59.99</span><span class="p">,</span> <span class="s2">&quot;stock&quot;</span><span class="p">:</span> <span class="mi">75</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="n">SqliteDict</span><span class="p">(</span><span class="s2">&quot;example2.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+    <span class="c1"># Update multiple records in a batch</span>
+    <span class="k">for</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">product_data</span> <span class="ow">in</span> <span class="n">products_to_update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">db</span><span class="p">[</span><span class="n">product_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">product_data</span>
+
+    <span class="c1"># Single commit for all updates</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">SqliteDict</span><span class="p">(</span><span class="s2">&quot;example2.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P1={&#39;name&#39;: &#39;Laptop&#39;, &#39;price&#39;: 999.99, &#39;stock&#39;: 50}
+P2={&#39;name&#39;: &#39;Mouse&#39;, &#39;price&#39;: 29.99, &#39;stock&#39;: 100}
+P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;: 75}
+</pre></div>
+</div>
+</div>
+</div>
+<p>The example shows how SqliteDict eliminates the need for explicit SQL statements, cursor management, and serialization. The tool handles schema creation, data type conversion, and connection management internally, while providing a Pythonic interface. This is particularly useful when you need to frequently store and retrieve complex Python objects without dealing with the underlying database complexity.</p>
+<p><a class="reference external" href="https://github.com/piskvorky/sqlitedict">Link to SqliteDict</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1306,6 +1466,7 @@ FROM `products`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.14.9. Simplify CSV Data Management with DuckDB</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.14.10. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.14.11. SQLGlot: Write Once, Run Anywhere SQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.14.12. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
   </nav></div>
 

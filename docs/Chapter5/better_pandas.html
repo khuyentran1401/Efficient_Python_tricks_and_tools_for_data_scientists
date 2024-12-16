@@ -536,6 +536,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.21. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.22. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.23. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-geographic-calculations-with-geopandas">6.12.24. Simplifying Geographic Calculations with GeoPandas</a></li>
 </ul>
             </nav>
         </div>
@@ -3623,6 +3624,176 @@ Polars time: 41.079080 seconds
 <small>shape: (2, 3)</small><table border="1" class="dataframe"><thead><tr><th>Category</th><th>Quantity</th><th>Price</th></tr><tr><td>str</td><td>i64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Clothing&quot;</td><td>12</td><td>25.0</td></tr><tr><td>&quot;Electronics&quot;</td><td>12</td><td>216.666667</td></tr></tbody></table></div></div></div>
 </div>
 </section>
+<section id="simplifying-geographic-calculations-with-geopandas">
+<h2><span class="section-number">6.12.24. </span>Simplifying Geographic Calculations with GeoPandas<a class="headerlink" href="#simplifying-geographic-calculations-with-geopandas" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>geopandas
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Working with geographic data in Python without proper tools can be complex and cumbersome.</p>
+<p>Example of working with geographic data without specialized tools:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manually handling coordinates and spatial operations</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Complex manual handling of polygon coordinates</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Area1&#39;</span><span class="p">,</span> <span class="s1">&#39;Area2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;coordinates&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>
+        <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="p">]</span>
+<span class="p">})</span>
+
+<span class="c1"># Calculate area</span>
+<span class="k">def</span> <span class="nf">calculate_polygon_area</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+    <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">]</span>
+    <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">]</span>
+    
+    <span class="c1"># Add first point to end to close the polygon</span>
+    <span class="n">x_shifted</span> <span class="o">=</span> <span class="n">x_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">x_coords</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="n">y_shifted</span> <span class="o">=</span> <span class="n">y_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">y_coords</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Calculate using shoelace formula</span>
+    <span class="n">first_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_shifted</span><span class="p">))</span>
+    <span class="n">second_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_shifted</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">))</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">first_sum</span> <span class="o">-</span> <span class="n">second_sum</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">area</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_polygon_area</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.5
+1    1.0
+Name: area, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate parameter</span>
+<span class="k">def</span> <span class="nf">calculate_perimeter</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+    <span class="c1"># Add first point to end to close the polygon if not already closed</span>
+    <span class="k">if</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">coordinates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span> <span class="o">+</span> <span class="p">[</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    
+    <span class="c1"># Calculate distance between consecutive points</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">point1</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">point2</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Euclidean distance formula</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">point2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">point1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">point2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">point1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;perimeter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">calculate_perimeter</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;perimeter&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    3.414214
+1    4.000000
+Name: perimeter, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<p>With GeoPandas, you can:</p>
+<ul class="simple">
+<li><p>Work with geometric objects (points, lines, polygons) directly in DataFrame-like structures</p></li>
+<li><p>Perform spatial operations (intersections, unions, buffers) easily</p></li>
+<li><p>Visualize geographic data with simple plotting commands</p></li>
+</ul>
+<p>Example using GeoPandas:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
+
+<span class="c1"># Create two polygons</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+    
+<span class="c1"># Create a GeoSeries from the polygons</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">])</span>
+    
+<span class="c1"># Print the GeoSeries</span>
+<span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0         POLYGON ((0 0, 1 0, 1 1, 0 0))
+1    POLYGON ((2 0, 3 0, 3 1, 2 1, 2 0))
+dtype: geometry
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate area</span>
+<span class="n">g</span><span class="o">.</span><span class="n">area</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    0.5
+1    1.0
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perimater of each polygon</span>
+<span class="n">g</span><span class="o">.</span><span class="n">length</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    3.414214
+1    4.000000
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">g</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/90d792ffd3608e80f1a0072fde3d7d393edebbfa5799a0a07897ccc400055bde.png" src="../_images/90d792ffd3608e80f1a0072fde3d7d393edebbfa5799a0a07897ccc400055bde.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/geopandas/geopandas">Link to GeoPandas</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -3711,6 +3882,7 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.12.21. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.12.22. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.12.23. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-geographic-calculations-with-geopandas">6.12.24. Simplifying Geographic Calculations with GeoPandas</a></li>
 </ul>
   </nav></div>
 
