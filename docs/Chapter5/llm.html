@@ -101,7 +101,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="7. Cool Tools" href="../Chapter6/Chapter6.html" />
-    <link rel="prev" title="6.15. PySpark" href="spark.html" />
+    <link rel="prev" title="6.15. 3 Powerful Ways to Create PySpark DataFrames" href="spark.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -211,17 +211,17 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/interaction_between_2_lists.html">2.3.4. Interaction Between 2 Lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.5. Apply Functions to Elements in a List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.4. Dictionary</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.5. Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.6. Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.7. Datetime</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.8. Code Speed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.9. Good Python Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.10. New Features in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -271,7 +271,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.16. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -855,6 +855,69 @@ document.write(`
 </div>
 </div>
 <p><a class="reference external" href="https://bit.ly/4awfNhg">Link to Mirascope</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>chromadb<span class="w"> </span><span class="s1">&#39;numpy&lt;2&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Managing and querying large collections of text data using traditional databases or simple search methods results in poor semantic matches and complex implementation. This causes difficulties in building AI applications that need to find contextually similar content.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional approach with basic text search</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;The weather is great today&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;The climate is excellent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Machine learning models are fascinating&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Search by exact match or simple substring</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;How&#39;s the weather?&quot;</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span> <span class="k">if</span> <span class="s2">&quot;weather&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+
+<span class="c1"># Only finds documents with exact word &quot;weather&quot;, misses semantically similar ones</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;The weather is great today&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can use Chroma to easily store and query documents using their semantic meaning through embeddings. The tool handles the embedding creation and similarity search automatically, making it simple to build AI applications with semantic search capabilities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">chromadb</span>
+
+<span class="c1"># Initialize client and collection</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">chromadb</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="n">collection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="s2">&quot;documents&quot;</span><span class="p">)</span>
+
+<span class="c1"># Add documents</span>
+<span class="n">collection</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="n">documents</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;The weather is great today&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;The climate is excellent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Machine learning models are fascinating&quot;</span>
+    <span class="p">],</span>
+    <span class="n">ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;doc1&quot;</span><span class="p">,</span> <span class="s2">&quot;doc2&quot;</span><span class="p">,</span> <span class="s2">&quot;doc3&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Query semantically similar documents</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+    <span class="n">query_texts</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;How&#39;s the weather?&quot;</span><span class="p">],</span>
+    <span class="n">n_results</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+<span class="c1"># Returns both weather and climate documents due to semantic similarity</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;documents&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The example shows how Chroma automatically converts text into embeddings and finds semantically similar documents, even when they don’t share exact words. This makes it much easier to build applications that can understand the meaning of text, not just match keywords.</p>
 </section>
 </section>
 
@@ -894,7 +957,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">6.15. </span>PySpark</p>
+        <p class="prev-next-title"><span class="section-number">6.15. </span>3 Powerful Ways to Create PySpark DataFrames</p>
       </div>
     </a>
     <a class="right-next"
