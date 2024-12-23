@@ -100,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter5/spark';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.32. Large Language Model (LLM)" href="llm.html" />
+    <link rel="next" title="6.33. Large Language Model (LLM)" href="llm.html" />
     <link rel="prev" title="6.14. SQL Libraries" href="SQL.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -288,7 +288,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.32. Large Language Model (LLM)</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.33. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -539,13 +540,14 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.22. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.23. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-single-inputs-into-tables-using-pyspark-udtfs">6.24. Transform Single Inputs into Tables Using PySpark UDTFs</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.25. Simplify Unit Testing of SQL Queries with PySpark</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.26. Update Multiple Columns in Spark 3.3 and Later</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.27. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.28. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.29. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.30. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.31. Tempo: Simplified Time Series Analysis in PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-for-pyspark-dataframe-comparison-testing">6.25. Best Practices for PySpark DataFrame Comparison Testing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.26. Simplify Unit Testing of SQL Queries with PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.27. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.28. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.29. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.30. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.31. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.32. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
 
             </nav>
@@ -1896,8 +1898,130 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 </section>
+<section id="best-practices-for-pyspark-dataframe-comparison-testing">
+<h1><span class="section-number">6.25. </span>Best Practices for PySpark DataFrame Comparison Testing<a class="headerlink" href="#best-practices-for-pyspark-dataframe-comparison-testing" title="Permalink to this heading">#</a></h1>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="c1"># Create SparkSession</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Manually comparing PySpark DataFrame outputs using <code class="docutils literal notranslate"><span class="pre">collect()</span></code> and equality comparison leads to brittle tests due to ordering issues and unclear error messages when data doesn’t match expectations.</p>
+<p>For example, the following test will fail due to ordering issues, resulting in an unclear error message.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manual DataFrame comparison</span>
+<span class="n">result_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">expected_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="n">result_df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected_df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>assert [Row(id=1, name=&#39;Alice&#39;, value=100), Row(id=2, name=&#39;Bob&#39;, value=200)] == [Row(id=2, name=&#39;Bob&#39;, value=200), Row(id=1, name=&#39;Alice&#39;, value=100)]
+ +  where [Row(id=1, name=&#39;Alice&#39;, value=100), Row(id=2, name=&#39;Bob&#39;, value=200)] = &lt;bound method DataFrame.collect of DataFrame[id: bigint, name: string, value: bigint]&gt;()
+ +    where &lt;bound method DataFrame.collect of DataFrame[id: bigint, name: string, value: bigint]&gt; = DataFrame[id: bigint, name: string, value: bigint].collect
+ +  and   [Row(id=2, name=&#39;Bob&#39;, value=200), Row(id=1, name=&#39;Alice&#39;, value=100)] = &lt;bound method DataFrame.collect of DataFrame[id: bigint, name: string, value: bigint]&gt;()
+ +    where &lt;bound method DataFrame.collect of DataFrame[id: bigint, name: string, value: bigint]&gt; = DataFrame[id: bigint, name: string, value: bigint].collect
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">assertDataFrameEqual</span></code> provides a robust way to compare DataFrames, allowing for order-independent comparison.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Testing with DataFrame equality</span>
+<span class="kn">from</span> <span class="nn">pyspark.testing.utils</span> <span class="kn">import</span> <span class="n">assertDataFrameEqual</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">assertDataFrameEqual</span><span class="p">(</span><span class="n">result_df</span><span class="p">,</span> <span class="n">expected_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">collect()</span></code> for comparison cannot detect type mismatch, whereas <code class="docutils literal notranslate"><span class="pre">assertDataFrameEqual</span></code> can.</p>
+<p>For example, the following test will pass, even though there is a type mismatch.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manual DataFrame comparison</span>
+<span class="n">result_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">expected_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">result_df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected_df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The error message produced by <code class="docutils literal notranslate"><span class="pre">assertDataFrameEqual</span></code> is clear and informative, highlighting the difference in schemas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">assertDataFrameEqual</span><span class="p">(</span><span class="n">result_df</span><span class="p">,</span> <span class="n">expected_df</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">AssertionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[DIFFERENT_SCHEMA] Schemas do not match.
+--- actual
++++ expected
+- StructType([StructField(&#39;id&#39;, LongType(), True), StructField(&#39;name&#39;, StringType(), True), StructField(&#39;value&#39;, LongType(), True)])
+?                                                                                                                ^ ^^
+
++ StructType([StructField(&#39;id&#39;, LongType(), True), StructField(&#39;name&#39;, StringType(), True), StructField(&#39;value&#39;, DoubleType(), True)])
+?                                                                                                                ^ ^^^^
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="simplify-unit-testing-of-sql-queries-with-pyspark">
-<h1><span class="section-number">6.25. </span>Simplify Unit Testing of SQL Queries with PySpark<a class="headerlink" href="#simplify-unit-testing-of-sql-queries-with-pyspark" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.26. </span>Simplify Unit Testing of SQL Queries with PySpark<a class="headerlink" href="#simplify-unit-testing-of-sql-queries-with-pyspark" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1964,7 +2088,7 @@ def test_query_return_correct_number_of_rows(query):
 </div>
 </section>
 <section id="update-multiple-columns-in-spark-3-3-and-later">
-<h1><span class="section-number">6.26. </span>Update Multiple Columns in Spark 3.3 and Later<a class="headerlink" href="#update-multiple-columns-in-spark-3-3-and-later" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.27. </span>Update Multiple Columns in Spark 3.3 and Later<a class="headerlink" href="#update-multiple-columns-in-spark-3-3-and-later" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2070,7 +2194,7 @@ def test_query_return_correct_number_of_rows(query):
 </div>
 </section>
 <section id="vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">
-<h1><span class="section-number">6.27. </span>Vectorized Operations in PySpark: pandas_udf vs Standard UDF<a class="headerlink" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.28. </span>Vectorized Operations in PySpark: pandas_udf vs Standard UDF<a class="headerlink" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2197,7 +2321,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://bit.ly/4aRBNTX">Learn more about pandas_udf</a>.</p>
 </section>
 <section id="optimizing-pyspark-queries-dataframe-api-or-sql">
-<h1><span class="section-number">6.28. </span>Optimizing PySpark Queries: DataFrame API or SQL?<a class="headerlink" href="#optimizing-pyspark-queries-dataframe-api-or-sql" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.29. </span>Optimizing PySpark Queries: DataFrame API or SQL?<a class="headerlink" href="#optimizing-pyspark-queries-dataframe-api-or-sql" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2288,7 +2412,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </ul>
 </section>
 <section id="enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">
-<h1><span class="section-number">6.29. </span>Enhance Code Modularity and Reusability with Temporary Views in PySpark<a class="headerlink" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.30. </span>Enhance Code Modularity and Reusability with Temporary Views in PySpark<a class="headerlink" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2395,7 +2519,7 @@ Number of Orders:
 </div>
 </section>
 <section id="pyspark-best-practices-simplifying-logical-chain-conditions">
-<h1><span class="section-number">6.30. </span>PySpark Best Practices: Simplifying Logical Chain Conditions<a class="headerlink" href="#pyspark-best-practices-simplifying-logical-chain-conditions" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.31. </span>PySpark Best Practices: Simplifying Logical Chain Conditions<a class="headerlink" href="#pyspark-best-practices-simplifying-logical-chain-conditions" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2503,7 +2627,7 @@ Number of Orders:
 </ul>
 </section>
 <section id="tempo-simplified-time-series-analysis-in-pyspark">
-<h1><span class="section-number">6.31. </span>Tempo: Simplified Time Series Analysis in PySpark<a class="headerlink" href="#tempo-simplified-time-series-analysis-in-pyspark" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6.32. </span>Tempo: Simplified Time Series Analysis in PySpark<a class="headerlink" href="#tempo-simplified-time-series-analysis-in-pyspark" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2850,7 +2974,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6.32. </span>Large Language Model (LLM)</p>
+        <p class="prev-next-title"><span class="section-number">6.33. </span>Large Language Model (LLM)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -2879,13 +3003,14 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-complex-sql-queries-with-pyspark-udfs">6.22. Simplify Complex SQL Queries with PySpark UDFs</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#leverage-spark-udfs-for-reusable-complex-logic-in-sql-queries">6.23. Leverage Spark UDFs for Reusable Complex Logic in SQL Queries</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#transform-single-inputs-into-tables-using-pyspark-udtfs">6.24. Transform Single Inputs into Tables Using PySpark UDTFs</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.25. Simplify Unit Testing of SQL Queries with PySpark</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.26. Update Multiple Columns in Spark 3.3 and Later</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.27. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.28. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.29. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.30. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.31. Tempo: Simplified Time Series Analysis in PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#best-practices-for-pyspark-dataframe-comparison-testing">6.25. Best Practices for PySpark DataFrame Comparison Testing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-unit-testing-of-sql-queries-with-pyspark">6.26. Simplify Unit Testing of SQL Queries with PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#update-multiple-columns-in-spark-3-3-and-later">6.27. Update Multiple Columns in Spark 3.3 and Later</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vectorized-operations-in-pyspark-pandas-udf-vs-standard-udf">6.28. Vectorized Operations in PySpark: pandas_udf vs Standard UDF</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.29. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.30. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.31. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.32. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
 
   </nav></div>

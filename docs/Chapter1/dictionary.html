@@ -271,8 +271,25 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.12. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.13. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.14. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. PySpark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.16. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.15. 3 Powerful Ways to Create PySpark DataFrames</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.33. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -515,7 +532,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-a-dictionary-with-items-from-another-dictionary">2.5.1. Update a Dictionary With Items From Another Dictionary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-parameter-in-max-find-the-key-with-the-largest-value">2.5.2. Key Parameter in Max(): Find the Key with the Largest Value</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dict-get-get-the-default-value-of-a-dictionary-if-a-key-doesn-t-exist">2.5.3. dict.get: Get the Default Value of a Dictionary if a Key Doesn’t Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-writing-nested-if-else-use-python-s-get-instead">2.5.3. Stop Writing Nested if-else: Use Python’s .get() Instead</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys">2.5.4. Double dict.get: Get Values in a Nested Dictionary with Missing Keys</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dict-fromkeys-get-a-dictionary-from-a-list-and-a-value">2.5.5. dict.fromkeys: Get a Dictionary From a List and a Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-a-dictionary-with-dictionary-comprehension">2.5.6. Reverse a Dictionary with Dictionary Comprehension</a></li>
@@ -599,40 +616,72 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="dict-get-get-the-default-value-of-a-dictionary-if-a-key-doesn-t-exist">
-<h2><span class="section-number">2.5.3. </span>dict.get: Get the Default Value of a Dictionary if a Key Doesn’t Exist<a class="headerlink" href="#dict-get-get-the-default-value-of-a-dictionary-if-a-key-doesn-t-exist" title="Permalink to this heading">#</a></h2>
+<section id="stop-writing-nested-if-else-use-python-s-get-instead">
+<h2><span class="section-number">2.5.3. </span>Stop Writing Nested if-else: Use Python’s .get() Instead<a class="headerlink" href="#stop-writing-nested-if-else-use-python-s-get-instead" title="Permalink to this heading">#</a></h2>
+<p>When working with dictionaries in Python, it’s common to encounter situations where you need to access values that may or may not exist. The traditional approach of using multiple nested if-else statements can result in verbose, repetitive code that’s harder to maintain and more prone to errors.</p>
+<p>Let’s consider an example where we have a dictionary <code class="docutils literal notranslate"><span class="pre">user_data</span></code> with keys “name”, “age”, and possibly “email”. We want to assign default values to these keys if they don’t exist.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Checking dictionary values with multiple if-else</span>
+<span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+
+<span class="c1"># Repetitive code with multiple default values</span>
+<span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">user_data</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+    
+<span class="k">if</span> <span class="s2">&quot;age&quot;</span> <span class="ow">in</span> <span class="n">user_data</span><span class="p">:</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="mi">0</span>
+    
+<span class="k">if</span> <span class="s2">&quot;email&quot;</span> <span class="ow">in</span> <span class="n">user_data</span><span class="p">:</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">user_data</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;no-email@example.com&quot;</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">age</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">email</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name=&#39;Alice&#39;
+age=30
+email=&#39;no-email@example.com&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see, this approach is tedious and prone to errors.</p>
+<p>With the <code class="docutils literal notranslate"><span class="pre">.get()</span></code> method, we can access dictionary values with default values in a single line of code. This approach is not only more concise but also more readable and maintainable.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using .get() method for cleaner code</span>
+<span class="n">user_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">email</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;no-email@example.com&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">age</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">email</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>name=&#39;Alice&#39;
+age=30
+email=&#39;no-email@example.com&#39;
+</pre></div>
+</div>
+</div>
+</div>
 <p>If you want to get the default value when a key doesn’t exist in a dictionary, use <code class="docutils literal notranslate"><span class="pre">dict.get</span></code>. In the code below, since there is no key <code class="docutils literal notranslate"><span class="pre">meeting3</span></code>, the default value <code class="docutils literal notranslate"><span class="pre">online</span></code> is returned.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;meeting1&#39;</span><span class="p">:</span> <span class="s1">&#39;room1&#39;</span><span class="p">,</span> <span class="s1">&#39;meeting2&#39;</span><span class="p">:</span> <span class="s1">&#39;room2&#39;</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;meeting1&#39;</span><span class="p">,</span> <span class="s1">&#39;online&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;room1&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;meeting3&#39;</span><span class="p">,</span> <span class="s1">&#39;online&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;online&#39;
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <section id="double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys">
 <h2><span class="section-number">2.5.4. </span>Double dict.get: Get Values in a Nested Dictionary with Missing Keys<a class="headerlink" href="#double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys" title="Permalink to this heading">#</a></h2>
@@ -898,7 +947,7 @@ document.write(`
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-a-dictionary-with-items-from-another-dictionary">2.5.1. Update a Dictionary With Items From Another Dictionary</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-parameter-in-max-find-the-key-with-the-largest-value">2.5.2. Key Parameter in Max(): Find the Key with the Largest Value</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dict-get-get-the-default-value-of-a-dictionary-if-a-key-doesn-t-exist">2.5.3. dict.get: Get the Default Value of a Dictionary if a Key Doesn’t Exist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stop-writing-nested-if-else-use-python-s-get-instead">2.5.3. Stop Writing Nested if-else: Use Python’s .get() Instead</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#double-dict-get-get-values-in-a-nested-dictionary-with-missing-keys">2.5.4. Double dict.get: Get Values in a Nested Dictionary with Missing Keys</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dict-fromkeys-get-a-dictionary-from-a-list-and-a-value">2.5.5. dict.fromkeys: Get a Dictionary From a List and a Value</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-a-dictionary-with-dictionary-comprehension">2.5.6. Reverse a Dictionary with Dictionary Comprehension</a></li>
