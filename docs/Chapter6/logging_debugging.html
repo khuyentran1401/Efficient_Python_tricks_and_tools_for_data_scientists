@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter6.html">7. Cool Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -807,7 +790,7 @@ Successfully installed loguru-0.7.2
 </div>
 <p>Loguru also allows you to print a readable traceback by adding decorator <code class="docutils literal notranslate"><span class="pre">logger.catch</span></code> to a function.</p>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
@@ -825,172 +808,6 @@ Successfully installed loguru-0.7.2
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Green">2024-08-12 18:10:41.329</span> | <span class=" -Color -Color-Bold -Color-Bold-Red">ERROR   </span> | <span class=" -Color -Color-Cyan">__main__</span>:<span class=" -Color -Color-Cyan">&lt;module&gt;</span>:<span class=" -Color -Color-Cyan">14</span> - <span class=" -Color -Color-Bold -Color-Bold-Red">An error has been caught in function &#39;&lt;module&gt;&#39;, process &#39;MainProcess&#39; (31530), thread &#39;MainThread&#39; (8332868224):</span>
-<span class=" -Color -Color-Bold -Color-Bold-Yellow">Traceback (most recent call last):</span>
-
-  File &quot;&lt;frozen runpy&gt;&quot;, line 198, in _run_module_as_main
-  File &quot;&lt;frozen runpy&gt;&quot;, line 88, in _run_code
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel_launcher.py&quot;, line 17, in &lt;module&gt;
-    app.launch_new_instance()
-    │   └ &lt;bound method Application.launch_instance of &lt;class &#39;ipykernel.kernelapp.IPKernelApp&#39;&gt;&gt;
-    └ &lt;module &#39;ipykernel.kernelapp&#39; from &#39;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelapp.py&#39;&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/traitlets/config/application.py&quot;, line 1053, in launch_instance
-    app.start()
-    │   └ &lt;function IPKernelApp.start at 0x107d28860&gt;
-    └ &lt;ipykernel.kernelapp.IPKernelApp object at 0x104cdf1d0&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelapp.py&quot;, line 737, in start
-    self.io_loop.start()
-    │    │       └ &lt;function BaseAsyncIOLoop.start at 0x107d29760&gt;
-    │    └ &lt;tornado.platform.asyncio.AsyncIOMainLoop object at 0x107d3fc90&gt;
-    └ &lt;ipykernel.kernelapp.IPKernelApp object at 0x104cdf1d0&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/tornado/platform/asyncio.py&quot;, line 195, in start
-    self.asyncio_loop.run_forever()
-    │    │            └ &lt;function BaseEventLoop.run_forever at 0x105c9fb00&gt;
-    │    └ &lt;_UnixSelectorEventLoop running=True closed=False debug=False&gt;
-    └ &lt;tornado.platform.asyncio.AsyncIOMainLoop object at 0x107d3fc90&gt;
-
-  File &quot;<span class=" -Color -Color-Green">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/</span><span class=" -Color -Color-Bold -Color-Bold-Green">base_events.py</span>&quot;, line <span class=" -Color -Color-Yellow">607</span>, in <span class=" -Color -Color-Magenta">run_forever</span>
-    <span class=" -Color -Color-Bold">self</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">_run_once()</span>
-    <span class=" -Color -Color-Cyan">│    └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;function BaseEventLoop._run_once at 0x105ca1940&gt;</span>
-    <span class=" -Color -Color-Cyan">└ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;_UnixSelectorEventLoop running=True closed=False debug=False&gt;</span>
-
-  File &quot;<span class=" -Color -Color-Green">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/</span><span class=" -Color -Color-Bold -Color-Bold-Green">base_events.py</span>&quot;, line <span class=" -Color -Color-Yellow">1922</span>, in <span class=" -Color -Color-Magenta">_run_once</span>
-    <span class=" -Color -Color-Bold">handle</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">_run()</span>
-    <span class=" -Color -Color-Cyan">│      └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;function Handle._run at 0x105c32840&gt;</span>
-    <span class=" -Color -Color-Cyan">└ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;Handle Task.task_wakeup(&lt;Future finis...6d0&gt;, ...],))&gt;)&gt;</span>
-
-  File &quot;<span class=" -Color -Color-Green">/opt/homebrew/Cellar/python@3.11/3.11.6_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/</span><span class=" -Color -Color-Bold -Color-Bold-Green">events.py</span>&quot;, line <span class=" -Color -Color-Yellow">80</span>, in <span class=" -Color -Color-Magenta">_run</span>
-    <span class=" -Color -Color-Bold">self</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">_context</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">run(self</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">_callback,</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">*</span><span class=" -Color -Color-Bold">self</span><span class=" -Color -Color-Bold -Color-Bold-Magenta">.</span><span class=" -Color -Color-Bold">_args)</span>
-    <span class=" -Color -Color-Cyan">│    │            │    │           │    └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;member &#39;_args&#39; of &#39;Handle&#39; objects&gt;</span>
-    <span class=" -Color -Color-Cyan">│    │            │    │           └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;Handle Task.task_wakeup(&lt;Future finis...6d0&gt;, ...],))&gt;)&gt;</span>
-    <span class=" -Color -Color-Cyan">│    │            │    └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;member &#39;_callback&#39; of &#39;Handle&#39; objects&gt;</span>
-    <span class=" -Color -Color-Cyan">│    │            └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;Handle Task.task_wakeup(&lt;Future finis...6d0&gt;, ...],))&gt;)&gt;</span>
-    <span class=" -Color -Color-Cyan">│    └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;member &#39;_context&#39; of &#39;Handle&#39; objects&gt;</span>
-    <span class=" -Color -Color-Cyan">└ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;Handle Task.task_wakeup(&lt;Future finis...6d0&gt;, ...],))&gt;)&gt;</span>
-
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelbase.py&quot;, line 524, in dispatch_queue
-    await self.process_one()
-          │    └ &lt;function Kernel.process_one at 0x1077f2fc0&gt;
-          └ &lt;ipykernel.ipkernel.IPythonKernel object at 0x107d40a50&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelbase.py&quot;, line 513, in process_one
-    await dispatch(*args)
-          │         └ ([&lt;zmq.sugar.frame.Frame object at 0x10848d250&gt;, &lt;zmq.sugar.frame.Frame object at 0x10848d610&gt;, &lt;zmq.sugar.frame.Frame object...
-          └ &lt;bound method Kernel.dispatch_shell of &lt;ipykernel.ipkernel.IPythonKernel object at 0x107d40a50&gt;&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelbase.py&quot;, line 418, in dispatch_shell
-    await result
-          └ &lt;coroutine object Kernel.execute_request at 0x107a77320&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/kernelbase.py&quot;, line 758, in execute_request
-    reply_content = await reply_content
-                          └ &lt;coroutine object IPythonKernel.do_execute at 0x107a71240&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/ipkernel.py&quot;, line 426, in do_execute
-    res = shell.run_cell(
-          │     └ &lt;function ZMQInteractiveShell.run_cell at 0x107d15c60&gt;
-          └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/ipykernel/zmqshell.py&quot;, line 549, in run_cell
-    return super().run_cell(*args, **kwargs)
-                             │       └ {&#39;store_history&#39;: True, &#39;silent&#39;: False, &#39;cell_id&#39;: &#39;vscode-notebook-cell:/Users/khuyentran/book/Efficient_Python_tricks_and_...
-                             └ (&#39;from sklearn.metrics import mean_squared_error\nimport numpy as np\nfrom loguru import logger\n\nlogger.add(&quot;file_{time}.lo...
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&quot;, line 3024, in run_cell
-    result = self._run_cell(
-             │    └ &lt;function InteractiveShell._run_cell at 0x106bc3ce0&gt;
-             └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&quot;, line 3079, in _run_cell
-    result = runner(coro)
-             │      └ &lt;coroutine object InteractiveShell.run_cell_async at 0x1086c18a0&gt;
-             └ &lt;function _pseudo_sync_runner at 0x106baae80&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/async_helpers.py&quot;, line 129, in _pseudo_sync_runner
-    coro.send(None)
-    │    └ &lt;method &#39;send&#39; of &#39;coroutine&#39; objects&gt;
-    └ &lt;coroutine object InteractiveShell.run_cell_async at 0x1086c18a0&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&quot;, line 3284, in run_cell_async
-    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
-                       │    │             │        │     └ &#39;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_31530/1455742643.py&#39;
-                       │    │             │        └ [&lt;ast.ImportFrom object at 0x10881c0d0&gt;, &lt;ast.Import object at 0x10881f310&gt;, &lt;ast.ImportFrom object at 0x10881fc10&gt;, &lt;ast.Exp...
-                       │    │             └ &lt;ast.Module object at 0x10881f5b0&gt;
-                       │    └ &lt;function InteractiveShell.run_ast_nodes at 0x106bc8040&gt;
-                       └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&quot;, line 3466, in run_ast_nodes
-    if await self.run_code(code, result, async_=asy):
-             │    │        │     │              └ False
-             │    │        │     └ &lt;ExecutionResult object at 108825410, execution_count=10 error_before_exec=None error_in_exec=None info=&lt;ExecutionInfo object...
-             │    │        └ &lt;code object &lt;module&gt; at 0x17346b750, file &quot;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_31530/1455742643.py&quot;, ...
-             │    └ &lt;function InteractiveShell.run_code at 0x106bc80e0&gt;
-             └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/IPython/core/interactiveshell.py&quot;, line 3526, in run_code
-    exec(code_obj, self.user_global_ns, self.user_ns)
-         │         │    │               │    └ {&#39;__name__&#39;: &#39;__main__&#39;, &#39;__doc__&#39;: &#39;Automatically created module for IPython interactive environment&#39;, &#39;__package__&#39;: None, ...
-         │         │    │               └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-         │         │    └ &lt;property object at 0x106ba3830&gt;
-         │         └ &lt;ipykernel.zmqshell.ZMQInteractiveShell object at 0x107d68490&gt;
-         └ &lt;code object &lt;module&gt; at 0x17346b750, file &quot;/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_31530/1455742643.py&quot;, ...
-
-&gt; File &quot;<span class=" -Color -Color-Green">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_31530/</span><span class=" -Color -Color-Bold -Color-Bold-Green">1455742643.py</span>&quot;, line <span class=" -Color -Color-Yellow">14</span>, in <span class=" -Color -Color-Magenta">&lt;module&gt;</span>
-    <span class=" -Color -Color-Bold">evaluate_result(y_true,</span> <span class=" -Color -Color-Bold">y_pred)</span>
-    <span class=" -Color -Color-Cyan">│               │       └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">array([1.5, 2.2])</span>
-    <span class=" -Color -Color-Cyan">│               └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">array([1, 2, 3])</span>
-    <span class=" -Color -Color-Cyan">└ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;function evaluate_result at 0x172e23e20&gt;</span>
-
-  File &quot;<span class=" -Color -Color-Green">/var/folders/5w/fg65_rp17lz39z89p0nkv8ch0000gn/T/ipykernel_31530/</span><span class=" -Color -Color-Bold -Color-Bold-Green">1455742643.py</span>&quot;, line <span class=" -Color -Color-Yellow">9</span>, in <span class=" -Color -Color-Magenta">evaluate_result</span>
-    <span class=" -Color -Color-Bold">mean_square_err</span> <span class=" -Color -Color-Bold -Color-Bold-Magenta">=</span> <span class=" -Color -Color-Bold">mean_squared_error(y_true,</span> <span class=" -Color -Color-Bold">y_pred)</span>
-    <span class=" -Color -Color-Cyan">                  │                  │       └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">array([1.5, 2.2])</span>
-    <span class=" -Color -Color-Cyan">                  │                  └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">array([1, 2, 3])</span>
-    <span class=" -Color -Color-Cyan">                  └ </span><span class=" -Color -Color-Bold -Color-Bold-Cyan">&lt;function mean_squared_error at 0x173478180&gt;</span>
-
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/sklearn/utils/_param_validation.py&quot;, line 213, in wrapper
-    return func(*args, **kwargs)
-           │     │       └ {}
-           │     └ (array([1, 2, 3]), array([1.5, 2.2]))
-           └ &lt;function mean_squared_error at 0x1734780e0&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/sklearn/metrics/_regression.py&quot;, line 497, in mean_squared_error
-    y_type, y_true, y_pred, multioutput = _check_reg_targets(
-            │       │                     └ &lt;function _check_reg_targets at 0x173457ba0&gt;
-            │       └ array([1.5, 2.2])
-            └ array([1, 2, 3])
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/sklearn/metrics/_regression.py&quot;, line 102, in _check_reg_targets
-    check_consistent_length(y_true, y_pred)
-    │                       │       └ array([1.5, 2.2])
-    │                       └ array([1, 2, 3])
-    └ &lt;function check_consistent_length at 0x172e205e0&gt;
-  File &quot;/Users/khuyentran/book/venv/lib/python3.11/site-packages/sklearn/utils/validation.py&quot;, line 457, in check_consistent_length
-    raise ValueError(
-
-<span class=" -Color -Color-Bold -Color-Bold-Red">ValueError</span>:<span class=" -Color -Color-Bold"> Found input variables with inconsistent numbers of samples: [3, 2]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Try wat / object or wat.modifiers / object to inspect an object. Modifiers are:
-  .short or .s to hide attributes (variables and methods)
-  .dunder to print dunder attributes
-  .code to print source code of a function, method or class
-  .long to print non-abbreviated values and documentation
-  .nodocs to hide documentation for functions and classes
-  .all to include all information
-  .ret to return the inspected object
-  .str to return the output string instead of printing
-  .gray to disable colorful output in the console
-Call wat.locals or wat() to inspect local variables.
-Call wat.globals to inspect global variables.
-Try wat / object or wat.modifiers / object to inspect an object. Modifiers are:
-  .short or .s to hide attributes (variables and methods)
-  .dunder to print dunder attributes
-  .code to print source code of a function, method or class
-  .long to print non-abbreviated values and documentation
-  .nodocs to hide documentation for functions and classes
-  .all to include all information
-  .ret to return the inspected object
-  .str to return the output string instead of printing
-  .gray to disable colorful output in the console
-Call wat.locals or wat() to inspect local variables.
-Call wat.globals to inspect global variables.
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>File<span class="w"> </span><span class="s2">&quot;/tmp/ipykernel_174022/1865479429.py&quot;</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
 <span class="w">    </span>evaluate_result<span class="o">(</span>y_true,<span class="w"> </span>y_pred<span class="o">)</span>
@@ -1122,35 +939,65 @@ ic<span class="p">|</span><span class="w"> </span>plus_one<span class="o">(</spa
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting heartrate
-  Downloading heartrate-0.2.2.tar.gz (239 kB)
-  Preparing metadata (setup.py) ... ?25ldone
-?25hRequirement already satisfied: pygments in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from heartrate) (2.16.1)
-Requirement already satisfied: Flask in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from heartrate) (3.0.0)
-Requirement already satisfied: executing in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from heartrate) (2.0.0)
-Requirement already satisfied: asttokens in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from heartrate) (2.4.0)
-Requirement already satisfied: six&gt;=1.12.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from asttokens-&gt;heartrate) (1.16.0)
-Requirement already satisfied: Werkzeug&gt;=3.0.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Flask-&gt;heartrate) (3.0.1)
-Requirement already satisfied: Jinja2&gt;=3.1.2 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Flask-&gt;heartrate) (3.1.2)
-Requirement already satisfied: itsdangerous&gt;=2.1.2 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Flask-&gt;heartrate) (2.1.2)
-Requirement already satisfied: click&gt;=8.1.3 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Flask-&gt;heartrate) (8.1.7)
-Requirement already satisfied: blinker&gt;=1.6.2 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Flask-&gt;heartrate) (1.7.0)
-Requirement already satisfied: MarkupSafe&gt;=2.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from Jinja2&gt;=3.1.2-&gt;Flask-&gt;heartrate) (2.1.3)
-Building wheels for collected packages: heartrate
-  Building wheel for heartrate (setup.py) ... ?25ldone
-?25h  Created wheel for heartrate: filename=heartrate-0.2.2-py3-none-any.whl size=235994 sha256=23d469a3676f399435ed1581b0da936ef614a134749520be801eb96aadeb19b6
-  Stored in directory: /Users/khuyentran/Library/Caches/pip/wheels/ce/2f/bb/26835a451cc11eb8d362d2d2b2c322220c6d61edc825233820
-Successfully built heartrate
-Installing collected packages: heartrate
-Successfully installed heartrate-0.2.2
+</details>
+</div>
+<p>Understanding how your Python code executes in real-time and identifying performance bottlenecks or execution patterns results in a lot of manual debugging and print statements. This often leads to cluttered code and incomplete understanding of program flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculating factorial(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Base case: factorial(1) = 1&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;factorial(</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> * factorial(</span><span class="si">{</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The factorial of </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">factorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Calculating factorial(5)
+Calculating factorial(4)
+Calculating factorial(3)
+Calculating factorial(2)
+Calculating factorial(1)
+Base case: factorial(1) = 1
+factorial(2) = 2 * factorial(1) = 2
+factorial(3) = 3 * factorial(2) = 6
+factorial(4) = 4 * factorial(3) = 24
+factorial(5) = 5 * factorial(4) = 120
+Calculating factorial(5)
+Calculating factorial(4)
+Calculating factorial(3)
+Calculating factorial(2)
+Calculating factorial(1)
+Base case: factorial(1) = 1
+factorial(2) = 2 * factorial(1) = 2
+factorial(3) = 3 * factorial(2) = 6
+factorial(4) = 4 * factorial(3) = 24
+factorial(5) = 5 * factorial(4) = 120
+The factorial of 5 is 120
+</pre></div>
 </div>
-<p>If you want to visualize which lines are executed and how many times they are executed, try heartrate.</p>
+</div>
+</div>
+<p>You can use heartrate to visualize your code execution in real-time through a browser interface. It shows line execution counts, recent activity with color-coded bars, and a live stacktrace without modifying your source code.</p>
 <p>You only need to add two lines of code to use heartrate.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">heartrate</span> 
@@ -1158,8 +1005,10 @@ Successfully installed heartrate-0.2.2
 
 <span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">1</span>
     <span class="k">else</span><span class="p">:</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
 
@@ -1175,9 +1024,7 @@ Successfully installed heartrate-0.2.2
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * Serving Flask app &#39;heartrate.core&#39;
- * Debug mode: off
-The factorial of 5 is 120
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The factorial of 5 is 120
 </pre></div>
 </div>
 </div>
@@ -1185,6 +1032,12 @@ The factorial of 5 is 120
 </div>
 <p>You should see something similar to the below when opening the browser:</p>
 <p><img alt="image" src="../_images/heartrate.png" /></p>
+<p>Explanation of the visualization:</p>
+<ul class="simple">
+<li><p>Line hit counts on the left side</p></li>
+<li><p>Visual bars showing recent line executions (longer = more hits, lighter = more recent)</p></li>
+<li><p>Currently executing lines highlighted</p></li>
+</ul>
 <p><a class="reference external" href="https://github.com/alexmojaki/heartrate">Link to heartrate</a>.</p>
 </section>
 <section id="pyheat-simplify-code-profiling-with-heatmap-visualization">

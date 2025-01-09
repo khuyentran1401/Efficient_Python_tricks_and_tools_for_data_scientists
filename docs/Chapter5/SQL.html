@@ -100,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter5/SQL';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="6.14. 3 Powerful Ways to Create PySpark DataFrames" href="spark.html" />
+    <link rel="next" title="6.14. PySpark" href="spark.html" />
     <link rel="prev" title="6.12. Testing" href="testing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -625,64 +608,6 @@ WHERE
 
 <span class="c1"># Read a SQL table into a DataFrame</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table_name&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">sqlalchemy</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Create a SQLAlchemy engine</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="s2">&quot;postgresql://username:password@host:port/database_name&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="c1"># Read a SQL table into a DataFrame</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM table_name&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">)</span>
-
-<span class="nn">File &lt;string&gt;:2,</span> in <span class="ni">create_engine</span><span class="nt">(url, **kwargs)</span>
-
-<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/util/deprecations.py:281,</span> in <span class="ni">deprecated_params.&lt;locals&gt;.decorate.&lt;locals&gt;.warned</span><span class="nt">(fn, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">274</span>     <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">275</span>         <span class="n">_warn_with_version</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">276</span>             <span class="n">messages</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-<span class="g g-Whitespace">    </span><span class="mi">277</span>             <span class="n">versions</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-<span class="g g-Whitespace">    </span><span class="mi">278</span>             <span class="n">version_warnings</span><span class="p">[</span><span class="n">m</span><span class="p">],</span>
-<span class="g g-Whitespace">    </span><span class="mi">279</span>             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">280</span>         <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">281</span> <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/create.py:548,</span> in <span class="ni">create_engine</span><span class="nt">(url, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">545</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;empty_in_strategy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">547</span> <span class="c1"># create url.URL object</span>
-<span class="ne">--&gt; </span><span class="mi">548</span> <span class="n">u</span> <span class="o">=</span> <span class="n">_url</span><span class="o">.</span><span class="n">make_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">550</span> <span class="n">u</span><span class="p">,</span> <span class="n">plugins</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_instantiate_plugins</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="n">entrypoint</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">_get_entrypoint</span><span class="p">()</span>
-
-<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/url.py:838,</span> in <span class="ni">make_url</span><span class="nt">(name_or_url)</span>
-<span class="g g-Whitespace">    </span><span class="mi">822</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Given a string, produce a new URL instance.</span>
-<span class="g g-Whitespace">    </span><span class="mi">823</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">824</span><span class="sd"> The format of the URL generally follows `RFC-1738</span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">834</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">835</span><span class="sd"> &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">837</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">838</span>     <span class="k">return</span> <span class="n">_parse_url</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">839</span> <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_or_url</span><span class="p">,</span> <span class="n">URL</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">840</span>     <span class="n">name_or_url</span><span class="p">,</span> <span class="s2">&quot;_sqla_is_testing_if_this_is_a_mock_object&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">841</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">842</span>     <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">ArgumentError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">843</span>         <span class="sa">f</span><span class="s2">&quot;Expected string or URL object, got </span><span class="si">{</span><span class="n">name_or_url</span><span class="si">!r}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">844</span>     <span class="p">)</span>
-
-<span class="nn">File ~/book/venv/lib/python3.11/site-packages/sqlalchemy/engine/url.py:899,</span> in <span class="ni">_parse_url</span><span class="nt">(name)</span>
-<span class="g g-Whitespace">    </span><span class="mi">896</span>     <span class="n">name</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">898</span>     <span class="k">if</span> <span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]:</span>
-<span class="ne">--&gt; </span><span class="mi">899</span>         <span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">])</span>
-<span class="g g-Whitespace">    </span><span class="mi">901</span>     <span class="k">return</span> <span class="n">URL</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">components</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
-<span class="g g-Whitespace">    </span><span class="mi">903</span> <span class="k">else</span><span class="p">:</span>
-
-<span class="ne">ValueError</span>: invalid literal for int() with base 10: &#39;port&#39;
 </pre></div>
 </div>
 </div>
@@ -1136,12 +1061,9 @@ FROM my_table
 </div>
 </details>
 </div>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
+<p>Traditional database systems require a predefined table schema and a subsequent data import process when working with CSV data.</p>
+<p>To demonstrate this, let’s create a CSV file called <code class="docutils literal notranslate"><span class="pre">customer.csv</span></code>:</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -1159,21 +1081,20 @@ FROM my_table
 </pre></div>
 </div>
 </div>
-</details>
 </div>
-<p>Traditional database systems, such as Postgres, require a predefined table schema and a subsequent data import process when working with CSV data.</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
-<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
-<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INTEGER</span>
+<p>To load this CSV file in Postgres, you need to run the following query:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Create the table</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">city</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="p">);</span>
 
-<span class="k">COPY</span><span class="w"> </span><span class="n">customers</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">)</span>
+<span class="c1">-- Load data from CSV</span>
+<span class="k">COPY</span><span class="w"> </span><span class="n">customers</span>
 <span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;customers.csv&#39;</span>
 <span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span>
 <span class="n">CSV</span><span class="w"> </span><span class="n">HEADER</span><span class="p">;</span>
-
-<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>In contrast, DuckDB allows for direct reading of CSV files from disk, eliminating the need for explicit table creation and data loading.</p>
@@ -1453,7 +1374,7 @@ P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;:
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">6.14. </span>3 Powerful Ways to Create PySpark DataFrames</p>
+        <p class="prev-next-title"><span class="section-number">6.14. </span>PySpark</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

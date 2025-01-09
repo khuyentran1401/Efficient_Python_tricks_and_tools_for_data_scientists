@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -3088,32 +3071,24 @@ Polars time: 41.079080 seconds
 </div>
 </details>
 </div>
-<p>Polars is a DataFrame library written in Rust that has blazing fast performance. Delta Lake has helpful features including ACID transactions, time travel, schema enforcement, and more. Combining these two tools makes the code exceptionally powerful and efficient for data processing and analysis.</p>
-<p>In the code below, using Polars for grouping operations is 6.88 times faster than using Pandas. Moreover, the integration of Delta Lake enables seamless time travel across different versions of the Polars DataFrame.</p>
+<p>Polars is a Rust-based DataFrame library that is designed for high-performance data manipulation and analysis. Delta Lake is a storage format that offers a range of benefits, including ACID transactions, time travel, schema enforcement, and more. It’s designed to work seamlessly with big data processing engines like Apache Spark and can handle large amounts of data with ease.</p>
+<p>When you combine Polars and Delta Lake, you get a powerful data processing system. Polars does the heavy lifting of processing your data, while Delta Lake keeps everything organized and up-to-date.</p>
+<p>Imagine you have a huge dataset with millions of rows. You want to group the data by category and calculate the sum of a certain column. With Polars and Delta Lake, you can do this quickly and easily.</p>
+<p>First, you create a sample dataset:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="c1"># Number of rows in the dataset</span>
+<span class="c1"># Create a sample dataset</span>
 <span class="n">num_rows</span> <span class="o">=</span> <span class="mi">10_000_000</span>
-
-<span class="c1"># Creating categorical columns</span>
-<span class="n">category_col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">)</span>
-
-<span class="c1"># Creating numerical columns</span>
-<span class="n">numeric_col1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">)</span>
-
-<span class="c1"># Creating the DataFrame</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;Cat1&#39;</span><span class="p">:</span> <span class="n">category_col1</span><span class="p">,</span>
-    <span class="s1">&#39;Num1&#39;</span><span class="p">:</span> <span class="n">numeric_col1</span><span class="p">,</span>
+    <span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+    <span class="s1">&#39;Num1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Outputting the first few rows of the dataset</span>
-<span class="n">df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3142,74 +3117,87 @@ Polars time: 41.079080 seconds
   </thead>
   <tbody>
     <tr>
-      <th>9999995</th>
-      <td>B</td>
-      <td>42</td>
-    </tr>
-    <tr>
-      <th>9999996</th>
+      <th>0</th>
       <td>A</td>
-      <td>23</td>
+      <td>84</td>
     </tr>
     <tr>
-      <th>9999997</th>
+      <th>1</th>
+      <td>C</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>B</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>3</th>
       <td>A</td>
-      <td>79</td>
+      <td>73</td>
     </tr>
     <tr>
-      <th>9999998</th>
+      <th>4</th>
       <td>B</td>
-      <td>87</td>
-    </tr>
-    <tr>
-      <th>9999999</th>
-      <td>B</td>
-      <td>19</td>
+      <td>57</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pandas_time</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -o df.groupby(&#39;Cat1&#39;).sum()
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>277 ms ± 55.7 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Create two versions of the Delta table:</p>
+<p>Next, you save the dataset to Delta Lake:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
 
-<span class="n">save_path</span> <span class="o">=</span> <span class="s2">&quot;tmp/bear_delta_lake&quot;</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="s2">&quot;tmp/data&quot;</span>
 
 <span class="n">write_deltalake</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="s2">&quot;Num1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-
-<span class="n">write_deltalake</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Read the latest version of the Delta table with Polars:</p>
+<p>Then, you can use Polars to read the data from Delta Lake and perform the grouping operation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span> 
 
 <span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_delta</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pl_df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pl_df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;Cat1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shape: (3, 2)
+┌──────┬───────────┐
+│ Cat1 ┆ Num1      │
+│ ---  ┆ ---       │
+│ str  ┆ i64       │
+╞══════╪═══════════╡
+│ B    ┆ 166653474 │
+│ C    ┆ 166660653 │
+│ A    ┆ 166597835 │
+└──────┴───────────┘
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s say you want to append some new data to the existing dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="s2">&quot;Num1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">new_data</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, you can use Polars to read the updated data from Delta Lake:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">updated_pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_delta</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">updated_pl_df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -3220,9 +3208,9 @@ Polars time: 41.079080 seconds
 │ ---  ┆ ---  │
 │ str  ┆ i64  │
 ╞══════╪══════╡
-│ A    ┆ 43   │
-│ A    ┆ 14   │
-│ C    ┆ 3    │
+│ A    ┆ 29   │
+│ A    ┆ 41   │
+│ A    ┆ 49   │
 │ B    ┆ 2    │
 │ C    ┆ 3    │
 └──────┴──────┘
@@ -3230,47 +3218,11 @@ Polars time: 41.079080 seconds
 </div>
 </div>
 </div>
+<p>But what if you want to go back to the previous version of the data? With Delta Lake, you can easily do that by specifying the version number:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">polars_time</span> <span class="o">=</span> <span class="o">%</span><span class="k">timeit</span> -o pl_df.groupby(&quot;Cat1&quot;).sum()
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>40.3 ms ± 3.22 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p>Compare the performance of grouping operations using Pandas and Polars:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">round</span><span class="p">(</span><span class="n">pandas_time</span><span class="o">.</span><span class="n">average</span><span class="o">/</span><span class="n">polars_time</span><span class="o">.</span><span class="n">average</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6.882
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grouping operations using Polars is </span><span class="si">{</span><span class="n">pandas_time</span><span class="o">.</span><span class="n">average</span><span class="o">/</span><span class="n">polars_time</span><span class="o">.</span><span class="n">average</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> times faster than using Pandas.&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Grouping operations using Polars is 6.88 times faster than using Pandas.
-</pre></div>
-</div>
-</div>
-</div>
-<p>Time travel to the version 0 of Delta table</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">read_delta</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">previous_pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_delta</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">previous_pl_df</span><span class="o">.</span><span class="n">tail</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -3281,11 +3233,11 @@ Polars time: 41.079080 seconds
 │ ---  ┆ ---  │
 │ str  ┆ i64  │
 ╞══════╪══════╡
-│ C    ┆ 95   │
-│ B    ┆ 38   │
-│ A    ┆ 43   │
-│ A    ┆ 14   │
-│ C    ┆ 3    │
+│ A    ┆ 90   │
+│ C    ┆ 83   │
+│ A    ┆ 29   │
+│ A    ┆ 41   │
+│ A    ┆ 49   │
 └──────┴──────┘
 </pre></div>
 </div>

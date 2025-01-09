@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter6.html">7. Cool Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
@@ -538,6 +521,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-install-e-install-forked-github-repository-using-pip">7.7.6. pip install -e: Install Forked GitHub Repository Using Pip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-open-open-a-github-page-for-a-local-repository">7.7.7. git-open: Open a GitHub Page for a Local Repository</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-commit-summarizer-automate-pull-request-summarization">7.7.8. gpt-commit-summarizer: Automate Pull Request Summarization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-github-api-interactions-with-githubkit">7.7.9. Simplifying GitHub API Interactions with githubkit</a></li>
 </ul>
             </nav>
         </div>
@@ -651,6 +635,119 @@ $<span class="w"> </span>git<span class="w"> </span>commit
 </div>
 <p><a class="reference external" href="https://github.com/KanHarI/gpt-commit-summarizer/">Link to gpt-commit-summarizer</a>.</p>
 </section>
+<section id="simplifying-github-api-interactions-with-githubkit">
+<h2><span class="section-number">7.7.9. </span>Simplifying GitHub API Interactions with githubkit<a class="headerlink" href="#simplifying-github-api-interactions-with-githubkit" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>githubkit
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Making API calls to GitHub and handling different response types and authentication methods often results in complex, hard-to-maintain code. Writing raw HTTP requests, managing tokens, and parsing JSON responses manually leads to verbose implementations and potential errors.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TOKEN</span> <span class="o">=</span> <span class="s2">&quot;your_github_token&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">owner</span> <span class="o">=</span> <span class="s2">&quot;khuyentran1401&quot;</span>
+<span class="n">repo_name</span> <span class="o">=</span> <span class="s2">&quot;Efficient_Python_tricks_and_tools_for_data_scientists&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="c1"># Get repository info</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://api.github.com/repos/</span><span class="si">{</span><span class="n">owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.github.v3+json&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Full Name: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;full_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Description: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stars: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;stargazers_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forks: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;forks_count&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Language: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;language&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;URL: </span><span class="si">{</span><span class="n">repo</span><span class="p">[</span><span class="s1">&#39;html_url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name: Efficient_Python_tricks_and_tools_for_data_scientists
+Full Name: khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists
+Description: Efficient Python Tricks and Tools for Data Scientists
+Stars: 1445
+Forks: 373
+Language: Jupyter Notebook
+URL: https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists
+</pre></div>
+</div>
+</div>
+</div>
+<p>With githubkit, you can interact with GitHub’s API using a clean, typed interface that supports both synchronous and asynchronous operations. You get automatic response parsing, built-in authentication handling, and comprehensive type hints.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">githubkit</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">githubkit.versions.latest.models</span> <span class="kn">import</span> <span class="n">FullRepository</span>
+<span class="kn">from</span> <span class="nn">githubkit</span> <span class="kn">import</span> <span class="n">GitHub</span>
+
+<span class="n">github</span> <span class="o">=</span> <span class="n">GitHub</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">)</span>
+<span class="n">resp</span><span class="p">:</span> <span class="n">Response</span><span class="p">[</span><span class="n">FullRepository</span><span class="p">]</span> <span class="o">=</span> <span class="n">github</span><span class="o">.</span><span class="n">rest</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+<span class="n">repo</span><span class="p">:</span> <span class="n">FullRepository</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">parsed_data</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Name: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Full Name: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">full_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Description: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stars: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">stargazers_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forks: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">forks_count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Language: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">language</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;URL: </span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">html_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Name: Efficient_Python_tricks_and_tools_for_data_scientists
+Full Name: khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists
+Description: Efficient Python Tricks and Tools for Data Scientists
+Stars: 1445
+Forks: 373
+Language: Jupyter Notebook
+URL: https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, githubkit handles the authentication header, makes the API request, and automatically parses the response into a strongly-typed <code class="docutils literal notranslate"><span class="pre">FullRepository</span></code> object. The type hints provide IDE support and catch potential errors before runtime.</p>
+<p><a class="reference external" href="https://github.com/yanyongyu/githubkit">Link to githubkit</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -724,6 +821,7 @@ $<span class="w"> </span>git<span class="w"> </span>commit
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip-install-e-install-forked-github-repository-using-pip">7.7.6. pip install -e: Install Forked GitHub Repository Using Pip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#git-open-open-a-github-page-for-a-local-repository">7.7.7. git-open: Open a GitHub Page for a Local Repository</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-commit-summarizer-automate-pull-request-summarization">7.7.8. gpt-commit-summarizer: Automate Pull Request Summarization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-github-api-interactions-with-githubkit">7.7.9. Simplifying GitHub API Interactions with githubkit</a></li>
 </ul>
   </nav></div>
 

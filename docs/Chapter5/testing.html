@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -2286,109 +2269,30 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </div>
 </details>
 </div>
-<p>Poor data quality can lead to incorrect conclusions and bad model performance. Thus, it is important to check data for consistency and reliability before using it.</p>
-<p>pandera makes it easy to perform data validation on dataframe-like objects. If the dataframe does not pass validation checks, pandera provides useful error messages.</p>
+<p>Poor data quality can have severe consequences, including incorrect conclusions and subpar model performance. Moreover, processing invalid or incorrect data is a waste of time and resources. Therefore, it is crucial to verify the consistency and reliability of data before using it.</p>
+<p>pandera makes it easy to perform data validation on dataframe-like objects.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="n">fruits</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="n">fruits</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>store</th>
-      <th>price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>apple</td>
-      <td>Aldi</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>banana</td>
-      <td>Walmart</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>apple</td>
-      <td>Walmart</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">available_fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>
-<span class="n">nearby_stores</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">]</span>
-
 <span class="kn">import</span> <span class="nn">pandera</span> <span class="k">as</span> <span class="nn">pa</span>
-<span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Check</span>
 
-<span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+<span class="n">student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
-        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
-        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">4</span><span class="p">)),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">95.5</span><span class="p">,</span> <span class="mf">88.3</span><span class="p">,</span> <span class="mf">92.7</span><span class="p">],</span>
     <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span> <span class="c1"># validation fails</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Output:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>SchemaError:<span class="w">  </span>failed<span class="w"> </span>element-wise<span class="w"> </span>validator<span class="w"> </span><span class="m">0</span>:
 
-failure<span class="w"> </span>cases:
-<span class="w">   </span>index<span class="w">  </span>failure_case
-<span class="m">0</span><span class="w">      </span><span class="m">2</span><span class="w">             </span><span class="m">4</span>
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
+<span class="n">student_schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
-        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
-        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">5</span><span class="p">)),</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">Check</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">)),</span>
+        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">pa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">Check</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span>
     <span class="p">}</span>
 <span class="p">)</span>
-<span class="n">schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span> <span class="c1"># validation succeeds</span>
+
+<span class="n">student_schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">student_df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2412,71 +2316,164 @@ failure<span class="w"> </span>cases:
     <tr style="text-align: right;">
       <th></th>
       <th>name</th>
-      <th>store</th>
-      <th>price</th>
+      <th>age</th>
+      <th>score</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>apple</td>
-      <td>Aldi</td>
-      <td>2</td>
+      <td>John</td>
+      <td>25</td>
+      <td>95.5</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>banana</td>
-      <td>Walmart</td>
-      <td>1</td>
+      <td>Jane</td>
+      <td>30</td>
+      <td>88.3</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>apple</td>
-      <td>Walmart</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>orange</td>
-      <td>Aldi</td>
-      <td>4</td>
+      <td>Bob</td>
+      <td>35</td>
+      <td>92.7</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<p>With pandera’s decorator <code class="docutils literal notranslate"><span class="pre">check_input</span></code>, you can validate input data before calling a function.</p>
+<p>This code defines a schema using <code class="docutils literal notranslate"><span class="pre">DataFrameSchema</span></code> with three columns:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: a string column</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">age</span></code>: an integer column that must be between 0 and 120</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">score</span></code>: a float column that must be between 0 and 100</p></li>
+</ol>
+<p>It then validates a DataFrame <code class="docutils literal notranslate"><span class="pre">student_df</span></code> against this schema, returning the validated DataFrame if all validations pass.</p>
+<p>If the dataframe does not pass validation checks, pandera provides useful error messages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">95.5</span><span class="p">,</span> <span class="mf">88.3</span><span class="p">,</span> <span class="mf">92.7</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">student_schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">invalid_student_df</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">pa</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">SchemaError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SchemarError:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SchemarError: Column &#39;age&#39; failed element-wise validator number 0: in_range(0, 120) failure cases: 200
+</pre></div>
+</div>
+</div>
+</div>
+<p>To validate the inputs of a function before calling that function, use the <code class="docutils literal notranslate"><span class="pre">check_input</span></code> decorator. In the code below, the decorator validates the value of the <code class="docutils literal notranslate"><span class="pre">data</span></code> argument against the <code class="docutils literal notranslate"><span class="pre">input_schema</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">check_input</span>
 
 
-<span class="n">fruits</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="nd">@check_input</span><span class="p">(</span><span class="n">student_schema</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calculate_grade</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;grade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;score&quot;</span><span class="p">],</span>
+        <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+        <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">],</span>
+        <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+
+<span class="n">student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">95.5</span><span class="p">,</span> <span class="mf">88.3</span><span class="p">,</span> <span class="mf">92.7</span><span class="p">],</span>
     <span class="p">}</span>
 <span class="p">)</span>
 
-<span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">DataFrameSchema</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">available_fruits</span><span class="p">)),</span>
-        <span class="s2">&quot;store&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nearby_stores</span><span class="p">)),</span>
-        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">Column</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Check</span><span class="o">.</span><span class="n">less_than</span><span class="p">(</span><span class="mi">6</span><span class="p">)),</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nd">@check_input</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">get_total_price</span><span class="p">(</span><span class="n">fruits</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">fruits</span><span class="o">.</span><span class="n">price</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-<span class="n">get_total_price</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+<span class="n">calculate_grade</span><span class="p">(</span><span class="n">student_df</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>score</th>
+      <th>grade</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>John</td>
+      <td>25</td>
+      <td>95.5</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Jane</td>
+      <td>30</td>
+      <td>88.3</td>
+      <td>B</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bob</td>
+      <td>35</td>
+      <td>92.7</td>
+      <td>A</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>If the input does not conform to the schema, an error will be raised, preventing the function from executing with invalid data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">95.5</span><span class="p">,</span> <span class="mf">88.3</span><span class="p">,</span> <span class="mf">92.7</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">calculate_grade</span><span class="p">(</span><span class="n">invalid_student_df</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">pa</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">SchemaError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SchemaError:&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SchemaError: error in check_input decorator of function &#39;calculate_grade&#39;: Column &#39;age&#39; failed element-wise validator number 0: in_range(0, 120) failure cases: 200
 </pre></div>
 </div>
 </div>
