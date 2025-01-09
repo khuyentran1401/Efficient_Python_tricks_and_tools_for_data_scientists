@@ -530,7 +530,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.14.15. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.14.16. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.14.17. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.14.18. Tempo: Simplified Time Series Analysis in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-with-nested-data-structures">6.14.18. Optimizing PySpark Queries with Nested Data Structures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.14.19. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
             </nav>
         </div>
@@ -646,6 +647,9 @@ document.write(`
 +-------+---+
 </pre></div>
 </div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
 </div>
 </div>
 <p>Pros:</p>
@@ -697,7 +701,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 7:&gt;                                                          (0 + 8) / 8]
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 93:&gt;                                                         (0 + 8) / 8]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+----+----------+------+
@@ -728,6 +732,18 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyspark[sql] in /Users/khuyentran/book/venv/lib/python3.11/site-packages (3.5.3)
+Requirement already satisfied: py4j==0.10.9.7 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (0.10.9.7)
+Requirement already satisfied: pandas&gt;=1.0.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.5.3)
+Requirement already satisfied: pyarrow&gt;=4.0.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (18.0.0)
+Requirement already satisfied: numpy&lt;2,&gt;=1.15 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.24.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2023.3.post1)
+Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=1.0.5-&gt;pyspark[sql]) (1.16.0)
+</pre></div>
+</div>
+</div>
 </details>
 </div>
 <div class="cell tag_hide-cell docutils container">
@@ -740,13 +756,6 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting default log level to &quot;WARN&quot;.
-To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-24/09/02 06:01:00 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 </pre></div>
 </div>
 </div>
@@ -831,6 +840,18 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyspark[sql] in /Users/khuyentran/book/venv/lib/python3.11/site-packages (3.5.3)
+Requirement already satisfied: py4j==0.10.9.7 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (0.10.9.7)
+Requirement already satisfied: pandas&gt;=1.0.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.5.3)
+Requirement already satisfied: pyarrow&gt;=4.0.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (18.0.0)
+Requirement already satisfied: numpy&lt;2,&gt;=1.15 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.24.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2023.3.post1)
+Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=1.0.5-&gt;pyspark[sql]) (1.16.0)
+</pre></div>
+</div>
+</div>
 </details>
 </div>
 <p>Retrieving all rows from a large dataset into memory can cause out-of-memory errors. When creating a Spark DataFrame, computations are not executed until the <code class="docutils literal notranslate"><span class="pre">collect()</span></code> method is invoked. This allows you to reduce the size of the DataFrame through operations such as filtering or aggregating before bringing them into memory.</p>
@@ -852,19 +873,22 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 107:&gt;                                                        (0 + 1) / 1]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+----+----+
 |cat|val1|val2|
 +---+----+----+
-|  b|   0|  34|
-|  a|  58|  12|
-|  c|  24|  72|
-|  a|  20|  58|
-|  b|  13|  17|
+|  a|  83|  85|
+|  b|  22|  42|
+|  c|  63|  47|
+|  b|  48|  43|
+|  b|   8|  88|
 +---+----+----+
 only showing top 5 rows
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
 </div>
@@ -886,9 +910,9 @@ only showing top 5 rows
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Row(cat=&#39;c&#39;, avg(val2)=49.54095055783208),
- Row(cat=&#39;b&#39;, avg(val2)=49.46593810642427),
- Row(cat=&#39;a&#39;, avg(val2)=49.52092805080465)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Row(cat=&#39;c&#39;, avg(val2)=49.47834174060653),
+ Row(cat=&#39;b&#39;, avg(val2)=49.48673081656052),
+ Row(cat=&#39;a&#39;, avg(val2)=49.31581918867947)]
 </pre></div>
 </div>
 </div>
@@ -920,6 +944,12 @@ only showing top 5 rows
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pyspark.pandas</span> <span class="k">as</span> <span class="nn">ps</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/book/venv/lib/python3.11/site-packages/pyspark/pandas/__init__.py:50: UserWarning: &#39;PYARROW_IGNORE_TIMEZONE&#39; environment variable was not set. It is required to set this environment variable to &#39;1&#39; in both driver and executor sides if you use pyarrow&gt;=2.0.0. pandas-on-Spark will set it for you but it does not work if there is a Spark context already launched.
+  warnings.warn(
 </pre></div>
 </div>
 </div>
@@ -1002,6 +1032,9 @@ only showing top 5 rows
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1192,18 +1225,12 @@ only showing top 5 rows
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 25:&gt;                                                         (0 + 8) / 8]
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+------+------+
 |  A|sum(C)|sum(D)|
 +---+------+------+
 |foo|   0.6|   0.8|
 |bar|   0.3|   0.4|
 +---+------+------+
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
 </div>
@@ -1247,6 +1274,18 @@ only showing top 5 rows
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pyspark[sql]&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyspark[sql] in /Users/khuyentran/book/venv/lib/python3.11/site-packages (3.5.3)
+Requirement already satisfied: py4j==0.10.9.7 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (0.10.9.7)
+Requirement already satisfied: pandas&gt;=1.0.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.5.3)
+Requirement already satisfied: pyarrow&gt;=4.0.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (18.0.0)
+Requirement already satisfied: numpy&lt;2,&gt;=1.15 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.24.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2023.3.post1)
+Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=1.0.5-&gt;pyspark[sql]) (1.16.0)
 </pre></div>
 </div>
 </div>
@@ -1369,6 +1408,18 @@ only showing top 5 rows
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pyspark[sql] in /Users/khuyentran/book/venv/lib/python3.11/site-packages (3.5.3)
+Requirement already satisfied: py4j==0.10.9.7 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (0.10.9.7)
+Requirement already satisfied: pandas&gt;=1.0.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.5.3)
+Requirement already satisfied: pyarrow&gt;=4.0.0 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (18.0.0)
+Requirement already satisfied: numpy&lt;2,&gt;=1.15 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pyspark[sql]) (1.24.4)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from pandas&gt;=1.0.5-&gt;pyspark[sql]) (2023.3.post1)
+Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas&gt;=1.0.5-&gt;pyspark[sql]) (1.16.0)
+</pre></div>
+</div>
+</div>
 </details>
 </div>
 <p>Spark 3.5 added new array helper functions that simplify the process of working with array data. Below are a few examples showcasing these new array functions.</p>
@@ -1409,9 +1460,6 @@ only showing top 5 rows
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------+
 |customer|  orders|
 +--------+--------+
@@ -1454,6 +1502,9 @@ only showing top 5 rows
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+------------+
 |customer|      orders|
 +--------+------------+
@@ -1484,16 +1535,6 @@ only showing top 5 rows
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;has_🍋&quot;</span><span class="p">,</span> <span class="n">array_contains</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">),</span> <span class="s2">&quot;🍋&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+--------+------+
-|customer|  orders|has_🍋|
-+--------+--------+------+
-|    Alex|[🍋, 🍋]|  true|
-|     Bob|    [🍊]| false|
-+--------+--------+------+
 </pre></div>
 </div>
 </div>
@@ -1551,9 +1592,6 @@ only showing top 5 rows
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------------+
 | id|modified_name|
 +---+-------------+
@@ -2610,8 +2648,198 @@ Number of Orders:
 <li><p>Easier to add new conditions without cluttering main logic.</p></li>
 </ul>
 </section>
+<section id="optimizing-pyspark-queries-with-nested-data-structures">
+<h2><span class="section-number">6.14.18. </span>Optimizing PySpark Queries with Nested Data Structures<a class="headerlink" href="#optimizing-pyspark-queries-with-nested-data-structures" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pyspark[sql]&#39;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Using multiple tables and joins to represent hierarchical relationships results in:</p>
+<ul class="simple">
+<li><p>Increased query complexity and reduced readability</p></li>
+<li><p>Performance overhead from multiple join operations</p></li>
+<li><p>Complex maintenance when schema changes are needed</p></li>
+</ul>
+<p>In the following example, we need to have three separate DataFrames and join them later with multiple joins.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">StructType</span><span class="p">,</span>
+    <span class="n">StructField</span><span class="p">,</span> 
+    <span class="n">StringType</span><span class="p">,</span>
+    <span class="n">IntegerType</span><span class="p">,</span>
+    <span class="n">FloatType</span>
+<span class="p">)</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional way with separate DataFrames</span>
+<span class="c1"># Define schemas</span>
+<span class="n">customer_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">())</span>
+<span class="p">])</span>
+
+<span class="n">order_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span>
+<span class="p">])</span>
+
+<span class="c1"># Create DataFrames with schemas</span>
+<span class="n">customer_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Doe&quot;</span><span class="p">),</span> 
+     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Emma&quot;</span><span class="p">,</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">),</span> 
+     <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Michael&quot;</span><span class="p">,</span> <span class="s2">&quot;Brown&quot;</span><span class="p">)],</span>
+    <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">order_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">),</span>
+     <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">)],</span>
+    <span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Join customer and order data</span>
+<span class="n">result_df</span> <span class="o">=</span> <span class="n">customer_df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">order_df</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">)</span>
+<span class="n">result_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----------+----------+---------+--------+----------+-----+
+|customer_id|first_name|last_name|order_id|order_date|total|
++-----------+----------+---------+--------+----------+-----+
+|          1|      John|      Doe|       1|2023-01-01|100.0|
+|          2|      Emma|   Wilson|       2|2023-01-02|150.0|
+|          3|   Michael|    Brown|       3|2023-01-03|200.0|
++-----------+----------+---------+--------+----------+-----+
+</pre></div>
+</div>
+</div>
+</div>
+<p>With nested StructType in PySpark, you can:</p>
+<ul class="simple">
+<li><p>Maintain data hierarchy in a single DataFrame</p></li>
+<li><p>Reduce join operations</p></li>
+<li><p>Simplify queries and aggregations</p></li>
+<li><p>Make schema changes more manageable</p></li>
+</ul>
+<p>In the following example, we combine three DataFrames into one nested DataFrame with StructType.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define nested schema</span>
+<span class="n">order_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span>
+            <span class="s2">&quot;customer&quot;</span><span class="p">,</span>
+            <span class="n">StructType</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+                    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+                    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">StructField</span><span class="p">(</span>
+            <span class="s2">&quot;order_info&quot;</span><span class="p">,</span>
+            <span class="n">StructType</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+                    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">()),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Sample data with nested structure</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Doe&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Emma&quot;</span><span class="p">,</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">)),</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Michael&quot;</span><span class="p">,</span> <span class="s2">&quot;Brown&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;2023-01-03&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">order_schema</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+-------------------+-------------------+
+|order_id|customer           |order_info         |
++--------+-------------------+-------------------+
+|1       |{1, John, Doe}     |{2023-01-01, 100.0}|
+|2       |{2, Emma, Wilson}  |{2023-01-02, 150.0}|
+|3       |{3, Michael, Brown}|{2023-01-03, 200.0}|
++--------+-------------------+-------------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this, you can access all related data in one place using intuitive dot notation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select specific nested fields</span>
+<span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;customer.first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;customer.last_name&quot;</span><span class="p">,</span> <span class="s2">&quot;order_info.total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----------+---------+-----+
+|first_name|last_name|total|
++----------+---------+-----+
+|      John|      Doe|100.0|
+|      Emma|   Wilson|150.0|
+|   Michael|    Brown|200.0|
++----------+---------+-----+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filter orders above $150</span>
+<span class="n">df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;order_info.total &gt;= 150&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+--------+-------------------+-------------------+
+|order_id|           customer|         order_info|
++--------+-------------------+-------------------+
+|       2|  {2, Emma, Wilson}|{2023-01-02, 150.0}|
+|       3|{3, Michael, Brown}|{2023-01-03, 200.0}|
++--------+-------------------+-------------------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="tempo-simplified-time-series-analysis-in-pyspark">
-<h2><span class="section-number">6.14.18. </span>Tempo: Simplified Time Series Analysis in PySpark<a class="headerlink" href="#tempo-simplified-time-series-analysis-in-pyspark" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.14.19. </span>Tempo: Simplified Time Series Analysis in PySpark<a class="headerlink" href="#tempo-simplified-time-series-analysis-in-pyspark" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2995,7 +3223,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-dataframe-api-or-sql">6.14.15. Optimizing PySpark Queries: DataFrame API or SQL?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhance-code-modularity-and-reusability-with-temporary-views-in-pyspark">6.14.16. Enhance Code Modularity and Reusability with Temporary Views in PySpark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyspark-best-practices-simplifying-logical-chain-conditions">6.14.17. PySpark Best Practices: Simplifying Logical Chain Conditions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.14.18. Tempo: Simplified Time Series Analysis in PySpark</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizing-pyspark-queries-with-nested-data-structures">6.14.18. Optimizing PySpark Queries with Nested Data Structures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tempo-simplified-time-series-analysis-in-pyspark">6.14.19. Tempo: Simplified Time Series Analysis in PySpark</a></li>
 </ul>
   </nav></div>
 

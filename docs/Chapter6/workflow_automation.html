@@ -527,6 +527,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">7.3.12. watchfiles: Rerun Code When a File Changes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.3.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magika-detect-file-content-types-with-deep-learning">7.3.14. Magika: Detect File Content Types with Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-selenium-to-helium-writing-cleaner-browser-automation-code">7.3.15. From Selenium to Helium: Writing Cleaner Browser Automation Code</a></li>
 </ul>
             </nav>
         </div>
@@ -1148,6 +1149,69 @@ kitchen
 </div>
 <p><a class="reference external" href="https://bit.ly/45tdw5O">Link to Magika</a>.</p>
 </section>
+<section id="from-selenium-to-helium-writing-cleaner-browser-automation-code">
+<h2><span class="section-number">7.3.15. </span>From Selenium to Helium: Writing Cleaner Browser Automation Code<a class="headerlink" href="#from-selenium-to-helium-writing-cleaner-browser-automation-code" title="Permalink to this heading">#</a></h2>
+<p>Writing browser automation scripts with traditional Selenium requires verbose code with explicit element locators (like XPaths, CSS selectors) and explicit waits, which is time-consuming to write and hard-to-maintain.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+
+<span class="c1"># Start Chrome</span>
+
+<span class="k">with</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">()</span> <span class="k">as</span> <span class="n">driver</span><span class="p">:</span>
+    <span class="c1"># Navigate to GitHub login page</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://github.com/login&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Login</span>
+    <span class="n">username_field</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s1">&#39;login_field&#39;</span><span class="p">)</span>
+    <span class="n">password_field</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">)</span>
+    
+    <span class="n">username_field</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;1mh&#39;</span><span class="p">)</span>
+    <span class="n">password_field</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s1">&#39;1Secretpw&#39;</span><span class="p">)</span>
+    
+    <span class="n">login_button</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="s1">&#39;commit&#39;</span><span class="p">)</span>
+    <span class="n">login_button</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="c1"># Navigate to repository</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://github.com/mherrmann/helium&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Wait for and click Star button</span>
+    <span class="n">wait</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">star_button</span> <span class="o">=</span> <span class="n">wait</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="s2">&quot;//button[contains(text(), &#39;Star&#39;)]&quot;</span><span class="p">)))</span>
+    <span class="n">star_button</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="c1"># Wait for and click Unstar button</span>
+    <span class="n">unstar_button</span> <span class="o">=</span> <span class="n">wait</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">XPATH</span><span class="p">,</span> <span class="s2">&quot;//button[contains(text(), &#39;Unstar&#39;)]&quot;</span><span class="p">)))</span>
+    <span class="n">unstar_button</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Helium provides high-level APIs that work with user-visible elements and handles waits automatically. With Helium, you can write more intuitive and maintainable browser automation code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">helium</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Start Chrome and navigate to GitHub login page</span>
+<span class="n">start_chrome</span><span class="p">(</span><span class="s1">&#39;github.com/login&#39;</span><span class="p">)</span>
+
+<span class="c1"># Enter username and password</span>
+<span class="n">write</span><span class="p">(</span><span class="s1">&#39;1mh&#39;</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="s1">&#39;Username&#39;</span><span class="p">)</span>
+<span class="n">write</span><span class="p">(</span><span class="s1">&#39;1Secretpw&#39;</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="s1">&#39;Password&#39;</span><span class="p">)</span>
+
+<span class="c1"># Click the Sign in button</span>
+<span class="n">click</span><span class="p">(</span><span class="s1">&#39;Sign in&#39;</span><span class="p">)</span>
+
+<span class="c1"># Navigate to the Helium repository</span>
+<span class="n">go_to</span><span class="p">(</span><span class="s1">&#39;github.com/mherrmann/helium&#39;</span><span class="p">)</span>
+
+<span class="c1"># Star and then unstar the repository</span>
+<span class="n">click</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Star&#39;</span><span class="p">))</span>
+<span class="n">click</span><span class="p">(</span><span class="n">Button</span><span class="p">(</span><span class="s1">&#39;Unstar&#39;</span><span class="p">))</span>
+
+<span class="c1"># Close the browser</span>
+<span class="n">kill_browser</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/mherrmann/helium">Link to Helium</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1227,6 +1291,7 @@ kitchen
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watchfiles-rerun-code-when-a-file-changes">7.3.12. watchfiles: Rerun Code When a File Changes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytube-a-lightweight-python-library-for-downloading-youtube-videos">7.3.13. PyTube: A Lightweight Python Library for Downloading YouTube Videos</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#magika-detect-file-content-types-with-deep-learning">7.3.14. Magika: Detect File Content Types with Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-selenium-to-helium-writing-cleaner-browser-automation-code">7.3.15. From Selenium to Helium: Writing Cleaner Browser Automation Code</a></li>
 </ul>
   </nav></div>
 
