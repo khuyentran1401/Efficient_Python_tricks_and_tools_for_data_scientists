@@ -270,25 +270,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter5/SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/spark.html">6.14. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter5/llm.html">6.15. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -532,6 +515,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-data-validation-with-pydantic">3.10.1. Simplify Data Validation with Pydantic</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-pydantic-s-field-class-to-validate-numbers-and-dates">3.10.2. Use Pydantic’s Field Class to Validate Numbers and Dates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-data-models-pydantic-or-attrs">3.10.3. Python Data Models: Pydantic or attrs?</a></li>
 </ul>
             </nav>
         </div>
@@ -659,6 +643,99 @@ release_date
 </div>
 <p><a class="reference external" href="https://bit.ly/4bbhthb">Learn more about Pydantic’s numeric constraints</a>.</p>
 </section>
+<section id="python-data-models-pydantic-or-attrs">
+<h2><span class="section-number">3.10.3. </span>Python Data Models: Pydantic or attrs?<a class="headerlink" href="#python-data-models-pydantic-or-attrs" title="Permalink to this heading">#</a></h2>
+<p>Pydantic is a popular library that provides built-in data validation and type checking. This makes it an excellent choice for web APIs and external data handling. However, this added functionality comes at a cost:</p>
+<ul class="simple">
+<li><p>Performance overhead</p></li>
+<li><p>High memory usage</p></li>
+<li><p>Harder to debug</p></li>
+</ul>
+<p>Here’s an example of a Pydantic model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span> <span class="nc">UserPydantic</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Attrs, on the other hand, is a lighter-weight library that provides a simpler way to define data models. While it doesn’t have built-in data validation, it’s ideal for internal data structures and simpler class creation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">define</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="nd">@define</span>
+<span class="k">class</span> <span class="nc">UserAttrs</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s compare the performance of Pydantic and attrs using a simple benchmark:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">timeit</span>
+
+<span class="c1"># Test data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">}</span>
+
+<span class="c1"># Benchmark</span>
+<span class="n">pydantic_time</span> <span class="o">=</span> <span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">UserPydantic</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">attrs_time</span> <span class="o">=</span> <span class="n">timeit</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">UserAttrs</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">),</span> <span class="n">number</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pydantic: </span><span class="si">{</span><span class="n">pydantic_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;attrs: </span><span class="si">{</span><span class="n">attrs_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using attrs is </span><span class="si">{</span><span class="n">pydantic_time</span><span class="o">/</span><span class="n">attrs_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> times faster than using Pydantic&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pydantic: 0.1071 seconds
+attrs: 0.0155 seconds
+Using attrs is 6.90 times faster than using Pydantic
+</pre></div>
+</div>
+</div>
+</div>
+<p>The results show that attrs is approximately 6.9 times faster than Pydantic.</p>
+<p>While attrs doesn’t have built-in data validation, you can easily add validation using a decorator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">attrs</span> <span class="kn">import</span> <span class="n">define</span><span class="p">,</span> <span class="n">field</span>
+
+<span class="nd">@define</span>
+<span class="k">class</span> <span class="nc">UserAttrs</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">()</span>
+
+    <span class="nd">@age</span><span class="o">.</span><span class="n">validator</span>
+    <span class="k">def</span> <span class="nf">check_age</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Age can&#39;t be negative&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>  <span class="c1"># accepts any positive age</span>
+
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">UserAttrs</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ValueError:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ValueError: Age can&#39;t be negative
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, we’ve added a validator to the <code class="docutils literal notranslate"><span class="pre">age</span></code> field to ensure it’s not negative. If you try to create a <code class="docutils literal notranslate"><span class="pre">UserAttrs</span></code> instance with a negative age, it will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+<p><a class="reference external" href="https://github.com/python-attrs/attrs">Link to attrs</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -726,6 +803,7 @@ release_date
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-data-validation-with-pydantic">3.10.1. Simplify Data Validation with Pydantic</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-pydantic-s-field-class-to-validate-numbers-and-dates">3.10.2. Use Pydantic’s Field Class to Validate Numbers and Dates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-data-models-pydantic-or-attrs">3.10.3. Python Data Models: Pydantic or attrs?</a></li>
 </ul>
   </nav></div>
 

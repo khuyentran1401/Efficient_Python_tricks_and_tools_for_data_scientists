@@ -537,15 +537,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-mock-vs-unittest-mock-simplifying-mocking-in-python-tests">6.12.22. pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.12.23. tmp_path: Create a Temporary Directory for Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.12.24. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.12.25. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.12.26. DeepDiff Find Deep Differences of Python Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.12.27. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.12.28. hypothesis: Property-based Testing in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.12.29. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.12.30. leAB: AB Testing Analysis in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.12.31. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.12.32. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.12.33. DeepEval: Unit Testing for Your LLM Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-polars-dataframes-with-pandera">6.12.25. Validating Polars DataFrames with Pandera</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.12.26. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.12.27. DeepDiff Find Deep Differences of Python Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.12.28. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.12.29. hypothesis: Property-based Testing in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.12.30. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.12.31. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.12.32. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.12.33. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.12.34. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
             </nav>
         </div>
@@ -2478,10 +2479,85 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://pandera.readthedocs.io/en/stable/">Link to Pandera</a></p>
+<p><a class="reference external" href="https://github.com/unionai-oss/pandera">Link to Pandera</a>.</p>
+</section>
+<section id="validating-polars-dataframes-with-pandera">
+<h2><span class="section-number">6.12.25. </span>Validating Polars DataFrames with Pandera<a class="headerlink" href="#validating-polars-dataframes-with-pandera" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pandera[polars]&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pandera is a Python library that makes it easy to validate pandas DataFrame. Now, Pandera also supports Polars, a blazingly fast DataFrame library written in Rust.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandera.polars</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+
+<span class="k">class</span> <span class="nc">Schema</span><span class="p">(</span><span class="n">pa</span><span class="o">.</span><span class="n">DataFrameModel</span><span class="p">):</span>
+    <span class="n">state</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">isin</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;FL&quot;</span><span class="p">,</span> <span class="s2">&quot;CA&quot;</span><span class="p">])</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">price</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">in_range</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;min_value&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+
+
+<span class="n">lf</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">LazyFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;FL&quot;</span><span class="p">,</span> <span class="s2">&quot;FL&quot;</span><span class="p">,</span> <span class="s2">&quot;FL&quot;</span><span class="p">,</span> <span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="s2">&quot;CA&quot;</span><span class="p">,</span> <span class="s2">&quot;CA&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;Orlando&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Miami&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Tampa&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;San Francisco&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Los Angeles&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;San Diego&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">Schema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">lf</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (6, 3)</small><table border="1" class="dataframe"><thead><tr><th>state</th><th>city</th><th>price</th></tr><tr><td>str</td><td>str</td><td>i64</td></tr></thead><tbody><tr><td>&quot;FL&quot;</td><td>&quot;Orlando&quot;</td><td>8</td></tr><tr><td>&quot;FL&quot;</td><td>&quot;Miami&quot;</td><td>12</td></tr><tr><td>&quot;FL&quot;</td><td>&quot;Tampa&quot;</td><td>10</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Francisco&quot;</td><td>16</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;Los Angeles&quot;</td><td>20</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Diego&quot;</td><td>18</td></tr></tbody></table></div></div></div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">check_types()</span></code> decorator to validate polars LazyFrame function annotations at runtime:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera.typing.polars</span> <span class="kn">import</span> <span class="n">LazyFrame</span>
+
+<span class="nd">@pa</span><span class="o">.</span><span class="n">check_types</span>
+<span class="k">def</span> <span class="nf">filter_state</span><span class="p">(</span><span class="n">lf</span><span class="p">:</span> <span class="n">LazyFrame</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LazyFrame</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">lf</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+
+<span class="n">filter_state</span><span class="p">(</span><span class="n">lf</span><span class="p">,</span> <span class="s2">&quot;CA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><style>
+.dataframe > thead > tr,
+.dataframe > tbody > tr {
+  text-align: right;
+  white-space: pre-wrap;
+}
+</style>
+<small>shape: (3, 3)</small><table border="1" class="dataframe"><thead><tr><th>state</th><th>city</th><th>price</th></tr><tr><td>str</td><td>str</td><td>i64</td></tr></thead><tbody><tr><td>&quot;CA&quot;</td><td>&quot;San Francisco&quot;</td><td>16</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;Los Angeles&quot;</td><td>20</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Diego&quot;</td><td>18</td></tr></tbody></table></div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/unionai-oss/pandera">Link to Pandera</a>.</p>
 </section>
 <section id="efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">
-<h2><span class="section-number">6.12.25. </span>Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis<a class="headerlink" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.26. </span>Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis<a class="headerlink" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2563,7 +2639,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 </div>
 </section>
 <section id="deepdiff-find-deep-differences-of-python-objects">
-<h2><span class="section-number">6.12.26. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.27. </span>DeepDiff Find Deep Differences of Python Objects<a class="headerlink" href="#deepdiff-find-deep-differences-of-python-objects" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2692,7 +2768,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </section>
 <section id="dirty-equals-write-declarative-assertions-in-your-unit-tests">
-<h2><span class="section-number">6.12.27. </span>dirty-equals: Write Declarative Assertions in Your Unit Tests<a class="headerlink" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.28. </span>dirty-equals: Write Declarative Assertions in Your Unit Tests<a class="headerlink" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2744,7 +2820,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p><a class="reference external" href="https://github.com/samuelcolvin/dirty-equals">Link to dirty-equals</a>.</p>
 </section>
 <section id="hypothesis-property-based-testing-in-python">
-<h2><span class="section-number">6.12.28. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.29. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>hypothesis
@@ -2816,7 +2892,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
 </section>
 <section id="deepchecks-check-category-mismatch-between-train-and-test-set">
-<h2><span class="section-number">6.12.29. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.30. </span>Deepchecks: Check Category Mismatch Between Train and Test Set<a class="headerlink" href="#deepchecks-check-category-mismatch-between-train-and-test-set" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2959,7 +3035,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
 <section id="leab-ab-testing-analysis-in-python">
-<h2><span class="section-number">6.12.30. </span>leAB: AB Testing Analysis in Python<a class="headerlink" href="#leab-ab-testing-analysis-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.31. </span>leAB: AB Testing Analysis in Python<a class="headerlink" href="#leab-ab-testing-analysis-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3067,7 +3143,7 @@ Results (0.38s):
 <p><a class="reference external" href="https://github.com/tlentali/leab">Link to leAB</a>.</p>
 </section>
 <section id="pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">
-<h2><span class="section-number">6.12.31. </span>pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite<a class="headerlink" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.32. </span>pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite<a class="headerlink" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3121,7 +3197,7 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 <p><a class="reference external" href="https://github.com/ClearcodeHQ/pytest-postgresql">Link to pytest-postgresql</a>.</p>
 </section>
 <section id="maintain-the-accuracy-of-docstring-examples-with-doctest">
-<h2><span class="section-number">6.12.32. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.33. </span>Maintain the Accuracy of Docstring Examples with Doctest<a class="headerlink" href="#maintain-the-accuracy-of-docstring-examples-with-doctest" title="Permalink to this heading">#</a></h2>
 <p>Including examples in a docstring is helpful. However, examples can become obsolete as the function evolves.</p>
 <p>To ensure that the examples remain accurate, use doctest.</p>
 <div class="cell tag_remove-output docutils container">
@@ -3180,7 +3256,7 @@ Test passed.
 </div>
 </section>
 <section id="deepeval-unit-testing-for-your-llm-model">
-<h2><span class="section-number">6.12.33. </span>DeepEval: Unit Testing for Your LLM Model<a class="headerlink" href="#deepeval-unit-testing-for-your-llm-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.12.34. </span>DeepEval: Unit Testing for Your LLM Model<a class="headerlink" href="#deepeval-unit-testing-for-your-llm-model" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3341,15 +3417,16 @@ Downloading FactualConsistencyModel (may take up to 2 minutes if running for thâ
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-mock-vs-unittest-mock-simplifying-mocking-in-python-tests">6.12.22. pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tmp-path-create-a-temporary-directory-for-testing">6.12.23. tmp_path: Create a Temporary Directory for Testing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandera-a-python-library-to-validate-your-pandas-dataframe">6.12.24. Pandera: a Python Library to Validate Your Pandas DataFrame</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.12.25. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.12.26. DeepDiff Find Deep Differences of Python Objects</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.12.27. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.12.28. hypothesis: Property-based Testing in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.12.29. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.12.30. leAB: AB Testing Analysis in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.12.31. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.12.32. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.12.33. DeepEval: Unit Testing for Your LLM Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-polars-dataframes-with-pandera">6.12.25. Validating Polars DataFrames with Pandera</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-generate-falsified-examples-for-unit-tests-with-pandera-and-hypothesis">6.12.26. Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepdiff-find-deep-differences-of-python-objects">6.12.27. DeepDiff Find Deep Differences of Python Objects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dirty-equals-write-declarative-assertions-in-your-unit-tests">6.12.28. dirty-equals: Write Declarative Assertions in Your Unit Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hypothesis-property-based-testing-in-python">6.12.29. hypothesis: Property-based Testing in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepchecks-check-category-mismatch-between-train-and-test-set">6.12.30. Deepchecks: Check Category Mismatch Between Train and Test Set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#leab-ab-testing-analysis-in-python">6.12.31. leAB: AB Testing Analysis in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pytest-postgresql-incorporate-database-testing-into-your-pytest-test-suite">6.12.32. pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maintain-the-accuracy-of-docstring-examples-with-doctest">6.12.33. Maintain the Accuracy of Docstring Examples with Doctest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepeval-unit-testing-for-your-llm-model">6.12.34. DeepEval: Unit Testing for Your LLM Model</a></li>
 </ul>
   </nav></div>
 
