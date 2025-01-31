@@ -1,0 +1,2213 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>6.16. Delta Lake &#8212; Effective Python for Data Scientists</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter5/deltalake';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.17. Large Language Model (LLM)" href="llm.html" />
+    <link rel="prev" title="6.15. PySpark" href="spark.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Effective Python for Data Scientists - Home"/>
+    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Effective Python for Data Scientists - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    What Should You Expect From This Book?
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../how_to_read.html">1. How to Read This Book</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter1/Chapter1.html">2. Python Built-in Methods</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/string.html">2.1. String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/number.html">2.2. Number</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Chapter1/list/list.html">2.3. List</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/collections.html">3.1. Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/itertools.html">3.2. Itertools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/functools.html">3.3. Functools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydash.html">3.4. Pydash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/sympy.html">3.5. SymPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/operator.html">3.6. Operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/change_values.html">4.1. Change Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/get_values.html">4.2. Get Certain Values From a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/date_time.html">4.3. Work with Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/transform_dataframe.html">4.4. Transform a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/create_dataframe.html">4.5. Create a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/combine_dataframes.html">4.6. Combine Multiple DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/filter.html">4.7. Filter Rows or Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/data_types.html">4.8. Manipulate a DataFrame Using Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/sort_dataframe.html">4.9. Sort Rows or Columns of a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/string.html">4.10. Work with String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/style_dataframe.html">4.11. Style a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/testing.html">4.12. Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter4/Chapter4.html">5. NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter4/Numpy.html">5.1. NumPy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter5.html">6. Data Science Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="feature_extraction.html">6.1. Feature Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="feature_engineer.html">6.2. Feature Engineer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_data.html">6.3. Get Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage_data.html">6.4. Manage Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_learning.html">6.5. Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="natural_language_processing.html">6.6. Natural Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series.html">6.7. Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharing_downloading.html">6.8. Sharing and Downloading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="speed_up_code.html">6.9. Tools to Speed Up Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">6.10. Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter7/jupyter_notebook.html">8.1. Jupyter Notebook</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/deltalake.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/issues/new?title=Issue%20on%20page%20%2FChapter5/deltalake.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Chapter5/deltalake.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Delta Lake</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.16.1. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-parquet-reliable-data-storage-with-delta-lake">6.16.2. Beyond Parquet: Reliable Data Storage with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-query-speed-with-data-partitioning">6.16.3. Optimize Query Speed with Data Partitioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.16.4. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.16.5. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.6. Enforce Data Quality with Delta Lake Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.7. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.9. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="delta-lake">
+<h1><span class="section-number">6.16. </span>Delta Lake<a class="headerlink" href="#delta-lake" title="Permalink to this heading">#</a></h1>
+<section id="version-your-pandas-dataframe-with-delta-lake">
+<h2><span class="section-number">6.16.1. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Versioning your data is essential to undoing mistakes, preventing data loss, and ensuring reproducibility. Delta Lake makes it easy to version pandas DataFrames and review past changes for auditing and debugging purposes.</p>
+<p>To version a pandas DataFrame with Delta Lake, start with writing out a pandas DataFrame to a Delta table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+
+<span class="c1"># Write to a delta table </span>
+<span class="n">table</span> <span class="o">=</span> <span class="s2">&quot;delta_lake&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Delta Lake stores the data in a Parquet file and maintains a transaction log that records the data operations, enabling time travel and versioning.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>delta_lake:
+
+<span class="w"> </span>├──<span class="w">  </span><span class="m">0</span>-4719861e-1d3a-49f8-8870-225e4e46e3a0-0.parquet<span class="w">  </span>
+<span class="w"> </span>└──<span class="w">  </span>_delta_log/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">00000000000000000000</span>.json<span class="w">  </span>
+</pre></div>
+</div>
+<p>To load the Delta table as a pandas DataFrame, simply use the <code class="docutils literal notranslate"><span class="pre">DeltaTable</span></code> object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Let’s see what happens when we append another pandas DataFrame to the Delta table.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]})</span>
+
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create delta table</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Our Delta table now has two versions. Version 0 contains the initial data and Version 1 includes the data that was appended.</p>
+<p><img alt="" src="../_images/delta_lake.png" /></p>
+<p>To get the metadata of files that currently make up the current table such as creation time, size, and statistics, call the <code class="docutils literal notranslate"><span class="pre">get_add_actions</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">.</span><span class="n">get_add_actions</span><span class="p">(</span><span class="n">flatten</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>path</th>
+      <th>size_bytes</th>
+      <th>modification_time</th>
+      <th>data_change</th>
+      <th>num_records</th>
+      <th>null_count.x</th>
+      <th>min.x</th>
+      <th>max.x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0-67d190a5-29ed-4555-b946-319769c2226c-0.parquet</td>
+      <td>580</td>
+      <td>2024-09-27 21:11:52.351</td>
+      <td>True</td>
+      <td>3</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1-24a5cf2f-d7b8-4e0f-8bf5-a12f4d7e2f35-0.parquet</td>
+      <td>580</td>
+      <td>2024-09-27 21:11:56.494</td>
+      <td>True</td>
+      <td>3</td>
+      <td>0</td>
+      <td>8</td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>To access prior versions, simply specify the version number when loading the Delta table:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read Version 0 of the dataset</span>
+<span class="n">dt0</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dt0</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="beyond-parquet-reliable-data-storage-with-delta-lake">
+<h2><span class="section-number">6.16.2. </span>Beyond Parquet: Reliable Data Storage with Delta Lake<a class="headerlink" href="#beyond-parquet-reliable-data-storage-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<p>Traditional data storage methods, such as plain Parquet files, are susceptible to partial failures during write operations. This can result in incomplete data files and a lack of clear recovery options in the event of a system crash.</p>
+<p>Delta Lake’s write operation with ACID transactions helps solve this by:</p>
+<ul class="simple">
+<li><p>Ensuring either all data is written successfully or none of it is</p></li>
+<li><p>Maintaining a transaction log that tracks all changes</p></li>
+<li><p>Providing time travel capabilities to recover from failures</p></li>
+</ul>
+<p>Here’s an example showing Delta Lake’s reliable write operation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">write_deltalake</span><span class="p">,</span> <span class="n">DeltaTable</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">initial_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">initial_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If the append operation fails halfway, Delta Lake’s transaction log ensures that the table remains in its last valid state.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Simulate a large append that fails halfway</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1003</span><span class="p">),</span>  <span class="c1"># 1000 new rows</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="p">})</span>
+    
+    <span class="c1"># Simulate system crash during append</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;System crash during append!&quot;</span><span class="p">)</span>
+    <span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">new_data</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+    
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Write failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Check table state - still contains only initial data</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Table state after failed append:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
+    
+    <span class="c1"># Verify version history</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Current version: </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">version</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Write failed: System crash during append!
+
+Table state after failed append:
+   id value
+0   1     a
+1   2     b
+
+Current version: 0
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="optimize-query-speed-with-data-partitioning">
+<h2><span class="section-number">6.16.3. </span>Optimize Query Speed with Data Partitioning<a class="headerlink" href="#optimize-query-speed-with-data-partitioning" title="Permalink to this heading">#</a></h2>
+<p>Partitioning data allows queries to target specific segments rather than scanning the entire table, which speeds up data retrieval.</p>
+<p>The following code uses Delta Lake to select partitions from a pandas DataFrame. Partitioned data loading is approximately 24.5 times faster than loading the complete dataset and then querying a particular subset</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+<span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a DataFrame with hourly sales data for 2 million records</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># For reproducibility</span>
+
+<span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+<span class="n">date_range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">date_range</span><span class="p">,</span>
+    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">date_range</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>month</th>
+      <th>day</th>
+      <th>hour</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td>784</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>659</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>729</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>292</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>1</td>
+      <td>4</td>
+      <td>935</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Write to a Delta table</span>
+<span class="n">table_path</span> <span class="o">=</span> <span class="s1">&#39;delta_lake&#39;</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="c1"># Load the data from the Delta table</span>
+<span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;month == 1 &amp; day == 1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>79.2 ms ± 2.62 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Write to a Delta table</span>
+<span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;delta_lake2&quot;</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">partition_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="c1"># Load the data from the Delta table</span>
+<span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">([(</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.23 ms ± 181 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="overwrite-partitions-of-a-pandas-dataframe">
+<h2><span class="section-number">6.16.4. </span>Overwrite Partitions of a pandas DataFrame<a class="headerlink" href="#overwrite-partitions-of-a-pandas-dataframe" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you need to modify a specific subset of your pandas DataFrame, such as yesterday’s data, it is not possible to overwrite only that partition. Instead, you have to load the entire DataFrame into memory as a workaround solution.</p>
+<p>Delta Lake makes it easy to overwrite partitions of a pandas DataFrame.</p>
+<p>First, write out a pandas DataFrame as a Delta table that is partitioned by the <code class="docutils literal notranslate"><span class="pre">date</span></code> column.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+<span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;tmp/records&quot;</span> 
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-21&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">write_deltalake</span><span class="p">(</span>
+    <span class="n">table_path</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">partition_by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Delta table’s contents are partitioned by date, with each partition represented by a directory</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>└──<span class="w">  </span>_delta_log/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">00000000000000000000</span>.json<span class="w">  </span>
+<span class="w"> </span>└──<span class="w">  </span><span class="nv">date</span><span class="o">=</span><span class="m">04</span>-21/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">0</span>-a6813d0c-157b-4ca6-8b3c-8d5afd51947c-0.parquet<span class="w">  </span>
+<span class="w"> </span>└──<span class="w">  </span><span class="nv">date</span><span class="o">=</span><span class="m">04</span>-22/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">0</span>-a6813d0c-157b-4ca6-8b3c-8d5afd51947c-0.parquet<span class="w">  </span>
+</pre></div>
+</div>
+<p>View the Delta table as a pandas DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>04-21</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Next, create another DataFrame with two other records on 04-22. Overwrite the 04-22 partition with the new DataFrame and leave other partitions untouched.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;04-22&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">]}</span>
+<span class="p">)</span>
+<span class="n">write_deltalake</span><span class="p">(</span>
+    <span class="n">table_path</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;overwrite&quot;</span><span class="p">,</span>
+    <span class="n">partition_filters</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;04-22&quot;</span><span class="p">)],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>04-21</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>8</td>
+      <td>04-22</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Here is the updated contents of the Delta table:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span>└──<span class="w">  </span>_delta_log/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">00000000000000000000</span>.json
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">00000000000000000001</span>.json<span class="w">    </span>
+<span class="w"> </span>└──<span class="w">  </span><span class="nv">date</span><span class="o">=</span><span class="m">04</span>-21/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">0</span>-a6813d0c-157b-4ca6-8b3c-8d5afd51947c-0.parquet<span class="w">  </span>
+<span class="w"> </span>└──<span class="w">  </span><span class="nv">date</span><span class="o">=</span><span class="m">04</span>-22/<span class="w"> </span>
+<span class="w"> </span>│<span class="w">  </span>├────<span class="w">  </span><span class="m">0</span>-a6813d0c-157b-4ca6-8b3c-8d5afd51947c-0.parquet<span class="w">  </span>
+<span class="w"> </span>│<span class="w">  </span>└────<span class="w">  </span><span class="m">1</span>-b5c9640f-f386-4754-b28f-90e361ab4320-0.parquet<span class="w"> </span>
+</pre></div>
+</div>
+<p>Since the data files are not physically removed from disk, you can time travel to the initial version of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>a</th>
+      <th>date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>04-22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>04-21</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">
+<h2><span class="section-number">6.16.5. </span>Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas<a class="headerlink" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Appending data to an existing Parquet file using pandas involves:</p>
+<ul class="simple">
+<li><p>Loading the entire existing table into memory.</p></li>
+<li><p>Merging the new data with the existing table.</p></li>
+<li><p>Writing the merged data to the existing file.</p></li>
+</ul>
+<p>This process can be time-consuming and memory-intensive.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">])</span>
+
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="mi">8000</span><span class="p">),</span>
+<span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save to a parquet file</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+
+<span class="c1"># Read the data</span>
+<span class="n">existing_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+
+<span class="c1"># Concat two dataframes</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span>
+
+<span class="c1"># Save to a file</span>
+<span class="n">df3</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s2">&quot;data.parquet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Delta Lake offers a more efficient approach to handling this process. With Delta Lake, you can add, remove, or modify columns without the need to recreate the entire table.</p>
+<p>Delta Lake is also built on top of the Parquet file format so it retains the efficiency and columnar storage benefits of Parquet.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;employees&quot;</span>
+
+<span class="c1"># Write to Delta Lake</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df1</span><span class="p">)</span>
+
+<span class="c1"># Append to Delta Lake</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="enforce-data-quality-with-delta-lake-constraints">
+<h2><span class="section-number">6.16.6. </span>Enforce Data Quality with Delta Lake Constraints<a class="headerlink" href="#enforce-data-quality-with-delta-lake-constraints" title="Permalink to this heading">#</a></h2>
+<p>Delta Lake provides a convenient way to enforce data quality by adding constraints to a table, ensuring that only valid and consistent data can be added.</p>
+<p>In the provided code, attempting to add new data with a negative salary violates the constraint of a positive salary, and thus, the data is not added to the table.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+<span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table_path</span> <span class="o">=</span> <span class="s2">&quot;delta_lake&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>employee_id</th>
+      <th>employee_name</th>
+      <th>salary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>John</td>
+      <td>5000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Jane</td>
+      <td>6000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">alter</span><span class="o">.</span><span class="n">add_constraint</span><span class="p">({</span><span class="s2">&quot;salary_gt_0&quot;</span><span class="p">:</span> <span class="s2">&quot;salary &gt; 0&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">200</span><span class="p">)],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employee_id&quot;</span><span class="p">,</span> <span class="s2">&quot;employee_name&quot;</span><span class="p">,</span> <span class="s2">&quot;salary&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">write_deltalake</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;rust&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>DeltaProtocolError:<span class="w"> </span>Invariant<span class="w"> </span>violations:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;Check or Invariant (salary &gt; 0) violated by value in row: [3, Alex, -200]&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="efficient-data-updates-and-scanning-with-delta-lake">
+<h2><span class="section-number">6.16.7. </span>Efficient Data Updates and Scanning with Delta Lake<a class="headerlink" href="#efficient-data-updates-and-scanning-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;deltalake==0.10.1&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Every time new data is appended to an existing Delta table, a new Parquet file is generated. This allows data to be ingested incrementally without having to rewrite the entire dataset.</p>
+<p>As files accumulate, read operations may surge. The compact function merges small files into larger ones, enhancing scanning performance.</p>
+<p>Combining incremental processing with the compact function enables efficient data updates and scans as your dataset expands.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
+
+<span class="n">table_path</span> <span class="o">=</span> <span class="s1">&#39;delta_lake&#39;</span>
+<span class="n">data_url</span> <span class="o">=</span> <span class="s2">&quot;https://gist.githubusercontent.com/khuyentran1401/458905fc5c630d7a1f7a510a04e5e0f9/raw/5b2d760011c9255a68eb08b83b3b8759ffa25d5c/data.csv&quot;</span>
+<span class="n">dfs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">:</span>
+    <span class="n">write_deltalake</span><span class="p">(</span><span class="n">table_path</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="n">table_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30.6 ms ± 2.94 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">compact</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;numFilesAdded&#39;: 1,
+ &#39;numFilesRemoved&#39;: 100,
+ &#39;filesAdded&#39;: {&#39;min&#39;: 278115,
+  &#39;max&#39;: 278115,
+  &#39;avg&#39;: 278115.0,
+  &#39;totalFiles&#39;: 1,
+  &#39;totalSize&#39;: 278115},
+ &#39;filesRemoved&#39;: {&#39;min&#39;: 5712,
+  &#39;max&#39;: 5717,
+  &#39;avg&#39;: 5715.8,
+  &#39;totalFiles&#39;: 100,
+  &#39;totalSize&#39;: 571580},
+ &#39;partitionsOptimized&#39;: 1,
+ &#39;numBatches&#39;: 100,
+ &#39;totalConsideredFiles&#39;: 100,
+ &#39;totalFilesSkipped&#39;: 0,
+ &#39;preserveInsertionOrder&#39;: True}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<span class="n">df</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.32 ms ± 49 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
+</section>
+<section id="simplify-table-merge-operations-with-delta-lake">
+<h2><span class="section-number">6.16.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>delta-spark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Merging two datasets and performing both insert and update operations can be a complex task.</p>
+<p>Delta Lake makes it easy to perform multiple data manipulation operations during a merge operation.</p>
+<p>The following code demonstrates merging two datasets using Delta Lake:</p>
+<ul class="simple">
+<li><p>If a match is found, the <code class="docutils literal notranslate"><span class="pre">last_talk</span></code> column in <code class="docutils literal notranslate"><span class="pre">people_table</span></code> is updated with the corresponding value from <code class="docutils literal notranslate"><span class="pre">new_df</span></code>.</p></li>
+<li><p>If the <code class="docutils literal notranslate"><span class="pre">last_talk</span></code> value in <code class="docutils literal notranslate"><span class="pre">people_table</span></code> is older than 30 days and the corresponding row is not present in the <code class="docutils literal notranslate"><span class="pre">new_df</span></code> table, the <code class="docutils literal notranslate"><span class="pre">status</span></code> column is updated to ‘rejected’.</p></li>
+</ul>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">delta</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Configure Spark to use Delta</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pyspark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;MyApp&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span>
+        <span class="s2">&quot;spark.sql.catalog.spark_catalog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">configure_spark_with_delta_pip</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:: loading settings :: url = jar:file:/Users/khuyentran/book/venv/lib/python3.11/site-packages/pyspark/jars/ivy-2.5.1.jar!/org/apache/ivy/core/settings/ivysettings.xml
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ivy Default Cache set to: /Users/khuyentran/.ivy2/cache
+The jars for the packages stored in: /Users/khuyentran/.ivy2/jars
+io.delta#delta-spark_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-3f072ef1-cd28-41e1-8ccd-8da112101571;1.0
+	confs: [default]
+	found io.delta#delta-spark_2.12;3.2.0 in central
+	found io.delta#delta-storage;3.2.0 in central
+	found org.antlr#antlr4-runtime;4.9.3 in central
+:: resolution report :: resolve 295ms :: artifacts dl 18ms
+	:: modules in use:
+	io.delta#delta-spark_2.12;3.2.0 from central in [default]
+	io.delta#delta-storage;3.2.0 from central in [default]
+	org.antlr#antlr4-runtime;4.9.3 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-3f072ef1-cd28-41e1-8ccd-8da112101571
+	confs: [default]
+	0 artifacts copied, 3 already retrieved (0kB/12ms)
+24/09/29 14:32:49 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to &quot;WARN&quot;.
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a spark dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-04-15&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-05-01&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-03-01&quot;</span><span class="p">,</span> <span class="s2">&quot;interviewing&quot;</span><span class="p">),</span>
+
+<span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;last_talk&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Write to a delta table</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;tmp/interviews&quot;</span>
+<span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">delta.tables</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="c1"># Update the delta table</span>
+<span class="n">people_table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Target table</span>
+<span class="n">people_table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>24/09/29 14:33:18 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting &#39;spark.sql.debug.maxToStringFields&#39;.
+                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+------------+
+| id|company| last_talk|      status|
++---+-------+----------+------------+
+|  0|      A|2023-04-15|interviewing|
+|  1|      B|2023-05-01|interviewing|
+|  2|      C|2023-03-01|interviewing|
++---+-------+----------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-05-07&quot;</span><span class="p">)]</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;company&quot;</span><span class="p">,</span> <span class="s2">&quot;last_talk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Source table</span>
+<span class="n">new_df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+
+| id|company| last_talk|
++---+-------+----------+
+|  0|      A|2023-05-07|
++---+-------+----------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">one_month_ago</span> <span class="o">=</span> <span class="s2">&quot;current_date() - INTERVAL &#39;30&#39; DAY&quot;</span>
+
+<span class="n">people_table</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">new_df</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">),</span> <span class="s2">&quot;target.id = source.id&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenMatchedUpdate</span><span class="p">(</span>
+    <span class="nb">set</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;target.last_talk&quot;</span><span class="p">:</span> <span class="s2">&quot;source.last_talk&quot;</span><span class="p">,</span> <span class="s2">&quot;target.status&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;interviewing&#39;&quot;</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenNotMatchedBySourceUpdate</span><span class="p">(</span>
+    <span class="n">condition</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;target.last_talk &lt;= </span><span class="si">{</span><span class="n">one_month_ago</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="nb">set</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;target.status&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;rejected&#39;&quot;</span><span class="p">},</span>
+<span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">people_table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------+----------+------------+
+| id|company| last_talk|      status|
++---+-------+----------+------------+
+|  0|      A|2023-05-07|interviewing|
+|  1|      B|2023-05-01|interviewing|
+|  2|      C|2023-03-01|    rejected|
++---+-------+----------+------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
+</section>
+<section id="from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">
+<h2><span class="section-number">6.16.9. </span>From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution<a class="headerlink" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>delta-spark
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Traditionally, implementing upsert (update or insert) logic requires separate UPDATE and INSERT statements or complex SQL. This approach can be error-prone and inefficient, especially for large datasets.</p>
+<p>Delta Lake’s merge operation solves this problem by allowing you to specify different actions for matching and non-matching records in a single, declarative statement.</p>
+<p>Here’s an example that demonstrates the power and simplicity of Delta Lake’s merge operation:</p>
+<p>First, let’s set up our initial data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create sample data for &#39;customers&#39; DataFrame</span>
+<span class="n">customers_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-01 10:00:00&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Smith&quot;</span><span class="p">,</span> <span class="s2">&quot;jane@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-02 11:00:00&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">,</span> <span class="s2">&quot;bob@example.com&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-03 12:00:00&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">customers</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="n">customers_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="s2">&quot;last_updated&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Create sample data for &#39;updates&#39; DataFrame</span>
+<span class="n">updates_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span> <span class="s2">&quot;jane.doe@example.com&quot;</span><span class="p">),</span>  <span class="c1"># Existing customer with updates</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">,</span> <span class="s2">&quot;bob@example.com&quot;</span><span class="p">),</span>  <span class="c1"># Existing customer without changes</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Alice Brown&quot;</span><span class="p">,</span> <span class="s2">&quot;alice@example.com&quot;</span><span class="p">),</span>  <span class="c1"># New customer</span>
+<span class="p">]</span>
+<span class="n">updates</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">updates_data</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">])</span>
+
+<span class="c1"># Show the initial data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initial Customers:&quot;</span><span class="p">)</span>
+<span class="n">customers</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updates:&quot;</span><span class="p">)</span>
+<span class="n">updates</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initial Customers:
++-----------+-----------+----------------+-------------------+
+|customer_id|       name|           email|       last_updated|
++-----------+-----------+----------------+-------------------+
+|          1|   John Doe|john@example.com|2023-01-01 10:00:00|
+|          2| Jane Smith|jane@example.com|2023-01-02 11:00:00|
+|          3|Bob Johnson| bob@example.com|2023-01-03 12:00:00|
++-----------+-----------+----------------+-------------------+
+
+Updates:
++-----------+-----------+--------------------+
+|customer_id|       name|               email|
++-----------+-----------+--------------------+
+|          2|   Jane Doe|jane.doe@example.com|
+|          3|Bob Johnson|     bob@example.com|
+|          4|Alice Brown|   alice@example.com|
++-----------+-----------+--------------------+
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we create a Delta table from our initial customer data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the path where you want to save the Delta table</span>
+<span class="n">delta_table_path</span> <span class="o">=</span> <span class="s2">&quot;customers_delta&quot;</span>
+
+<span class="c1"># Write the DataFrame as a Delta table</span>
+<span class="n">customers</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">delta_table_path</span><span class="p">)</span>
+
+<span class="c1"># Create a DeltaTable object</span>
+<span class="n">customers_delta</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">delta_table_path</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Customers Delta Table created successfully&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Customers Delta Table created successfully
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, here’s the key part - the merge operation that handles both updates and inserts in a single statement:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assume &#39;customers_delta&#39; is your target table and &#39;updates&#39; is your source of new data</span>
+<span class="n">customers_delta</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">updates</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;target.customer_id = source.customer_id&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">whenMatchedUpdate</span><span class="p">(</span><span class="nb">set</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source.name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;source.email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;current_timestamp()&quot;</span>
+<span class="p">})</span><span class="o">.</span><span class="n">whenNotMatchedInsert</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="s2">&quot;source.customer_id&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;source.name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;source.email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;current_timestamp()&quot;</span>
+<span class="p">})</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify the updated data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Updated Customers Delta Table:&quot;</span><span class="p">)</span>
+<span class="n">customers_delta</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Updated Customers Delta Table:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----------+-----------+--------------------+--------------------+
+|customer_id|       name|               email|        last_updated|
++-----------+-----------+--------------------+--------------------+
+|          2|   Jane Doe|jane.doe@example.com|2024-09-29 14:34:...|
+|          3|Bob Johnson|     bob@example.com|2024-09-29 14:34:...|
+|          4|Alice Brown|   alice@example.com|2024-09-29 14:34:...|
+|          1|   John Doe|    john@example.com| 2023-01-01 10:00:00|
++-----------+-----------+--------------------+--------------------+
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-best-way-to-append-mismatched-data-to-parquet-tables">
+<h2><span class="section-number">6.16.10. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this heading">#</a></h2>
+<p>Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.</p>
+<p>In the following code, the datatype of <code class="docutils literal notranslate"><span class="pre">col3</span></code> is supposed to be <code class="docutils literal notranslate"><span class="pre">int64</span></code> instead of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="s1">&#39;test.parquet&#39;</span>
+
+<span class="c1"># Write a dataframe to a parquet file</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]})</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># Append a dataframe to a parquet file</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;col1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;col2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="s1">&#39;col3&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]})</span>
+<span class="n">concatenation</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span> <span class="c1"># concatenate dataframes</span>
+<span class="n">concatenation</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="c1"># overwrite original file</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">concat_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2  col3
+0     1     3   NaN
+1     2     4   NaN
+0     2     7   0.0 
+
+col1      int64
+col2      int64
+col3    float64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>With Delta Lake, you can effortlessly append DataFrames with extra columns while ensuring the preservation of your data’s schema.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">delta</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Configure Spark to use Delta</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pyspark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;MyApp&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.extensions&quot;</span><span class="p">,</span> <span class="s2">&quot;io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span>
+        <span class="s2">&quot;spark.sql.catalog.spark_catalog&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">configure_spark_with_delta_pip</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a spark Dataframe</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Write to a delta table</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new DataFrame</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">,</span> <span class="s2">&quot;col3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">repartition</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+----+----+----+
+|col1|col2|col3|
++----+----+----+
+|   2|   7|   0|
++----+----+----+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Append to the existing Delta table</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;mergeSchema&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the Delta table</span>
+<span class="kn">from</span> <span class="nn">delta.tables</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+<span class="n">concat_df</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span><span class="o">.</span><span class="n">pandas_api</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">concat_df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   col1  col2  col3
+0     2     7   0.0
+1     1     3   NaN
+2     2     4   NaN 
+
+col1    int64
+col2    int64
+col3    int64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Chapter5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="spark.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.15. </span>PySpark</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="llm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.17. </span>Large Language Model (LLM)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-your-pandas-dataframe-with-delta-lake">6.16.1. Version Your Pandas DataFrame with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-parquet-reliable-data-storage-with-delta-lake">6.16.2. Beyond Parquet: Reliable Data Storage with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-query-speed-with-data-partitioning">6.16.3. Optimize Query Speed with Data Partitioning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.16.4. Overwrite Partitions of a pandas DataFrame</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.16.5. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.6. Enforce Data Quality with Delta Lake Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.7. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.8. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.9. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khuyen Tran
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
