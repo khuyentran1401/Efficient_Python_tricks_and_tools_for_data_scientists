@@ -524,6 +524,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.14.7. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>
 </ul>
             </nav>
         </div>
@@ -1521,6 +1522,100 @@ Polars time: 41.079080 seconds
 <small>shape: (2, 3)</small><table border="1" class="dataframe"><thead><tr><th>Category</th><th>Quantity</th><th>Price</th></tr><tr><td>str</td><td>i64</td><td>f64</td></tr></thead><tbody><tr><td>&quot;Clothing&quot;</td><td>12</td><td>25.0</td></tr><tr><td>&quot;Electronics&quot;</td><td>12</td><td>216.666667</td></tr></tbody></table></div></div></div>
 </div>
 </section>
+<section id="faster-data-analysis-with-polars-a-guide-to-lazy-execution">
+<h2><span class="section-number">6.14.10. </span>Faster Data Analysis with Polars: A Guide to Lazy Execution<a class="headerlink" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution" title="Permalink to this heading">#</a></h2>
+<p>When processing data, the execution approach significantly impacts performance. Pandas, a popular Python data manipulation library, uses eager execution by default, processing data immediately and loading everything into memory. This works well for small to medium-sized datasets but can lead to slow computations and high memory usage with large datasets.</p>
+<p>In contrast, Polars, a modern data processing library, offers both eager and lazy execution. In lazy mode, a query optimizer evaluates operations and determines the most efficient execution plan, which may involve reordering operations or dropping redundant calculations.</p>
+<p>Let’s consider an example where we:</p>
+<ul class="simple">
+<li><p>Group a DataFrame by ‘region’</p></li>
+<li><p>Calculate two aggregations: sum of ‘revenue’ and count of ‘orders’</p></li>
+<li><p>Filter for only ‘North’ and ‘South’ regions</p></li>
+</ul>
+<p>With eager execution, Pandas will:</p>
+<ul class="simple">
+<li><p>Execute operations immediately, loading all data into memory</p></li>
+<li><p>Keep intermediate results in memory during each step</p></li>
+<li><p>Execute operations in the exact order written</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Generate sample data</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">10_000_000</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;North&quot;</span><span class="p">,</span> <span class="s2">&quot;South&quot;</span><span class="p">,</span> <span class="s2">&quot;East&quot;</span><span class="p">,</span> <span class="s2">&quot;West&quot;</span><span class="p">],</span> <span class="n">N</span><span class="p">),</span>
+    <span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+    <span class="s2">&quot;orders&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">analyze_sales_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="c1"># Loads and processes everything in memory</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+        <span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;North&quot;</span><span class="p">,</span> <span class="s2">&quot;South&quot;</span><span class="p">]]</span>
+    <span class="p">)</span>
+
+
+<span class="n">pd_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> analyze_sales_pandas(pd_df)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>367 ms ± 47 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>As shown above, the eager execution approach used by Pandas results in a execution time of approximately 367 milliseconds.</p>
+<p>With lazy execution, Polars will:</p>
+<ul class="simple">
+<li><p>Create an execution plan first, optimizing the entire chain before processing any data</p></li>
+<li><p>Only process data once at .collect(), reducing memory overhead</p></li>
+<li><p>Rearrange operations for optimal performance (pushing filters before groupby)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+
+
+<span class="k">def</span> <span class="nf">analyze_sales_polars</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="c1"># Creates execution plan, no data processed yet</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">lazy</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_in</span><span class="p">([</span><span class="s2">&quot;North&quot;</span><span class="p">,</span> <span class="s2">&quot;South&quot;</span><span class="p">]))</span>
+        <span class="o">.</span><span class="n">collect</span><span class="p">()</span>  <span class="c1"># Only now data is processed</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> analyze_sales_polars(pl_df)
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>170 ms ± 15.8 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div>
+</div>
+</div>
+</div>
+<p>In contrast, the lazy execution approach with Polars takes approximately 170 milliseconds to complete, which is about 53.68% faster than the eager execution approach with Pandas.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1595,6 +1690,7 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.14.7. Parallel Execution of Multiple Files with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>
 </ul>
   </nav></div>
 

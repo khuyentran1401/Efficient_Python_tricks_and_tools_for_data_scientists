@@ -270,25 +270,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. 3 Powerful Ways to Create PySpark DataFrames</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.32. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deltalake.html">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -549,6 +534,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.17. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-ml-model-integration-with-fastapi">6.5.18. Simplifying ML Model Integration with FastAPI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imodels-simplifying-machine-learning-with-interpretable-models">6.5.19. imodels: Simplifying Machine Learning with Interpretable Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-build-a-recommendation-engine-using-surprise-in-python">6.5.20. How to Build a Recommendation Engine Using Surprise in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyod-simplifying-outlier-detection-in-python">6.5.21. PyOD: Simplifying Outlier Detection in Python</a></li>
 </ul>
             </nav>
         </div>
@@ -2143,6 +2130,237 @@ scipy==1.11.3
 <p>This tree structure clearly shows how predictions are made based on feature values, providing transparency into the model’s decision-making process. The hierarchical shrinkage technique also improves predictive performance compared to standard decision trees.</p>
 <p><a class="reference external" href="https://github.com/csinva/imodels">Link to imodels</a>.</p>
 </section>
+<section id="how-to-build-a-recommendation-engine-using-surprise-in-python">
+<h2><span class="section-number">6.5.20. </span>How to Build a Recommendation Engine Using Surprise in Python<a class="headerlink" href="#how-to-build-a-recommendation-engine-using-surprise-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>scikit-surprise
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Building reliable recommendation systems from scratch requires complex algorithms and data handling, which results in spending significant time implementing common algorithms like SVD or handling cross-validation procedures.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Without a dedicated library, you&#39;d need to implement basic collaborative filtering:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">calculate_similarity</span><span class="p">(</span><span class="n">ratings_matrix</span><span class="p">):</span>
+    <span class="c1"># Complex similarity calculations</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">predict_rating</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">ratings</span><span class="p">,</span> <span class="n">similarities</span><span class="p">):</span>
+    <span class="c1"># Complex prediction logic</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Handle cross-validation manually</span>
+<span class="k">def</span> <span class="nf">cross_validate</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">,</span> <span class="n">n_folds</span><span class="p">):</span>
+    <span class="c1"># Manual implementation of CV</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Surprise helps you build and evaluate recommendation systems with just a few lines of code. You can use built-in algorithms, handle datasets easily, and evaluate models using cross-validation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">surprise</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">SVD</span><span class="p">,</span> <span class="n">Reader</span>
+<span class="kn">from</span> <span class="nn">surprise.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
+
+
+<span class="c1"># Creation of the dataframe. Column names are irrelevant.</span>
+<span class="n">ratings_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;itemID&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;userID&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">ratings_dict</span><span class="p">)</span>
+ 
+<span class="c1"># A reader is still needed but only the rating_scale param is required.</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">rating_scale</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># The columns must correspond to user id, item id and ratings (in that order).</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">load_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;userID&quot;</span><span class="p">,</span> <span class="s2">&quot;itemID&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">]],</span> <span class="n">reader</span><span class="p">)</span>
+
+<span class="n">algo</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">()</span>
+
+<span class="c1"># Run 2-fold cross-validation and print results.</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">algo</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;RMSE&#39;</span><span class="p">,</span> <span class="s1">&#39;MAE&#39;</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Evaluating RMSE, MAE of algorithm SVD on 2 split(s).
+
+                  Fold 1  Fold 2  Mean    Std     
+RMSE (testset)    1.2706  1.4050  1.3378  0.0672  
+MAE (testset)     1.0295  0.9963  1.0129  0.0166  
+Fit time          0.00    0.00    0.00    0.00    
+Test time         0.00    0.00    0.00    0.00    
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compute the rating prediction for given user and item.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">item_id</span> <span class="o">=</span> <span class="mi">302</span>
+<span class="n">user_id</span> <span class="o">=</span> <span class="mi">196</span>
+
+<span class="n">pred</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user: 196        item: 302        r_ui = None   est = 3.00   {&#39;was_impossible&#39;: False}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Surprise also provides a variety of basic algorithms, k-NN inspired algorithms, and matrix factorization-based algorithms. View all available algorithms <a class="reference external" href="https://surprise.readthedocs.io/en/stable/prediction_algorithms_package.html">here</a>.</p>
+<p><a class="reference external" href="https://github.com/NicolasHug/Surprise">Link to Surprise</a>.</p>
+</section>
+<section id="pyod-simplifying-outlier-detection-in-python">
+<h2><span class="section-number">6.5.21. </span>PyOD: Simplifying Outlier Detection in Python<a class="headerlink" href="#pyod-simplifying-outlier-detection-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pyod
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Detecting anomalies or outliers in datasets is often challenging and time-consuming, requiring complex statistical calculations and multiple algorithm implementations. This results in data scientists writing redundant code or potentially missing important anomalies by using overly simplistic approaches.</p>
+<p>Without specialized tools, detecting outliers often looks like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">detect_outliers</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># Using simple statistical method (z-score)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">mean</span><span class="si">=:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">std</span><span class="si">=:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">z_scores</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+    
+    <span class="c1"># Consider points beyond 3 standard deviations as outliers</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">z_scores</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">outliers</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">outliers</span> <span class="o">=</span> <span class="n">detect_outliers</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">outliers</span><span class="si">=}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean=113.333
+std=313.485
+outliers=[]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, even though 1000 is apear to be an outlier in the <code class="docutils literal notranslate"><span class="pre">data</span></code> list, it is not in the <code class="docutils literal notranslate"><span class="pre">outliers</span></code> list. This is because the standard deviation is heavily influenced by the extreme value (1000).</p>
+<p>With PyOD, you can easily implement various state-of-the-art outlier detection algorithms, combine multiple methods, and handle multivariate data. The library provides a consistent API across different algorithms and includes both traditional statistical methods and modern deep learning approaches.</p>
+<p>Import models:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyod.models.knn</span> <span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span> <span class="nn">pyod.utils.data</span> <span class="kn">import</span> <span class="n">generate_data</span>
+<span class="kn">from</span> <span class="nn">pyod.utils.data</span> <span class="kn">import</span> <span class="n">evaluate_print</span>
+<span class="kn">from</span> <span class="nn">pyod.utils.example</span> <span class="kn">import</span> <span class="n">visualize</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generate sample data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">contamination</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># percentage of outliers</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c1"># number of training points</span>
+<span class="n">n_test</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># number of testing points</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span>
+    <span class="n">n_train</span><span class="o">=</span><span class="n">n_train</span><span class="p">,</span> <span class="n">n_test</span><span class="o">=</span><span class="n">n_test</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=</span><span class="n">contamination</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Initialize a <code class="docutils literal notranslate"><span class="pre">pyod.models.knn.KNN</span></code> detector, fit the model, and make the prediction:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># train kNN detector</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">KNN</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># get the prediction labels and outlier scores of the training data</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">labels_</span>  <span class="c1"># binary labels (0: inliers, 1: outliers)</span>
+<span class="n">y_train_scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_scores_</span>  <span class="c1"># raw outlier scores</span>
+
+<span class="c1"># get the prediction on the test data</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>  <span class="c1"># outlier labels (0 or 1)</span>
+<span class="n">y_test_scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">decision_function</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>  <span class="c1"># outlier scores</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Evaluate the prediction using ROC and Precision &#64; Rank n:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf_name</span> <span class="o">=</span> <span class="s1">&#39;KNN&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">On Training Data:&quot;</span><span class="p">)</span>
+<span class="n">evaluate_print</span><span class="p">(</span><span class="n">clf_name</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">On Test Data:&quot;</span><span class="p">)</span>
+<span class="n">evaluate_print</span><span class="p">(</span><span class="n">clf_name</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_scores</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>On Training Data:
+KNN ROC:1.0, precision @ rank n:1.0
+
+On Test Data:
+KNN ROC:1.0, precision @ rank n:1.0
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generate the visualizations by visualize function included in all examples:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">visualize</span><span class="p">(</span><span class="n">clf_name</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">,</span>
+          <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">show_figure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_figure</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">visualize</span><span class="p">(</span><span class="n">clf_name</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">,</span>
+          <span class="n">y_test_pred</span><span class="p">,</span> <span class="n">show_figure</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_figure</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f7a67f619b859e2ab823d812b385d7835edd56b61e2a9092454ea1601de7d518.png" src="../_images/f7a67f619b859e2ab823d812b385d7835edd56b61e2a9092454ea1601de7d518.png" />
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/yzhao062/pyod">Link to pyod</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -2227,6 +2445,8 @@ scipy==1.11.3
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-logging-made-easy-mlflow-vs-pickle">6.5.17. Model Logging Made Easy: MLflow vs. Pickle</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-ml-model-integration-with-fastapi">6.5.18. Simplifying ML Model Integration with FastAPI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imodels-simplifying-machine-learning-with-interpretable-models">6.5.19. imodels: Simplifying Machine Learning with Interpretable Models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-build-a-recommendation-engine-using-surprise-in-python">6.5.20. How to Build a Recommendation Engine Using Surprise in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyod-simplifying-outlier-detection-in-python">6.5.21. PyOD: Simplifying Outlier Detection in Python</a></li>
 </ul>
   </nav></div>
 
