@@ -1,0 +1,2257 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>6.10. Visualization &#8212; Effective Python for Data Scientists</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter5/visualization';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.11. Better Pandas" href="better_pandas.html" />
+    <link rel="prev" title="6.9. Tools to Speed Up Code" href="speed_up_code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Effective Python for Data Scientists - Home"/>
+    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Effective Python for Data Scientists - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    What Should You Expect From This Book?
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../how_to_read.html">1. How to Read This Book</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter1/Chapter1.html">2. Python Built-in Methods</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/string.html">2.1. String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/number.html">2.2. Number</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Chapter1/list/list.html">2.3. List</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/collections.html">3.1. Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/itertools.html">3.2. Itertools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/functools.html">3.3. Functools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydash.html">3.4. Pydash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/sympy.html">3.5. SymPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/operator.html">3.6. Operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/change_values.html">4.1. Change Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/get_values.html">4.2. Get Certain Values From a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/date_time.html">4.3. Work with Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/transform_dataframe.html">4.4. Transform a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/create_dataframe.html">4.5. Create a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/combine_dataframes.html">4.6. Combine Multiple DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/filter.html">4.7. Filter Rows or Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/data_types.html">4.8. Manipulate a DataFrame Using Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/sort_dataframe.html">4.9. Sort Rows or Columns of a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/string.html">4.10. Work with String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/style_dataframe.html">4.11. Style a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/testing.html">4.12. Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter4/Chapter4.html">5. NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter4/Numpy.html">5.1. NumPy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter5.html">6. Data Science Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="feature_extraction.html">6.1. Feature Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="feature_engineer.html">6.2. Feature Engineer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_data.html">6.3. Get Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage_data.html">6.4. Manage Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_learning.html">6.5. Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="natural_language_processing.html">6.6. Natural Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series.html">6.7. Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharing_downloading.html">6.8. Sharing and Downloading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="speed_up_code.html">6.9. Tools to Speed Up Code</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.10. Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deltalake.html">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter7/jupyter_notebook.html">8.1. Jupyter Notebook</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/visualization.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/issues/new?title=Issue%20on%20page%20%2FChapter5/visualization.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Chapter5/visualization.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/visualization.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Visualization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-seaborn-style-on-matplotlib-plots">6.10.1. Use Seaborn Style on Matplotlib Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graphviz-create-a-flowchart-to-capture-your-ideas-in-python">6.10.2. Graphviz: Create a Flowchart to Capture Your Ideas in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#folium-create-an-interactive-map-in-python">6.10.3. folium: Create an Interactive Map in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dtreeviz-visualize-and-interpret-a-decision-tree-model">6.10.4. dtreeviz: Visualize and Interpret a Decision Tree Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supertree-interactive-decision-tree-visualization-for-python">6.10.5. supertree: Interactive Decision Tree Visualization for Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hiplot-high-dimensional-interactive-plotting">6.10.6. HiPlot - High Dimensional Interactive Plotting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#missingno-dendogram-visualize-correlation-between-missing-data">6.10.7. missingno.dendogram: Visualize Correlation Between Missing Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matplotlib-venn-create-a-venn-diagram-using-python">6.10.8. matplotlib-venn: Create a Venn Diagram Using Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#squarify-plot-treemap-in-python">6.10.9. squarify: Plot Treemap in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#umap-dimension-reduction-in-python">6.10.10. UMAP: Dimension Reduction in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evidently-detect-and-visualize-data-drift">6.10.11. Evidently: Detect and Visualize Data Drift</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mermaid-create-class-diagrams-for-your-python-classes-using-text-and-code">6.10.12. Mermaid: Create Class Diagrams for Your Python Classes Using Text and Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mermaid-create-flow-chart-using-code">6.10.13. Mermaid: Create Flow Chart Using Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretty-confusion-matrix-plot-a-pretty-and-comprehensible-confusion-matrix">6.10.14. pretty-confusion-matrix: Plot a Pretty and Comprehensible Confusion Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matplotx-useful-extensions-for-matplotlib">6.10.15. matplotx: Useful Extensions for Matplotlib</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipysankeywidget-ipython-sankey-diagram-widget">6.10.16. ipysankeywidget: IPython Sankey Diagram Widget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipyvizzu-add-animation-to-your-charts-with-ease">6.10.17. ipyvizzu: Add Animation to Your Charts with Ease</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipyvizzu-story-create-an-interactive-presentation-in-your-jupyter-notebook">6.10.18. ipyvizzu-story: Create an Interactive Presentation in Your Jupyter Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lux-a-python-api-for-intelligent-visual-discovery">6.10.19. Lux: A Python API for Intelligent Visual Discovery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-statistical-significance-annotations-on-seaborn-plots">6.10.20. Add Statistical Significance Annotations on Seaborn Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-adjust-annotations-in-matplotlib-for-readability">6.10.21. Automatically Adjust Annotations in Matplotlib for Readability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloxs-create-an-attractive-display-in-your-jupyter-notebook">6.10.22. Bloxs: Create an Attractive Display in Your Jupyter Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lovelyplots-create-nice-matplotlib-figures-for-presentations">6.10.23. LovelyPlots: Create Nice Matplotlib Figures for Presentations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.24. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.25. Visualize the Frequency Tokens in a Text Corpora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.26. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.27. Vizro: Create Modular Data Visualization Applications in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-and-drop-visualizations-with-pygwalker">6.10.28. Drag-and-Drop Visualizations with PyGWalker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hvplot-one-api-for-multiple-plotting-libraries">6.10.29. hvPlot: One API for Multiple Plotting Libraries</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="visualization">
+<h1><span class="section-number">6.10. </span>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">#</a></h1>
+<p>This section covers some tools to visualize your data and model.</p>
+<section id="use-seaborn-style-on-matplotlib-plots">
+<h2><span class="section-number">6.10.1. </span>Use Seaborn Style on Matplotlib Plots<a class="headerlink" href="#use-seaborn-style-on-matplotlib-plots" title="Permalink to this heading">#</a></h2>
+<p>Seaborn style looks nicer than the default style of matplotlib, but matplotlib is more customizable. If you want to apply seaborn style on matplotlib plots, use <code class="docutils literal notranslate"><span class="pre">seaborn.set_theme()</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="c1"># Set seaborn style</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+
+<span class="c1"># Data for plotting</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="c1"># Plot the data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="graphviz-create-a-flowchart-to-capture-your-ideas-in-python">
+<h2><span class="section-number">6.10.2. </span>Graphviz: Create a Flowchart to Capture Your Ideas in Python<a class="headerlink" href="#graphviz-create-a-flowchart-to-capture-your-ideas-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install graphviz
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Visualizing complex data and systems is difficult. Creating diagrams by hand is slow and prone to mistakes, especially with large datasets.</p>
+<p>Graphviz offers an easy method to generate graphs using a declarative language.</p>
+<p>Here’s a short code example to demonstrate the utility of Graphviz:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">graphviz</span> <span class="kn">import</span> <span class="n">Graph</span> 
+
+<span class="c1"># Instantiate a new Graph object</span>
+<span class="n">dot</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s1">&#39;Data Science Process&#39;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add nodes</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Get Data&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;Clean, Prepare, &amp; Manipulate Data&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;Train Model&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;Test Data&#39;</span><span class="p">)</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;Improve&#39;</span><span class="p">)</span>
+
+<span class="c1"># Connect these nodes</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">edges</span><span class="p">([</span><span class="s1">&#39;AB&#39;</span><span class="p">,</span> <span class="s1">&#39;BC&#39;</span><span class="p">,</span> <span class="s1">&#39;CD&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">])</span>
+
+<span class="c1"># Save chart</span>
+<span class="n">dot</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;data_science_flowchart&#39;</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dot</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://graphviz.readthedocs.io/en/stable/manual.html">Link to graphviz</a></p>
+</section>
+<section id="folium-create-an-interactive-map-in-python">
+<h2><span class="section-number">6.10.3. </span>folium: Create an Interactive Map in Python<a class="headerlink" href="#folium-create-an-interactive-map-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install folium
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to create a map provided the location in a few lines of code, try folium. Folium is a Python library that allows you to create an interactive map.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">folium</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">45.5236</span><span class="p">,</span> <span class="o">-</span><span class="mf">122.6750</span><span class="p">])</span>
+
+<span class="n">tooltip</span> <span class="o">=</span> <span class="s1">&#39;Click me!&#39;</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">([</span><span class="mf">45.3288</span><span class="p">,</span> <span class="o">-</span><span class="mf">121.6625</span><span class="p">],</span> <span class="n">popup</span><span class="o">=</span><span class="s1">&#39;&lt;i&gt;Mt. Hood Meadows&lt;/i&gt;&#39;</span><span class="p">,</span>
+              <span class="n">tooltip</span><span class="o">=</span><span class="n">tooltip</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">m</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>View the document of folium <a class="reference external" href="https://python-visualization.github.io/folium/quickstart.html#Getting-Started">here</a>.</p>
+</section>
+<section id="dtreeviz-visualize-and-interpret-a-decision-tree-model">
+<h2><span class="section-number">6.10.4. </span>dtreeviz: Visualize and Interpret a Decision Tree Model<a class="headerlink" href="#dtreeviz-visualize-and-interpret-a-decision-tree-model" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install dtreeviz
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to find an easy way to visualize and interpret a decision tree model, use dtreeviz.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">from</span> <span class="nn">dtreeviz.trees</span> <span class="kn">import</span> <span class="n">dtreeviz</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+
+<span class="n">wine</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">wine</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">wine</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+
+<span class="n">vis</span> <span class="o">=</span> <span class="n">dtreeviz</span><span class="p">(</span>
+    <span class="n">classifier</span><span class="p">,</span>
+    <span class="n">wine</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+    <span class="n">wine</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
+    <span class="n">target_name</span><span class="o">=</span><span class="s2">&quot;wine_type&quot;</span><span class="p">,</span>
+    <span class="n">feature_names</span><span class="o">=</span><span class="n">wine</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">vis</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The image below shows the output of dtreeviz when applying it on DecisionTreeClassifier.</p>
+<p><img alt="image" src="../_images/DTreeViz.png" /></p>
+<p><a class="reference external" href="https://github.com/parrt/dtreeviz">Link to dtreeviz</a>.</p>
+</section>
+<section id="supertree-interactive-decision-tree-visualization-for-python">
+<h2><span class="section-number">6.10.5. </span>supertree: Interactive Decision Tree Visualization for Python<a class="headerlink" href="#supertree-interactive-decision-tree-visualization-for-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install supertree
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Visualizing complex decision trees with static plots can make it hard to analyze and explain model decisions.</p>
+<p>supertree is a Python package that addresses this by providing interactive and user-friendly decision tree visualizations within notebooks.</p>
+<p>Key features include:</p>
+<ul class="simple">
+<li><p>Zooming and panning through large trees</p></li>
+<li><p>Collapsing and expanding selected nodes</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">supertree</span> <span class="kn">import</span> <span class="n">SuperTree</span> <span class="c1"># &lt;- import supertree :)</span>
+
+<span class="c1"># Load the iris dataset</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+
+<span class="c1"># Train model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Initialize supertree</span>
+<span class="n">super_tree</span> <span class="o">=</span> <span class="n">SuperTree</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">target_names</span><span class="p">)</span>
+
+<span class="c1"># show tree in your notebook</span>
+<span class="n">super_tree</span><span class="o">.</span><span class="n">show_tree</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="image" src="../_images/decisiontree.png" /></p>
+<p><a class="reference external" href="https://github.com/mljar/supertree">Link to supertree</a>.</p>
+</section>
+<section id="hiplot-high-dimensional-interactive-plotting">
+<h2><span class="section-number">6.10.6. </span>HiPlot - High Dimensional Interactive Plotting<a class="headerlink" href="#hiplot-high-dimensional-interactive-plotting" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install hiplot 
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you are tuning hyperparameters of your machine learning model, it can be difficult to understand the relationships between different combinations of hyperparameters and a specific metric.</p>
+<p>That is when HiPlot comes in handy. HiPlot allows you to discover patterns in high-dimensional data using parallel plots like below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hiplot</span> <span class="k">as</span> <span class="nn">hip</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span> <span class="s1">&#39;r2&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;SGD&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;r2&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;Adam&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;lr&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;r2&#39;</span><span class="p">:</span> <span class="mf">0.86</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">:</span> <span class="s1">&#39;Adam&#39;</span><span class="p">}]</span>
+<span class="n">hip</span><span class="o">.</span><span class="n">Experiment</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/facebookresearch/hiplot">Link to HiPlot.</a></p>
+</section>
+<section id="missingno-dendogram-visualize-correlation-between-missing-data">
+<h2><span class="section-number">6.10.7. </span>missingno.dendogram: Visualize Correlation Between Missing Data<a class="headerlink" href="#missingno-dendogram-visualize-correlation-between-missing-data" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install missingno sklearn
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Missing values can sometimes tell you how strongly the presence or absence of one variable affects the presence of another. To visualize the correlation between different columns based on the missing values, use <code class="docutils literal notranslate"><span class="pre">missingno.dendogram</span></code>.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+
+<span class="n">soybean</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;soybean&quot;</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">missingno</span> <span class="k">as</span> <span class="nn">msno</span>
+
+<span class="n">msno</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">soybean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The dendrogram uses a hierarchical clustering algorithm to bin variables against one another by their nullity correlation. Cluster leaves which linked together at a distance of zero fully predict one another’s presence. In the graph above, the nullity of <code class="docutils literal notranslate"><span class="pre">seed-discolor</span></code> fully predicts the <code class="docutils literal notranslate"><span class="pre">nullity</span></code> of <code class="docutils literal notranslate"><span class="pre">germination</span></code>.</p>
+<p><a class="reference external" href="https://github.com/ResidentMario/missingno">Link to missingno</a>.</p>
+</section>
+<section id="matplotlib-venn-create-a-venn-diagram-using-python">
+<h2><span class="section-number">6.10.8. </span>matplotlib-venn: Create a Venn Diagram Using Python<a class="headerlink" href="#matplotlib-venn-create-a-venn-diagram-using-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install matplotlib-venn
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to draw a venn diagram using Python, try matplotlib-venn. To create a venn diagram using matplotlib-venn, you can specify the size of each region:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib_venn</span> <span class="kn">import</span> <span class="n">venn2</span>
+
+<span class="n">venn2</span><span class="p">(</span><span class="n">subsets</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">set_labels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Are Healthy&#39;</span><span class="p">,</span> <span class="s1">&#39;Do Exercise&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>… or specify the elements in each set:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">venn2</span><span class="p">([</span><span class="nb">set</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">]),</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">])],</span> <span class="n">set_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Group1&#39;</span><span class="p">,</span> <span class="s1">&#39;Group2&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can also draw three cicles using <code class="docutils literal notranslate"><span class="pre">venn3</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib_venn</span> <span class="kn">import</span> <span class="n">venn3</span>
+<span class="n">venn3</span><span class="p">(</span><span class="n">subsets</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">set_labels</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Are Healthy&#39;</span><span class="p">,</span> <span class="s1">&#39;Do Exercise&#39;</span><span class="p">,</span> <span class="s1">&#39;Eat Well&#39;</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/konstantint/matplotlib-venn">Link to matplotlib-venn</a>.</p>
+</section>
+<section id="squarify-plot-treemap-in-python">
+<h2><span class="section-number">6.10.9. </span>squarify: Plot Treemap in Python<a class="headerlink" href="#squarify-plot-treemap-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install squarify
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>A treemap splits a rectangle into sub-rectangles, whose sizes are proportional to their values. To plot a treemap in Python, use squarify.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">squarify</span>   
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;DS&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">,</span> <span class="s1">&#39;DA&#39;</span><span class="p">]})</span>
+
+<span class="c1"># Plot</span>
+<span class="n">squarify</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/laserson/squarify">Link to squarify</a>.</p>
+</section>
+<section id="umap-dimension-reduction-in-python">
+<h2><span class="section-number">6.10.10. </span>UMAP: Dimension Reduction in Python<a class="headerlink" href="#umap-dimension-reduction-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install &#39;umap-learn[plot]&#39;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>It can be difficult to visualize a multi-dimensional dataset. Luckily, UMAP allows you to reduce the dimension of your dataset and create a 2D views of your data.</p>
+<p>To understand how UMAP works, let’s try with the <a class="reference external" href="https://raw.githubusercontent.com/susanli2016/Machine-Learning-with-Python/master/fruit_data_with_colors.txt">fruit dataset</a>. In this dataset, we have the features of different fruits, such as mass, width, height, and color score. Our task is to classify which fruit a sample belongs to based on its features.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s start with loading and visualizing the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/susanli2016/Machine-Learning-with-Python/master/fruit_data_with_colors.txt&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fruit_label&#39;</span><span class="p">,</span> <span class="s1">&#39;fruit_subtype&#39;</span><span class="p">]),</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;fruit_name&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see some distinctions between different fruits in the pairwise feature scatterplot matrix. Now to visualize all 4 features in a 2D plot, we start with creating a UMAP object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">umap</span>
+
+<span class="n">reducer</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we scale the features so that they are all on the same scale.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">scaled_features</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, we use the UMAP object to reduce the dimension of the dataset and plot the features as a scatter plot.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">embedding</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">scaled_features</span><span class="p">)</span>
+<span class="n">embedding</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Dimension 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Dimension 2&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;~/Downloads/embedding.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#72BEFA&quot;</span><span class="p">,</span> <span class="s2">&quot;#E583B6&quot;</span><span class="p">,</span> <span class="s2">&quot;#72FCDB&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">]</span>
+<span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">fruit_label</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">c</span><span class="o">=</span><span class="n">color_list</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can see some distinctions in features between 4 different fruits in a 2D plot.</p>
+<p><a class="reference external" href="https://github.com/lmcinnes/umap">Link to UMAP</a>.</p>
+</section>
+<section id="evidently-detect-and-visualize-data-drift">
+<h2><span class="section-number">6.10.11. </span>Evidently: Detect and Visualize Data Drift<a class="headerlink" href="#evidently-detect-and-visualize-data-drift" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install evidently
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Data drift is unexpected changes in model input data that can lead to model performance degradation. Since your code is built around the characteristics of your data, it is important to detect data drift when it occurs. Evidently allows you to do exactly in a few lines of code.</p>
+<p>In the code below, we use Evidently to detect changes in feature distribution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+
+<span class="kn">from</span> <span class="nn">evidently.dashboard</span> <span class="kn">import</span> <span class="n">Dashboard</span>
+<span class="kn">from</span> <span class="nn">evidently.tabs</span> <span class="kn">import</span> <span class="n">DataDriftTab</span>
+
+<span class="n">california</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">fetch_california_housing</span><span class="p">()</span>
+<span class="n">california</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">california</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">california</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">california_data_drift_report</span> <span class="o">=</span> <span class="n">Dashboard</span><span class="p">(</span><span class="n">tabs</span><span class="o">=</span><span class="p">[</span><span class="n">DataDriftTab</span><span class="p">])</span>
+<span class="n">california_data_drift_report</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">california</span><span class="p">[:</span><span class="mi">1000</span><span class="p">],</span> <span class="n">california</span><span class="p">[</span><span class="mi">1000</span><span class="p">:],</span> <span class="n">column_mapping</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">california_data_drift_report</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="gif" src="img/evidently.gif" /></p>
+<p>Find other features of Evidently <a class="reference external" href="https://github.com/evidentlyai/evidently">here</a>.</p>
+</section>
+<section id="mermaid-create-class-diagrams-for-your-python-classes-using-text-and-code">
+<h2><span class="section-number">6.10.12. </span>Mermaid: Create Class Diagrams for Your Python Classes Using Text and Code<a class="headerlink" href="#mermaid-create-class-diagrams-for-your-python-classes-using-text-and-code" title="Permalink to this heading">#</a></h2>
+<p>If you want to create class diagrams to explain your Python classes, use <a class="reference external" href="https://mermaid-js.github.io/mermaid/#/">Mermaid</a>. Mermaid lets you create diagrams and visualizations using text and code.</p>
+<p>For example, writing this piece of code on <a class="reference external" href="https://mermaid.live/">Mermaid Live Editor</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nx">classDiagram</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="w"> </span><span class="o">&lt;|--</span><span class="w"> </span><span class="nx">Dog</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="w"> </span><span class="o">&lt;|--</span><span class="w"> </span><span class="nx">Cat</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="w"> </span><span class="o">&lt;|--</span><span class="w"> </span><span class="nx">Fish</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kr">int</span><span class="w"> </span><span class="nx">age</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">str</span><span class="w"> </span><span class="nx">gender</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="o">:</span><span class="w"> </span><span class="nx">is_mammal</span><span class="p">()</span>
+<span class="w">      </span><span class="nx">Animal</span><span class="o">:</span><span class="w"> </span><span class="nx">is_pet</span><span class="p">()</span>
+<span class="w">      </span><span class="kd">class</span><span class="w"> </span><span class="nx">Dog</span><span class="p">{</span>
+<span class="w">          </span><span class="nx">str</span><span class="w"> </span><span class="nx">fur_color</span>
+<span class="w">          </span><span class="nx">bark</span><span class="p">()</span>
+<span class="w">          </span><span class="nx">run</span><span class="p">()</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="kd">class</span><span class="w"> </span><span class="nx">Cat</span><span class="p">{</span>
+<span class="w">          </span><span class="nx">str</span><span class="w"> </span><span class="nx">fur_color</span>
+<span class="w">          </span><span class="nx">meow</span><span class="p">()</span>
+<span class="w">          </span><span class="nx">run</span><span class="p">()</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="kd">class</span><span class="w"> </span><span class="nx">Fish</span><span class="p">{</span>
+<span class="w">          </span><span class="nx">str</span><span class="w"> </span><span class="nx">scale_color</span>
+<span class="w">          </span><span class="nx">swim</span><span class="p">()</span>
+<span class="w">      </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>… will create a diagram like below:</p>
+<p><a class="reference external" href="https://mermaid.live/edit#eyJjb2RlIjoiIGNsYXNzRGlhZ3JhbVxuICAgICAgQW5pbWFsIDx8LS0gRG9nXG4gICAgICBBbmltYWwgPHwtLSBDYXRcbiAgICAgIEFuaW1hbCA8fC0tIEZpc2hcbiAgICAgIEFuaW1hbCA6IGludCBhZ2VcbiAgICAgIEFuaW1hbCA6IHN0ciBnZW5kZXJcbiAgICAgIEFuaW1hbDogaXNfbWFtbWFsKClcbiAgICAgIEFuaW1hbDogaXNfcGV0KClcbiAgICAgIGNsYXNzIERvZ3tcbiAgICAgICAgICBzdHIgZnVyX2NvbG9yXG4gICAgICAgICAgYmFyaygpXG4gICAgICAgICAgcnVuKClcbiAgICAgIH1cbiAgICAgIGNsYXNzIENhdHtcbiAgICAgICAgICBzdHIgZnVyX2NvbG9yXG4gICAgICAgICAgbWVvdygpXG4gICAgICAgICAgcnVuKClcbiAgICAgIH1cbiAgICAgIGNsYXNzIEZpc2h7XG4gICAgICAgICAgc3RyIHNjYWxlX2NvbG9yXG4gICAgICAgICAgc3dpbSgpXG4gICAgICB9IiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img alt="" src="https://mermaid.ink/img/eyJjb2RlIjoiIGNsYXNzRGlhZ3JhbVxuICAgICAgQW5pbWFsIDx8LS0gRG9nXG4gICAgICBBbmltYWwgPHwtLSBDYXRcbiAgICAgIEFuaW1hbCA8fC0tIEZpc2hcbiAgICAgIEFuaW1hbCA6IGludCBhZ2VcbiAgICAgIEFuaW1hbCA6IHN0ciBnZW5kZXJcbiAgICAgIEFuaW1hbDogaXNfbWFtbWFsKClcbiAgICAgIEFuaW1hbDogaXNfcGV0KClcbiAgICAgIGNsYXNzIERvZ3tcbiAgICAgICAgICBzdHIgZnVyX2NvbG9yXG4gICAgICAgICAgYmFyaygpXG4gICAgICAgICAgcnVuKClcbiAgICAgIH1cbiAgICAgIGNsYXNzIENhdHtcbiAgICAgICAgICBzdHIgZnVyX2NvbG9yXG4gICAgICAgICAgbWVvdygpXG4gICAgICAgICAgcnVuKClcbiAgICAgIH1cbiAgICAgIGNsYXNzIEZpc2h7XG4gICAgICAgICAgc3RyIHNjYWxlX2NvbG9yXG4gICAgICAgICAgc3dpbSgpXG4gICAgICB9IiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" /></a></p>
+</section>
+<section id="mermaid-create-flow-chart-using-code">
+<h2><span class="section-number">6.10.13. </span>Mermaid: Create Flow Chart Using Code<a class="headerlink" href="#mermaid-create-flow-chart-using-code" title="Permalink to this heading">#</a></h2>
+<p>Mermaid also allows you to create a flow chart using simple code logic.</p>
+<p>For example, writing this piece of code on <a class="reference external" href="https://mermaid.live/">Mermaid Live Editor</a>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="nx">graph</span><span class="w"> </span><span class="nx">TD</span>
+<span class="w">    </span><span class="nx">A</span><span class="p">[</span><span class="nx">Should</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">go</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">work</span><span class="w"> </span><span class="nx">today</span><span class="o">?</span><span class="p">]</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">B</span><span class="p">(</span><span class="nx">Do</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">like</span><span class="w"> </span><span class="nx">working</span><span class="o">?</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">B</span><span class="w"> </span><span class="o">--</span><span class="nx">Yes</span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">C</span><span class="p">{</span><span class="nx">Go</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">work</span><span class="p">}</span>
+<span class="w">    </span><span class="nx">B</span><span class="w"> </span><span class="o">--</span><span class="nx">No</span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">D</span><span class="p">(</span><span class="nx">Are</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">feeling</span><span class="w"> </span><span class="nx">sick</span><span class="o">?</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">D</span><span class="w"> </span><span class="o">--</span><span class="nx">Yes</span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">E</span><span class="p">{</span><span class="nx">Go</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">doctor</span><span class="p">}</span>
+<span class="w">    </span><span class="nx">D</span><span class="w"> </span><span class="o">--</span><span class="nx">No</span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">F</span><span class="p">(</span><span class="nx">Do</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">have</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">lot</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">work</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="k">do</span><span class="o">?</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">F</span><span class="w"> </span><span class="o">--</span><span class="nx">Yes</span><span class="o">--&gt;</span><span class="w"> </span><span class="nx">H</span><span class="p">(</span><span class="nx">And</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">don</span><span class="s1">&#39;t want to go?)</span>
+<span class="s1">    F --No--&gt; H  </span>
+<span class="s1">    H --Yes, I don&#39;</span><span class="nx">t</span><span class="w"> </span><span class="nx">want</span><span class="w"> </span><span class="nx">to</span><span class="o">--&gt;</span><span class="nx">I</span><span class="p">(</span><span class="nx">You</span><span class="w"> </span><span class="nx">signed</span><span class="w"> </span><span class="nx">up</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="w"> </span><span class="nx">Get</span><span class="w"> </span><span class="nx">dressed</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">go</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">work</span><span class="o">!</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span>
+</pre></div>
+</div>
+<p>… will create a diagram like below:</p>
+<p><img alt="" src="../_images/flow_chart.png" /></p>
+<p>Find other diagrams you can create with Mermaid <a class="reference external" href="https://mermaid-js.github.io/mermaid/#/">here</a>.</p>
+</section>
+<section id="pretty-confusion-matrix-plot-a-pretty-and-comprehensible-confusion-matrix">
+<h2><span class="section-number">6.10.14. </span>pretty-confusion-matrix: Plot a Pretty and Comprehensible Confusion Matrix<a class="headerlink" href="#pretty-confusion-matrix-plot-a-pretty-and-comprehensible-confusion-matrix" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U pretty-confusion-matrix
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>It can be difficult to understand a confusion matrix, especially when there are many classes in the target.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">prediction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To make your confusion matrix prettier and easier to understand, use <code class="docutils literal notranslate"><span class="pre">pretty_confusion_matrix</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pretty_confusion_matrix</span> <span class="kn">import</span> <span class="n">pp_matrix_from_data</span>
+
+
+<span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;PuRd&#39;</span>
+<span class="n">pp_matrix_from_data</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/khuyentran1401/pretty-print-confusion-matrix">Link to pretty confusion matrix</a>.</p>
+</section>
+<section id="matplotx-useful-extensions-for-matplotlib">
+<h2><span class="section-number">6.10.15. </span>matplotx: Useful Extensions for Matplotlib<a class="headerlink" href="#matplotx-useful-extensions-for-matplotlib" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install matplotx[all]
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Have you ever wanted to create matplotlib plot in dark mode? If so, use matplotx.</p>
+<p>For example, to use Dracula style, add:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">matplotx</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">dracula</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to the code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotx</span>
+<span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
+
+<span class="c1"># Create data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">area</span> <span class="o">=</span> <span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># 0 to 15 point radii</span>
+
+<span class="c1"># Use dracula style</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">matplotx</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">dracula</span><span class="p">)</span>
+
+<span class="c1"># Create a scatter plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="n">figsize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Other styles that matplotx provides are:</p>
+<ul class="simple">
+<li><p>‘aura’,</p></li>
+<li><p>‘ayu’,</p></li>
+<li><p>‘challenger_deep’,</p></li>
+<li><p>‘dracula’,</p></li>
+<li><p>‘dufte’,</p></li>
+<li><p>‘dufte_bar’,</p></li>
+<li><p>‘duftify’,</p></li>
+<li><p>‘github’,</p></li>
+<li><p>‘gruvbox’,</p></li>
+<li><p>‘nord’,</p></li>
+<li><p>‘onedark’,</p></li>
+<li><p>‘pacoty’,</p></li>
+<li><p>‘pitaya_smoothie’,</p></li>
+<li><p>‘solarized’,</p></li>
+<li><p>‘tab10’,</p></li>
+<li><p>‘tab20’,</p></li>
+<li><p>‘tab20r’,</p></li>
+<li><p>‘tokyo_night’</p></li>
+</ul>
+<p>Each style might have dark and light mode. For example, to use the dark mode version of <code class="docutils literal notranslate"><span class="pre">aura</span></code> style, type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">matplotx</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">aura</span><span class="p">[</span><span class="s1">&#39;dark&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/nschloe/matplotx">Link to matplotx</a>.</p>
+</section>
+<section id="ipysankeywidget-ipython-sankey-diagram-widget">
+<h2><span class="section-number">6.10.16. </span>ipysankeywidget: IPython Sankey Diagram Widget<a class="headerlink" href="#ipysankeywidget-ipython-sankey-diagram-widget" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install ipysankeywidget
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!jupyter nbextension enable --py --sys-prefix ipysankeywidget
+!jupyter nbextension enable --py --sys-prefix widgetsnbextension
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Sankey diagram is a flow diagram that depicts flows, where the width of the lines is proportional to the flow rate. If you want to quickly create a Sankey diagram in  your Jupyter Notebook, use ipysankeywidget.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">ipysankeywidget</span> <span class="kn">import</span> <span class="n">SankeyWidget</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Anna&quot;</span><span class="p">,</span> <span class="s2">&quot;Josh&quot;</span><span class="p">,</span> <span class="s2">&quot;Anna&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="s2">&quot;Chicago&quot;</span><span class="p">,</span> <span class="s2">&quot;San Jose&quot;</span><span class="p">,</span> <span class="s2">&quot;Milwaukee&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;bussiness trip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;family visit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;vacation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;family visit&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bussiness trip&quot;</span><span class="p">,</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">flows</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="n">SankeyWidget</span><span class="p">(</span><span class="n">links</span><span class="o">=</span><span class="n">flows</span><span class="p">)</span><span class="o">.</span><span class="n">auto_save_png</span><span class="p">(</span><span class="s2">&quot;diagram.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/ricklupton/ipysankeywidget">Link to ipysankeywidget</a>.</p>
+</section>
+<section id="ipyvizzu-add-animation-to-your-charts-with-ease">
+<h2><span class="section-number">6.10.17. </span>ipyvizzu: Add Animation to Your Charts with Ease<a class="headerlink" href="#ipyvizzu-add-animation-to-your-charts-with-ease" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install ipyvizzu
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Sometimes you might want to add animations to your chart to show your audience the transition between one plot to another plot. However, it can be complicated to do that with matplotlib or Javascript.</p>
+<p>With ipyvizzu, you can easily add animations to your plot in couples of lines of code inside your Jupyter Notebook.</p>
+<p>In the code below, I use ipyvizzu to visualize the relationship between animals that can lay eggs and animals that are airborne.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+
+<span class="n">zoo</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="n">data_id</span><span class="o">=</span><span class="mi">965</span><span class="p">)[</span><span class="s2">&quot;frame&quot;</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">zoo</span><span class="p">[[</span><span class="s2">&quot;eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;airborne&quot;</span><span class="p">]]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;eggs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;eggs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s2">&quot;false&quot;</span><span class="p">:</span> <span class="s2">&quot;no eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span> <span class="s2">&quot;has eggs&quot;</span><span class="p">})</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;airborne&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;airborne&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s2">&quot;false&quot;</span><span class="p">:</span> <span class="s2">&quot;not airborne&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span> <span class="s2">&quot;is airborne&quot;</span><span class="p">})</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipyvizzu</span> <span class="kn">import</span> <span class="n">Chart</span><span class="p">,</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Config</span><span class="p">,</span> <span class="n">Style</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add_data_frame</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="n">chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;640px&quot;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;360px&quot;</span><span class="p">)</span>
+
+<span class="n">chart</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">chart</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span>
+    <span class="n">Config</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="s2">&quot;eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Animals in the zoo&quot;</span><span class="p">})</span>
+<span class="p">)</span>
+<span class="n">chart</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span>
+    <span class="n">Config</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="s2">&quot;airborne&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="s2">&quot;airborne&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;airborne&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/ipyvizzu_demo1.gif" /></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chart</span><span class="o">.</span><span class="n">animate</span><span class="p">(</span><span class="n">Config</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;airborne&quot;</span><span class="p">]}))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/ipyvizzu_demo2.gif" /></p>
+<p><a class="reference external" href="https://github.com/vizzuhq/ipyvizzu">Link to ipyvizzu</a>.</p>
+</section>
+<section id="ipyvizzu-story-create-an-interactive-presentation-in-your-jupyter-notebook">
+<h2><span class="section-number">6.10.18. </span>ipyvizzu-story: Create an Interactive Presentation in Your Jupyter Notebook<a class="headerlink" href="#ipyvizzu-story-create-an-interactive-presentation-in-your-jupyter-notebook" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install ipyvizzu-story
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Creating interactive data presentations with multiple views requires complex code to manage transitions and state changes, making it difficult to present insights in a coherent narrative flow.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>  
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;penguins&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional approach: Multiple separate visualizations</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="c1"># First view - grouped bar chart</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Second view - separate plot for stacked bars</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;sex&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># No smooth transitions between views</span>
+<span class="c1"># Manual navigation between plots</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>ipyvizzu-story enables creation of fluid data stories with smooth transitions between insights:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipyvizzu</span> <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">ipyvizzustory</span> <span class="kn">import</span> <span class="n">Story</span><span class="p">,</span> <span class="n">Slide</span><span class="p">,</span> <span class="n">Step</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">story</span> <span class="o">=</span> <span class="n">Story</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">slide1</span> <span class="o">=</span> <span class="n">Slide</span><span class="p">(</span>
+    <span class="n">Step</span><span class="p">(</span><span class="n">Config</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">],</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">],</span> <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;sex&quot;</span><span class="p">}))</span>
+<span class="p">)</span>
+<span class="n">story</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span><span class="n">slide1</span><span class="p">)</span>
+
+<span class="n">slide2</span> <span class="o">=</span> <span class="n">Slide</span><span class="p">(</span>
+    <span class="n">Step</span><span class="p">(</span><span class="n">Config</span><span class="p">({</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">]}),)</span>
+<span class="p">)</span>
+<span class="n">story</span><span class="o">.</span><span class="n">add_slide</span><span class="p">(</span><span class="n">slide2</span><span class="p">)</span>
+
+<span class="n">story</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The example shows how ipyvizzu-story simplifies creating interactive presentations by handling transitions automatically. You define different views as slides, and the library creates smooth animations between them, including keyboard navigation controls.</p>
+<p><a class="reference external" href="https://github.com/vizzuhq/ipyvizzu-story">Link to ipyvizzu-store</a>.</p>
+</section>
+<section id="lux-a-python-api-for-intelligent-visual-discovery">
+<h2><span class="section-number">6.10.19. </span>Lux: A Python API for Intelligent Visual Discovery<a class="headerlink" href="#lux-a-python-api-for-intelligent-visual-discovery" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install lux-api
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Have you ever taken a while to come up with the visualizations for your data? With Lux, you can get some suggestions on what to visualize.</p>
+<p>To use Lux, simply import it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_wine</span>
+<span class="kn">import</span> <span class="nn">lux</span>  
+
+<span class="n">wine</span> <span class="o">=</span> <span class="n">load_wine</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wine</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wine</span><span class="o">.</span><span class="n">exported</span><span class="p">[</span><span class="s1">&#39;Correlation&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wine</span><span class="o">.</span><span class="n">exported</span><span class="p">[</span><span class="s1">&#39;Occurrence&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="img/lux.gif" /></p>
+<p><a class="reference external" href="https://github.com/lux-org/lux">Link to Lux</a>.</p>
+</section>
+<section id="add-statistical-significance-annotations-on-seaborn-plots">
+<h2><span class="section-number">6.10.20. </span>Add Statistical Significance Annotations on Seaborn Plots<a class="headerlink" href="#add-statistical-significance-annotations-on-seaborn-plots" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install seaborn statannotations
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Have you ever looked at two box plots and wondered if there is a significant difference between the means of the two groups? statannotations makes it easy for you to add statistical significance annotations on seaborn plots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+<span class="kn">from</span> <span class="nn">statannotations.Annotator</span> <span class="kn">import</span> <span class="n">Annotator</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;taxis&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the code below, we use an independent t-test to compare the means of two independent groups.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;pickup_borough&#39;</span>
+<span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;total&#39;</span>
+<span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span> <span class="s1">&#39;Brooklyn&#39;</span><span class="p">,</span> <span class="s1">&#39;Bronx&#39;</span><span class="p">,</span> <span class="s1">&#39;Queens&#39;</span><span class="p">]</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span> <span class="s1">&#39;Queens&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span> <span class="s1">&#39;Bronx&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Manhattan&#39;</span><span class="p">,</span> <span class="s1">&#39;Brooklyn&#39;</span><span class="p">)]</span>
+
+<span class="n">annotator</span> <span class="o">=</span> <span class="n">Annotator</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+<span class="n">annotator</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="s1">&#39;t-test_ind&#39;</span><span class="p">)</span>
+<span class="n">annotator</span><span class="o">.</span><span class="n">apply_and_annotate</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the plot above, we can see that there is statistical evidence that the mean taxi fare in Manhattan is significantly different from the mean taxi fare in Brooklyn or Bronx, or Queens.</p>
+<p><a class="reference external" href="https://github.com/trevismd/statannotations">Link to statannotations</a>.</p>
+</section>
+<section id="automatically-adjust-annotations-in-matplotlib-for-readability">
+<h2><span class="section-number">6.10.21. </span>Automatically Adjust Annotations in Matplotlib for Readability<a class="headerlink" href="#automatically-adjust-annotations-in-matplotlib-for-readability" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install adjustText
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to automatically adjust annotations in a matplotlib plot for readability, use the library adjustText.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">)</span>
+    <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s1">&#39;Text</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">i</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">texts</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">40</span><span class="p">))</span>
+<span class="n">plot_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">adjustText</span> <span class="kn">import</span> <span class="n">adjust_text</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="n">plot_text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">adjust_text</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Phlya/adjustText">Link to adjustText</a>.</p>
+</section>
+<section id="bloxs-create-an-attractive-display-in-your-jupyter-notebook">
+<h2><span class="section-number">6.10.22. </span>Bloxs: Create an Attractive Display in Your Jupyter Notebook<a class="headerlink" href="#bloxs-create-an-attractive-display-in-your-jupyter-notebook" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">bloxs</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to create an attractive display for specific information in your notebook, try bloxs. bloxs is a Python library that is ideal for building dashboards, reports, and apps in the notebook.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bloxs</span> <span class="kn">import</span> <span class="n">B</span>
+<span class="n">B</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s2">&quot;Chickens 🐥 in the backyard.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">(</span><span class="s2">&quot;Growth&quot;</span><span class="p">,</span> <span class="s2">&quot;on July&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">(</span><span class="s2">&quot;Growth&quot;</span><span class="p">,</span> <span class="s2">&quot;on July&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="n">chart_type</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">(</span><span class="s2">&quot;68%&quot;</span><span class="p">,</span> <span class="s2">&quot;Loading progress&quot;</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="mi">68</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="p">([</span>
+    <span class="n">B</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s2">&quot;Chickens 🐥 in the backyard.&quot;</span><span class="p">),</span>
+    <span class="n">B</span><span class="p">(</span><span class="s2">&quot;68%&quot;</span><span class="p">,</span> <span class="s2">&quot;Loading progress&quot;</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="mi">68</span><span class="p">),</span>
+    <span class="n">B</span><span class="p">(</span><span class="s2">&quot;Growth&quot;</span><span class="p">,</span> <span class="s2">&quot;on July&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/mljar/bloxs">Link to bloxs</a>.</p>
+</section>
+<section id="lovelyplots-create-nice-matplotlib-figures-for-presentations">
+<h2><span class="section-number">6.10.23. </span>LovelyPlots: Create Nice Matplotlib Figures for Presentations<a class="headerlink" href="#lovelyplots-create-nice-matplotlib-figures-for-presentations" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install LovelyPlots
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to transform your matplotlib plots into nice figures for scientific papers or presentations, try LovelyPlots. To use LovelyPlots, simply add <code class="docutils literal notranslate"><span class="pre">plt.style.use(ipynb)</span></code> to your code.</p>
+<p>To see how a figure created by LovelyPlots looks like, let’s generate a plotting function, which takes <code class="docutils literal notranslate"><span class="pre">style</span></code> as its argument</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lovelyplots</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+
+<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">style</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">style</span><span class="p">)</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Data</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;x_values&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+            <span class="s2">&quot;y1_values&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+            <span class="s2">&quot;y2_values&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span>
+            <span class="s2">&quot;y3_values&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="s2">&quot;x_values&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y1_values&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="s2">&quot;x_values&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y2_values&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="s2">&quot;x_values&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;y3_values&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># show graph</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create a figure using the default style of matplotlib.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">([</span><span class="s2">&quot;default&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create the figures using styles from LovelyPlots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">([</span><span class="s2">&quot;ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;colors10-markers&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">([</span><span class="s2">&quot;ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;colors5-light&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="p">([</span><span class="s2">&quot;ipynb&quot;</span><span class="p">,</span> <span class="s2">&quot;colors10-ls&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/killiansheriff/LovelyPlots">Link to LovelyPlots</a></p>
+</section>
+<section id="gif-the-easiest-way-to-animate-your-matplotlib-plot">
+<h2><span class="section-number">6.10.24. </span>gif: The Easiest Way to Animate Your matplotlib Plot<a class="headerlink" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install gif
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to effortlessly animate your matplotlib plot in Python, use gif.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">gif</span>
+
+
+<span class="n">START</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">&quot;2019-04-20&quot;</span><span class="p">)</span>
+<span class="n">END</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s2">&quot;2020-05-01&quot;</span><span class="p">)</span>
+
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">378</span><span class="p">)]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">START</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">END</span><span class="p">),</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+
+
+<span class="nd">@gif</span><span class="o">.</span><span class="n">frame</span>
+<span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">date</span><span class="p">]</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="n">START</span><span class="p">,</span> <span class="n">END</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([</span><span class="n">date</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b &#39;%y&quot;</span><span class="p">)])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">10</span><span class="se">\n</span><span class="s2">hours&quot;</span><span class="p">])</span>
+
+
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]:</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+    <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+<span class="n">gif</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="s2">&quot;phone.gif&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="img/matplotlib_gif.gif" /></p>
+<p><a class="reference external" href="https://github.com/maxhumber/gif">Link to gif</a>.</p>
+</section>
+<section id="visualize-the-frequency-tokens-in-a-text-corpora">
+<h2><span class="section-number">6.10.25. </span>Visualize the Frequency Tokens in a Text Corpora<a class="headerlink" href="#visualize-the-frequency-tokens-in-a-text-corpora" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install yellowbrick
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to quickly visualize the frequency of tokens in a collection of text documents, use the combination of scikit-learn’s <code class="docutils literal notranslate"><span class="pre">CountVectorizer</span></code> and Yellowbrick’s <code class="docutils literal notranslate"><span class="pre">FreqDistVisualizer</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_20newsgroups</span>
+
+<span class="n">newsgroups_train</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">yellowbrick.text</span> <span class="kn">import</span> <span class="n">FreqDistVisualizer</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Convert corpora to a matrix of token counts</span>
+<span class="c1"># and remove stop words</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">stop_words</span><span class="o">=</span><span class="s1">&#39;english&#39;</span><span class="p">)</span> 
+<span class="n">docs</span>       <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">newsgroups_train</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+<span class="n">features</span>   <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span>
+
+<span class="c1"># Plot a token frequency distribution </span>
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">FreqDistVisualizer</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/DistrictDataLabs/yellowbrick">Link to Yellowbrick</a></p>
+</section>
+<section id="prettymaps-generate-pretty-painting-of-a-location-in-python">
+<h2><span class="section-number">6.10.26. </span>prettymaps: Generate Pretty Painting of a Location in Python<a class="headerlink" href="#prettymaps-generate-pretty-painting-of-a-location-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">prettymaps</span> <span class="s2">&quot;osmnx&gt;=1.9.3,&lt;2.0&quot;</span> <span class="s2">&quot;git+https://github.com/abey79/vsketch@1.0.0&quot;</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to generate a pretty painting of a location from OpenStreetMap in Python, use prettymaps.</p>
+<p>You can start creating maps with just a few lines of code. Here’s an example:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">prettymaps</span>
+
+<span class="n">plot</span> <span class="o">=</span> <span class="n">prettymaps</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;Stad van de Zon, Heerhugowaard, Netherlands&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="img/pretty_map.png" /></p>
+<p><a class="reference external" href="https://github.com/marceloprates/prettymaps">Link to prettymaps</a>.</p>
+</section>
+<section id="vizro-create-modular-data-visualization-applications-in-python">
+<h2><span class="section-number">6.10.27. </span>Vizro: Create Modular Data Visualization Applications in Python<a class="headerlink" href="#vizro-create-modular-data-visualization-applications-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U plotly vizro &#39;typing-extensions==4.5.0&#39;
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>If you want to use modular and simple Python code to create beautiful dashboards, try Vizro.</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">vizro.plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">vizro</span> <span class="kn">import</span> <span class="n">Vizro</span>
+<span class="kn">import</span> <span class="nn">vizro.models</span> <span class="k">as</span> <span class="nn">vm</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">iris</span><span class="p">()</span>
+
+<span class="n">page</span> <span class="o">=</span> <span class="n">vm</span><span class="o">.</span><span class="n">Page</span><span class="p">(</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My first dashboard&quot;</span><span class="p">,</span>
+    <span class="n">components</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;scatter_chart&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;sepal_length&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;petal_width&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">)),</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;hist_chart&quot;</span><span class="p">,</span> <span class="n">figure</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;sepal_width&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="n">controls</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">vm</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="n">selector</span><span class="o">=</span><span class="n">vm</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ALL&quot;</span><span class="p">])),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">dashboard</span> <span class="o">=</span> <span class="n">vm</span><span class="o">.</span><span class="n">Dashboard</span><span class="p">(</span><span class="n">pages</span><span class="o">=</span><span class="p">[</span><span class="n">page</span><span class="p">])</span>
+
+<span class="n">Vizro</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">dashboard</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/vizro.png" /></p>
+<p><a class="reference external" href="https://github.com/mckinsey/vizro">Link to vizro</a>.</p>
+</section>
+<section id="drag-and-drop-visualizations-with-pygwalker">
+<h2><span class="section-number">6.10.28. </span>Drag-and-Drop Visualizations with PyGWalker<a class="headerlink" href="#drag-and-drop-visualizations-with-pygwalker" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pygwalker -q
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>EDA is a crucial step in any Data Science project. For large datasets, EDA can be time-consuming.</p>
+<p>PyGWalker simplifies the process of creating visualizations by allowing users to drag and drop variables to create charts without writing much code.</p>
+<p>You can use PyGWalker without changing your existing workflow. For example, you can call up PyGWalker with the Dataframe loaded in this way:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pygwalker</span> <span class="k">as</span> <span class="nn">pyg</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://kanaries-app.s3.ap-northeast-1.amazonaws.com/public-datasets/bike_sharing_dc.csv&quot;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And then just walk around!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pyg</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://bit.ly/3Li6KGp">Link to PygWalker</a>.</p>
+</section>
+<section id="hvplot-one-api-for-multiple-plotting-libraries">
+<h2><span class="section-number">6.10.29. </span>hvPlot: One API for Multiple Plotting Libraries<a class="headerlink" href="#hvplot-one-api-for-multiple-plotting-libraries" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install hvplot
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Switching between plotting libraries lets you leverage their unique strengths. However, learning multiple specific APIs can significantly increase your cognitive load.</p>
+<p>hvPlot provides a unified, high-level API that allows using the same syntax for Bokeh, Matplotlib, and Plotly. Here’s an example of how hvPlot can be used with different backends:</p>
+<p>Default (Bokeh):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hvplot.pandas</span>
+<span class="kn">from</span> <span class="nn">bokeh.sampledata.penguins</span> <span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">df</span>
+
+<span class="n">hvplot</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;plotly&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;bill_length_mm&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;bill_depth_mm&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Matplotlib:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hvplot.pandas</span>
+
+<span class="n">hvplot</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;bill_length_mm&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;bill_depth_mm&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Plotly:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hvplot.pandas</span>
+<span class="kn">from</span> <span class="nn">bokeh.sampledata.penguins</span> <span class="kn">import</span> <span class="n">data</span> <span class="k">as</span> <span class="n">df</span>
+
+<span class="n">hvplot</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s1">&#39;plotly&#39;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">hvplot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;bill_length_mm&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;bill_depth_mm&#39;</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s1">&#39;species&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/holoviz/hvplot">Link to hvPlot</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install cutecharts
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to make graphs for a technical presentation more interesting and memorable, use cute charts, a Python visualization library.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cutecharts.charts</span> <span class="kn">import</span> <span class="n">Bar</span>
+
+
+<span class="k">def</span> <span class="nf">bar_base</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Bar</span><span class="p">:</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="n">Bar</span><span class="p">(</span><span class="s2">&quot;🍨 Most Popular Ice Cream Flavors&quot;</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;🍫 Chocolate&quot;</span><span class="p">,</span> <span class="s2">&quot;🫐 Blueberry&quot;</span><span class="p">,</span> <span class="s2">&quot;🍓 Strawberry&quot;</span><span class="p">]</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#8B4513&quot;</span><span class="p">,</span> <span class="s2">&quot;#4169E1&quot;</span><span class="p">,</span> <span class="s2">&quot;#FF69B4&quot;</span><span class="p">]</span>
+
+    <span class="n">chart</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+        <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+        <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;Flavor Type&quot;</span><span class="p">,</span>
+        <span class="n">y_label</span><span class="o">=</span><span class="s2">&quot;Number of Scoops Sold&quot;</span><span class="p">,</span>
+        <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">chart</span><span class="o">.</span><span class="n">add_series</span><span class="p">(</span><span class="s2">&quot;scoop sold&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">856</span><span class="p">,</span> <span class="mi">423</span><span class="p">,</span> <span class="mi">774</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">chart</span>
+
+
+<span class="n">bar_base</span><span class="p">()</span><span class="o">.</span><span class="n">render_notebook</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><img alt="" src="../_images/cutecharts.png" /></p>
+<p><a class="reference external" href="https://github.com/cutecharts/cutecharts.py">Link to cute charts</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Chapter5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="speed_up_code.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.9. </span>Tools to Speed Up Code</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="better_pandas.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.11. </span>Better Pandas</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-seaborn-style-on-matplotlib-plots">6.10.1. Use Seaborn Style on Matplotlib Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#graphviz-create-a-flowchart-to-capture-your-ideas-in-python">6.10.2. Graphviz: Create a Flowchart to Capture Your Ideas in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#folium-create-an-interactive-map-in-python">6.10.3. folium: Create an Interactive Map in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dtreeviz-visualize-and-interpret-a-decision-tree-model">6.10.4. dtreeviz: Visualize and Interpret a Decision Tree Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supertree-interactive-decision-tree-visualization-for-python">6.10.5. supertree: Interactive Decision Tree Visualization for Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hiplot-high-dimensional-interactive-plotting">6.10.6. HiPlot - High Dimensional Interactive Plotting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#missingno-dendogram-visualize-correlation-between-missing-data">6.10.7. missingno.dendogram: Visualize Correlation Between Missing Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matplotlib-venn-create-a-venn-diagram-using-python">6.10.8. matplotlib-venn: Create a Venn Diagram Using Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#squarify-plot-treemap-in-python">6.10.9. squarify: Plot Treemap in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#umap-dimension-reduction-in-python">6.10.10. UMAP: Dimension Reduction in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evidently-detect-and-visualize-data-drift">6.10.11. Evidently: Detect and Visualize Data Drift</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mermaid-create-class-diagrams-for-your-python-classes-using-text-and-code">6.10.12. Mermaid: Create Class Diagrams for Your Python Classes Using Text and Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mermaid-create-flow-chart-using-code">6.10.13. Mermaid: Create Flow Chart Using Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pretty-confusion-matrix-plot-a-pretty-and-comprehensible-confusion-matrix">6.10.14. pretty-confusion-matrix: Plot a Pretty and Comprehensible Confusion Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#matplotx-useful-extensions-for-matplotlib">6.10.15. matplotx: Useful Extensions for Matplotlib</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipysankeywidget-ipython-sankey-diagram-widget">6.10.16. ipysankeywidget: IPython Sankey Diagram Widget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipyvizzu-add-animation-to-your-charts-with-ease">6.10.17. ipyvizzu: Add Animation to Your Charts with Ease</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ipyvizzu-story-create-an-interactive-presentation-in-your-jupyter-notebook">6.10.18. ipyvizzu-story: Create an Interactive Presentation in Your Jupyter Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lux-a-python-api-for-intelligent-visual-discovery">6.10.19. Lux: A Python API for Intelligent Visual Discovery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-statistical-significance-annotations-on-seaborn-plots">6.10.20. Add Statistical Significance Annotations on Seaborn Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automatically-adjust-annotations-in-matplotlib-for-readability">6.10.21. Automatically Adjust Annotations in Matplotlib for Readability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bloxs-create-an-attractive-display-in-your-jupyter-notebook">6.10.22. Bloxs: Create an Attractive Display in Your Jupyter Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lovelyplots-create-nice-matplotlib-figures-for-presentations">6.10.23. LovelyPlots: Create Nice Matplotlib Figures for Presentations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gif-the-easiest-way-to-animate-your-matplotlib-plot">6.10.24. gif: The Easiest Way to Animate Your matplotlib Plot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-frequency-tokens-in-a-text-corpora">6.10.25. Visualize the Frequency Tokens in a Text Corpora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettymaps-generate-pretty-painting-of-a-location-in-python">6.10.26. prettymaps: Generate Pretty Painting of a Location in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vizro-create-modular-data-visualization-applications-in-python">6.10.27. Vizro: Create Modular Data Visualization Applications in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drag-and-drop-visualizations-with-pygwalker">6.10.28. Drag-and-Drop Visualizations with PyGWalker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hvplot-one-api-for-multiple-plotting-libraries">6.10.29. hvPlot: One API for Multiple Plotting Libraries</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khuyen Tran
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

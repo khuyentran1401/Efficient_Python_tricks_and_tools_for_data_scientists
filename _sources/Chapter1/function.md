@@ -1,0 +1,344 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: venv
+  language: python
+  name: python3
+---
+
+## Function
+
++++
+
+### Omit Else Clauses in a Python Function to Improve Code Readability
+
++++
+
+If you are using if statements to return different values, adding an else clause may introduce unnecessary complexity. Omitting the else clause for the last condition will make the code simpler and easier to read.
+
+```{code-cell} ipython3
+def get_discount(price):
+    if price >= 100:
+        return 20
+    if price >= 50:
+        return 10
+    else: # not necessary
+        return 5
+```
+
+```{code-cell} ipython3
+def get_discount(price):
+    if price >= 100:
+        return 20
+    if price >= 50:
+        return 10
+    return 5 # omit else
+```
+
+### Lambda vs Named Functions: When to Use Each
+
++++
+
+Lambda functions are ideal for situations where a function is used only once and does not require a name. They provide a concise way to define small, one-time use functions.
+
+For example:
+
+```{code-cell} ipython3
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# use lambda function because it is used only once
+even_numbers = filter(lambda num: num % 2 == 0, numbers)
+```
+
+In this example, the lambda function is used to filter out even numbers from the list. Since it's only used once, a lambda function is a suitable choice.
+
++++
+
+However, if you need to reuse a function in various parts of your code, it's better to define a named function.
+
+
+```{code-cell} ipython3
+# use named function because it is used multiple times
+def is_even(num: int):
+    return num % 2 == 0
+
+even_numbers = filter(is_even, numbers)
+any(is_even(num) for num in numbers)
+```
+
+In this example, the `is_even` function is defined by a name and is used multiple times. This approach avoids repeating the same code and makes your code more maintainable.
+
++++
+
+### How to Pass an Arbitrary Number of Arguments to a Python Function
+
++++
+
+If you want to create a function that takes an arbitrary number of arguments, use `*args` or `**kwargs`.
+
+`*args` allows variable arguments as a set, while `**kwargs` allows variable keyword arguments as a dictionary.
+
+```{code-cell} ipython3
+def multiply(*nums):
+    print(f"nums: {nums}")
+    res = 1
+    for num in nums:
+        res *= num
+    return res
+
+multiply(1, 2, 3)
+```
+
+```{code-cell} ipython3
+def add_to_order(**new_order):
+    print(f"new_order: {new_order}")
+    cart = {'apple': 2, 'orange': 3}
+    cart.update(new_order) 
+    return cart  
+
+add_to_order(kiwi=2, apple=1)
+```
+
+### Decorator in Python
+
++++
+
+Creating custom object behaviors or function modifications in Python often results in repetitive code and complex logic wrapped around the original functionality. This causes developers to write boilerplate code every time they need to add logging, timing, or validation to their functions.
+
+```{code-cell} ipython3
+def add(num1: int, num2: int):
+    """Takes two integers and returns their sum."""
+    start = time.time()
+    print(f"Add {num1} and {num2}")
+    res = num1 + num2
+    end = time.time()
+    print(f'Elapsed time: {(end - start) * 1000:.3f}ms')
+    return res
+
+def multiply(num1: int, num2: int):
+    """Takes two integers and returns their product."""
+    start = time.time()
+    print(f"Multiply {num1} and {num2}")
+    res = num1 * num2
+    end = time.time()
+    print(f'Elapsed time: {(end - start) * 1000:.3f}ms')
+    return res
+
+add(1, 2)
+multiply(1, 2)
+```
+
+Changing functionality across multiple functions can be time-consuming.
+
+```{code-cell} ipython3
+def add(num1: int, num2: int):
+    """Takes two integers and returns their sum."""
+    start = time.time()
+    print(f"Add {num1} and {num2}")
+    res = num1 + num2
+    end = time.time()
+    print(f'Elapsed time: {(end - start):.3f}s') # Change to seconds
+    return res
+
+def multiply(num1: int, num2: int):
+    """Takes two integers and returns their product."""
+    start = time.time()
+    print(f"Multiply {num1} and {num2}")
+    res = num1 * num2
+    end = time.time()
+    print(f'Elapsed time: {(end - start) * 1000:.3f}ms') # Fog
+    return res
+
+add(1, 2)
+multiply(1, 2)
+```
+
+With decorators, you can create reusable wrappers that add functionality to your functions without modifying their code. You can easily add timing, logging, or validation to any function with a single line.
+
+In the code below, `time_func` is a decorator that can be used to track the execution time of any function. This decorator can be applied to any function, making the code more maintainable and reducing duplication. 
+
+```{code-cell} ipython3
+import time 
+
+def time_func(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        res = func(*args, **kwargs)
+        end = time.time()
+        print(f'Elapsed time: {(end - start) * 1000:.3f}ms')
+        return res
+    return wrapper
+
+@time_func
+def add(num1: int, num2: int):
+    """Takes two integers and returns their sum."""
+    print(f"Add {num1} and {num2}")
+    return num1 + num2
+
+@time_func
+def multiply(num1: int, num2: int):
+    """Takes two integers and returns their product."""
+    print(f"Multiply {num1} and {num2}")
+    return num1 * num2
+
+add(1, 2)
+multiply(1, 2)
+```
+
+If you need to modify the timing logic, you only need to update it in one place.
+
+```{code-cell} ipython3
+import time 
+
+def time_func(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        res = func(*args, **kwargs)
+        end = time.time()
+        print(f'Elapsed time: {(end - start):.3f}s')
+        return res
+    return wrapper
+
+@time_func
+def add(num1: int, num2: int):
+    """Takes two integers and returns their sum."""
+    print(f"Add {num1} and {num2}")
+    return num1 + num2
+
+@time_func
+def multiply(num1: int, num2: int):
+    """Takes two integers and returns their product."""
+    print(f"Multiply {num1} and {num2}")
+    return num1 * num2
+
+add(1, 2)
+multiply(1, 2)
+```
+
+However, when we use the `time_func` decorator, it changes the function name and docstring. 
+
+```{code-cell} ipython3
+print(f"Function name: {add.__name__}")
+print(f"Docstring: {add.__doc__}")
+```
+
+To preserve the original function metadata, we can use the `wraps` decorator from the `functools` module.
+
+```{code-cell} ipython3
+import time
+from functools import wraps
+
+def time_func_with_wraps(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        res = func(*args, **kwargs)
+        end = time.time()
+        print(f'Elapsed time: {(end - start) * 1000:.3f}ms')
+        return res
+    return wrapper
+```
+
+```{code-cell} ipython3
+@time_func_with_wraps
+def add(num1: int, num2: int):
+    """Takes two integers and returns their sum."""
+    print(f"Add {num1} and {num2}")
+    return num1 + num2
+
+@time_func_with_wraps
+def multiply(num1: int, num2: int):
+    """Takes two integers and returns their product."""
+    print(f"Multiply {num1} and {num2}")
+    return num1 * num2
+
+add(1, 2)
+multiply(1, 2)
+```
+
+```{code-cell} ipython3
+print(f"Function name: {add.__name__}")
+print(f"Docstring: {add.__doc__}")
+```
+
+### Keyword-Only Arguments in Python
+
++++
+
+In Python, you can define functions that accept arguments either by position or by keyword. However, passing arguments by position can lead to errors if the arguments are provided in the wrong order.
+
+```{code-cell} ipython3
+import pandas as pd
+
+
+def add_number(number: float, df: pd.DataFrame):
+    return df.add(number, axis=1)
+
+
+add_number(pd.DataFrame({"a": [1, 2, 3]}), 2)
+```
+
+To avoid this issue, you can define keyword-only arguments in a function using the * symbol. This requires the caller to specify the arguments using their corresponding keywords.
+
+```{code-cell} ipython3
+def add_number(*, number: float, df: pd.DataFrame):
+    return df.add(number, axis=1)
+
+
+add_number(pd.DataFrame({"a": [1, 2, 3]}), 2)
+```
+
+```{code-cell} ipython3
+add_number(df=pd.DataFrame({"a": [1, 2, 3]}), number=2)
+```
+
+### Enhance Code Readability with Single Point of Return
+
++++
+
+Consider using a single point of return in a Python function instead of multiple points of return to enhance code readability. When there is only one return statement, it becomes simpler to follow the logic and understand the purpose of the function.
+
+```{code-cell} ipython3
+def calculate_grade(score: float):
+    if score < 0 or score > 100:
+        print("Invalid score!")
+        return None
+    elif score >= 90:
+        print("Excellent!")
+        return "A"
+    elif score >= 80:
+        print("Good job!")
+        return "B"
+    elif score >= 70:
+        print("Average.")
+        return "C"
+    else:
+        print("You failed.")
+        return "F"
+```
+
+```{code-cell} ipython3
+def calculate_grade(score: float):
+    if score < 0 or score > 100:
+        print("Invalid score!")
+        grade = None
+    elif score >= 90:
+        grade = "A"
+        print("Excellent!")
+    elif score >= 80:
+        grade = "B"
+        print("Good job!")
+    elif score >= 70:
+        grade = "C"
+        print("Average.")
+    else:
+        grade = "F"
+        print("You failed.")
+
+    return grade
+```

@@ -1,0 +1,1570 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>6.2. Feature Engineer &#8212; Effective Python for Data Scientists</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=c5ced968eda925caa686" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=c5ced968eda925caa686"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script kind="utterances">
+
+    var commentsRunWhenDOMLoaded = cb => {
+    if (document.readyState != 'loading') {
+        cb()
+    } else if (document.addEventListener) {
+        document.addEventListener('DOMContentLoaded', cb)
+    } else {
+        document.attachEvent('onreadystatechange', function() {
+        if (document.readyState == 'complete') cb()
+        })
+    }
+}
+
+var addUtterances = () => {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://utteranc.es/client.js";
+    script.async = "async";
+
+    script.setAttribute("repo", "khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists");
+    script.setAttribute("issue-term", "pathname");
+    script.setAttribute("theme", "github-light");
+    script.setAttribute("label", "💬 comment");
+    script.setAttribute("crossorigin", "anonymous");
+
+    sections = document.querySelectorAll("div.section");
+    if (sections !== null) {
+        section = sections[sections.length-1];
+        section.appendChild(script);
+    }
+}
+commentsRunWhenDOMLoaded(addUtterances);
+</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter5/feature_engineer';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6.3. Get Data" href="get_data.html" />
+    <link rel="prev" title="6.1. Feature Extraction" href="feature_extraction.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../README.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/data_simplified_icon.png" class="logo__image only-light" alt="Effective Python for Data Scientists - Home"/>
+    <script>document.write(`<img src="../_static/data_simplified_icon.png" class="logo__image only-dark" alt="Effective Python for Data Scientists - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../README.html">
+                    What Should You Expect From This Book?
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../how_to_read.html">1. How to Read This Book</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter1/Chapter1.html">2. Python Built-in Methods</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/string.html">2.1. String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/number.html">2.2. Number</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../Chapter1/list/list.html">2.3. List</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/get_elements.html">2.3.1. Get Elements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/unpack_iterables.html">2.3.2. Unpack Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/join_iterable.html">2.3.3. Join Iterables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../Chapter1/list/apply_functions_to_elements.html">2.3.4. Apply Functions to Elements in a List</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/set.html">2.4. Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/dictionary.html">2.5. Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/function.html">2.6. Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/class.html">2.7. Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/datetime.html">2.8. Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/code_speed.html">2.9. Code Speed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/good_practices.html">2.10. Good Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter1/python_new_features.html">2.11. New Features in Python</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter2/Chapter2.html">3. Python Utility Libraries</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/collections.html">3.1. Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/itertools.html">3.2. Itertools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/functools.html">3.3. Functools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydash.html">3.4. Pydash</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/sympy.html">3.5. SymPy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/operator.html">3.6. Operator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/dataclasses.html">3.7. Data Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/typing.html">3.8. Typing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pathlib.html">3.9. pathlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter2/pydantic.html">3.10. Pydantic</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter3/Chapter3.html">4. Pandas</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/change_values.html">4.1. Change Values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/get_values.html">4.2. Get Certain Values From a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/date_time.html">4.3. Work with Datetime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/transform_dataframe.html">4.4. Transform a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/create_dataframe.html">4.5. Create a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/combine_dataframes.html">4.6. Combine Multiple DataFrames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/filter.html">4.7. Filter Rows or Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/data_types.html">4.8. Manipulate a DataFrame Using Data Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/sort_dataframe.html">4.9. Sort Rows or Columns of a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/string.html">4.10. Work with String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/style_dataframe.html">4.11. Style a DataFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter3/testing.html">4.12. Test</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter4/Chapter4.html">5. NumPy</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter4/Numpy.html">5.1. NumPy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="Chapter5.html">6. Data Science Tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="feature_extraction.html">6.1. Feature Extraction</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.2. Feature Engineer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_data.html">6.3. Get Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage_data.html">6.4. Manage Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="machine_learning.html">6.5. Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="natural_language_processing.html">6.6. Natural Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="time_series.html">6.7. Time Series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharing_downloading.html">6.8. Sharing and Downloading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="speed_up_code.html">6.9. Tools to Speed Up Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualization.html">6.10. Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deltalake.html">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter7/jupyter_notebook.html">8.1. Jupyter Notebook</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/feature_engineer.md" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/issues/new?title=Issue%20on%20page%20%2FChapter5/feature_engineer.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/Chapter5/feature_engineer.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/feature_engineer.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Feature Engineer</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-data-in-a-stratified-fashion-in-scikit-learn">6.2.1. Split Data in a Stratified Fashion in scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#avoiding-data-leakage-in-time-series-data">6.2.2. Avoiding Data Leakage in Time Series Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseriessplit-for-cross-validation-in-time-series">6.2.3. TimeSeriesSplit for Cross-Validation in Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support">6.2.4. Enhancing Data Handling with scikit-learn’s DataFrame Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-feature-transformation-with-make-column-transformer-in-scikit-learn">6.2.5. Efficient Feature Transformation with make_column_transformer in scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functiontransformer-build-robust-preprocessing-pipelines-with-custom-transformations">6.2.6. FunctionTransformer: Build Robust Preprocessing Pipelines with Custom Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.7. Drop Correlated Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.8. Encode Rare Labels with Feature-engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.9. Encode Categorical Data Using Frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.10. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-handle-misspellings-in-real-world-datasets">6.2.11. How to Handle Misspellings in Real-World Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.12. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.13. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.14. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="feature-engineer">
+<h1><span class="section-number">6.2. </span>Feature Engineer<a class="headerlink" href="#feature-engineer" title="Permalink to this heading">#</a></h1>
+<p><img alt="" src="../_images/feature_engineer.png" /></p>
+<p>This section covers some libraries for feature engineering.</p>
+<section id="split-data-in-a-stratified-fashion-in-scikit-learn">
+<h2><span class="section-number">6.2.1. </span>Split Data in a Stratified Fashion in scikit-learn<a class="headerlink" href="#split-data-in-a-stratified-fashion-in-scikit-learn" title="Permalink to this heading">#</a></h2>
+<p>Normally, after using scikit-learn’s <code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>, the proportion of values in the sample will be different from the proportion of values in the entire dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get count of each class in the train set</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get count of each class in the test set</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If you want to keep the proportion of classes in the sample the same as the proportion of classes in the entire dataset, add <code class="docutils literal notranslate"><span class="pre">stratify=y</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="avoiding-data-leakage-in-time-series-data">
+<h2><span class="section-number">6.2.2. </span>Avoiding Data Leakage in Time Series Data<a class="headerlink" href="#avoiding-data-leakage-in-time-series-data" title="Permalink to this heading">#</a></h2>
+<p>In time-sensitive datasets, a random split can cause data leakage by including future data in the training set, which biases the model. To prevent this, split data chronologically:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> 
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+
+<span class="c1"># Sample data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;customer_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+        <span class="s1">&#39;amount&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.00</span><span class="p">,</span> <span class="mf">20.00</span><span class="p">,</span> <span class="mf">15.00</span><span class="p">,</span> <span class="mf">25.00</span><span class="p">,</span> <span class="mf">30.00</span><span class="p">],</span>
+        <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2021-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-01-02&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-01-03&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-01-04&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-01-05&#39;</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+
+<span class="c1"># Random split</span>
+<span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Random split:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">train_data</span><span class="p">)</span>  <span class="c1"># May contain future dates</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+
+<span class="c1"># Time-based split</span>
+<span class="n">cutoff_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cutoff_date</span><span class="p">]</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff_date</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Time-based split:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">train_data</span><span class="p">)</span>  <span class="c1"># Data before the cutoff</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>   <span class="c1"># Data after the cutoff</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="timeseriessplit-for-cross-validation-in-time-series">
+<h2><span class="section-number">6.2.3. </span>TimeSeriesSplit for Cross-Validation in Time Series<a class="headerlink" href="#timeseriessplit-for-cross-validation-in-time-series" title="Permalink to this heading">#</a></h2>
+<p>For time series data, using <code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code> ensures the temporal order is maintained during cross-validation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">TimeSeriesSplit</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">tscv</span> <span class="o">=</span> <span class="n">TimeSeriesSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tscv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fold </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Train=</span><span class="si">{</span><span class="n">train_index</span><span class="si">}</span><span class="s2">, Test=</span><span class="si">{</span><span class="n">test_index</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This approach ensures:</p>
+<ol class="arabic simple">
+<li><p><strong>Temporal Integrity</strong>: Respects the data order.</p></li>
+<li><p><strong>Growing Training Set</strong>: The training set increases with each fold.</p></li>
+<li><p><strong>Forward-Moving Test Set</strong>: The test set is always a future sample.</p></li>
+<li><p><strong>No Data Leakage</strong>: Future information is never used to predict past events.</p></li>
+</ol>
+</section>
+<section id="enhancing-data-handling-with-scikit-learn-s-dataframe-support">
+<h2><span class="section-number">6.2.4. </span>Enhancing Data Handling with scikit-learn’s DataFrame Support<a class="headerlink" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support" title="Permalink to this heading">#</a></h2>
+<p>By default, scikit-learn transformers return NumPy arrays. To return pandas DataFrames, use the <code class="docutils literal notranslate"><span class="pre">set_output</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span> <span class="s2">&quot;income&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50000</span><span class="p">,</span> <span class="mi">60000</span><span class="p">,</span> <span class="mi">70000</span><span class="p">,</span> <span class="kc">None</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s1">&#39;pandas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can apply this in pipelines too:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">&quot;imputer&quot;</span><span class="p">,</span> <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;mean&quot;</span><span class="p">)),</span> 
+                     <span class="p">(</span><span class="s2">&quot;scaler&quot;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">())])</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="efficient-feature-transformation-with-make-column-transformer-in-scikit-learn">
+<h2><span class="section-number">6.2.5. </span>Efficient Feature Transformation with make_column_transformer in scikit-learn<a class="headerlink" href="#efficient-feature-transformation-with-make-column-transformer-in-scikit-learn" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">make_column_transformer</span></code> allows you to apply different transformations to specific feature sets:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cat1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;cat2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;num1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="s2">&quot;num2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">,</span> <span class="mf">1.9</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">make_column_transformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.impute</span> <span class="kn">import</span> <span class="n">SimpleImputer</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+
+<span class="c1"># Define the numeric and categorical features</span>
+<span class="n">numeric_features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;num1&quot;</span><span class="p">,</span> <span class="s2">&quot;num2&quot;</span><span class="p">]</span>
+<span class="n">categorical_features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cat1&quot;</span><span class="p">,</span> <span class="s2">&quot;cat2&quot;</span><span class="p">]</span>
+
+<span class="c1"># Define the transformers and their corresponding columns</span>
+<span class="n">numeric_transformer</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">),</span> <span class="n">StandardScaler</span><span class="p">())</span>
+
+<span class="n">categorical_transformer</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">SimpleImputer</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="s2">&quot;most_frequent&quot;</span><span class="p">),</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># Create the ColumnTransformer</span>
+<span class="n">preprocessor</span> <span class="o">=</span> <span class="n">make_column_transformer</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">numeric_transformer</span><span class="p">,</span> <span class="n">numeric_features</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">categorical_transformer</span><span class="p">,</span> <span class="n">categorical_features</span><span class="p">),</span>
+    <span class="n">verbose_feature_names_out</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+
+<span class="c1"># Fit and transform the data</span>
+<span class="n">X_transformed</span> <span class="o">=</span> <span class="n">preprocessor</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X_transformed</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can integrate this into a pipeline with a machine learning model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">preprocessor</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">())</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This streamlines feature preprocessing and modeling in one unified workflow.</p>
+</section>
+<section id="functiontransformer-build-robust-preprocessing-pipelines-with-custom-transformations">
+<h2><span class="section-number">6.2.6. </span>FunctionTransformer: Build Robust Preprocessing Pipelines with Custom Transformations<a class="headerlink" href="#functiontransformer-build-robust-preprocessing-pipelines-with-custom-transformations" title="Permalink to this heading">#</a></h2>
+<p>If you need to apply custom transformations within a scikit-learn pipeline, the <code class="docutils literal notranslate"><span class="pre">FunctionTransformer</span></code> is a useful tool to wrap any function for preprocessing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">FunctionTransformer</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This allows you to seamlessly integrate custom functions into a pipeline, maintaining consistency across transformations for different datasets.</p>
+<p>Here’s an example of using <code class="docutils literal notranslate"><span class="pre">FunctionTransformer</span></code> in a full pipeline:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">FunctionTransformer</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a simple pandas DataFrame</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;feature1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="s2">&quot;feature2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+    <span class="s2">&quot;target&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Split the DataFrame into features and target</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;feature1&quot;</span><span class="p">,</span> <span class="s2">&quot;feature2&quot;</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span>
+
+<span class="c1"># Define the FunctionTransformer</span>
+<span class="n">log_transformer</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">)</span>
+
+
+<span class="c1"># Define the pipeline</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[(</span><span class="s2">&quot;log_transform&quot;</span><span class="p">,</span> <span class="n">log_transformer</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;classifier&quot;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">())]</span>
+<span class="p">)</span>
+
+<span class="c1"># Fit the pipeline on the data</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Make predictions on new data</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;feature1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="s2">&quot;feature2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]}</span>
+<span class="n">new_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_df</span><span class="p">)</span>
+
+<span class="c1"># Print the predictions</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predictions:&quot;</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="drop-correlated-features">
+<h2><span class="section-number">6.2.7. </span>Drop Correlated Features<a class="headerlink" href="#drop-correlated-features" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install feature_engine 
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>To remove highly correlated features, you can use <code class="docutils literal notranslate"><span class="pre">DropCorrelatedFeatures</span></code> from the <code class="docutils literal notranslate"><span class="pre">feature-engine</span></code> package.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropCorrelatedFeatures</span>
+
+<span class="c1"># Create a dataset with correlated variables</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_redundant</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_clusters_per_class</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">class_sep</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert the dataset to a DataFrame</span>
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Drop features with correlation above 0.8</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">DropCorrelatedFeatures</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># Check correlated features</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Correlated features:&quot;</span><span class="p">,</span> <span class="n">tr</span><span class="o">.</span><span class="n">correlated_feature_sets_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remaining features:&quot;</span><span class="p">,</span> <span class="n">Xt</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://feature-engine.trainindata.com">Link to feature-engine</a>.</p>
+</section>
+<section id="encode-rare-labels-with-feature-engine">
+<h2><span class="section-number">6.2.8. </span>Encode Rare Labels with Feature-engine<a class="headerlink" href="#encode-rare-labels-with-feature-engine" title="Permalink to this heading">#</a></h2>
+<p>Handling rare categories in high-cardinality categorical features can be simplified using the <code class="docutils literal notranslate"><span class="pre">RareLabelEncoder</span></code>. This encoder groups infrequent categories into a single value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">RareLabelEncoder</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s1">&#39;dating_profile&#39;</span><span class="p">)[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop rows with missing values in &#39;education&#39; column</span>
+
+<span class="n">processed</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the code below,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tol</span></code> species the minimum frequency below which a category is considered rare.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">replace_with</span></code> species the value to be used to replace rare categories.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">variables</span></code> specify the list of categorical variables that will be encoded.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">RareLabelEncoder</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;education&quot;</span><span class="p">],</span> <span class="n">replace_with</span><span class="o">=</span><span class="s2">&quot;Other&quot;</span><span class="p">)</span>
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now the rare categories in the column <code class="docutils literal notranslate"><span class="pre">education</span></code> are replaced with “Other”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoded</span><span class="p">[</span><span class="s1">&#39;education&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://feature-engine.trainindata.com">Link to feature-engine</a>.</p>
+</section>
+<section id="encode-categorical-data-using-frequency">
+<h2><span class="section-number">6.2.9. </span>Encode Categorical Data Using Frequency<a class="headerlink" href="#encode-categorical-data-using-frequency" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install feature-engine
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Sometimes, encoding categorical variables based on frequency or count can improve model performance. <code class="docutils literal notranslate"><span class="pre">CountFrequencyEncoder</span></code> from <code class="docutils literal notranslate"><span class="pre">feature-engine</span></code> helps achieve this.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">CountFrequencyEncoder</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;diamonds&quot;</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_train</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Encode <code class="docutils literal notranslate"><span class="pre">color</span></code> and <code class="docutils literal notranslate"><span class="pre">clarity</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># initiate an encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">CountFrequencyEncoder</span><span class="p">(</span>
+    <span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">,</span> <span class="s2">&quot;clarity&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># fit the encoder</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># process the data</span>
+<span class="n">p_train</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">p_test</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p_test</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://feature-engine.trainindata.com">Link to feature-engine</a>.</p>
+</section>
+<section id="similarity-encoding-for-dirty-categories-using-dirty-cat">
+<h2><span class="section-number">6.2.10. </span>Similarity Encoding for Dirty Categories Using dirty_cat<a class="headerlink" href="#similarity-encoding-for-dirty-categories-using-dirty-cat" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install dirty-cat
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>To handle dirty categorical variables, use dirty_cat’s <code class="docutils literal notranslate"><span class="pre">SimilarityEncoder</span></code>. This captures similarities between categories that may contain typos or variations.</p>
+<p>Example using the employee_salaries dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dirty_cat.datasets</span> <span class="kn">import</span> <span class="n">fetch_employee_salaries</span>
+<span class="kn">from</span> <span class="nn">dirty_cat</span> <span class="kn">import</span> <span class="n">SimilarityEncoder</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">fetch_employee_salaries</span><span class="p">()</span><span class="o">.</span><span class="n">X</span>
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dirty_column</span> <span class="o">=</span> <span class="s2">&quot;employee_position_title&quot;</span>
+<span class="n">X_dirty</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">dirty_column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">X_dirty</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see that titles such as ‘Master Police Officer’ and ‘Police Officer III’ are similar. We can use <code class="docutils literal notranslate"><span class="pre">SimilaryEncoder</span></code> to get an array that encodes the similarity between different job titles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">enc</span> <span class="o">=</span> <span class="n">SimilarityEncoder</span><span class="p">(</span><span class="n">similarity</span><span class="o">=</span><span class="s2">&quot;ngram&quot;</span><span class="p">)</span>
+<span class="n">X_enc</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_dirty</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_enc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To better visualize the similarity, create a heatmap:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">normalize</span>
+<span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
+
+<span class="k">def</span> <span class="nf">plot_similarity</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+  
+    <span class="n">normalized_features</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    
+    <span class="c1"># Create correction matrix</span>
+    <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">normalized_features</span><span class="p">,</span> <span class="n">normalized_features</span><span class="p">)</span>
+    
+    <span class="c1"># Plot</span>
+    <span class="n">figsize</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">yticklabels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;YlOrRd&quot;</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+        
+    <span class="n">g</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Similarity&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">encode_and_plot</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+  
+    <span class="n">enc</span> <span class="o">=</span> <span class="n">SimilarityEncoder</span><span class="p">(</span><span class="n">similarity</span><span class="o">=</span><span class="s2">&quot;ngram&quot;</span><span class="p">)</span> <span class="c1"># Encode</span>
+    <span class="n">X_enc</span> <span class="o">=</span> <span class="n">enc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">plot_similarity</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">X_enc</span><span class="p">)</span> <span class="c1"># Plot</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encode_and_plot</span><span class="p">(</span><span class="n">X_dirty</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we can see from the matrix above,</p>
+<ul class="simple">
+<li><p>The similarity between the same strings such as ‘Office Services Coordinator’ and ‘Office Services Coordinator’ is 1</p></li>
+<li><p>The similarity between somewhat similar strings such as ‘Office Services Coordinator’ and ‘Master Police Officer’ is 0.41</p></li>
+<li><p>The similarity between two very different strings such as ‘Social Worker IV’ and ‘Polic Aide’ is 0.028</p></li>
+</ul>
+<p><a class="reference external" href="https://dirty-cat.github.io/">Link to dirty-cat</a>.</p>
+</section>
+<section id="how-to-handle-misspellings-in-real-world-datasets">
+<h2><span class="section-number">6.2.11. </span>How to Handle Misspellings in Real-World Datasets<a class="headerlink" href="#how-to-handle-misspellings-in-real-world-datasets" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install git+https://github.com/skrub-data/skrub.git
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Real-world datasets often contain misspellings and variations in categorical variables, especially when data is manually entered. This can cause issues with data analysis steps that require exact matching, such as GROUP BY operations.</p>
+<p>skrub’s <code class="docutils literal notranslate"><span class="pre">deduplicate()</span></code> function helps solve this problem by using unsupervised learning to cluster similar strings and automatically correct misspellings.</p>
+<p>To demonstrate the deduplicate function, start with generating a duplicated dataset:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub.datasets</span> <span class="kn">import</span> <span class="n">make_deduplication_data</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">duplicated_food</span> <span class="o">=</span> <span class="n">make_deduplication_data</span><span class="p">(</span>
+    <span class="n">examples</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Chocolate&quot;</span><span class="p">,</span> <span class="s2">&quot;Broccoli&quot;</span><span class="p">,</span> <span class="s1">&#39;Jalapeno&#39;</span><span class="p">,</span> <span class="s1">&#39;Zucchini&#39;</span><span class="p">],</span>  
+    <span class="n">entries_per_example</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>  <span class="c1"># their respective number of occurrences</span>
+    <span class="n">prob_mistake_per_letter</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># 5% probability of typo per letter</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>  <span class="c1"># set seed for reproducibility</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Get the most common food names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">duplicated_food</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">duplicated_food</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The most common words in the dataset are ‘Jalapeno’, ‘Zucchini’, and ‘Broccoli’. Therefore, skub’s deduplicate function replaces misspelled words with the closest matching word from this set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub</span> <span class="kn">import</span> <span class="n">deduplicate</span>
+
+<span class="c1"># create a table that maps original to corrected categories</span>
+<span class="n">translation_table</span> <span class="o">=</span> <span class="n">deduplicate</span><span class="p">(</span><span class="n">duplicated_food</span><span class="p">)</span>
+
+<span class="c1"># remove duplicated rows</span>
+<span class="n">translation_table</span> <span class="o">=</span> <span class="n">translation_table</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="s1">&#39;mispelled_food&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;corrected_food&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+<span class="c1"># view 10 sample rows</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">translation_table</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/skrub-data/skrub/">Link to skub</a>.</p>
+</section>
+<section id="solving-data-mismatches-joining-tables-with-fuzzy-matching">
+<h2><span class="section-number">6.2.12. </span>Solving Data Mismatches: Joining Tables with Fuzzy Matching<a class="headerlink" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install git+https://github.com/skrub-data/skrub.git
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>When joining two tables with non-exact matching entries, such as “Yemen*” in one table and “Yemen, Rep.” in another, use skrub’s <code class="docutils literal notranslate"><span class="pre">fuzzy_join()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/skrub-data/datasets/master/data/Happiness_report_2022.csv&quot;</span><span class="p">,</span>
+    <span class="n">thousands</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;Happiness score&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub.datasets</span> <span class="kn">import</span> <span class="n">fetch_world_bank_indicator</span>
+<span class="n">gdppc</span> <span class="o">=</span> <span class="n">fetch_world_bank_indicator</span><span class="p">(</span><span class="n">indicator_id</span><span class="o">=</span><span class="s2">&quot;NY.GDP.PCAP.CD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">X</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">gdppc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Country Name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skrub</span> <span class="kn">import</span> <span class="n">fuzzy_join</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">fuzzy_join</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>  <span class="c1"># our table to join</span>
+    <span class="n">gdppc</span><span class="p">,</span>  <span class="c1"># the table to join with</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span>  <span class="c1"># the first join key column</span>
+    <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;Country Name&quot;</span><span class="p">,</span>  <span class="c1"># the second join key column</span>
+    <span class="n">return_score</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df1</span><span class="p">[[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Country Name&#39;</span><span class="p">,</span> <span class="s2">&quot;matching_score&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+<span class="c1"># We merged the first WB table to our initial one.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/skrub-data/skrub/">Link to skrub</a>.</p>
+</section>
+<section id="snorkel-programmatically-build-training-data-in-python">
+<h2><span class="section-number">6.2.13. </span>Snorkel — Programmatically Build Training Data in Python<a class="headerlink" href="#snorkel-programmatically-build-training-data-in-python" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install snorkel
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Let’s say you want to detect fake job postings based on a few assumptions:</p>
+<ul class="simple">
+<li><p>Few or no requirements make a job likely fake.</p></li>
+<li><p>No company profile or logo is a red flag.</p></li>
+<li><p>Real jobs usually require education or experience.</p></li>
+</ul>
+<p>You can load a sample dataset like this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+
+<span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_pickle</span><span class="p">(</span>
+    <span class="s2">&quot;https://github.com/khuyentran1401/Data-science/blob/master/feature_engineering/snorkel_example/train_fake_jobs.pkl?raw=true&quot;</span>
+<span class="p">)</span>
+<span class="n">train_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Snorkel helps programmatically label data. Start by defining labels:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">snorkel.labeling</span> <span class="kn">import</span> <span class="n">labeling_function</span><span class="p">,</span> <span class="n">PandasLFApplier</span><span class="p">,</span> <span class="n">LFAnalysis</span>
+
+<span class="n">FAKE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">REAL</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">ABSTAIN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can create labeling functions to reflect your assumptions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">no_company_profile</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FAKE</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">company_profile</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">no_company_logo</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FAKE</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">has_company_logo</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">required_experience</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">REAL</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">required_experience</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+
+
+<span class="nd">@labeling_function</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">required_education</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">REAL</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">required_education</span> <span class="k">else</span> <span class="n">ABSTAIN</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use these functions to label your data:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lfs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">no_company_profile</span><span class="p">,</span>
+    <span class="n">no_company_logo</span><span class="p">,</span>
+    <span class="n">required_experience</span><span class="p">,</span>
+    <span class="n">required_education</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">applier</span> <span class="o">=</span> <span class="n">PandasLFApplier</span><span class="p">(</span><span class="n">lfs</span><span class="o">=</span><span class="n">lfs</span><span class="p">)</span>
+<span class="n">L_train</span> <span class="o">=</span> <span class="n">applier</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">train_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, evaluate the accuracy of your labeling functions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LFAnalysis</span><span class="p">(</span><span class="n">L</span><span class="o">=</span><span class="n">L_train</span><span class="p">,</span> <span class="n">lfs</span><span class="o">=</span><span class="n">lfs</span><span class="p">)</span><span class="o">.</span><span class="n">lf_summary</span><span class="p">(</span><span class="n">Y</span><span class="o">=</span><span class="n">train_df</span><span class="o">.</span><span class="n">fraudulent</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This analysis provides insights on coverage, accuracy, and overlaps between labeling functions.</p>
+<p><a class="reference external" href="https://www.snorkel.org/">Link to Snorkel</a>.</p>
+</section>
+<section id="sketch-ai-code-writing-assistant-that-understands-data-content">
+<h2><span class="section-number">6.2.14. </span>sketch: AI Code-Writing Assistant That Understands Data Content<a class="headerlink" href="#sketch-ai-code-writing-assistant-that-understands-data-content" title="Permalink to this heading">#</a></h2>
+<p>Wouldn’t it be nice if you could get insights into your data by simply asking a question? Sketch allows you to do exactly that.</p>
+<p>Sketch is an AI code-writing assistant for pandas users that understands the context of your data.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install sketch
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>  
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+<span class="kn">import</span> <span class="nn">sketch</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;taxis&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+    <span class="s2">&quot;Can you give me friendly names for each column?&quot;</span> 
+    <span class="s2">&quot;(Output as an HTML list)&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+    <span class="s2">&quot;Which payment is the most popular payment?&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">howto</span><span class="p">(</span><span class="s2">&quot;Create some features from the pickup column&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new column for the hour of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+
+<span class="c1"># Create a new column for the day of the week of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_day&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span>
+
+<span class="c1"># Create a new column for the month of the pickup</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month_name</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sketch</span><span class="o">.</span><span class="n">howto</span><span class="p">(</span>
+    <span class="s2">&quot;Create some features from the pickup_zone column&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new column called &#39;pickup_zone_count&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a new column called &#39;pickup_zone_fare&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_fare&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;fare&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a new column called &#39;pickup_zone_distance&#39;</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;pickup_zone_distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pickup_zone&#39;</span><span class="p">)[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/approximatelabs/sketch">Link to Sketch</a>.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./Chapter5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="feature_extraction.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">6.1. </span>Feature Extraction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="get_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">6.3. </span>Get Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#split-data-in-a-stratified-fashion-in-scikit-learn">6.2.1. Split Data in a Stratified Fashion in scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#avoiding-data-leakage-in-time-series-data">6.2.2. Avoiding Data Leakage in Time Series Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseriessplit-for-cross-validation-in-time-series">6.2.3. TimeSeriesSplit for Cross-Validation in Time Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enhancing-data-handling-with-scikit-learn-s-dataframe-support">6.2.4. Enhancing Data Handling with scikit-learn’s DataFrame Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-feature-transformation-with-make-column-transformer-in-scikit-learn">6.2.5. Efficient Feature Transformation with make_column_transformer in scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functiontransformer-build-robust-preprocessing-pipelines-with-custom-transformations">6.2.6. FunctionTransformer: Build Robust Preprocessing Pipelines with Custom Transformations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-correlated-features">6.2.7. Drop Correlated Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-rare-labels-with-feature-engine">6.2.8. Encode Rare Labels with Feature-engine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encode-categorical-data-using-frequency">6.2.9. Encode Categorical Data Using Frequency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#similarity-encoding-for-dirty-categories-using-dirty-cat">6.2.10. Similarity Encoding for Dirty Categories Using dirty_cat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-handle-misspellings-in-real-world-datasets">6.2.11. How to Handle Misspellings in Real-World Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-data-mismatches-joining-tables-with-fuzzy-matching">6.2.12. Solving Data Mismatches: Joining Tables with Fuzzy Matching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snorkel-programmatically-build-training-data-in-python">6.2.13. Snorkel — Programmatically Build Training Data in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sketch-ai-code-writing-assistant-that-understands-data-content">6.2.14. sketch: AI Code-Writing Assistant That Understands Data Content</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Khuyen Tran
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=c5ced968eda925caa686"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=c5ced968eda925caa686"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

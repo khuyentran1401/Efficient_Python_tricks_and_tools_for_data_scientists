@@ -1,0 +1,216 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: venv
+  language: python
+  name: python3
+---
+
+## Data Classes
+
++++
+
+### Data Classes vs Normal Classes
+
++++
+
+If you want to use classes to store data, use the dataclass module. This module is available in Python 3.7+. 
+
++++
+
+With dataclass, you can create a class with attributes, type hints, and a nice representation of the data in a few lines of code. To use dataclass, simply add the `@dataclass` decorator on top of a class.
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+
+
+@dataclass
+class DataClassDog:
+    color: str
+    age: int
+```
+
+```{code-cell} ipython3
+DataClassDog(color="black", age=9)
+```
+
+Without dataclass, you need to use `__init__` to assign values to appropriate variables and use `__repr__` to create a nice presentation of the data, which can be very cumbersome. 
+
+```{code-cell} ipython3
+class Dog:
+    def __init__(self, color, age):
+        self.color = color
+        self.age = age
+
+    def __repr__(self):
+        return f"Dog(color={self.color} age={self.age})"
+```
+
+```{code-cell} ipython3
+Dog(color="black", age=9)
+```
+
+### frozen=True: Make Your Data Classes Read-Only
+
++++
+
+If you don't want anybody to adjust the attributes of a class, use `@dataclass(frozen=True)`.
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class DataClassDog:
+    color: str
+    age: int
+```
+
+Now changing the attribute `color` of  the `DataClassDog`'s instance will throw an error.
+
+```{code-cell} ipython3
+pepper = DataClassDog(color="black", age=9)
+pepper.color = 'golden'
+```
+
+### Compare Between Two Data Classes
+
++++
+
+Normally, you need to implement the `__eq__` method so that you can compare between two classes. 
+
+```{code-cell} ipython3
+class Dog:
+    def __init__(self, type, age):
+        self.type = type
+        self.age = age
+    
+    def __eq__(self, other):
+        return (self.type == other.type 
+        and self.age == other.age)
+
+pepper = Dog(type="Dachshund", age=7)
+bim = Dog(type="Dachshund", age=7)
+pepper == bim
+```
+
+dataclasses automatically implements the `__eq__` method for you. With dataclasses, you can compare between 2 classes by only specifying their attributes. 
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+
+@dataclass
+class DataClassDog:
+    type: str
+    age: int
+```
+
+```{code-cell} ipython3
+pepper = DataClassDog(type="Dachshund", age=7)
+bim = DataClassDog(type="Dachshund", age=7)
+pepper == bim 
+```
+
+### Post-init: Add Init Method to a Data Class 
+
++++
+
+With a data class, you don't need an `__init__` method to assign values to its attributes. However, sometimes you might want to use an `___init__` method to initialize certain attributes. That is when data class's `__post_init__` comes in handy.   
+
++++
+
+In the code below, I use `__post_init__` to initialize the attribute `info` using the attributes `names` and `ages`.
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+from typing import List
+
+
+@dataclass
+class Dog:
+    names: str
+    age: int
+
+
+@dataclass
+class Dogs:
+    names: List[str]
+    ages: List[int]
+
+    def __post_init__(self):
+        self.info = [Dog(name, age) for name, age in zip(self.names, self.ages)]
+```
+
+```{code-cell} ipython3
+names = ['Bim', 'Pepper']
+ages = [5, 6]
+dogs = Dogs(names, ages)
+dogs.info 
+```
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+
+
+@dataclass
+class Dog:
+    names: str
+    age: int
+
+
+dog = Dog(names="Bim", age="ten")
+if not isinstance(dog.age, int):
+    raise ValueError("Dog's age must be an integer.")
+```
+
+### Python Best Practices: Using default_factory for Mutable Defaults
+
++++
+
+When defining classes in Python, using mutable default values for instance variables can lead to unexpected behavior.
+
++++
+
+For example, if you use a list as a default value in a class's `__init__` method, all instances of the class will share the same list object:
+
+```{code-cell} ipython3
+class Book:
+    def __init__(self, title, authors=[]):
+        self.title = title
+        self.authors = authors
+
+
+book1 = Book("Book 1")
+book1.authors.append("Author 1")
+
+book2 = Book("Book 2")
+print(book2.authors)
+```
+
+In this example, `book1` and `book2` share the same list object, which is why modifying the list in `book1` affects `book2`.
+
+To avoid this issue, you can use the `default_factory` parameter in dataclasses, which creates a new object for each instance:
+
+```{code-cell} ipython3
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Book:
+    title: str
+    authors: list = field(default_factory=list)
+
+
+book1 = Book("Book 1")
+book1.authors.append("Author 1")
+
+book2 = Book("Book 2")
+print(book2.authors)
+```
+
+Now, each instance has its own separate list object, and modifying one instance's list does not affect others.
