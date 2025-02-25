@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import hydra
 from omegaconf import DictConfig, OmegaConf
 
@@ -7,3 +8,9 @@ def my_app(cfg: DictConfig) -> None:
 
 if __name__ == "__main__":
     my_app()
+||||||| dfbda73d
+=======
+from utils import get_mean  
+
+get_mean(1, 3)
+>>>>>>> cc473f8bc8c4403edc9964604fc4df46e7b8eba2

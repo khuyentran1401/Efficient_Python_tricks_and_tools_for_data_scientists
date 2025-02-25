@@ -321,26 +321,6 @@ result
 
 +++
 
-### ManimML: Create Animations of Common ML Concepts in Python
-
-+++
-
-If you want to create animations and visualizations for common ML concepts in Python, try ManimML.
-
-The GIF below is the visualization of Variational Autoencoder made by ManimML.
-
-+++
-
-![](../img/VAEScene.gif)
-
-+++
-
-[Link to ManimML](https://github.com/helblazer811/ManimML).
-
-ManimML is built on top of [Manim](https://towardsdatascience.com/how-to-create-mathematical-animations-like-3blue1brown-using-python-f571fb9da3d1?sk=67f831edb7de3560020c2ea0296447cf).
-
-+++
-
 ### Great Tables: Create Scientific-Looking Tables in Python
 
 ```{code-cell} ipython3
