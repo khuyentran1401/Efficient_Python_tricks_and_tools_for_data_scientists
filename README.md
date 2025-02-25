@@ -1,5 +1,3 @@
-[<img src="img/codecut.jpg">](https://codecut.ai/?utm_source=github&utm_medium=efficient_python_tricks&utm_campaign=github_banner)
-
 <div align="center">
 <h1 align="center">
 Efficient Python Tricks and Tools for Data Scientists  
