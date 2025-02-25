@@ -1,0 +1,191 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3.10.5 64-bit
+  language: python
+  name: python3
+---
+
+## Filter Rows or Columns
+
++++
+
+![](../img/filter.png)
+
++++
+
+### Pandas.Series.isin: Filter Rows Only If Column Contains Values From Another List
+
++++
+
+When working with a pandas Dataframe, if you want to select the values that are in another list, the fastest way is to use `isin`. 
+
+In the example below, `2` is filtered out because `3` is not in the list.
+
+```{code-cell} ipython3
+import pandas as pd 
+
+df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
+df
+```
+
+```{code-cell} ipython3
+l = [1, 2, 6, 7]
+df.a.isin(l)
+```
+
+```{code-cell} ipython3
+df = df[df.a.isin(l)]
+df
+```
+
+### df.query: Query Columns Using Boolean Expression
+
++++
+
+It can be lengthy to filter columns of a pandas DataFrame using brackets. 
+
+```{code-cell} ipython3
+import pandas as pd
+
+df = pd.DataFrame(
+    {"fruit": ["apple", "orange", "grape", "grape"], "price": [4, 5, 6, 7]}
+)
+```
+
+```{code-cell} ipython3
+print(df[(df.price > 4) & (df.fruit == "grape")])
+```
+
+To shorten the filtering statements, use `df.query` instead.
+
+```{code-cell} ipython3
+df.query("price > 4 & fruit == 'grape'")
+```
+
+### transform: Filter a pandas DataFrame by Value Counts
+
++++
+
+To filter a pandas DataFrame based on the occurrences of categories, you might attempt to use `df.groupby` and `df.count`. 
+
+```{code-cell} ipython3
+import pandas as pd
+
+df = pd.DataFrame({"type": ["A", "A", "O", "B", "O", "A"], "value": [5, 3, 2, 1, 4, 2]})
+df
+```
+
+```{code-cell} ipython3
+df.groupby("type")["type"].count()
+```
+
+However, since the Series returned by the `count` method is shorter than the original DataFrame, you will get an error when filtering.
+
+```{code-cell} ipython3
+df.loc[df.groupby("type")["type"].count() > 1]
+```
+
+Instead of using `count`, use `transform`. This method will return the Series of value counts with the same length as the original DataFrame.
+
+```{code-cell} ipython3
+df.groupby("type")["type"].transform("size")
+```
+
+Now you can filter without encountering any error. 
+
+```{code-cell} ipython3
+df.loc[df.groupby("type")["type"].transform("size") > 1]
+```
+
+### df.filter: Filter Columns Based on a Subset of Their Names
+
++++
+
+If you want to filter columns of a pandas DataFrame based on characters in their names, use `DataFrame.filter`. In the example below, we only choose the columns that contain the word "cat". 
+
+```{code-cell} ipython3
+import pandas as pd
+
+df = pd.DataFrame({"cat1": ["a", "b"], "cat2": ["b", "c"], "num1": [1, 2]})
+df 
+```
+
+```{code-cell} ipython3
+df.filter(like='cat', axis=1)
+```
+
+### Filter a pandas DataFrame Based on Index's Name
+
++++
+
+If you want to filter a pandas DataFrame based on the index's name, you can use either `filter` or `loc`. 
+
+```{code-cell} ipython3
+import pandas as pd
+import numpy as np
+
+values = np.array([[1, 2], [3, 4], [5, 6]])
+df = pd.DataFrame(
+    values, 
+    index=["user1", "user2", "user3"], 
+    columns=["col1", "col2"]
+)
+df
+```
+
+```{code-cell} ipython3
+df.filter(items=['user1', 'user3'], axis=0)
+```
+
+```{code-cell} ipython3
+df.loc[['user1', 'user3'], :]
+```
+
+### all: Select Rows with All NaN Values
+
++++
+
+`DataFrame.all` is useful when you want to evaluate whether all values of a row or a column are `True`. If you want to get the rows whose all values are NaN, use both `isna` and `all(axis=1)`.
+
+```{code-cell} ipython3
+import pandas as pd 
+
+df = pd.DataFrame({'a': [1, 2, float('nan')], 'b': [1, float('nan'), float('nan')]})
+is_all_nan = df.isna().all(axis=1)
+is_all_nan 
+```
+
+```{code-cell} ipython3
+df.loc[is_all_nan, :]
+```
+
+### pandas.clip: Exclude Outliers
+
++++
+
+Outliers are unusual values in your dataset, and they can distort statistical analyses. 
+
+```{code-cell} ipython3
+import pandas as pd 
+
+data = {"col0": [9, -3, 0, -1, 5]}
+df = pd.DataFrame(data)
+df
+```
+
+If you want to trim values that the outliers, one of the methods is to use `df.clip`.
+
+Below is how to use the 0.5-quantile as the lower threshold and .95-quantile as the upper threshold
+
+```{code-cell} ipython3
+lower = df.col0.quantile(0.05)
+upper = df.col0.quantile(0.95)
+
+df.clip(lower=lower, upper=upper)
+```

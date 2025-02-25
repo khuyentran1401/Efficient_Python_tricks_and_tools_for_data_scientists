@@ -1,0 +1,123 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+## Sharing and Downloading
+
++++
+
+This section covers some tools to share and download your data.
+
++++
+
+### gdown: Download a File from Google Drive in Python
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+!pip install gdown 
+```
+
+If you want to download a file from Google Drive in Python, use gdown. All you need to specify is the URL link.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+import gdown
+
+# Format of url: https://drive.google.com/uc?id=YOURFILEID
+url = "https://drive.google.com/uc?id=1jI1cmxqnwsmC-vbl8dNY6b4aNBtBbKy3"
+output = "Twitter.zip"
+
+gdown.download(url, output, quiet=False)
+```
+
+[Link to gdown](https://pypi.org/project/gdown/).
+
++++
+
+### pyserde: Effortless Serialization and Deserialization of Dataclass Objects 
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+!pip install pyserde
+```
+
+Dataclasses provide a concise syntax for defining data-holding classes. Paired with pyserde, you can easily serialize and deserialize dataclass objects. 
+
+Serialization converts dataclass data into a serialized format (e.g., JSON, YAML) for easy storage and transmission. Deserialization reconstructs the dataclass object from serialized data.
+
+```{code-cell} ipython3
+from dataclasses import dataclass
+from serde import serde
+from serde.json import from_json, to_json
+from serde.yaml import from_yaml, to_yaml
+
+
+@serde
+@dataclass
+class User:
+    name: str
+    age: int
+
+
+user1 = User(name="user1", age=20)
+```
+
+```{code-cell} ipython3
+print(to_json(user1))
+```
+
+```{code-cell} ipython3
+from_json(User, '{"name":"user1","age":20}')
+```
+
+```{code-cell} ipython3
+print(to_yaml(user1))
+```
+
+```{code-cell} ipython3
+from_yaml(User, "age: 20\nname: user1\n")
+```
+
+[Link to pyserde](https://github.com/yukinarit/pyserde).
+
++++
+
+### ItsDangerous: Safely Pass Trusted Data to Untrusted Environments and Back
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+!pip install -U itsdangerous
+```
+
+When passing data between different web requests, there is a risk of malicious code injection.
+
+To ensure the safety of passing data to untrusted environments, use ItsDangerous. ItsDangerous adds a unique signature to the data to verify that the data has not been tampered with during transmission.
+
+```{code-cell} ipython3
+from itsdangerous import URLSafeSerializer
+
+auth_s = URLSafeSerializer("some key")
+token = auth_s.dumps({"id": 5, "name": "khuyentran"})
+token
+```
+
+```{code-cell} ipython3
+# Get the data back from the token using the secret key
+data = auth_s.loads(token)
+data["name"]
+```
+
+[Link to ItsDangerous](https://github.com/pallets/itsdangerous/).

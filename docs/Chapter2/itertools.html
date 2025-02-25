@@ -345,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter2/itertools.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter2/itertools.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -424,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       <li><a href="../_sources/Chapter2/itertools.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter2/itertools.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -433,7 +450,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -543,14 +560,14 @@ document.write(`
 <p>If you want to iterate through a pair of values in a list and the order does not matter (<code class="docutils literal notranslate"><span class="pre">(a,b)</span></code> is the same as <code class="docutils literal notranslate"><span class="pre">(b,</span> <span class="pre">a)</span></code>), a naive approach is to use two for-loops.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -559,17 +576,10 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">num_list</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">num_list</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">num_list</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 2)
-(1, 3)
-(2, 3)
 </pre></div>
 </div>
 </div>
@@ -577,18 +587,11 @@ document.write(`
 <p>However, using two for-loops is lengthy and inefficient. Use <code class="docutils literal notranslate"><span class="pre">itertools.combinations</span></code> instead:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
 
 <span class="n">comb</span> <span class="o">=</span> <span class="n">combinations</span><span class="p">(</span><span class="n">num_list</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># use this</span>
 <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">comb</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">pair</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 2)
-(1, 3)
-(2, 3)
 </pre></div>
 </div>
 </div>
@@ -599,7 +602,7 @@ document.write(`
 <p>Are you using nested for-loops to experiment with different combinations of parameters?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">],</span>
     <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">],</span>
 <span class="p">}</span>
@@ -610,25 +613,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.1, 16)
-(0.1, 32)
-(0.1, 64)
-(0.01, 16)
-(0.01, 32)
-(0.01, 64)
-(0.001, 16)
-(0.001, 32)
-(0.001, 64)
-</pre></div>
-</div>
-</div>
 </div>
 <p>If so, use <code class="docutils literal notranslate"><span class="pre">itertools.product</span></code> instead.</p>
 <p><code class="docutils literal notranslate"><span class="pre">itertools.product</span></code> is more efficient than nested loop because <code class="docutils literal notranslate"><span class="pre">product(A,</span> <span class="pre">B)</span></code> returns the same as <code class="docutils literal notranslate"><span class="pre">((x,y)</span> <span class="pre">for</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">A</span> <span class="pre">for</span> <span class="pre">y</span> <span class="pre">in</span> <span class="pre">B)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1e-1</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">],</span>
@@ -640,19 +630,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.1, 16)
-(0.1, 32)
-(0.1, 64)
-(0.01, 16)
-(0.01, 32)
-(0.01, 64)
-(0.001, 16)
-(0.001, 32)
-(0.001, 64)
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="itertools-starmap-apply-a-function-with-more-than-2-arguments-to-elements-in-a-list">
@@ -660,92 +637,29 @@ document.write(`
 <p><code class="docutils literal notranslate"><span class="pre">map</span></code> is a useful method that allows you to apply a function to elements in a list. However, it can’t apply a function with more than one argument to a list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "def multiply(x: float, y: float):\n    return x * y";
-                var nbb_formatted_code = "def multiply(x: float, y: float):\n    return x * y";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nums</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
 <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">nums</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_38110</span><span class="o">/</span><span class="mf">240000324.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">nums</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">nums</span><span class="p">))</span>
-
-<span class="ne">TypeError</span>: multiply() missing 1 required positional argument: &#39;y&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 14;
-                var nbb_unformatted_code = "nums = [(1, 2), (4, 2), (2, 5)]\nlist(map(multiply, nums))";
-                var nbb_formatted_code = "nums = [(1, 2), (4, 2), (2, 5)]\nlist(map(multiply, nums))";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p>To apply a function with more than 2 arguments to elements in a list, use <code class="docutils literal notranslate"><span class="pre">itertools.starmap</span></code>. With <code class="docutils literal notranslate"><span class="pre">starmap</span></code>, elements in each tuple of the list <code class="docutils literal notranslate"><span class="pre">nums</span></code> are used as arguments for the function <code class="docutils literal notranslate"><span class="pre">multiply</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">starmap</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">starmap</span>
 
 <span class="nb">list</span><span class="p">(</span><span class="n">starmap</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">nums</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2, 8, 10]
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 15;
-                var nbb_unformatted_code = "from itertools import starmap\n\nlist(starmap(multiply, nums))";
-                var nbb_formatted_code = "from itertools import starmap\n\nlist(starmap(multiply, nums))";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 </section>
 <section id="itertools-compress-filter-a-list-using-booleans">
@@ -753,21 +667,9 @@ document.write(`
 <p>Normally, you cannot filter a list using a list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">,</span> <span class="s2">&quot;lemon&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">,</span> <span class="s2">&quot;lemon&quot;</span><span class="p">]</span>
 <span class="n">chosen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">fruits</span><span class="p">[</span><span class="n">chosen</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_40588</span><span class="o">/</span><span class="mf">2755098589.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">,</span> <span class="s1">&#39;grape&#39;</span><span class="p">,</span> <span class="s1">&#39;lemon&#39;</span><span class="p">]</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">chosen</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">fruits</span><span class="p">[</span><span class="n">chosen</span><span class="p">]</span>
-
-<span class="ne">TypeError</span>: list indices must be integers or slices, not list
 </pre></div>
 </div>
 </div>
@@ -775,14 +677,9 @@ document.write(`
 <p>To filter a list using a list of booleans, use <code class="docutils literal notranslate"><span class="pre">itertools.compress</span></code> instead</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">compress</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">compress</span>
 
 <span class="nb">list</span><span class="p">(</span><span class="n">compress</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">chosen</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;apple&#39;, &#39;grape&#39;, &#39;lemon&#39;]
 </pre></div>
 </div>
 </div>
@@ -793,7 +690,7 @@ document.write(`
 <p>If you want to group elements in a list by a key, use <code class="docutils literal notranslate"><span class="pre">itertools.groupby</span></code>. In the example below, I grouped elements in the list by the first element in each tuple.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
 
 <span class="n">prices</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;grape&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
 
@@ -808,13 +705,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>apple : [(&#39;apple&#39;, 3), (&#39;apple&#39;, 4)]
-grape : [(&#39;grape&#39;, 3)]
-orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="itertools-zip-longest-zip-iterables-of-different-lengths">
@@ -822,7 +712,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 <p><code class="docutils literal notranslate"><span class="pre">zip</span></code> allows you to aggregate elements from each of the iterables. However, <code class="docutils literal notranslate"><span class="pre">zip</span></code> doesn’t show all pairs of elements when iterables have different lengths.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;grape&quot;</span><span class="p">]</span>
 <span class="n">prices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -830,12 +720,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2)]
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -843,19 +728,14 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 <p>To aggregate iterables of different lengths, use <code class="docutils literal notranslate"><span class="pre">itertools.zip_longest</span></code>. This method will fill missing values with <code class="docutils literal notranslate"><span class="pre">fillvalue</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">zip_longest</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;apple&#39;, 1), (&#39;orange&#39;, 2), (&#39;grape&#39;, &#39;-&#39;)]
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">list</span><span class="p">(</span><span class="n">zip_longest</span><span class="p">(</span><span class="n">fruits</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">fillvalue</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -866,7 +746,7 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 <p>Repeatedly checking elements in an iteration until a condition is met results in verbose and less readable code, especially when you want to skip elements at the beginning of a sequence.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;123ABC456&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;123ABC456&quot;</span>
 <span class="n">alpha_part</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">found_alpha</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -880,26 +760,16 @@ orange : [(&#39;orange&#39;, 2), (&#39;orange&#39;, 1)]
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ABC456
-</pre></div>
-</div>
-</div>
 </div>
 <p>With <code class="docutils literal notranslate"><span class="pre">itertools.dropwhile</span></code>, you can elegantly skip elements from the beginning of an iteration until a condition becomes False, making your code more concise and functional.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">dropwhile</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">dropwhile</span>
 
 <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;123ABC456&quot;</span>
 <span class="n">alpha_part</span> <span class="o">=</span> <span class="n">dropwhile</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isdigit</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alpha_part</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ABC456
 </pre></div>
 </div>
 </div>

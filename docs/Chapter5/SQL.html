@@ -345,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/SQL.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/SQL.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -424,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       <li><a href="../_sources/Chapter5/SQL.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/SQL.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -433,7 +450,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -547,7 +564,7 @@ document.write(`
 <p>string Template supports $-based substitutions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%writefile query.sql
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>%%writefile query.sql
 SELECT
     *
 FROM
@@ -559,15 +576,10 @@ WHERE
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing query.sql
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">from</span> <span class="nn">string</span> <span class="kn">import</span> <span class="n">Template</span>
 
 <span class="c1"># Read the query from the file</span>
@@ -580,18 +592,6 @@ WHERE
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
-    *
-FROM
-    my_table
-LIMIT
-    10
-WHERE
-    start_date &gt; 2021-01-01;
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="read-data-from-a-sql-table">
@@ -600,7 +600,7 @@ WHERE
 <p>To read a SQL table into a pandas DataFrame, pass the database connection obtained from the SQLAlchemy Engine to the <code class="docutils literal notranslate"><span class="pre">pandas.read_sql</span></code> method.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">sqlalchemy</span>
 
 <span class="c1"># Create a SQLAlchemy engine</span>
@@ -625,7 +625,7 @@ WHERE
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>fugue<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install fugue 
 </pre></div>
 </div>
 </div>
@@ -634,7 +634,7 @@ WHERE
 <p>Do you like to use both Python and SQL to manipulate data? FugueSQL is an interface that allows users to use SQL to work with Pandas, Spark, and Dask DataFrames.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">fugue_sql</span> <span class="kn">import</span> <span class="n">fsql</span>
 
 <span class="n">input_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">])})</span>
@@ -646,19 +646,6 @@ WHERE
 <span class="s2">&quot;&quot;&quot;</span>
 
 <span class="n">fsql</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PandasDataFrame
-price:long|fruit:str
-----------+---------
-2         |apple    
-3         |orange   
-Total count: 2
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrames()
 </pre></div>
 </div>
 </div>
@@ -674,7 +661,7 @@ Total count: 2
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlmodel
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install sqlmodel
 </pre></div>
 </div>
 </div>
@@ -683,7 +670,7 @@ Total count: 2
 <p>Interacting with SQL databases from Python code can often be challenging to write and comprehend.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
 
 <span class="c1"># Connect to the database</span>
 <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;users.db&#39;</span><span class="p">)</span>
@@ -734,7 +721,7 @@ Total count: 2
 <p>However, by utilizing SQLModel, you can harness Pydantic-like classes that leverage Python type annotations, making the code more intuitive to write and easier to understand.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Session</span><span class="p">,</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">create_engine</span>
 
@@ -776,7 +763,7 @@ Total count: 2
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlfluff
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install sqlfluff
 </pre></div>
 </div>
 </div>
@@ -787,7 +774,7 @@ Total count: 2
 <p>To demonstrate, let’s create a sample SQL file named <code class="docutils literal notranslate"><span class="pre">sqlfluff_example.sql</span></code> with a simple <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> statement.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> sqlfluff_example.sql
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">sqlfluff_example</span><span class="o">.</span><span class="n">sql</span>
 <span class="n">SELECT</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>  <span class="n">AS</span> <span class="n">foo</span><span class="p">,</span>
 <span class="n">c</span> <span class="n">AS</span> <span class="n">bar</span> <span class="kn">from</span> <span class="nn">my_table</span>
 </pre></div>
@@ -800,33 +787,7 @@ Total count: 2
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>sqlfluff<span class="w"> </span>lint<span class="w"> </span>sqlfluff_example.sql<span class="w"> </span>--dialect<span class="w"> </span>postgres
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>== [<span class=" -Color -Color-Bold -Color-Bold-Black">sqlfluff_example.sql</span>] <span class=" -Color -Color-Red">FAIL</span>                            
-<span class=" -Color -Color-Blue">L:   1 | P:   1 | LT09 | </span>Select targets should be on a new line unless there is
-                       <span class=" -Color -Color-Blue">| </span>only one select target.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.select_targets</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   1 | ST06 | </span>Select wildcards then simple targets before calculations
-                       <span class=" -Color -Color-Blue">| </span>and aggregates. [<span class=" -Color -Color-Bold -Color-Bold-Black">structure.column_order</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   7 | LT02 | </span>Expected line break and indent of 4 spaces before &#39;a&#39;.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:   9 | LT01 | </span>Expected single whitespace between naked identifier and
-                       <span class=" -Color -Color-Blue">| </span>binary operator &#39;+&#39;. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:  10 | LT01 | </span>Expected single whitespace between binary operator &#39;+&#39;
-                       <span class=" -Color -Color-Blue">| </span>and naked identifier. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   1 | P:  11 | LT01 | </span>Expected only single space before &#39;AS&#39; keyword. Found &#39; 
-                       <span class=" -Color -Color-Blue">| </span>&#39;. [<span class=" -Color -Color-Bold -Color-Bold-Black">layout.spacing</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:   1 | LT02 | </span>Expected indent of 4 spaces.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:   9 | LT02 | </span>Expected line break and no indent before &#39;from&#39;.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">layout.indent</span>]
-<span class=" -Color -Color-Blue">L:   2 | P:  10 | CP01 | </span>Keywords must be consistently upper case.
-                       <span class=" -Color -Color-Blue">| </span>[<span class=" -Color -Color-Bold -Color-Bold-Black">capitalisation.keywords</span>]
-All Finished 📜 🎉!
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!sqlfluff lint sqlfluff_example.sql --dialect postgres
 </pre></div>
 </div>
 </div>
@@ -837,15 +798,7 @@ All Finished 📜 🎉!
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cat</span> sqlfluff_example.sql
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
-    c AS bar,
-    a + b AS foo
-FROM my_table
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">cat</span> <span class="n">sqlfluff_example</span><span class="o">.</span><span class="n">sql</span>
 </pre></div>
 </div>
 </div>
@@ -903,14 +856,14 @@ FROM my_table
 <h2><span class="section-number">6.13.7. </span>Efficient SQL Operations with DuckDB on Pandas DataFrames<a class="headerlink" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>duckdb
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install --quiet duckdb
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!wget -q https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
 </pre></div>
 </div>
 </div>
@@ -928,7 +881,7 @@ FROM my_table
 <p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">duckdb</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
@@ -938,7 +891,7 @@ FROM my_table
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">timeit</span>
 <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;l_returnflag&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
   <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
   <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
@@ -948,15 +901,10 @@ FROM my_table
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>226 ms ± 4.63 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">timeit</span>
 <span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">SELECT</span>
 <span class="s2">      l_returnflag,</span>
@@ -971,11 +919,6 @@ FROM my_table
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37 ms ± 2.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
 </section>
@@ -983,14 +926,14 @@ FROM my_table
 <h2><span class="section-number">6.13.8. </span>Efficiently Handle Large Datasets with DuckDB and PyArrow<a class="headerlink" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install deltalake duckdb 
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!wget -q https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
 </pre></div>
 </div>
 </div>
@@ -1000,7 +943,7 @@ FROM my_table
 <p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">duckdb</span>
 <span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
 
@@ -1012,7 +955,7 @@ FROM my_table
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">DeltaTable</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1021,28 +964,18 @@ FROM my_table
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">timeit</span>
 <span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
 <span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.77 s ± 108 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">timeit</span>
 <span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pyarrow_dataset</span><span class="p">())</span>
 <span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>954 µs ± 32.2 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
@@ -1058,7 +991,7 @@ FROM my_table
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install duckdb 
 </pre></div>
 </div>
 </div>
@@ -1068,7 +1001,7 @@ FROM my_table
 <p>To demonstrate this, let’s create a CSV file called <code class="docutils literal notranslate"><span class="pre">customer.csv</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Create a sample dataframe</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
@@ -1103,23 +1036,9 @@ FROM my_table
 <p>In contrast, DuckDB allows for direct reading of CSV files from disk, eliminating the need for explicit table creation and data loading.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
 
 <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM &#39;customers.csv&#39;&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>┌─────────┬───────┬──────────┐
-│  name   │  age  │   city   │
-│ varchar │ int64 │ varchar  │
-├─────────┼───────┼──────────┤
-│ Alice   │    25 │ New York │
-│ Bob     │    32 │ London   │
-│ Charlie │    45 │ Paris    │
-│ David   │    19 │ Berlin   │
-│ Eve     │    38 │ Tokyo    │
-└─────────┴───────┴──────────┘
 </pre></div>
 </div>
 </div>
@@ -1135,7 +1054,7 @@ FROM my_table
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install duckdb
 </pre></div>
 </div>
 </div>
@@ -1145,7 +1064,7 @@ FROM my_table
 <p>Example using SQLite (row-based):</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -1168,7 +1087,7 @@ FROM my_table
 <p>DuckDB uses columnar storage, allowing you to efficiently read and process only the columns needed for your analysis. This improves both query speed and memory usage:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -1184,44 +1103,6 @@ FROM my_table
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>age</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>25</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>30</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>35</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>In this example, DuckDB only needs to access the ‘age’ column in memory, while SQLite must read all columns (‘id’, ‘name’, ‘age’) internally even though only ‘age’ is selected. DuckDB also provides a simpler workflow by querying pandas DataFrames directly.</p>
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
@@ -1235,7 +1116,7 @@ FROM my_table
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sql-metadata
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install sql-metadata
 </pre></div>
 </div>
 </div>
@@ -1244,7 +1125,7 @@ FROM my_table
 <p>If you want to extract specific components of a SQL statement for downstream Python tasks, use sql_metdata.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sql_metadata</span> <span class="kn">import</span> <span class="n">Parser</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sql_metadata</span> <span class="kn">import</span> <span class="n">Parser</span>
 
 <span class="n">parsed_query</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">(</span>
     <span class="s2">&quot;SELECT foo.value as alias1 FROM foo JOIN bar ON foo.id = bar.id LIMIT 10&quot;</span>
@@ -1255,15 +1136,6 @@ FROM my_table
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Columns dict: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">columns_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aliases: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">columns_aliases</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Limit: </span><span class="si">{</span><span class="n">parsed_query</span><span class="o">.</span><span class="n">limit_and_offset</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Columns: [&#39;foo.value&#39;, &#39;foo.id&#39;, &#39;bar.id&#39;]
-Tables: [&#39;foo&#39;, &#39;bar&#39;]
-Columns dict: {&#39;select&#39;: [&#39;foo.value&#39;], &#39;join&#39;: [&#39;foo.id&#39;, &#39;bar.id&#39;]}
-Aliases: {&#39;alias1&#39;: &#39;foo.value&#39;}
-Limit: (10, 0)
 </pre></div>
 </div>
 </div>
@@ -1279,7 +1151,7 @@ Limit: (10, 0)
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;sqlglot[rs]&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install &quot;sqlglot[rs]&quot;
 </pre></div>
 </div>
 </div>
@@ -1289,7 +1161,7 @@ Limit: (10, 0)
 <p>SQLGlot addresses this by providing a parser and transpiler supporting 21 dialects. This enables automatic SQL translation between systems, eliminating the need for manual query rewrites.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlglot</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlglot</span>
 </pre></div>
 </div>
 </div>
@@ -1297,12 +1169,7 @@ Limit: (10, 0)
 <p>Convert a DuckDB-specific date formatting query into an equivalent query in Hive SQL:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="s2">&quot;SELECT STRFTIME(x, &#39;%y-%-m-%S&#39;)&quot;</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="s2">&quot;duckdb&quot;</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;SELECT DATE_FORMAT(x, &#39;yy-M-ss&#39;)&quot;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="s2">&quot;SELECT STRFTIME(x, &#39;%y-%-m-%S&#39;)&quot;</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="s2">&quot;duckdb&quot;</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1310,20 +1177,11 @@ Limit: (10, 0)
 <p>Convert a SQL query to Spark SQL:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`</span>
 <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, name, CAST(price AS REAL) AS converted_price FROM products&quot;</span>
 
 <span class="c1"># Translates the query into Spark SQL, formats it, and delimits all of its identifiers</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;spark&quot;</span><span class="p">,</span> <span class="n">identify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
-  `id`,
-  `name`,
-  CAST(`price` AS FLOAT) AS `converted_price`
-FROM `products`
 </pre></div>
 </div>
 </div>
@@ -1339,7 +1197,7 @@ FROM `products`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlitedict
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install sqlitedict
 </pre></div>
 </div>
 </div>
@@ -1348,7 +1206,7 @@ FROM `products`
 <p>Writing data to SQLite directly and reading it back requires verbose SQL statements, schema definitions, and type handling, which can be tedious when storing complex Python objects or making frequent changes results in complex code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
 
 <span class="n">products_to_update</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s2">&quot;P1&quot;</span><span class="p">,</span> <span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="mf">999.99</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
@@ -1373,7 +1231,7 @@ FROM `products`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;example.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;example.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
     <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
     <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id, name, price, stock FROM products&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
@@ -1382,18 +1240,11 @@ FROM `products`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P1={&#39;name&#39;: &#39;Laptop&#39;, &#39;price&#39;: 999.99, &#39;stock&#39;: 50}
-P2={&#39;name&#39;: &#39;Mouse&#39;, &#39;price&#39;: 29.99, &#39;stock&#39;: 100}
-P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;: 75}
-</pre></div>
-</div>
-</div>
 </div>
 <p>You can use SqliteDict to handle all the SQL and serialization complexity with a familiar dictionary interface:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlitedict</span> <span class="kn">import</span> <span class="n">SqliteDict</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sqlitedict</span> <span class="kn">import</span> <span class="n">SqliteDict</span>
 
 <span class="n">products_to_update</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;P1&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="mf">999.99</span><span class="p">,</span> <span class="s2">&quot;stock&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
@@ -1414,16 +1265,9 @@ P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">SqliteDict</span><span class="p">(</span><span class="s2">&quot;example2.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">SqliteDict</span><span class="p">(</span><span class="s2">&quot;example2.db&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">db</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>P1={&#39;name&#39;: &#39;Laptop&#39;, &#39;price&#39;: 999.99, &#39;stock&#39;: 50}
-P2={&#39;name&#39;: &#39;Mouse&#39;, &#39;price&#39;: 29.99, &#39;stock&#39;: 100}
-P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;: 75}
 </pre></div>
 </div>
 </div>

@@ -1,0 +1,81 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+## Set
+
++++
+
+### Python Set Manipulation: Adding, Removing, and Checking Subsets
+
++++
+
+Sets in Python offer efficient ways to handle unique elements. Here are three essential operations:
+
++++
+
+Adding an element:
+
+```{code-cell} ipython3
+# Creating a set
+fruits = {"apple", "banana", "cherry"}
+
+# Add a single element
+fruits.add("orange")
+fruits
+```
+
+Removing an element:
+
+```{code-cell} ipython3
+fruits.remove("banana")
+fruits
+```
+
+Checking for subsets:
+
+```{code-cell} ipython3
+# Check if a set is a subset
+is_subset = {"apple", "cherry"}.issubset(fruits)
+is_subset
+```
+
+### Mastering Set Operations in Python: Union and Intersection
+
++++
+
+Python sets are powerful tools for handling unique collections. Let's explore two key operations:
+
+Union: Combine sets to get all unique elements
+
+```{code-cell} ipython3
+# Creating a set
+fruits = {"apple", "banana", "cherry"}
+
+more_fruits = {"mango", "grape"}
+all_fruits = fruits.union(more_fruits)
+all_fruits
+```
+
+Intersection: Find common elements between sets
+
+```{code-cell} ipython3
+tropical_fruits = {"banana", "mango", "pineapple"}
+common_fruits = all_fruits.intersection(tropical_fruits)
+common_fruits
+```
+
+```{code-cell} ipython3
+# Difference with another set
+non_tropical_fruits = all_fruits.difference(tropical_fruits)
+non_tropical_fruits
+```

@@ -345,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/llm.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/llm.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -424,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       <li><a href="../_sources/Chapter5/llm.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/llm.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -433,7 +450,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -541,7 +558,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>magentic
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install magentic
 </pre></div>
 </div>
 </div>
@@ -551,7 +568,7 @@ document.write(`
 <p>With magentic, you can use the <code class="docutils literal notranslate"><span class="pre">&#64;prompt</span></code> decorator to create functions that return organized LLM results, keeping your code neat and easy to read.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openai</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openai</span>
 
 <span class="n">openai</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="s2">&quot;sk-...&quot;</span>
 </pre></div>
@@ -560,7 +577,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magentic</span> <span class="kn">import</span> <span class="n">prompt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magentic</span> <span class="kn">import</span> <span class="n">prompt</span>
 
 
 <span class="nd">@prompt</span><span class="p">(</span><span class="s1">&#39;Add more &quot;dude&quot;ness to: </span><span class="si">{phrase}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -573,16 +590,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;Yo dude, how&#39;s it going?&quot;
-</pre></div>
-</div>
-</div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">&#64;prompt</span></code> decorator will consider the return type annotation, including those supported by pydantic.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magentic</span> <span class="kn">import</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">FunctionCall</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">magentic</span> <span class="kn">import</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">FunctionCall</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
 
@@ -602,16 +614,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MilkTea(tea=&#39;green tea&#39;, sweetness_percentage=100.0, topping=&#39;boba&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">&#64;prompt</span></code> decorator also considers a function call.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">froth_milk</span><span class="p">(</span><span class="n">temperature</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">texture</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;foamy&quot;</span><span class="p">,</span> <span class="s2">&quot;hot&quot;</span><span class="p">,</span> <span class="s2">&quot;cold&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">froth_milk</span><span class="p">(</span><span class="n">temperature</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">texture</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;foamy&quot;</span><span class="p">,</span> <span class="s2">&quot;hot&quot;</span><span class="p">,</span> <span class="s2">&quot;cold&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Froth the milk to the desired temperature and texture.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Frothing milk to </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s2"> F with texture </span><span class="si">{</span><span class="n">texture</span><span class="si">}</span><span class="s2">&quot;</span>
 
@@ -626,11 +633,6 @@ document.write(`
 
 <span class="n">output</span> <span class="o">=</span> <span class="n">configure_coffee</span><span class="p">(</span><span class="s2">&quot;latte!&quot;</span><span class="p">)</span>
 <span class="n">output</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Frothing milk to 60 F with texture foamy&#39;
 </pre></div>
 </div>
 </div>
@@ -674,7 +676,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mirascope
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install mirascope
 </pre></div>
 </div>
 </div>
@@ -685,7 +687,7 @@ document.write(`
 <p>The following code uses Mirascope to extract meeting details such as topic, date, time, and participants.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_API_KEY&quot;</span>
@@ -695,7 +697,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Type</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span> <span class="nn">mirascope.openai</span> <span class="kn">import</span> <span class="n">OpenAIExtractor</span>
 
@@ -725,11 +727,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>topic=&#39;Upcoming product launch&#39; date=&#39;June 15th&#39; time=&#39;3 PM&#39; participants=[&#39;John&#39;, &#39;Sarah&#39;, &#39;Mike&#39;]
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://bit.ly/4bkciv3">Link to Mirascope</a>.</p>
 </section>
@@ -742,7 +739,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>mirascope
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U mirascope
 </pre></div>
 </div>
 </div>
@@ -757,7 +754,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
 
 <span class="c1"># Set up database and table for the example below</span>
 <span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;grocery.db&quot;</span><span class="p">)</span>
@@ -793,16 +790,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Database created with sample data.
-</pre></div>
-</div>
-</div>
 </details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_API_KEY&quot;</span>
@@ -812,7 +804,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mirascope.openai</span> <span class="kn">import</span> <span class="n">OpenAICall</span><span class="p">,</span> <span class="n">OpenAICallParams</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mirascope.openai</span> <span class="kn">import</span> <span class="n">OpenAICall</span><span class="p">,</span> <span class="n">OpenAICallParams</span>
 <span class="kn">import</span> <span class="nn">sqlite3</span>
 
 <span class="c1"># Assume you have a SQLite database with a &#39;grocery_items&#39; table</span>
@@ -850,16 +842,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;The price for banana is 0.5.&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://bit.ly/4awfNhg">Link to Mirascope</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>chromadb<span class="w"> </span><span class="s1">&#39;numpy&lt;2&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install chromadb &#39;numpy&lt;2&#39;
 </pre></div>
 </div>
 </div>
@@ -867,7 +854,7 @@ document.write(`
 <p>Managing and querying large collections of text data using traditional databases or simple search methods results in poor semantic matches and complex implementation. This causes difficulties in building AI applications that need to find contextually similar content.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional approach with basic text search</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional approach with basic text search</span>
 <span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;The weather is great today&quot;</span><span class="p">,</span>
     <span class="s2">&quot;The climate is excellent&quot;</span><span class="p">,</span>
@@ -883,16 +870,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;The weather is great today&#39;]
-</pre></div>
-</div>
-</div>
 </div>
 <p>You can use Chroma to easily store and query documents using their semantic meaning through embeddings. The tool handles the embedding creation and similarity search automatically, making it simple to build AI applications with semantic search capabilities.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">chromadb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">chromadb</span>
 
 <span class="c1"># Initialize client and collection</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">chromadb</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>

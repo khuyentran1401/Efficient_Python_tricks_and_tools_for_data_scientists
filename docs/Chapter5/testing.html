@@ -270,8 +270,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. PySpark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.15. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deltalake.html">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -343,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/testing.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/testing.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -422,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       <li><a href="../_sources/Chapter5/testing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/testing.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -431,7 +450,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -621,7 +640,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-benchmark
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest-benchmark
 </pre></div>
 </div>
 </div>
@@ -631,7 +650,7 @@ document.write(`
 <p>To use pytest-benchmark works, add <code class="docutils literal notranslate"><span class="pre">benchmark</span></code> to the test function that you want to benchmark.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_benchmark_example.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_benchmark_example</span><span class="o">.</span><span class="n">py</span>
 <span class="k">def</span> <span class="nf">list_comprehension</span><span class="p">(</span><span class="n">len_list</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_list</span><span class="p">)]</span>
 
@@ -649,45 +668,6 @@ document.write(`
 </div>
 <p>Now you should see the statistics of the time it takes to execute the test functions on your terminal:</p>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter4
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0
-collected 1 item                                                               
-
-pytest_benchmark_example.py <span class=" -Color -Color-Green">.                                            [100%]</span>
-
-
-<span class=" -Color -Color-Yellow">----------------------------------------------------- benchmark: 1 tests ----------------------------------------------------</span>
-Name (time in ns)          Min         Max      Mean    StdDev    Median     IQR   Outliers  OPS (Mops/s)  Rounds  Iterations
-<span class=" -Color -Color-Yellow">-----------------------------------------------------------------------------------------------------------------------------</span>
-test_concat         <span class=" -Color -Color-Bold">  286.4501  4,745.5498  309.3872  106.6583  297.5001  5.3500</span>  2686;5843<span class=" -Color -Color-Bold">        3.2322</span>  162101          20
-<span class=" -Color -Color-Yellow">-----------------------------------------------------------------------------------------------------------------------------</span>
-
-Legend:
-  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
-  OPS: Operations Per Second, computed as 1 / Mean
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 2.47s ===============================</span>
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 42;
-                var nbb_unformatted_code = "!pytest pytest_benchmark_example.py ";
-                var nbb_formatted_code = "!pytest pytest_benchmark_example.py";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/ionelmc/pytest-benchmark">Link to pytest-benchmark</a>.</p>
 </section>
@@ -700,7 +680,7 @@ Legend:
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest 
 </pre></div>
 </div>
 </div>
@@ -710,7 +690,7 @@ Legend:
 <p>To use <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code>, add <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.parametrize</span></code> to the test function that you want to experiment with.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_parametrize.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_parametrize</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="k">def</span> <span class="nf">text_contain_word</span><span class="p">(</span><span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -732,32 +712,12 @@ Legend:
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing pytest_parametrize.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>In the code above, I expect the first sentence to contain the word “duck” and expect the second sentence not to contain that word. Let’s see if my expectations are correct by running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_parametrize.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0 -- /Users/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-rootdir: /Users/khuyen/book/book/Chapter5
-plugins: anyio-3.6.2
-collected 2 items                                                              
-
-pytest_parametrize.py::test_text_contain_word[There is a duck in this text-True] <span class=" -Color -Color-Green">PASSED [ 50%]</span>
-pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span class=" -Color -Color-Green">PASSED [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">2 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>Sweet! 2 tests passed when running pytest.</p>
 <p><a class="reference external" href="https://towardsdatascience.com/pytest-for-data-scientists-2990319e55e6?sk=2d3a81903b154db0c7ca832b9f29fee8">Link to my article about pytest</a>.</p>
@@ -771,7 +731,7 @@ pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest 
 </pre></div>
 </div>
 </div>
@@ -795,7 +755,7 @@ pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span
 <p>You can save your time by using <code class="docutils literal notranslate"><span class="pre">pytest.mark.parametrize</span></code> twice instead.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_combination.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_combination</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -818,25 +778,6 @@ pytest_parametrize.py::test_text_contain_word[There is nothing here-False] <span
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, typeguard-2.13.3
-collected 4 items                                                              
-
-pytest_combination.py::test_is_float[1-2-average] <span class=" -Color -Color-Green">PASSED                 [ 25%]</span>
-pytest_combination.py::test_is_float[1-2-perc_difference] <span class=" -Color -Color-Green">PASSED         [ 50%]</span>
-pytest_combination.py::test_is_float[2-3-average] <span class=" -Color -Color-Green">PASSED                 [ 75%]</span>
-pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -Color-Green">PASSED         [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">4 passed</span><span class=" -Color -Color-Green"> in 0.27s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>From the output above, we can see that all possible combinations of the given operations and inputs are tested.</p>
 </section>
@@ -845,7 +786,7 @@ pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -
 <p>When using pytest parametrize, it can be difficult to understand the role of each test case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_without_ids.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_without_ids</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
 
 
@@ -866,29 +807,11 @@ pytest_combination.py::test_is_float[2-3-perc_difference] <span class=" -Color -
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, cases-3.6.10, typeguard-2.13.3
-collected 3 items                                                              
-
-pytest_without_ids.py::test_is_float[-1--2] <span class=" -Color -Color-Green">PASSED                       [ 33%]</span>
-pytest_without_ids.py::test_is_float[2-3] <span class=" -Color -Color-Green">PASSED                         [ 66%]</span>
-pytest_without_ids.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED                         [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.26s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>You can add <code class="docutils literal notranslate"><span class="pre">ids</span></code> to pytest parametrize to assign a name to each test case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_ids.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_ids</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">mark</span>
 
 <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
@@ -909,30 +832,12 @@ pytest_without_ids.py::test_is_float[0-0] <span class=" -Color -Color-Green">PAS
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-0.13.1 -- /home/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(&#39;/home/khuyen/book/book/Chapter5/.hypothesis/examples&#39;)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, cases-3.6.10, typeguard-2.13.3
-collected 3 items                                                              
-
-pytest_ids.py::test_is_float[neg and neg] <span class=" -Color -Color-Green">PASSED                         [ 33%]</span>
-pytest_ids.py::test_is_float[pos and pos] <span class=" -Color -Color-Green">PASSED                         [ 66%]</span>
-pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">PASSED                       [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.27s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>We can see that instead of <code class="docutils literal notranslate"><span class="pre">[-1--2]</span></code>, the first test case is shown as <code class="docutils literal notranslate"><span class="pre">neg</span> <span class="pre">and</span> <span class="pre">neg</span></code>. This makes it easier for others to understand the roles of your test cases.</p>
 <p>If you want to specify the test IDs together with the actual data, instead of listing them separately, use <code class="docutils literal notranslate"><span class="pre">pytest.param</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_param.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_param</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 
@@ -959,24 +864,7 @@ pytest_ids.py::test_is_float[zero and zero] <span class=" -Color -Color-Green">P
 </div>
 <div class="cell tag_hide-inpy docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>-v<span class="w"> </span>pytest_param.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.8.9, pytest-7.1.2, pluggy-1.0.0 -- /Users/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-3.6.1, pyfakefs-4.6.3, picked-0.4.6
-<span class=" -Color -Color-Bold">collecting ... </span>
-<span class=" -Color -Color-Bold">collected 3 items                                                              </span>
-
-pytest_param.py::test_is_float[neg-neg] <span class=" -Color -Color-Green">PASSED                           [ 33%]</span>
-pytest_param.py::test_is_float[pos-pos] <span class=" -Color -Color-Green">PASSED                           [ 66%]</span>
-pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED                               [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">3 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest -v pytest_param.py
 </pre></div>
 </div>
 </div>
@@ -991,7 +879,7 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>textblob<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest textblob 
 </pre></div>
 </div>
 </div>
@@ -1001,7 +889,7 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
 <p>To use pytest fixtures,  add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.fixture</span></code> to the function that creates the data you want to reuse.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_fixture.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_fixture</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 <span class="kn">from</span> <span class="nn">textblob</span> <span class="kn">import</span> <span class="n">TextBlob</span>
 
@@ -1028,20 +916,6 @@ pytest_param.py::test_is_float[0-0] <span class=" -Color -Color-Green">PASSED   
 </div>
 <p>Output:</p>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-1.0.0
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter4
-plugins: benchmark-3.4.1, anyio-3.3.0
-collected 1 item                                                               
-
-pytest_fixture.py <span class=" -Color -Color-Green">.                                                      [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.53s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="execute-a-fixture-only-once-per-session">
@@ -1075,7 +949,7 @@ Test<span class="w"> </span>modulus...
 <p>If a fixture is expensive to execute, you can make the fixture be executed only once per session using <code class="docutils literal notranslate"><span class="pre">scope=session</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_scope.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_scope</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
@@ -1107,7 +981,7 @@ Test<span class="w"> </span>modulus...
 <p>If you want to skip a test when a condition is not met, use pytest <code class="docutils literal notranslate"><span class="pre">skipif</span></code>. For example, in the code below, I use <code class="docutils literal notranslate"><span class="pre">skipif</span></code> to skip a test if the python version is less than 3.9.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_skip.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_skip</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">pytest</span> 
 
@@ -1127,20 +1001,6 @@ Test<span class="w"> </span>modulus...
 </div>
 <p>Output:</p>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.8.10, pytest-7.1.2, pluggy-1.0.0 -- /Users/khuyen/book/venv/bin/python3
-cachedir: .pytest_cache
-rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-<span class=" -Color -Color-Bold">collecting ... </span>
-<span class=" -Color -Color-Bold">collected 1 item                                                               </span>
-
-pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> (Eequires Python 3.9 or higher)<span class=" -Color -Color-Yellow">     [100%]</span>
-
-<span class=" -Color -Color-Yellow">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Yellow">1 skipped</span><span class=" -Color -Color-Yellow"> in 0.01s ==============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="pytest-xfail-mark-a-test-as-expected-to-fail">
@@ -1149,7 +1009,7 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 <p>To be more specific about what exception you expect to see, use the <code class="docutils literal notranslate"><span class="pre">raises</span></code> argument.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
@@ -1162,52 +1022,10 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>col1</th>
-    </tr>
-    <tr>
-      <th>col2</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>a</th>
-      <td>1.5</td>
-    </tr>
-    <tr>
-      <th>b</th>
-      <td>3.5</td>
-    </tr>
-    <tr>
-      <th>c</th>
-      <td>3.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_mark_xfail.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_mark_xfail</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1226,11 +1044,6 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing pytest_mark_xfail.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>On your terminal, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_mark_xfail.py
@@ -1238,20 +1051,6 @@ pytest_skip.py::test_add_two <span class=" -Color -Color-Yellow">SKIPPED</span> 
 </div>
 <p>We can see that no test failed.</p>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, hypothesis-6.88.4
-collected 1 item                                                               
-
-pytest_mark_xfail.py <span class=" -Color -Color-Yellow">x                                                   [100%]</span>
-
-<span class=" -Color -Color-Yellow">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Yellow">1 xfailed</span><span class=" -Color -Color-Yellow"> in 0.31s ==============================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="stop-flaky-float-tests-with-pytest-approx">
@@ -1261,7 +1060,7 @@ pytest_mark_xfail.py <span class=" -Color -Color-Yellow">x                      
 <p>Here’s a code example to show its usefulness:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_approx.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_approx</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
 
@@ -1285,40 +1084,10 @@ pytest_mark_xfail.py <span class=" -Color -Color-Yellow">x                      
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_approx.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>test_approx.py<span class="w"> </span>-sv
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.6, pytest-8.2.0, pluggy-1.5.0
-Fugue tests will be initialized with options:
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-4.0.0, dash-2.17.1, fugue-0.9.1, Faker-19.13.0, returns-0.22.0
-collected 3 items                                                              
-
-test_approx.py <span class=" -Color -Color-Red">F</span><span class=" -Color -Color-Green">..</span><span class=" -Color -Color-Red">                                                       [100%]</span>
-
-=================================== FAILURES ===================================
-<span class=" -Color -Color-Bold -Color-Bold-Red">_______________________ test_calculation_without_approx ________________________</span>
-
-    def test_calculation_without_approx():
-        result = 0.1 + 0.2
-&gt;       assert result == 0.3  # This fails!
-<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert 0.30000000000000004 == 0.3</span>
-
-<span class=" -Color -Color-Bold -Color-Bold-Red">test_approx.py</span>:7: AssertionError
-<span class=" -Color -Color-Bold -Color-Bold-Cyan">=========================== short test summary info ============================</span>
-<span class=" -Color -Color-Red">FAILED</span> test_approx.py::<span class=" -Color -Color-Bold">test_calculation_without_approx</span> - assert 0.30000000000000004 == 0.3
-<span class=" -Color -Color-Red">========================= </span><span class=" -Color -Color-Bold -Color-Bold-Red">1 failed</span>, <span class=" -Color -Color-Green">2 passed</span><span class=" -Color -Color-Red"> in 0.10s ==========================</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest test_approx.py -sv
 </pre></div>
 </div>
 </div>
@@ -1336,7 +1105,7 @@ test_approx.py <span class=" -Color -Color-Red">F</span><span class=" -Color -Co
 <p>For example, you can use it to test if a ValueError is thrown when there are NaN values in the group column.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_to_fail.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_to_fail</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1355,30 +1124,11 @@ test_approx.py <span class=" -Color -Color-Red">F</span><span class=" -Color -Co
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting pytest_to_fail.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_to_fail.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, hypothesis-6.88.4
-collected 1 item                                                               
-
-pytest_to_fail.py <span class=" -Color -Color-Green">.                                                      [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.28s ===============================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="organize-and-control-test-execution-using-pytest-mark">
@@ -1387,7 +1137,7 @@ pytest_to_fail.py <span class=" -Color -Color-Green">.                          
 <p>For instance, you can mark slow tests or tests involving integration with external services to run them separately or exclude them from regular test runs. This helps you organize and execute your tests more effectively.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> pytest_mark.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">pytest_mark</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
@@ -1413,71 +1163,24 @@ pytest_to_fail.py <span class=" -Color -Color-Green">.                          
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting pytest_mark.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>Run only slow tests:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_mark.py<span class="w"> </span>-m<span class="w"> </span>slow
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 4 items / 3 deselected / 1 selected                                  
-
-pytest_mark.py <span class=" -Color -Color-Green">.</span><span class=" -Color -Color-Yellow">                                                         [100%]</span>
-
-<span class=" -Color -Color-Yellow">================= </span><span class=" -Color -Color-Green">1 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">3 deselected</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">2 warnings</span><span class=" -Color -Color-Yellow"> in 5.02s ==================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 <p>Skip slow tests:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_mark.py<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;not slow&quot;</span>
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 4 items / 1 deselected / 3 selected                                  
-
-pytest_mark.py <span class=" -Color -Color-Green">...</span><span class=" -Color -Color-Yellow">                                                       [100%]</span>
-
-<span class=" -Color -Color-Yellow">================= </span><span class=" -Color -Color-Green">3 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">1 deselected</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">2 warnings</span><span class=" -Color -Color-Yellow"> in 0.01s ==================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 <p>Skip database tests:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>pytest_mark.py<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;not db&quot;</span><span class="w"> </span>
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 4 items / 1 deselected / 3 selected                                  
-
-pytest_mark.py <span class=" -Color -Color-Green">...</span><span class=" -Color -Color-Yellow">                                                       [100%]</span>
-
-<span class=" -Color -Color-Yellow">================= </span><span class=" -Color -Color-Green">3 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">1 deselected</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">2 warnings</span><span class=" -Color -Color-Yellow"> in 5.02s ==================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="verify-logging-error-with-pytest">
@@ -1486,7 +1189,7 @@ pytest_mark.py <span class=" -Color -Color-Green">...</span><span class=" -Color
 <p>This fixture allows you to capture log messages generated during the execution of your test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_logging.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_logging</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -1509,19 +1212,6 @@ pytest_mark.py <span class=" -Color -Color-Green">...</span><span class=" -Color
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-3.6.2
-collected 1 item                                                               
-
-<span class=" -Color -Color-Bold">test_logging.py </span><span class=" -Color -Color-Bold -Color-Bold-Green">.</span><span class=" -Color -Color-Green">                                                        [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.66s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="pytest-repeat">
@@ -1533,7 +1223,7 @@ collected 1 item
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-repeat
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest-repeat
 </pre></div>
 </div>
 </div>
@@ -1543,16 +1233,16 @@ collected 1 item
 <p>To use pytest-repeat, add the decorator <code class="docutils literal notranslate"><span class="pre">&#64;pytest.mark.repeat(N)</span></code> to the test function you want to repeat <code class="docutils literal notranslate"><span class="pre">N</span></code> times</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="k">writfile</span> pytest_repeat_example.py
-import pytest 
-import random 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writfile</span> <span class="n">pytest_repeat_example</span><span class="o">.</span><span class="n">py</span>
+<span class="kn">import</span> <span class="nn">pytest</span> 
+<span class="kn">import</span> <span class="nn">random</span> 
 
-def generate_numbers():
-    return random.randint(1, 100)
+<span class="k">def</span> <span class="nf">generate_numbers</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
-@pytest.mark.repeat(100)
-def test_generate_numbers():
-    assert generate_numbers() &gt; 1 and generate_numbers() &lt; 100
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_generate_numbers</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">generate_numbers</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
@@ -1563,21 +1253,6 @@ def test_generate_numbers():
 </div>
 <p>We can see that 100 experiments are executed and passed:</p>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform linux -- Python 3.8.10, pytest-6.2.5, py-1.10.0, pluggy-1.0.0
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter4
-plugins: benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0
-collected 100 items                                                            
-
-pytest_repeat_example.py <span class=" -Color -Color-Green">............................................... [ 47%]</span>
-<span class=" -Color -Color-Green">.....................................................                    [100%]</span>
-
-<span class=" -Color -Color-Green">============================= </span><span class=" -Color -Color-Bold -Color-Bold-Green">100 passed</span><span class=" -Color -Color-Green"> in 0.07s ==============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/pytest-dev/pytest-repeat">Link to pytest-repeat</a></p>
 </section>
@@ -1590,7 +1265,7 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-sugar<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest-sugar 
 </pre></div>
 </div>
 </div>
@@ -1600,13 +1275,7 @@ pytest_repeat_example.py <span class=" -Color -Color-Green">....................
 <p>pytest-sugar is a plugin for pytest. To see how pytest-sugar works, assume we have several test files in the <code class="docutils literal notranslate"><span class="pre">pytest_sugar_example</span></code> directory.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">ls</span> pytest_sugar_example
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>test_benchmark_example.py  test_parametrize.py
-test_fixture.py            test_repeat_example.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">ls</span> <span class="n">pytest_sugar_example</span>
 </pre></div>
 </div>
 </div>
@@ -1616,36 +1285,6 @@ test_fixture.py            test_repeat_example.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, sugar-0.9.4
-<span class=" -Color -Color-Bold">collecting ... </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_benchmark_example.py <span class=" -Color -Color-Green">✓</span>                  <span class=" -Color -Color-Green">1% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▏         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_fixture.py <span class=" -Color -Color-Green">✓</span>                            <span class=" -Color -Color-Green">2% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▎         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_parametrize.py <span class=" -Color -Color-Green">✓✓</span>                       <span class=" -Color -Color-Green">4% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">▍         </span>
- <span class=" -Color -Color-Cyan">pytest_sugar_example/</span>test_repeat_example.py <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">23% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██▍       </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">42% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████▎     </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">62% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████▎   </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓</span> <span class=" -Color -Color-Green">81% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">████████▏ </span>
-                                             <span class=" -Color -Color-Green">✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓100% </span><span class=" -Color -Color-Green -Color-Green-BGBlack">██████████</span>
-
-<span class=" -Color -Color-Yellow">---------------------------------------------------- benchmark: 1 tests ---------------------------------------------------</span>
-Name (time in ns)          Min         Max      Mean   StdDev    Median     IQR  Outliers  OPS (Mops/s)  Rounds  Iterations
-<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
-test_concat         <span class=" -Color -Color-Bold">  302.8003  3,012.5000  328.2844  97.9087  321.5999  8.2495</span>  866;2220<span class=" -Color -Color-Bold">        3.0461</span>   90868          20
-<span class=" -Color -Color-Yellow">---------------------------------------------------------------------------------------------------------------------------</span>
-
-Legend:
-  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
-  OPS: Operations Per Second, computed as 1 / Mean
-
-Results (2.63s):
-<span class=" -Color -Color-Green">     104 passed</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/Teemu/pytest-sugar">Link to pytest-sugar</a>.</p>
 </section>
@@ -1656,7 +1295,7 @@ Results (2.63s):
 <p>In the code below, I use the result of <code class="docutils literal notranslate"><span class="pre">sum_test</span></code> as the input of <code class="docutils literal notranslate"><span class="pre">average_2_nums</span></code>. The argument <code class="docutils literal notranslate"><span class="pre">steps_data</span></code> allows me to share the data between 2 tests.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_steps.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_steps</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">pytest_steps</span> <span class="kn">import</span> <span class="n">test_steps</span>
 
 
@@ -1693,20 +1332,6 @@ Results (2.63s):
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.8.10, pytest-7.1.2, pluggy-0.13.1
-rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-3.5.0, steps-1.8.0, typeguard-2.12.1
-<span class=" -Color -Color-Bold">collecting ... </span>
-<span class=" -Color -Color-Bold">collected 2 items                                                              </span>
-
-test_steps.py <span class=" -Color -Color-Green">..                                                         [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">2 passed</span><span class=" -Color -Color-Green"> in 0.02s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://smarie.github.io/python-pytest-steps/">Link to pytest_steps</a>.</p>
 </section>
@@ -1716,7 +1341,7 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 <p>In the code below, only tests in the file <code class="docutils literal notranslate"><span class="pre">test_picked.py</span></code> are executed because it is an unstaged file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_picked.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_picked</span><span class="o">.</span><span class="n">py</span>
 <span class="k">def</span> <span class="nf">plus_one</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">num</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -1731,39 +1356,11 @@ test_steps.py <span class=" -Color -Color-Green">..                             
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>On branch master
-Your branch is up to date with &#39;origin/master&#39;.
-
-Untracked files:
-  (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
-	<span class=" -Color -Color-Red">test_picked.py</span>
-
-nothing added to commit but untracked files present (use &quot;git add&quot; to track)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>--picked
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Changed test files... 1. [&#39;test_picked.py&#39;]
-Changed test folders... 0. []
-<span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.8.9, pytest-7.1.2, pluggy-1.0.0
-rootdir: /Users/khuyen/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-3.6.1, picked-0.4.6
-<span class=" -Color -Color-Bold">collecting ... </span>
-<span class=" -Color -Color-Bold">collected 1 item                                                               </span>
-
-test_picked.py <span class=" -Color -Color-Green">.                                                         [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/anapaulagomes/pytest-picked">Link to pytest-picked</a>.</p>
 </section>
@@ -1772,7 +1369,7 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <p>When testing a Python class, it can be repetitive and time-consuming to create multiple instances to test a large number of instance methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> get_dog.py 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">get_dog</span><span class="o">.</span><span class="n">py</span> 
 <span class="k">class</span> <span class="nc">Dog</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -1786,15 +1383,10 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing get_dog.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_get_dog.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_get_dog</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">unittest</span>
 <span class="kn">from</span> <span class="nn">get_dog</span> <span class="kn">import</span> <span class="n">Dog</span>
 
@@ -1813,7 +1405,7 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <p>A better approach is to use the <code class="docutils literal notranslate"><span class="pre">setUp</span></code> method to instantiate a class object before running each test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_get_dog.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_get_dog</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">unittest</span>
 <span class="kn">from</span> <span class="nn">get_dog</span> <span class="kn">import</span> <span class="n">Dog</span>
 
@@ -1829,11 +1421,6 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing test_get_dog.py
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="freezegun-freezing-time-for-reliable-python-testing">
@@ -1845,7 +1432,7 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>freezegun
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install freezegun
 </pre></div>
 </div>
 </div>
@@ -1855,7 +1442,7 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 <p>With FreezeGun, you can freeze time at a particular point, ensuring your tests always run with the same date context.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_freezegun.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_freezegun</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">freezegun</span> <span class="kn">import</span> <span class="n">freeze_time</span>
 <span class="kn">import</span> <span class="nn">datetime</span> 
 
@@ -1868,30 +1455,11 @@ test_picked.py <span class=" -Color -Color-Green">.                             
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_freezegun.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_freezegun.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.6, pytest-8.2.0, pluggy-1.5.0
-Fugue tests will be initialized with options:
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: anyio-4.0.0, dash-2.17.1, fugue-0.9.1, Faker-19.13.0, returns-0.22.0
-collected 1 item                                                               
-
-test_freezegun.py <span class=" -Color -Color-Green">.                                                      [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.07s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>This code uses <code class="docutils literal notranslate"><span class="pre">get_day_of_week()</span></code> to return the current weekday (0-6). The <code class="docutils literal notranslate"><span class="pre">&#64;freeze_time(&quot;2024-10-13&quot;)</span></code> decorator sets a fixed date (Sunday, October 13, 2024).</p>
 <p>The test calls <code class="docutils literal notranslate"><span class="pre">get_day_of_week()</span></code> and checks if it returns 6 (Sunday). This test will consistently pass because FreezeGun ensures <code class="docutils literal notranslate"><span class="pre">datetime.datetime.now()</span></code> always returns the specified frozen date.</p>
@@ -1909,7 +1477,7 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 <p>Example: Testing a function that returns data for the last week</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 
@@ -1923,16 +1491,11 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting main.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>Now, let’s create a test for this function using mock:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_main.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_main</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
 <span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">get_data_for_last_week</span>
@@ -1955,11 +1518,6 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_main.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>This test mocks the <code class="docutils literal notranslate"><span class="pre">datetime.now()</span></code> method to return a fixed date, allowing for predictable and consistent test results.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -1969,23 +1527,7 @@ test_freezegun.py <span class=" -Color -Color-Green">.                          
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>-sv<span class="w"> </span>test_main.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0 -- /Users/khuyentran/.pyenv/versions/3.11.2/bin/python3
-cachedir: .pytest_cache
-hypothesis profile &#39;default&#39; -&gt; database=DirectoryBasedExampleDatabase(PosixPath(&#39;/Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5/.hypothesis/examples&#39;))
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 1 item                                                               
-
-test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PASSED</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.09s ===============================</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest -sv test_main.py
 </pre></div>
 </div>
 </div>
@@ -1998,7 +1540,7 @@ test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PAS
 <p>Example: Testing a function that makes an API call</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> main.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span>
 
@@ -2013,15 +1555,10 @@ test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PAS
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting main.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_main.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_main</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
 <span class="kn">from</span> <span class="nn">requests.exceptions</span> <span class="kn">import</span> <span class="ne">ConnectionError</span>
 <span class="kn">from</span> <span class="nn">main</span> <span class="kn">import</span> <span class="n">get_data</span>
@@ -2044,11 +1581,6 @@ test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PAS
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_main.py
-</pre></div>
-</div>
-</div>
 </div>
 <p>These tests mock the <code class="docutils literal notranslate"><span class="pre">requests.get()</span></code> function to simulate both successful and failed API calls, allowing us to test our function’s behavior in different scenarios without making actual network requests.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -2058,21 +1590,7 @@ test_main.py::test_get_data_for_last_week <span class=" -Color -Color-Green">PAS
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>test_main.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 2 items                                                              
-
-test_main.py <span class=" -Color -Color-Green">..                                                          [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">2 passed</span><span class=" -Color -Color-Green"> in 0.12s ===============================</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest test_main.py
 </pre></div>
 </div>
 </div>
@@ -2089,7 +1607,7 @@ test_main.py <span class=" -Color -Color-Green">..                              
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-mock
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest-mock
 </pre></div>
 </div>
 </div>
@@ -2101,7 +1619,7 @@ test_main.py <span class=" -Color -Color-Green">..                              
 <p>Using unittest.mock:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_rm_file.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_rm_file</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -2117,29 +1635,10 @@ test_main.py <span class=" -Color -Color-Green">..                              
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_rm_file.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>test_rm_file.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, mock-3.14.0, anyio-4.2.0, hypothesis-6.88.4
-collected 1 item                                                               
-
-test_rm_file.py <span class=" -Color -Color-Green">.                                                        [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest test_rm_file.py
 </pre></div>
 </div>
 </div>
@@ -2147,7 +1646,7 @@ test_rm_file.py <span class=" -Color -Color-Green">.                            
 <p>Using pytest-mock:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_rm_file.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_rm_file</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 
@@ -2162,29 +1661,10 @@ test_rm_file.py <span class=" -Color -Color-Green">.                            
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing test_rm_file.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pytest<span class="w"> </span>test_rm_file.py
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, mock-3.14.0, anyio-4.2.0, hypothesis-6.88.4
-collected 1 item                                                               
-
-test_rm_file.py <span class=" -Color -Color-Green">.                                                        [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pytest test_rm_file.py
 </pre></div>
 </div>
 </div>
@@ -2203,7 +1683,7 @@ test_rm_file.py <span class=" -Color -Color-Green">.                            
 <p>Use the <code class="docutils literal notranslate"><span class="pre">tmp_path</span></code> fixture in pytest to create a temporary directory for testing the function that interacts with files. This will prevent any changes to the actual filesystem or production files.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_tmp_path.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_tmp_path</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
@@ -2229,30 +1709,11 @@ test_rm_file.py <span class=" -Color -Color-Green">.                            
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Writing test_tmp_path.py
-</pre></div>
-</div>
-</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pytest<span class="w"> </span>test_tmp_path.py
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.11.2, pytest-7.4.3, pluggy-1.3.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dvc-3.28.0, hydra-core-1.3.2, typeguard-4.1.5, anyio-4.2.0, hypothesis-6.88.4
-collected 1 item                                                               
-
-test_tmp_path.py <span class=" -Color -Color-Green">.                                                       [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 0.01s ===============================</span>
-
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="pandera-a-python-library-to-validate-your-pandas-dataframe">
@@ -2264,7 +1725,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>pandera
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U pandera
 </pre></div>
 </div>
 </div>
@@ -2274,7 +1735,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <p>pandera makes it easy to perform data validation on dataframe-like objects.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pandera</span> <span class="k">as</span> <span class="nn">pa</span>
 
 <span class="n">student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -2297,52 +1758,6 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>age</th>
-      <th>score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>John</td>
-      <td>25</td>
-      <td>95.5</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Jane</td>
-      <td>30</td>
-      <td>88.3</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Bob</td>
-      <td>35</td>
-      <td>92.7</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>This code defines a schema using <code class="docutils literal notranslate"><span class="pre">DataFrameSchema</span></code> with three columns:</p>
 <ol class="arabic simple">
@@ -2354,7 +1769,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <p>If the dataframe does not pass validation checks, pandera provides useful error messages.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
         <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
@@ -2369,16 +1784,11 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SchemarError: Column &#39;age&#39; failed element-wise validator number 0: in_range(0, 120) failure cases: 200
-</pre></div>
-</div>
-</div>
 </div>
 <p>To validate the inputs of a function before calling that function, use the <code class="docutils literal notranslate"><span class="pre">check_input</span></code> decorator. In the code below, the decorator validates the value of the <code class="docutils literal notranslate"><span class="pre">data</span></code> argument against the <code class="docutils literal notranslate"><span class="pre">input_schema</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">check_input</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera</span> <span class="kn">import</span> <span class="n">check_input</span>
 
 
 <span class="nd">@check_input</span><span class="p">(</span><span class="n">student_schema</span><span class="p">)</span>
@@ -2404,61 +1814,11 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>age</th>
-      <th>score</th>
-      <th>grade</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>John</td>
-      <td>25</td>
-      <td>95.5</td>
-      <td>A</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Jane</td>
-      <td>30</td>
-      <td>88.3</td>
-      <td>B</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Bob</td>
-      <td>35</td>
-      <td>92.7</td>
-      <td>A</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p>If the input does not conform to the schema, an error will be raised, preventing the function from executing with invalid data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">invalid_student_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
         <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
@@ -2473,11 +1833,6 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SchemaError: error in check_input decorator of function &#39;calculate_grade&#39;: Column &#39;age&#39; failed element-wise validator number 0: in_range(0, 120) failure cases: 200
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/unionai-oss/pandera">Link to Pandera</a>.</p>
 </section>
@@ -2485,7 +1840,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <h2><span class="section-number">6.12.25. </span>Validating Polars DataFrames with Pandera<a class="headerlink" href="#validating-polars-dataframes-with-pandera" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s1">&#39;pandera[polars]&#39;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U &#39;pandera[polars]&#39;
 </pre></div>
 </div>
 </div>
@@ -2493,7 +1848,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <p>Pandera is a Python library that makes it easy to validate pandas DataFrame. Now, Pandera also supports Polars, a blazingly fast DataFrame library written in Rust.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandera.polars</span> <span class="k">as</span> <span class="nn">pa</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandera.polars</span> <span class="k">as</span> <span class="nn">pa</span>
 <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
 
@@ -2521,20 +1876,11 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><style>
-.dataframe > thead > tr,
-.dataframe > tbody > tr {
-  text-align: right;
-  white-space: pre-wrap;
-}
-</style>
-<small>shape: (6, 3)</small><table border="1" class="dataframe"><thead><tr><th>state</th><th>city</th><th>price</th></tr><tr><td>str</td><td>str</td><td>i64</td></tr></thead><tbody><tr><td>&quot;FL&quot;</td><td>&quot;Orlando&quot;</td><td>8</td></tr><tr><td>&quot;FL&quot;</td><td>&quot;Miami&quot;</td><td>12</td></tr><tr><td>&quot;FL&quot;</td><td>&quot;Tampa&quot;</td><td>10</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Francisco&quot;</td><td>16</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;Los Angeles&quot;</td><td>20</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Diego&quot;</td><td>18</td></tr></tbody></table></div></div></div>
 </div>
 <p>You can also use the <code class="docutils literal notranslate"><span class="pre">check_types()</span></code> decorator to validate polars LazyFrame function annotations at runtime:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera.typing.polars</span> <span class="kn">import</span> <span class="n">LazyFrame</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandera.typing.polars</span> <span class="kn">import</span> <span class="n">LazyFrame</span>
 
 <span class="nd">@pa</span><span class="o">.</span><span class="n">check_types</span>
 <span class="k">def</span> <span class="nf">filter_state</span><span class="p">(</span><span class="n">lf</span><span class="p">:</span> <span class="n">LazyFrame</span><span class="p">[</span><span class="n">Schema</span><span class="p">],</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LazyFrame</span><span class="p">[</span><span class="n">Schema</span><span class="p">]:</span>
@@ -2544,15 +1890,6 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><style>
-.dataframe > thead > tr,
-.dataframe > tbody > tr {
-  text-align: right;
-  white-space: pre-wrap;
-}
-</style>
-<small>shape: (3, 3)</small><table border="1" class="dataframe"><thead><tr><th>state</th><th>city</th><th>price</th></tr><tr><td>str</td><td>str</td><td>i64</td></tr></thead><tbody><tr><td>&quot;CA&quot;</td><td>&quot;San Francisco&quot;</td><td>16</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;Los Angeles&quot;</td><td>20</td></tr><tr><td>&quot;CA&quot;</td><td>&quot;San Diego&quot;</td><td>18</td></tr></tbody></table></div></div></div>
 </div>
 <p><a class="reference external" href="https://github.com/unionai-oss/pandera">Link to Pandera</a>.</p>
 </section>
@@ -2565,7 +1902,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>hypothesis<span class="w"> </span>pandera<span class="w"> </span>pytest
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install hypothesis pandera pytest
 </pre></div>
 </div>
 </div>
@@ -2575,7 +1912,7 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <p>Pandera allows you to define constraints for inputs and outputs, while Hypothesis automatically identifies edge cases that match the specified schema. Hypothesis further simplifies complex examples until it finds a smaller example that still reproduces the issue.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_processing_fn.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_processing_fn</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">hypothesis</span>
 <span class="kn">import</span> <span class="nn">pandera</span> <span class="k">as</span> <span class="nn">pa</span>
 
@@ -2603,11 +1940,6 @@ test_tmp_path.py <span class=" -Color -Color-Green">.                           
 <span class="nd">@hypothesis</span><span class="o">.</span><span class="n">given</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">strategy</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span> <span class="c1"># Generate 5 examples</span>
 <span class="k">def</span> <span class="nf">test_processing_fn</span><span class="p">(</span><span class="n">dataframe</span><span class="p">):</span>
     <span class="n">processing_fn</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overwriting test_processing_fn.py
 </pre></div>
 </div>
 </div>
@@ -2647,7 +1979,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deepdiff
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install deepdiff
 </pre></div>
 </div>
 </div>
@@ -2662,7 +1994,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>Is there a way that you can exclude certain parts of the object from the comparison? That is when DeepDiff comes in handy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepdiff</span> <span class="kn">import</span> <span class="n">DeepDiff</span> 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepdiff</span> <span class="kn">import</span> <span class="n">DeepDiff</span> 
 </pre></div>
 </div>
 </div>
@@ -2670,16 +2002,10 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>DeepDiff can output a meaningful comparison like below:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">price1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">price1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
 <span class="n">price2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;apple&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;banana&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}</span>
 
 <span class="n">DeepDiff</span><span class="p">(</span><span class="n">price1</span><span class="p">,</span> <span class="n">price2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;values_changed&#39;: {&quot;root[&#39;banana&#39;][0]&quot;: {&#39;new_value&#39;: 2, &#39;old_value&#39;: 3},
-  &quot;root[&#39;banana&#39;][1]&quot;: {&#39;new_value&#39;: 3, &#39;old_value&#39;: 2}}}
 </pre></div>
 </div>
 </div>
@@ -2687,14 +2013,9 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>With DeepDiff, you also have full control of which characteristics of the Python object DeepDiff should ignore. In the example below, since the order is ignored <code class="docutils literal notranslate"><span class="pre">[3,</span> <span class="pre">2]</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">3]</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ignore orders </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ignore orders </span>
 
 <span class="n">DeepDiff</span><span class="p">(</span><span class="n">price1</span><span class="p">,</span> <span class="n">price2</span><span class="p">,</span> <span class="n">ignore_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
 </pre></div>
 </div>
 </div>
@@ -2702,7 +2023,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>We can also exclude certain part of our object from the comparison. In the code below, we ignore <code class="docutils literal notranslate"><span class="pre">ml</span></code> and <code class="docutils literal notranslate"><span class="pre">machine</span> <span class="pre">learning</span></code> since <code class="docutils literal notranslate"><span class="pre">ml</span></code> is a abbreviation of <code class="docutils literal notranslate"><span class="pre">machine</span> <span class="pre">learning</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experience1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;machine learning&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">experience1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;machine learning&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
 <span class="n">experience2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ml&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
 
 <span class="n">DeepDiff</span><span class="p">(</span>
@@ -2713,57 +2034,17 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 25;
-                var nbb_unformatted_code = "experience1 = {\"machine learning\": 2, \"python\": 3}\nexperience2 = {\"ml\": 2, \"python\": 3}\n\nDeepDiff(\n    experience1,\n    experience2,\n    exclude_paths={\"root['ml']\", \"root['machine learning']\"},\n)";
-                var nbb_formatted_code = "experience1 = {\"machine learning\": 2, \"python\": 3}\nexperience2 = {\"ml\": 2, \"python\": 3}\n\nDeepDiff(\n    experience1,\n    experience2,\n    exclude_paths={\"root['ml']\", \"root['machine learning']\"},\n)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p>Cmpare 2 numbers up to a specific decimal point:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num1</span> <span class="o">=</span> <span class="mf">0.258</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num1</span> <span class="o">=</span> <span class="mf">0.258</span>
 <span class="n">num2</span> <span class="o">=</span> <span class="mf">0.259</span>
 
 <span class="n">DeepDiff</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">,</span> <span class="n">significant_digits</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{}
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 34;
-                var nbb_unformatted_code = "num1 = 0.258\nnum2 = 0.259\n\nDeepDiff(num1, num2, significant_digits=2)";
-                var nbb_formatted_code = "num1 = 0.258\nnum2 = 0.259\n\nDeepDiff(num1, num2, significant_digits=2)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/seperman/deepdiff">Link to DeepDiff</a>.</p>
 </section>
@@ -2776,7 +2057,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>dirty-equals
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install dirty-equals
 </pre></div>
 </div>
 </div>
@@ -2785,14 +2066,14 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>If you want to write declarative assertions and avoid boilerplate code in your unit tests, try dirty_equals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dirty_equals</span> <span class="kn">import</span> <span class="n">IsNow</span><span class="p">,</span> <span class="n">IsPartialDict</span><span class="p">,</span> <span class="n">IsList</span><span class="p">,</span> <span class="n">IsStr</span><span class="p">,</span> <span class="n">IsTrueLike</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dirty_equals</span> <span class="kn">import</span> <span class="n">IsNow</span><span class="p">,</span> <span class="n">IsPartialDict</span><span class="p">,</span> <span class="n">IsList</span><span class="p">,</span> <span class="n">IsStr</span><span class="p">,</span> <span class="n">IsTrueLike</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 
 <span class="n">shopping</span> <span class="o">=</span> <span class="p">{</span>
@@ -2807,7 +2088,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">shopping</span> <span class="o">==</span> <span class="p">{</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">shopping</span> <span class="o">==</span> <span class="p">{</span>
     <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">IsNow</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
     <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="n">IsPartialDict</span><span class="p">(</span><span class="n">apple</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">orange</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
     <span class="s2">&quot;locations&quot;</span><span class="p">:</span> <span class="n">IsList</span><span class="p">(</span><span class="s2">&quot;Aldi&quot;</span><span class="p">,</span> <span class="s2">&quot;Walmart&quot;</span><span class="p">,</span> <span class="n">check_order</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
@@ -2823,7 +2104,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <h2><span class="section-number">6.12.29. </span>hypothesis: Property-based Testing in Python<a class="headerlink" href="#hypothesis-property-based-testing-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-code docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>hypothesis
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install hypothesis
 </pre></div>
 </div>
 </div>
@@ -2832,7 +2113,7 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 <p>In the code below, I test if the addition of two floats is commutative. The test fails when either <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">y</span></code> is <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_hypothesis.py 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_hypothesis</span><span class="o">.</span><span class="n">py</span> 
 <span class="kn">from</span> <span class="nn">hypothesis</span> <span class="kn">import</span> <span class="n">given</span>
 <span class="kn">from</span> <span class="nn">hypothesis.strategies</span> <span class="kn">import</span> <span class="n">floats</span>
 
@@ -2849,44 +2130,6 @@ Falsifying<span class="w"> </span>example:<span class="w"> </span>test_processin
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Test session starts (platform: linux, Python 3.8.10, pytest 6.2.5, pytest-sugar 0.9.4)</span>
-benchmark: 3.4.1 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
-rootdir: /home/khuyen/book/book/Chapter5
-plugins: hydra-core-1.1.1, Faker-8.12.1, benchmark-3.4.1, repeat-0.9.1, anyio-3.3.0, hypothesis-6.31.6, sugar-0.9.4
-<span class=" -Color -Color-Bold">collecting ... </span>
-
-――――――――――――――――――――――――― test_floats_are_commutative ――――――――――――――――――――――――――
-
-    <span class=" -Color -Color-White">@given</span>(floats(), floats())
-&gt;   def test_floats_are_commutative(x, y):
-
-<span class=" -Color -Color-Bold -Color-Bold-Red">test_hypothesis.py</span>:7: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-x = 0.0, y = nan
-
-    <span class=" -Color -Color-White">@given</span>(floats(), floats())
-    def test_floats_are_commutative(x, y):
-&gt;       assert x + y == y + x
-<span class=" -Color -Color-Bold -Color-Bold-Red">E       assert (0.0 + nan) == (nan + 0.0)</span>
-
-<span class=" -Color -Color-Bold -Color-Bold-Red">test_hypothesis.py</span>:8: AssertionError
----------------------------------- Hypothesis ----------------------------------
-Falsifying example: test_floats_are_commutative(
-    x=0.0, y=nan,  # Saw 1 signaling NaN
-)
-
- test_hypothesis.py <span class=" -Color -Color-Red">⨯</span>                                            <span class=" -Color -Color-Red">100% </span><span class=" -Color -Color-Red -Color-Red-BGBlack">██████████</span>
-=========================== short test summary info ============================
-FAILED test_hypothesis.py::test_floats_are_commutative - assert (0.0 + nan) =...
-
-Results (0.38s):
-<span class=" -Color -Color-Red">       1 failed</span>
-         - test_hypothesis.py:6 <span class=" -Color -Color-Red">test_floats_are_commutative</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p>Now I can rewrite my code to make it more robust against these edge cases.</p>
 <p><a class="reference external" href="https://hypothesis.readthedocs.io/en/latest/quickstart.html">Link to hypothesis</a>.</p>
@@ -2900,7 +2143,7 @@ Results (0.38s):
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deepchecks<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install deepchecks 
 </pre></div>
 </div>
 </div>
@@ -2910,33 +2153,16 @@ Results (0.38s):
 <p>In the example below, the result shows that there are 2 new categories in the test set. They are ‘d’ and ‘e’.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.checks.integrity.new_category</span> <span class="kn">import</span> <span class="n">CategoryMismatchTrainTest</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deepchecks.checks.integrity.new_category</span> <span class="kn">import</span> <span class="n">CategoryMismatchTrainTest</span>
 <span class="kn">from</span> <span class="nn">deepchecks.base</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 18;
-                var nbb_unformatted_code = "from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest\nfrom deepchecks.base import Dataset\nimport pandas as pd";
-                var nbb_formatted_code = "from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest\nfrom deepchecks.base import Dataset\nimport pandas as pd";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]})</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">]})</span>
 
 <span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">cat_features</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">])</span>
@@ -2944,93 +2170,13 @@ Results (0.38s):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 19;
-                var nbb_unformatted_code = "train = pd.DataFrame({'col1': ['a', 'b', 'c']})\ntest = pd.DataFrame({'col1': ['c', 'd', 'e']})\n\ntrain_ds = Dataset(train, cat_features=['col1'])\ntest_ds = Dataset(test, cat_features=['col1'])";
-                var nbb_formatted_code = "train = pd.DataFrame({\"col1\": [\"a\", \"b\", \"c\"]})\ntest = pd.DataFrame({\"col1\": [\"c\", \"d\", \"e\"]})\n\ntrain_ds = Dataset(train, cat_features=[\"col1\"])\ntest_ds = Dataset(test, cat_features=[\"col1\"])";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">CategoryMismatchTrainTest</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">test_ds</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CategoryMismatchTrainTest</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">test_ds</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><h4>Category Mismatch Train Test</h4><p>Find new categories in the test set.</p><h5>Additional Outputs</h5><style type="text/css">
-#T_1a4e2_ table {
-  text-align: left;
-  white-space: pre-wrap;
-}
-#T_1a4e2_ thead {
-  text-align: left;
-  white-space: pre-wrap;
-}
-#T_1a4e2_ tbody {
-  text-align: left;
-  white-space: pre-wrap;
-}
-#T_1a4e2_ th {
-  text-align: left;
-  white-space: pre-wrap;
-}
-#T_1a4e2_ td {
-  text-align: left;
-  white-space: pre-wrap;
-}
-</style>
-<table id="T_1a4e2_">
-  <thead>
-    <tr>
-      <th class="blank level0" >&nbsp;</th>
-      <th class="col_heading level0 col0" >Number of new categories</th>
-      <th class="col_heading level0 col1" >Percent of new categories in sample</th>
-      <th class="col_heading level0 col2" >New categories examples</th>
-    </tr>
-    <tr>
-      <th class="index_name level0" >Column</th>
-      <th class="blank col0" >&nbsp;</th>
-      <th class="blank col1" >&nbsp;</th>
-      <th class="blank col2" >&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th id="T_1a4e2_level0_row0" class="row_heading level0 row0" >col1</th>
-      <td id="T_1a4e2_row0_col0" class="data row0 col0" >2</td>
-      <td id="T_1a4e2_row0_col1" class="data row0 col1" >66.67%</td>
-      <td id="T_1a4e2_row0_col2" class="data row0 col2" >['d', 'e']</td>
-    </tr>
-  </tbody>
-</table>
-</div><script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 22;
-                var nbb_unformatted_code = "CategoryMismatchTrainTest().run(train_ds, test_ds)";
-                var nbb_formatted_code = "CategoryMismatchTrainTest().run(train_ds, test_ds)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://docs.deepchecks.com/en/stable/">Link to Deepchecks</a></p>
 </section>
@@ -3043,7 +2189,7 @@ Results (0.38s):
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>leab
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install leab
 </pre></div>
 </div>
 </div>
@@ -3052,7 +2198,7 @@ Results (0.38s):
 <p>AB testing is crucial for assessing the effectiveness of changes in a controlled environment. With the leAB library, you can compute the appropriate sample size before launching the test.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">before</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">before</span>
 
 <span class="c1"># What is the number of sample needed per variation to detect a 1% result </span>
 <span class="c1"># difference in a population with a 15% conversion rate?</span>
@@ -3061,16 +2207,11 @@ Results (0.38s):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20177
-</pre></div>
-</div>
-</div>
 </div>
 <p>After reaching the sample size, you can compare the successes between group A and group B.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">after</span><span class="p">,</span> <span class="n">leDataset</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">leab</span> <span class="kn">import</span> <span class="n">after</span><span class="p">,</span> <span class="n">leDataset</span>
 
 <span class="c1"># Import sample data for A and B</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">leDataset</span><span class="o">.</span><span class="n">SampleLeSuccess</span><span class="p">()</span>
@@ -3078,64 +2219,13 @@ Results (0.38s):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>success</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ab_test</span> <span class="o">=</span> <span class="n">after</span><span class="o">.</span><span class="n">leSuccess</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">confidence_level</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ab_test</span> <span class="o">=</span> <span class="n">after</span><span class="o">.</span><span class="n">leSuccess</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">confidence_level</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
 
 <span class="c1"># Get the conclusion on the test </span>
 <span class="n">ab_test</span><span class="o">.</span><span class="n">get_verdict</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;No significant difference&#39;
 </pre></div>
 </div>
 </div>
@@ -3151,7 +2241,7 @@ Results (0.38s):
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytest-postgresql
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytest-postgresql
 </pre></div>
 </div>
 </div>
@@ -3162,7 +2252,7 @@ Results (0.38s):
 <p>To see how pytest-postgres works, let’s create a test function that sets up a test table in a PostgreSQL database, inserts some test data, and then verifies that the query results match the expected data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_postgres.py 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_postgres</span><span class="o">.</span><span class="n">py</span> 
 <span class="k">def</span> <span class="nf">test_query_results</span><span class="p">(</span><span class="n">postgresql</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the query results are as expected.&quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="n">postgresql</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
@@ -3180,19 +2270,6 @@ Results (0.38s):
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: dash-2.10.2, postgresql-5.0.0, anyio-3.6.2
-collected 1 item                                                               
-
-test_postgres.py <span class=" -Color -Color-Green">.                                                       [100%]</span>
-
-<span class=" -Color -Color-Green">============================== </span><span class=" -Color -Color-Bold -Color-Bold-Green">1 passed</span><span class=" -Color -Color-Green"> in 1.20s ===============================</span>
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/ClearcodeHQ/pytest-postgresql">Link to pytest-postgresql</a>.</p>
 </section>
@@ -3202,7 +2279,7 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 <p>To ensure that the examples remain accurate, use doctest.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> example.py 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">example</span><span class="o">.</span><span class="n">py</span> 
 <span class="k">def</span> <span class="nf">perc_difference</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the percentage difference between two numbers, n1 and n2.</span>
 
@@ -3232,27 +2309,6 @@ test_postgres.py <span class=" -Color -Color-Green">.                           
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trying:
-    perc_difference(50, 60)
-Expecting:
-    20.0
-ok
-Trying:
-    perc_difference(100, 100)
-Expecting:
-    0.0
-ok
-1 items had no tests:
-    __main__
-1 items passed all tests:
-   2 tests in __main__.perc_difference
-2 tests in 2 items.
-2 passed and 0 failed.
-Test passed.
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="deepeval-unit-testing-for-your-llm-model">
@@ -3264,7 +2320,7 @@ Test passed.
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>deepeval
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install -U deepeval
 </pre></div>
 </div>
 </div>
@@ -3275,7 +2331,7 @@ Test passed.
 <p>In the following code, we use DeepEval to check if the LLM output is accurate and aligns with established facts.</p>
 <div class="cell tag_remove-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> test_chatbot.py
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">writefile</span> <span class="n">test_chatbot</span><span class="o">.</span><span class="n">py</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 <span class="kn">from</span> <span class="nn">deepeval.metrics.factual_consistency</span> <span class="kn">import</span> <span class="n">FactualConsistencyMetric</span>
 <span class="kn">from</span> <span class="nn">deepeval.test_case</span> <span class="kn">import</span> <span class="n">LLMTestCase</span>
@@ -3298,33 +2354,6 @@ Test passed.
 </pre></div>
 </div>
 <div class="cell tag_remove-input docutils container">
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">============================= test session starts ==============================</span>
-platform darwin -- Python 3.9.6, pytest-7.2.1, pluggy-1.0.0 -- /Users/khuyentran/book/venv/bin/python3
-cachedir: .pytest_cache
-rootdir: /Users/khuyentran/book/Efficient_Python_tricks_and_tools_for_data_scientists/Chapter5
-plugins: deepeval-0.20.0, postgresql-5.0.0, dash-2.13.0, typeguard-4.1.2, anyio-3.6.2
-collected 1 item                                                               
-
-Downloading FactualConsistencyModel (may take up to 2 minutes if running for th…
-<span class=" -Color -Color-Green">PASSED</span>Running teardown with pytest sessionfinish<span class=" -Color -Color-Yellow">...</span>
-
-
-============================= slowest 10 durations =============================
-7.00s call     test_chatbot.py::test_case
-
-(2 durations &lt; 0.005s hidden.  Use -vv to show these durations.)
-<span class=" -Color -Color-Yellow">======================== </span><span class=" -Color -Color-Green">1 passed</span>, <span class=" -Color -Color-Bold -Color-Bold-Yellow">2 warnings</span><span class=" -Color -Color-Yellow"> in 7.02s =========================</span>
-                                 Test Results                                  
-┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━┓
-┃<span class=" -Color -Color-Bold">              Metric </span>┃<span class=" -Color -Color-Bold">      Average Score </span>┃<span class=" -Color -Color-Bold"> Passes </span>┃<span class=" -Color -Color-Bold"> Failures </span>┃<span class=" -Color -Color-Bold"> Success Rate </span>┃
-┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━┩
-│ Factual Consistency │ 0.9911543130874634 │      <span class=" -Color -Color-Green">1</span> │        <span class=" -Color -Color-Red">0</span> │      100.00% │
-│               Total │                  - │      <span class=" -Color -Color-Green">1</span> │        <span class=" -Color -Color-Red">0</span> │      100.00% │
-└─────────────────────┴────────────────────┴────────┴──────────┴──────────────┘
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/confident-ai/deepeval">Link to DeepEval</a>.</p>
 </section>

@@ -1,0 +1,236 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.7
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+## String
+
++++
+
+![](../img/string.png)
+
++++
+
+### Control the Number of Printed Decimals with f-Strings
+
++++
+
+If you want to limit the number of decimals being printed, use the f-string as shown below. 
+
+```{code-cell} ipython3
+num = 2.3123
+print(f'{num:.1f}') # Limit to 1 decimal
+print(f'{num:.2f}') # Limit to 2 decimals
+```
+
+### Format Dates in Python f-Strings
+
++++
+
+When printing a Python string, f-strings allow you to format datetime easily with a curly bracket and its formats.
+
+Find all formats [here](https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior).
+
+```{code-cell} ipython3
+from datetime import datetime
+
+date = datetime(2022, 1, 1, 15, 30, 45)
+print(f'You need to be here at'
+f' {date:%I:%M %p} on {date:%A}')
+```
+
+### Pad a String With Zero Using f-String
+
++++
+
+To display a number as a two-digit with leading zeros if needed, use f'{num:02}'.
+
+```{code-cell} ipython3
+for hour in range(8, 12):
+    print(f'It is {hour:02} AM! Wake up!')
+```
+
+### Enhance Number Readability with f-Strings and Comma Formatting 
+
++++
+
+To increase the readability of a number with a large number of digits, you can use f-strings to display an integer with comma formatting for thousands.
+
+```{code-cell} ipython3
+num = 100**4
+print(num)
+print(f"{num:,}")
+```
+
+### Use Calculations in Python f-String
+
++++
+
+If you want to do calculations inside a Python string, use f-string.
+
+```{code-cell} ipython3
+apple = 3
+banana = 2
+print(f'The total price is {apple + banana}.')
+```
+
+### Debug Your Python Code with an Equal Sign in an f-String
+
++++
+
+It is common to use `f"var={var}"` to see which values are being printed.
+
+```{code-cell} ipython3
+from itertools import permutations
+
+nums = [1, 2, 3]
+
+for i, j in permutations(nums, 2):
+    print(f"i={i}, j={j}")
+```
+
+In Python 3.8 and above, you can get the same outputs using `f"{var=}"`.
+
+```{code-cell} ipython3
+for i, j in permutations(nums, 2):
+    print(f"{i=}, {j=}")
+```
+
+```{code-cell} ipython3
+for i in range(3):
+    print(f"{i=}")
+```
+
+### String find: Find The Index of a Substring in a Python String
+
++++
+
+If you want to find the index of a substring in a string, use `find()` method. This method will return the index of the first occurrence of the substring if found and return `-1` otherwise.
+
+```{code-cell} ipython3
+sentence = "Today is Saturday"
+
+# Find the index of first occurrence of the substring
+sentence.find("day")
+```
+
+```{code-cell} ipython3
+sentence.find("nice")
+# No substring is found
+```
+
+You can also provide the starting and stopping position of the search:
+
+```{code-cell} ipython3
+# Start searching for the substring at index 3
+sentence.find("day", 3)
+```
+
+### re.sub: Replace One String with Another String Using Regular Expression	
+
++++
+
+If you want to either replace one string with another string or to change the order of characters in a string, use `re.sub`.
+
+`re.sub` allows you to use a regular expression to specify the pattern of the string you want to swap.
+
+In the code below, I replace `3/7/2021` with `Sunday` and replace `3/7/2021` with `2021/3/7`.
+
+```{code-cell} ipython3
+import re
+
+text = "Today is 3/7/2021"
+match_pattern = r"(\d+)/(\d+)/(\d+)"
+
+re.sub(match_pattern, "Sunday", text)
+```
+
+```{code-cell} ipython3
+re.sub(match_pattern, r"\3-\1-\2", text)
+```
+
+### Split a String by Multiple Characters
+
++++
+
+Using `str.split` only allows you to split a string by one character.
+
+```{code-cell} ipython3
+sent = "Today-is a nice_day"
+
+sent.split('-')
+```
+
+If you want to split a string by multiple characters, use `re.split()`. re uses regrex to split the string.
+
+```{code-cell} ipython3
+import re
+
+# split by space, -, or _
+re.split(" |-|_", sent)
+```
+
+### Multiline Strings 
+
++++
+
+If your Python string gets very long, you can break it up using parentheses or a backslash.
+
+```{code-cell} ipython3
+text = (
+    "This is a very "
+    "long sentence "
+    "that is made up."
+)
+
+text
+```
+
+```{code-cell} ipython3
+text = "This is a very "\
+    "long sentence "\
+    "that is made up."
+
+text
+```
+
+### difflib.SequenceMatcher: Detect The “Almost Similar” Articles
+
++++
+
+When analyzing articles, different articles can be almost similar but not 100% identical, maybe because of the grammar, or because of the change in two or three words (such as cross-posting). How can we detect the “almost similar” articles and drop one of them? That is when `difflib.SequenceMatcher` comes in handy. 
+
+```{code-cell} ipython3
+from difflib import SequenceMatcher
+
+text1 = 'I am Khuyen'
+text2 = 'I am Khuen'
+print(SequenceMatcher(a=text1, b=text2).ratio())
+```
+
+### difflib.get_close_matches:  Get a List of the Best Matches for a Certain Word
+
++++
+
+If you want to get a list of the best matches for a certain word, use `difflib.get_close_matches`.  
+
+```{code-cell} ipython3
+from difflib import get_close_matches
+
+tools = ['pencil', 'pen', 'erasor', 'ink']
+get_close_matches('pencel', tools)
+```
+
+To get closer matches, increase the value of the argument `cutoff` (default 0.6). 
+
+```{code-cell} ipython3
+get_close_matches('pencel', tools, cutoff=0.8)
+```

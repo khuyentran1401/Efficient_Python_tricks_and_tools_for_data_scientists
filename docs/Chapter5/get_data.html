@@ -270,8 +270,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="better_pandas.html">6.11. Better Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">6.12. Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spark.html">6.14. PySpark</a></li>
-<li class="toctree-l2"><a class="reference internal" href="llm.html">6.15. Large Language Model (LLM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deltalake.html">6.16. Delta Lake</a></li>
+<li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter6/Chapter6.html">7. Cool Tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -343,7 +345,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/get_data.ipynb" target="_blank"
+      <li><a href="https://colab.research.google.com/github/khuyentran1401/Efficient_Python_tricks_and_tools_for_data_scientists/blob/master/./Chapter5/get_data.md" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch onColab"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -422,6 +424,23 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       <li><a href="../_sources/Chapter5/get_data.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="Download notebook file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/Chapter5/get_data.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -431,7 +450,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.ipynb</span>
+<span class="btn__text-container">.md</span>
 </a>
 </li>
       
@@ -551,7 +570,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>Faker
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install Faker
 </pre></div>
 </div>
 </div>
@@ -561,7 +580,7 @@ document.write(`
 <p>Here are a few examples:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
 
 <span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
 
@@ -569,161 +588,41 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;CornflowerBlue&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 5;
-                var nbb_unformatted_code = "from faker import Faker\n\nfake = Faker()\n\nfake.color_name()";
-                var nbb_formatted_code = "from faker import Faker\n\nfake = Faker()\n\nfake.color_name()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Michael Scott&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 6;
-                var nbb_unformatted_code = "fake.name()";
-                var nbb_formatted_code = "fake.name()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">address</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">address</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;881 Patricia Crossing\nSouth Jeremy, AR 06087&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 7;
-                var nbb_unformatted_code = "fake.address()";
-                var nbb_formatted_code = "fake.address()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">date_of_birth</span><span class="p">(</span><span class="n">minimum_age</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">date_of_birth</span><span class="p">(</span><span class="n">minimum_age</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>datetime.date(1927, 11, 5)
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 8;
-                var nbb_unformatted_code = "fake.date_of_birth(minimum_age=22)";
-                var nbb_formatted_code = "fake.date_of_birth(minimum_age=22)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;North Donald&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 9;
-                var nbb_unformatted_code = "fake.city()";
-                var nbb_formatted_code = "fake.city()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fake</span><span class="o">.</span><span class="n">job</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Teacher, secondary school&#39;
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 10;
-                var nbb_unformatted_code = "fake.job()";
-                var nbb_formatted_code = "fake.job()";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://faker.readthedocs.io/en/master/">Link to faker</a></p>
 </section>
@@ -736,7 +635,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>silly
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install silly
 </pre></div>
 </div>
 </div>
@@ -746,7 +645,7 @@ document.write(`
 <p>Here are some examples:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">silly</span> 
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">silly</span> 
 
 <span class="n">name</span> <span class="o">=</span> <span class="n">silly</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
 <span class="n">email</span> <span class="o">=</span> <span class="n">silly</span><span class="o">.</span><span class="n">email</span><span class="p">()</span>
@@ -754,68 +653,38 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Her name is olivia ringslap.Her email is boatbench@thirty-three-mighty-horses.link
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">a_thing</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">a_thing</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;five cherry onions&#39;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">thing</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">thing</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;container of khaki wads&#39;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">things</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">things</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;a tote of plans, twenty-four eyes, and eighteen garlic arms&#39;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">sentence</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">sentence</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;God himself can&#39;t wait to move a hat in Birmingpoop.&quot;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">paragraph</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;Agustin Neutral-Jerk needs a group of concerns, badly. Agnes Basil can&#39;t wait to taste a box of slate chairs in Assesford. To get to Testasia, you need to go to Fantasticheartsound, then drive east. The band &#39;Queen&#39; will hurl a dance. To get to Arztotzka, you need to go to Cape City Central, then drive north. The world will head to Integrated Eye And Onion to buy a tub of boots. Assemble jean! Seth Violetbag will assemble a laudable ring. Lampton is in South Yemen. Birmingobject is in West Cybertron.&quot;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">silly</span><span class="o">.</span><span class="n">paragraph</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -827,71 +696,13 @@ document.write(`
 <p>Need to generate fake user data for testing? The Random User Generator API provides a simple way to get random user data. Here’s how you can fetch and use this data in your code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
 
 <span class="c1"># Show 2 random users</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="s2">&quot;https://randomuser.me/api?results=2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">users</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span>
 <span class="n">users</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;gender&#39;: &#39;female&#39;,
-  &#39;name&#39;: {&#39;title&#39;: &#39;Miss&#39;, &#39;first&#39;: &#39;Ava&#39;, &#39;last&#39;: &#39;Hansen&#39;},
-  &#39;location&#39;: {&#39;street&#39;: {&#39;number&#39;: 3526, &#39;name&#39;: &#39;George Street&#39;},
-   &#39;city&#39;: &#39;Worcester&#39;,
-   &#39;state&#39;: &#39;Merseyside&#39;,
-   &#39;country&#39;: &#39;United Kingdom&#39;,
-   &#39;postcode&#39;: &#39;K7Z 3WB&#39;,
-   &#39;coordinates&#39;: {&#39;latitude&#39;: &#39;11.9627&#39;, &#39;longitude&#39;: &#39;17.6871&#39;},
-   &#39;timezone&#39;: {&#39;offset&#39;: &#39;+9:00&#39;,
-    &#39;description&#39;: &#39;Tokyo, Seoul, Osaka, Sapporo, Yakutsk&#39;}},
-  &#39;email&#39;: &#39;ava.hansen@example.com&#39;,
-  &#39;login&#39;: {&#39;uuid&#39;: &#39;253e53f9-9553-4345-9047-fb18aec51cfe&#39;,
-   &#39;username&#39;: &#39;heavywolf743&#39;,
-   &#39;password&#39;: &#39;cristina&#39;,
-   &#39;salt&#39;: &#39;xwnpqwtd&#39;,
-   &#39;md5&#39;: &#39;2b5037da7d78258f167d5a3f8dc24edb&#39;,
-   &#39;sha1&#39;: &#39;fabbede0577b3fed686afd319d5ab794f1b35b02&#39;,
-   &#39;sha256&#39;: &#39;d42e2061f9c283c4548af6c617727215c79ecafc74b9f3a294e6cf09afc5906f&#39;},
-  &#39;dob&#39;: {&#39;date&#39;: &#39;1948-01-21T10:26:00.053Z&#39;, &#39;age&#39;: 73},
-  &#39;registered&#39;: {&#39;date&#39;: &#39;2011-11-19T03:28:46.830Z&#39;, &#39;age&#39;: 10},
-  &#39;phone&#39;: &#39;015242 07811&#39;,
-  &#39;cell&#39;: &#39;0700-326-155&#39;,
-  &#39;id&#39;: {&#39;name&#39;: &#39;NINO&#39;, &#39;value&#39;: &#39;HT 97 25 71 Y&#39;},
-  &#39;picture&#39;: {&#39;large&#39;: &#39;https://randomuser.me/api/portraits/women/60.jpg&#39;,
-   &#39;medium&#39;: &#39;https://randomuser.me/api/portraits/med/women/60.jpg&#39;,
-   &#39;thumbnail&#39;: &#39;https://randomuser.me/api/portraits/thumb/women/60.jpg&#39;},
-  &#39;nat&#39;: &#39;GB&#39;},
- {&#39;gender&#39;: &#39;male&#39;,
-  &#39;name&#39;: {&#39;title&#39;: &#39;Mr&#39;, &#39;first&#39;: &#39;Aubin&#39;, &#39;last&#39;: &#39;Martin&#39;},
-  &#39;location&#39;: {&#39;street&#39;: {&#39;number&#39;: 8496, &#39;name&#39;: &quot;Rue du Bât-D&#39;Argent&quot;},
-   &#39;city&#39;: &#39;Strasbourg&#39;,
-   &#39;state&#39;: &#39;Meurthe-et-Moselle&#39;,
-   &#39;country&#39;: &#39;France&#39;,
-   &#39;postcode&#39;: 83374,
-   &#39;coordinates&#39;: {&#39;latitude&#39;: &#39;-1.3192&#39;, &#39;longitude&#39;: &#39;24.0062&#39;},
-   &#39;timezone&#39;: {&#39;offset&#39;: &#39;+10:00&#39;,
-    &#39;description&#39;: &#39;Eastern Australia, Guam, Vladivostok&#39;}},
-  &#39;email&#39;: &#39;aubin.martin@example.com&#39;,
-  &#39;login&#39;: {&#39;uuid&#39;: &#39;54b9bfa9-5e86-4335-8ae3-164d85df98e7&#39;,
-   &#39;username&#39;: &#39;heavyladybug837&#39;,
-   &#39;password&#39;: &#39;kendra&#39;,
-   &#39;salt&#39;: &#39;LcEMyR5s&#39;,
-   &#39;md5&#39;: &#39;2fbd9e05d992eb74f7afcccec02581fc&#39;,
-   &#39;sha1&#39;: &#39;530a1bc71a986415176606ea377961d2ce381e5d&#39;,
-   &#39;sha256&#39;: &#39;f5ee7bc47f5615e89f1729dcb49632c6b76a90ba50eb42d782e2790398ebc539&#39;},
-  &#39;dob&#39;: {&#39;date&#39;: &#39;1949-04-12T05:01:31.463Z&#39;, &#39;age&#39;: 72},
-  &#39;registered&#39;: {&#39;date&#39;: &#39;2006-05-28T03:54:36.433Z&#39;, &#39;age&#39;: 15},
-  &#39;phone&#39;: &#39;01-88-32-00-30&#39;,
-  &#39;cell&#39;: &#39;06-09-79-55-81&#39;,
-  &#39;id&#39;: {&#39;name&#39;: &#39;INSEE&#39;, &#39;value&#39;: &#39;1NNaN48231023 75&#39;},
-  &#39;picture&#39;: {&#39;large&#39;: &#39;https://randomuser.me/api/portraits/men/65.jpg&#39;,
-   &#39;medium&#39;: &#39;https://randomuser.me/api/portraits/med/men/65.jpg&#39;,
-   &#39;thumbnail&#39;: &#39;https://randomuser.me/api/portraits/thumb/men/65.jpg&#39;},
-  &#39;nat&#39;: &#39;FR&#39;}]
 </pre></div>
 </div>
 </div>
@@ -904,43 +715,13 @@ document.write(`
 <p>Here’s how to load an OpenML dataset with a single line of code:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
 
 <span class="n">monk</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;monks-problems-2&quot;</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">monk</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  attr1 attr2 attr3 attr4 attr5 attr6
-0     1     1     1     1     2     2
-1     1     1     1     1     4     1
-2     1     1     1     2     1     1
-3     1     1     1     2     1     2
-4     1     1     1     2     2     1
-5     1     1     1     2     3     1
-6     1     1     1     2     4     1
-7     1     1     1     3     2     1
-8     1     1     1     3     4     1
-9     1     1     2     1     1     1
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 11;
-                var nbb_unformatted_code = "from sklearn.datasets import fetch_openml\n\nmonk = fetch_openml(name='monks-problems-2', as_frame=True)\nprint(monk['data'].head(10))";
-                var nbb_formatted_code = "from sklearn.datasets import fetch_openml\n\nmonk = fetch_openml(name=\"monks-problems-2\", as_frame=True)\nprint(monk[\"data\"].head(10))";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 </section>
 <section id="autoscraper-automate-web-scraping-in-python">
@@ -952,7 +733,7 @@ document.write(`
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>autoscraper
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install autoscraper
 </pre></div>
 </div>
 </div>
@@ -962,7 +743,7 @@ document.write(`
 <p>Here’s a quick example to extract specific elements from a webpage:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autoscraper</span> <span class="kn">import</span> <span class="n">AutoScraper</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autoscraper</span> <span class="kn">import</span> <span class="n">AutoScraper</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://stackoverflow.com/questions/2081586/web-scraping-with-python&quot;</span>
 
@@ -976,31 +757,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>How to execute a program or call a system command?
-What are metaclasses in Python?
-Does Python have a ternary conditional operator?
-Convert bytes to a string
-Does Python have a string &#39;contains&#39; substring method?
-How to check version of python modules?
-</pre></div>
-</div>
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 13;
-                var nbb_unformatted_code = "from autoscraper import AutoScraper\n\nurl = 'https://stackoverflow.com/questions/2081586/web-scraping-with-python'\n\nwanted_list = ['How to check version of python modules?']\n\nscraper = AutoScraper()\nresult = scraper.build(url, wanted_list)\n\nfor res in result:\n    print(res)";
-                var nbb_formatted_code = "from autoscraper import AutoScraper\n\nurl = \"https://stackoverflow.com/questions/2081586/web-scraping-with-python\"\n\nwanted_list = [\"How to check version of python modules?\"]\n\nscraper = AutoScraper()\nresult = scraper.build(url, wanted_list)\n\nfor res in result:\n    print(res)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://github.com/alirezamika/autoscraper">Link to autoscraper</a>.</p>
 </section>
@@ -1013,7 +769,7 @@ How to check version of python modules?
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pandas-datareader
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pandas-datareader
 </pre></div>
 </div>
 </div>
@@ -1023,7 +779,7 @@ How to check version of python modules?
 <p>Here’s how you can fetch daily data of the AD indicator from 2008 to 2018:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">pandas_datareader.data</span> <span class="k">as</span> <span class="nn">web</span>
 
@@ -1049,7 +805,7 @@ How to check version of python modules?
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pytrends
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install pytrends
 </pre></div>
 </div>
 </div>
@@ -1059,30 +815,20 @@ How to check version of python modules?
 <p>Here’s an example to track the trend of the keyword “data science” from 2019 to 2024:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytrends.request</span> <span class="kn">import</span> <span class="n">TrendReq</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytrends.request</span> <span class="kn">import</span> <span class="n">TrendReq</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pytrends</span> <span class="o">=</span> <span class="n">TrendReq</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pytrends</span> <span class="o">=</span> <span class="n">TrendReq</span><span class="p">(</span><span class="n">hl</span><span class="o">=</span><span class="s2">&quot;en-US&quot;</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
 <span class="n">pytrends</span><span class="o">.</span><span class="n">build_payload</span><span class="p">(</span><span class="n">kw_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">])</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pytrends</span><span class="o">.</span><span class="n">interest_over_time</span><span class="p">()</span>
 <span class="n">df</span><span class="p">[</span><span class="s2">&quot;data science&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/khuyentran/book/venv/lib/python3.11/site-packages/pytrends/request.py:260: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option(&#39;future.no_silent_downcasting&#39;, True)`
-  df = df.fillna(False)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;date&#39;&gt;
-</pre></div>
-</div>
-<img alt="../_images/be2978937c2c01ed955b81d595ad47684b72756f43911055c8e4a6311ea06599.png" src="../_images/be2978937c2c01ed955b81d595ad47684b72756f43911055c8e4a6311ea06599.png" />
 </div>
 </div>
 <p><a class="reference external" href="https://github.com/GeneralMills/pytrends">Link to pytrends</a></p>
@@ -1112,7 +858,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>datacommons
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install datacommons
 </pre></div>
 </div>
 </div>
@@ -1121,7 +867,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>To get statistics about a location with one line of code, use <code class="docutils literal notranslate"><span class="pre">datacommons</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datacommons_pandas</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datacommons_pandas</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span> 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
 </pre></div>
@@ -1131,7 +877,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>Here’s how to find median income in California over time:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">median_income</span> <span class="o">=</span> <span class="n">datacommons_pandas</span><span class="o">.</span><span class="n">build_time_series</span><span class="p">(</span><span class="s2">&quot;geoId/06&quot;</span><span class="p">,</span> <span class="s2">&quot;Median_Income_Person&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">median_income</span> <span class="o">=</span> <span class="n">datacommons_pandas</span><span class="o">.</span><span class="n">build_time_series</span><span class="p">(</span><span class="s2">&quot;geoId/06&quot;</span><span class="p">,</span> <span class="s2">&quot;Median_Income_Person&quot;</span><span class="p">)</span>
 <span class="n">median_income</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">median_income</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">median_income</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
@@ -1142,32 +888,11 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Median Income in California Overtime&#39;}&gt;
-</pre></div>
-</div>
-<img alt="../_images/555511d310f7084a32df67b74d63d17997be2334e41a96ba33e51fc0828bf79f.png" src="../_images/555511d310f7084a32df67b74d63d17997be2334e41a96ba33e51fc0828bf79f.png" />
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 71;
-                var nbb_unformatted_code = "median_income = datacommons_pandas.build_time_series(\"geoId/06\", \"Median_Income_Person\")\nmedian_income.index = pd.to_datetime(median_income.index)\nmedian_income.plot(\n    figsize=(20, 10),\n    x=\"Income\",\n    y=\"Year\",\n    title=\"Median Income in California Overtime\",\n)";
-                var nbb_formatted_code = "median_income = datacommons_pandas.build_time_series(\"geoId/06\", \"Median_Income_Person\")\nmedian_income.index = pd.to_datetime(median_income.index)\nmedian_income.plot(\n    figsize=(20, 10),\n    x=\"Income\",\n    y=\"Year\",\n    title=\"Median Income in California Overtime\",\n)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p>To visualize the number of people in the U.S. over time:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_ts</span><span class="p">(</span><span class="n">statistics</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">process_ts</span><span class="p">(</span><span class="n">statistics</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="n">count_person</span> <span class="o">=</span> <span class="n">datacommons_pandas</span><span class="o">.</span><span class="n">build_time_series</span><span class="p">(</span><span class="s1">&#39;country/USA&#39;</span><span class="p">,</span> <span class="n">statistics</span><span class="p">)</span>
     <span class="n">count_person</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">count_person</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
     <span class="n">count_person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">statistics</span>
@@ -1178,7 +903,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count_person_male</span> <span class="o">=</span> <span class="n">process_ts</span><span class="p">(</span><span class="s1">&#39;Count_Person_Male&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">count_person_male</span> <span class="o">=</span> <span class="n">process_ts</span><span class="p">(</span><span class="s1">&#39;Count_Person_Male&#39;</span><span class="p">)</span>
 <span class="n">count_person_female</span> <span class="o">=</span> <span class="n">process_ts</span><span class="p">(</span><span class="s1">&#39;Count_Person_Female&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1186,7 +911,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count_person</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">count_person_female</span><span class="p">,</span> <span class="n">count_person_male</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">count_person</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">count_person_female</span><span class="p">,</span> <span class="n">count_person_male</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">count_person</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
@@ -1195,27 +920,6 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:title={&#39;center&#39;:&#39;Number of People in the U.S Overtime&#39;}&gt;
-</pre></div>
-</div>
-<img alt="../_images/c32d89caa643f30a65a4e1ca72ba565ea36f368b335f2fdb8c44b24602b900e0.png" src="../_images/c32d89caa643f30a65a4e1ca72ba565ea36f368b335f2fdb8c44b24602b900e0.png" />
-<script type="application/javascript">
-            setTimeout(function() {
-                var nbb_cell_id = 69;
-                var nbb_unformatted_code = "count_person = pd.concat([count_person_female, count_person_male], axis=1)\n\ncount_person.plot(\n    figsize=(20, 10),\n    title=\"Number of People in the U.S Overtime\",\n)";
-                var nbb_formatted_code = "count_person = pd.concat([count_person_female, count_person_male], axis=1)\n\ncount_person.plot(\n    figsize=(20, 10),\n    title=\"Number of People in the U.S Overtime\",\n)";
-                var nbb_cells = Jupyter.notebook.get_cells();
-                for (var i = 0; i < nbb_cells.length; ++i) {
-                    if (nbb_cells[i].input_prompt_number == nbb_cell_id) {
-                        if (nbb_cells[i].get_text() == nbb_unformatted_code) {
-                             nbb_cells[i].set_text(nbb_formatted_code);
-                        }
-                        break;
-                    }
-                }
-            }, 500);
-            </script></div>
 </div>
 <p><a class="reference external" href="https://datacommons.org/">Link to Datacommons</a>.</p>
 </section>
@@ -1228,7 +932,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>GoogleNews
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install GoogleNews
 </pre></div>
 </div>
 </div>
@@ -1238,7 +942,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>Here’s how you can get news articles related to a keyword within a given time period:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">GoogleNews</span> <span class="kn">import</span> <span class="n">GoogleNews</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">GoogleNews</span> <span class="kn">import</span> <span class="n">GoogleNews</span>
 <span class="n">googlenews</span> <span class="o">=</span> <span class="n">GoogleNews</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1246,95 +950,21 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">set_time_range</span><span class="p">(</span><span class="s1">&#39;02/01/2022&#39;</span><span class="p">,</span><span class="s1">&#39;03/25/2022&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">set_time_range</span><span class="p">(</span><span class="s1">&#39;02/01/2022&#39;</span><span class="p">,</span><span class="s1">&#39;03/25/2022&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;funny&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;funny&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;title&#39;: &#39;Hagan has fastest NHRA Funny Car run in 4 years&#39;,
-  &#39;media&#39;: &#39;ESPN&#39;,
-  &#39;date&#39;: &#39;Feb 26, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 26, 0, 0),
-  &#39;desc&#39;: &#39;-- Matt Hagan made the quickest Funny Car run in four years Saturday, \ngiving the new Tony Stewart Racing NHRA team its first No. 1 qualifier and \nsetting the...&#39;,
-  &#39;link&#39;: &#39;https://www.espn.com/racing/story/_/id/33381149/matt-hagan-fastest-nhra-funny-car-pass-4-years&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Full fields in Top Fuel, Funny Car, and Pro Stock promise fast ...&#39;,
-  &#39;media&#39;: &#39;NHRA&#39;,
-  &#39;date&#39;: &#39;Feb 10, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 10, 0, 0),
-  &#39;desc&#39;: &#39;The pits at Auto Club Raceway at Pomona will be packed with NHRA Camping \nWorld Drag Racing Series teams for the 2022 season-opening Lucas Oil NHRA...&#39;,
-  &#39;link&#39;: &#39;https://www.nhra.com/news/2022/full-fields-top-fuel-funny-car-and-pro-stock-promise-fast-start-winternationals&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Full Cast Set for Broadway Revival of Funny Girl, Starring ...&#39;,
-  &#39;media&#39;: &#39;Playbill&#39;,
-  &#39;date&#39;: &#39;Feb 7, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 7, 0, 0),
-  &#39;desc&#39;: &#39;Among those newly added to the company are Peter Francis James, Ephie \nAardema, Martin Moran, and Julie Benko. By Margaret Hall. February 07, 2022.&#39;,
-  &#39;link&#39;: &#39;https://playbill.com/article/full-cast-set-for-broadway-revival-of-funny-girl-starring-beanie-feldstein-and-ramin-karimloo&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Robert Hight tops Funny Car qualifying at season-opening Lucas Oil NHRA Winternationals&#39;,
-  &#39;media&#39;: &#39;ESPN&#39;,
-  &#39;date&#39;: &#39;Feb 18, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 18, 0, 0),
-  &#39;desc&#39;: &quot;-- Robert Hight topped Funny Car qualifying Friday night in the NHRA \nCamping World Drag Racing Series&#39; season-opening Lucas Oil NHRA \nWinternationals. Hight, a...&quot;,
-  &#39;link&#39;: &#39;https://www.espn.com/racing/story/_/id/33324340/robert-hight-tops-funny-car-qualifying-season-opening-lucas-oil-nhra-winternationals&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;New NHRA Funny Car Team Owner Ron Capps Throws ...&#39;,
-  &#39;media&#39;: &#39;Autoweek&#39;,
-  &#39;date&#39;: &#39;Feb 21, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 21, 0, 0),
-  &#39;desc&#39;: &#39;Defending Funny Car champion enters season without automaker deal after \nlong-time partner turns him down. By Susan Wade. Feb 21, 2022.&#39;,
-  &#39;link&#39;: &#39;https://www.autoweek.com/racing/nhra/a39160639/ron-capps-throws-dodgemopar-under-bus/&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;VIDEO: Beanie Feldstein, Ramin Karimloo, and More in ...&#39;,
-  &#39;media&#39;: &#39;Broadway World&#39;,
-  &#39;date&#39;: &#39;ar 9, 2022&#39;,
-  &#39;datetime&#39;: None,
-  &#39;desc&#39;: &#39;The highly anticipated Broadway revival of Funny Girl is beginning \nperformances this month! The musical will have its first preview at the \nAugust Wilson on...&#39;,
-  &#39;link&#39;: &#39;https://www.broadwayworld.com/article/VIDEO-Beanie-Feldstein-Ramin-Karimloo-and-More-in-Rehearsal-For-FUNNY-GIRL-20220309&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Watch: The Funny Girl Sitzprobe, With Beanie Feldstein and ...&#39;,
-  &#39;media&#39;: &#39;TheaterMania&#39;,
-  &#39;date&#39;: &#39;ar 24, 2022&#39;,
-  &#39;datetime&#39;: None,
-  &#39;desc&#39;: &quot;Funny Girl is headed back to Broadway. Here is a first look at the cast&#39;s \nfirst orchestra rehearsal, with snippets of stars Beanie Feldstein, Ramin \nKarimloo...&quot;,
-  &#39;link&#39;: &#39;https://www.theatermania.com/broadway/news/first-look-the-funny-girl-sitzprobe-with-beanie-fe_93550.html&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Stephen Colbert, Funny or Die Prep Primetime Pickleball Special for CBS&#39;,
-  &#39;media&#39;: &#39;The Hollywood Reporter&#39;,
-  &#39;date&#39;: &#39;ar 15, 2022&#39;,
-  &#39;datetime&#39;: None,
-  &#39;desc&#39;: &#39;Stephen Colbert, Funny or Die Prep Primetime Pickleball Special for CBS. \nThe special, \&#39;Pickled,\&#39; will see celebrity competitors vie for the &quot;Golden \nGherkin.&quot;.&#39;,
-  &#39;link&#39;: &#39;https://www.hollywoodreporter.com/tv/tv-news/stephen-colbert-funny-or-die-primetime-pickleball-cbs-1235111617/&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Randy Meyer Racing to debut injected nitro Funny Car at ...&#39;,
-  &#39;media&#39;: &#39;NHRA&#39;,
-  &#39;date&#39;: &#39;ar 22, 2022&#39;,
-  &#39;datetime&#39;: None,
-  &#39;desc&#39;: &quot;The Funny Car Chaos deal is becoming more popular here in the Midwest, so \nit&#39;s an opportunity for us to go race close to home, have some fun, and \ntake on a new...&quot;,
-  &#39;link&#39;: &#39;https://www.nhra.com/news/2022/randy-meyer-racing-debut-injected-nitro-funny-car-funny-car-chaos-event&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;},
- {&#39;title&#39;: &#39;Laurie Zaleski talks about her book “Funny Farm”&#39;,
-  &#39;media&#39;: &#39;The Washington Post&#39;,
-  &#39;date&#39;: &#39;Feb 25, 2022&#39;,
-  &#39;datetime&#39;: datetime.datetime(2022, 2, 25, 0, 0),
-  &#39;desc&#39;: &quot;This is the Funny Farm, double-entendre intended: “Because it&#39;s full of \nanimals, and fit for lunatics,” Zaleski jokes of the sanctuary that she \nbuilt here,...&quot;,
-  &#39;link&#39;: &#39;https://www.washingtonpost.com/books/2022/02/25/funny-farm-rescue-animals/&#39;,
-  &#39;img&#39;: &#39;data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==&#39;}]
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">googlenews</span><span class="o">.</span><span class="n">results</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1350,7 +980,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>people_also_ask<span class="w"> </span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install people_also_ask 
 </pre></div>
 </div>
 </div>
@@ -1360,45 +990,16 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>Here’s how to retrieve related questions and answers:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">people_also_ask</span> <span class="k">as</span> <span class="nn">ask</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">people_also_ask</span> <span class="k">as</span> <span class="nn">ask</span>
 
 <span class="n">ask</span><span class="o">.</span><span class="n">get_related_questions</span><span class="p">(</span><span class="s1">&#39;data science&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;What exactly data science do?&#39;,
- &#39;Is data science a good career?&#39;,
- &#39;What are the 3 main concepts of data science?&#39;,
- &#39;Is data science a easy career?&#39;]
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ask</span><span class="o">.</span><span class="n">get_answer</span><span class="p">(</span><span class="s1">&#39;Is data science a easy career?&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;has_answer&#39;: True,
- &#39;question&#39;: &#39;Is data science a easy career?&#39;,
- &#39;related_questions&#39;: [&#39;Is becoming a data scientist easy?&#39;,
-  &#39;Is data science a stressful career?&#39;,
-  &#39;Is Python for data science hard?&#39;,
-  &#39;Do data scientists code a lot?&#39;],
- &#39;response&#39;: &#39;The short answer to the above question is a big NO! Data Science is hard to learn is primarily a misconception that beginners have during their initial days. As they discover the unique domain of data science more, they realise that data science is just another field of study that can be learned by working hard.Oct 4, 2022&#39;,
- &#39;heading&#39;: &#39;The short answer to the above question is a big NO! Data Science is hard to learn is primarily a misconception that beginners have during their initial days. As they discover the unique domain of data science more, they realise that data science is just another field of study that can be learned by working hard.Oct 4, 2022&#39;,
- &#39;title&#39;: &#39;Is Data Science Hard to Learn? (Answer: NO!) - ProjectPro&#39;,
- &#39;link&#39;: &#39;https://www.projectpro.io/article/is-data-science-hard-to-learn/522#:~:text=The%20short%20answer%20to%20the,be%20learned%20by%20working%20hard.&#39;,
- &#39;displayed_link&#39;: &#39;https://www.projectpro.io › article › is-data-science-hard-t...&#39;,
- &#39;snippet_str&#39;: &#39;The short answer to the above question is a big NO! Data Science is hard to learn is primarily a misconception that beginners have during their initial days. As they discover the unique domain of data science more, they realise that data science is just another field of study that can be learned by working hard.Oct 4, 2022\nhttps://www.projectpro.io › article › is-data-science-hard-t...\nhttps://www.projectpro.io/article/is-data-science-hard-to-learn/522#:~:text=The%20short%20answer%20to%20the,be%20learned%20by%20working%20hard.\nIs Data Science Hard to Learn? (Answer: NO!) - ProjectPro&#39;,
- &#39;snippet_data&#39;: None,
- &#39;date&#39;: None,
- &#39;snippet_type&#39;: &#39;Definition Featured Snippet&#39;,
- &#39;snippet_str_body&#39;: &#39;&#39;,
- &#39;raw_text&#39;: &#39;Featured snippet from the web\nThe short answer to the above question is a big NO! \nData Science is hard to learn\n is primarily a misconception that beginners have during their initial days. As they discover the unique domain of data science more, they realise that data science is just another field of study that can be learned by working hard.\nOct 4, 2022\nIs Data Science Hard to Learn? (Answer: NO!) - ProjectPro\nhttps://www.projectpro.io\n › article › is-data-science-hard-t...&#39;}
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ask</span><span class="o">.</span><span class="n">get_answer</span><span class="p">(</span><span class="s1">&#39;Is data science a easy career?&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1414,7 +1015,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">facebook</span><span class="o">-</span><span class="n">scraper</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">facebook</span><span class="o">-</span><span class="n">scraper</span>
 </pre></div>
 </div>
 </div>
@@ -1425,18 +1026,9 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>Get group information:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">facebook_scraper</span> <span class="kn">import</span> <span class="n">get_profile</span><span class="p">,</span> <span class="n">get_group_info</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">facebook_scraper</span> <span class="kn">import</span> <span class="n">get_profile</span><span class="p">,</span> <span class="n">get_group_info</span>
 
 <span class="n">get_group_info</span><span class="p">(</span><span class="s2">&quot;thedachshundowners&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;id&#39;: &#39;2685753618191566&#39;,
- &#39;name&#39;: &#39;Dachshund Owners&#39;,
- &#39;type&#39;: &#39;Public group&#39;,
- &#39;members&#39;: 128635,
- &#39;about&#39;: &quot;Hello, Welcome to the Dachshund Owners group.\nPost pictures/videos, share stories, ask advise from other Dachshund lovers.\nYou can post YOUR videos / pics of your Dachshund if they’ve got that viral element, your dog will be seen by millions of people around the globe.\n\n* RULES AND POSTING GUIDELINES\n✅ Post original contents that you created ONLY\n✅ Post with a short description/story about the content\n✅ Include if you want to be credited or not\n✅ Be nice to other members\n❌ No aggressive behavior\n❌ No backyard breeding\n❌ No spam\n❌ No unrelated content or video\n\n🐾 Selling dogs are PROHIBITED. Any transactions made with our group from this point forward will be at your own risk.\n🐾No Promotions - include(s) SELLING/PROMOTING ITEM(s) Fishing potential buyers. We are just protecting each and everyone from scams!\n\n🛍️ Hello, Sir or Lady.\nThe Dachshund Owners group administrator is speaking.\nWe appreciate you being here. We want to let you know that managing spam and other related tasks is difficult with so many posts to approve. It&#39;s a very time-consuming task, and that&#39;s why we need your support. Please buy a T-shirt from us so we can keep the group running and providing awesome value! You can get a T-shirt, mug, Canvas, and other items from us that can be customized for Dog lovers. On our Store, you may check out our customized campaigns. Thank You! 😊\n🛒 Store Link: https://www.pawowners.com/collectio...&quot;}
 </pre></div>
 </div>
 </div>
@@ -1444,28 +1036,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>Get profile information</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_profile</span><span class="p">(</span><span class="s2">&quot;zuck&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Friend_count&#39;: None,
- &#39;Follower_count&#39;: None,
- &#39;Following_count&#39;: None,
- &#39;cover_photo&#39;: &#39;https://scontent-ord5-1.xx.fbcdn.net/v/t31.18172-8/19575079_10103832396388711_8894816584589808440_o.jpg?stp=cp0_dst-jpg_e15_fr_q65&amp;_nc_cat=1&amp;ccb=1-7&amp;_nc_sid=ed5ff1&amp;_nc_ohc=Z5jCEAhNv3AAX9ihcdv&amp;_nc_ht=scontent-ord5-1.xx&amp;oh=00_AfCTBrP26zWK0onpRfKbpJLRlFDwWLmlv1_XlkeVLkE_yw&amp;oe=63CA953D&#39;,
- &#39;profile_picture&#39;: &#39;https://scontent-ord5-1.xx.fbcdn.net/v/t39.30808-1/312257846_10114737758665291_6588360857015169674_n.jpg?stp=cp0_dst-jpg_e15_q65_s120x120&amp;_nc_cat=1&amp;ccb=1-7&amp;_nc_sid=dbb9e7&amp;_nc_ohc=x2_MUzaxC2cAX9w6LZ6&amp;_nc_ht=scontent-ord5-1.xx&amp;oh=00_AfDiKcBBDdzCymHXd-yjp2stit_VGPQRm9oeibSyDFG8BA&amp;oe=63A81F9E&#39;,
- &#39;id&#39;: &#39;4&#39;,
- &#39;Name&#39;: &#39;Mark Zuckerberg&#39;,
- &#39;Work&#39;: &#39;Chan Zuckerberg Initiative\nDecember 1, 2015 - Present\nMeta\nFounder and CEO\nFebruary 4, 2004 - Present\nPalo Alto, California\nBringing the world closer together.&#39;,
- &#39;Education&#39;: &#39;Harvard University\nComputer Science and Psychology\nAugust 30, 2002 - April 30, 2004\nPhillips Exeter Academy\nClassics\nClass of 2002\nArdsley High School\nHigh school\nAugust 1998 - May 2000&#39;,
- &#39;Places lived&#39;: [{&#39;link&#39;: &#39;/profile.php?id=104022926303756&amp;refid=17&#39;,
-   &#39;text&#39;: &#39;Palo Alto, California&#39;,
-   &#39;type&#39;: &#39;Current city&#39;},
-  {&#39;link&#39;: &#39;/profile.php?id=105506396148790&amp;refid=17&#39;,
-   &#39;text&#39;: &#39;Dobbs Ferry, New York&#39;,
-   &#39;type&#39;: &#39;Hometown&#39;}],
- &#39;About&#39;: &quot;I&#39;m trying to make the world a more open place.&quot;,
- &#39;Favorite quotes&#39;: &#39;&quot;Fortune favors the bold.&quot;\n- Virgil, Aeneid X.284\n\n&quot;All children are artists. The problem is how to remain an artist once you grow up.&quot;\n- Pablo Picasso\n\n&quot;Make things as simple as possible but no simpler.&quot;\n- Albert Einstein&#39;}
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">get_profile</span><span class="p">(</span><span class="s2">&quot;zuck&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1481,7 +1052,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>recipe-scrapers
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install recipe-scrapers
 </pre></div>
 </div>
 </div>
@@ -1490,7 +1061,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>For automated recipe data extraction, use the <code class="docutils literal notranslate"><span class="pre">recipe-scrapers</span></code> library. It simplifies the process of gathering recipe information from various websites.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">recipe_scrapers</span> <span class="kn">import</span> <span class="n">scrape_me</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">recipe_scrapers</span> <span class="kn">import</span> <span class="n">scrape_me</span>
 
 <span class="n">scraper</span> <span class="o">=</span> <span class="n">scrape_me</span><span class="p">(</span><span class="s1">&#39;https://cookieandkate.com/thai-red-curry-recipe/&#39;</span><span class="p">)</span>
 
@@ -1498,93 +1069,38 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;cookieandkate.com&#39;
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Thai Red Curry with Vegetables&#39;
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">total_time</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">total_time</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>40
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">ingredients</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">ingredients</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;1 ¼ cups brown jasmine rice or long-grain brown rice, rinsed&#39;,
- &#39;1 tablespoon coconut oil or olive oil&#39;,
- &#39;1 small white onion, chopped (about 1 cup)&#39;,
- &#39;Pinch of salt, more to taste&#39;,
- &#39;1 tablespoon finely grated fresh ginger (about a 1-inch nub of ginger)&#39;,
- &#39;2 cloves garlic, pressed or minced&#39;,
- &#39;1 red bell pepper, sliced into thin 2-inch long strips&#39;,
- &#39;1 yellow, orange or green bell pepper, sliced into thin 2-inch long strips&#39;,
- &#39;3 carrots, peeled and sliced on the diagonal into ¼-inch thick rounds (about 1 cup)&#39;,
- &#39;2 tablespoons Thai red curry paste*&#39;,
- &#39;1 can (14 ounces) regular coconut milk**&#39;,
- &#39;1/2 cup water&#39;,
- &#39;1 1/2 cups packed thinly sliced kale (tough ribs removed first), preferably the Tuscan/lacinato/dinosaur variety&#39;,
- &#39;1 1/2 teaspoons coconut sugar or turbinado (raw) sugar or brown sugar&#39;,
- &#39;1 tablespoon tamari or soy sauce***&#39;,
- &#39;2 teaspoons rice vinegar or fresh lime juice&#39;,
- &#39;Garnishes/sides: handful of chopped fresh basil or cilantro, optional red pepper flakes, optional sriracha or chili garlic sauce&#39;]
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;To cook the rice, bring a large pot of water to boil. Add the rinsed rice and continue boiling for 30 minutes, reducing heat as necessary to prevent overflow. Remove from heat, drain the rice and return the rice to pot. Cover and let the rice rest for 10 minutes or longer, until you’re ready to serve. Just before serving, season the rice to taste with salt and fluff it with a fork.\nTo make the curry, warm a large skillet with deep sides over medium heat. Once it’s hot, add the oil. Add the onion and a sprinkle of salt and cook, stirring often, until the onion has softened and is turning translucent, about 5 minutes. Add the ginger and garlic and cook until fragrant, about 30 seconds, while stirring continuously.\nAdd the bell peppers and carrots. Cook until the bell peppers are fork-tender, 3 to 5 more minutes, stirring occasionally. Then add the curry paste and cook, stirring often, for 2 minutes.\nAdd the coconut milk, water, kale and sugar, and stir to combine. Bring the mixture to a simmer over medium heat. Reduce heat as necessary to maintain a gentle simmer and cook until the peppers, carrots and kale have softened to your liking, about 5 to 10 minutes, stirring occasionally.\nRemove the pot from the heat and season with tamari and rice vinegar. Add salt (I added 1/4 teaspoon for optimal flavor), to taste. If the curry needs a little more punch, add 1/2 teaspoon more tamari, or for more acidity, add 1/2 teaspoon more rice vinegar. Divide rice and curry into bowls and garnish with chopped cilantro and a sprinkle of red pepper flakes, if you’d like. If you love spicy curries, serve with sriracha or chili garlic sauce on the side.&#39;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">nutrients</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;calories&#39;: &#39;340 calories&#39;,
- &#39;sugarContent&#39;: &#39;9.3 g&#39;,
- &#39;sodiumContent&#39;: &#39;473.3 mg&#39;,
- &#39;fatContent&#39;: &#39;11.3 g&#39;,
- &#39;saturatedFatContent&#39;: &#39;8 g&#39;,
- &#39;transFatContent&#39;: &#39;0 g&#39;,
- &#39;carbohydrateContent&#39;: &#39;56.3 g&#39;,
- &#39;fiberContent&#39;: &#39;5.6 g&#39;,
- &#39;proteinContent&#39;: &#39;8.3 g&#39;,
- &#39;cholesterolContent&#39;: &#39;0 mg&#39;}
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scraper</span><span class="o">.</span><span class="n">nutrients</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1600,7 +1116,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>parsera
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install parsera
 </pre></div>
 </div>
 </div>
@@ -1613,7 +1129,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>playwright<span class="w"> </span>install
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!playwright install
 </pre></div>
 </div>
 </div>
@@ -1630,7 +1146,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;YOUR_OPENAI_API_KEY_HERE&quot;</span>
 </pre></div>
@@ -1639,7 +1155,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">parsera</span> <span class="kn">import</span> <span class="n">Parsera</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">parsera</span> <span class="kn">import</span> <span class="n">Parsera</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/trending/python?since=daily&quot;</span>
@@ -1656,72 +1172,6 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;Forks&#39;: &#39;272&#39;, &#39;Owner&#39;: &#39;DS4SD&#39;, &#39;Repository&#39;: &#39;docling&#39;, &#39;Stars&#39;: &#39;5,264&#39;},
- {&#39;Forks&#39;: &#39;2,502&#39;,
-  &#39;Owner&#39;: &#39;mingrammer&#39;,
-  &#39;Repository&#39;: &#39;diagrams&#39;,
-  &#39;Stars&#39;: &#39;38,714&#39;},
- {&#39;Forks&#39;: &#39;3,883&#39;,
-  &#39;Owner&#39;: &#39;All-Hands-AI&#39;,
-  &#39;Repository&#39;: &#39;OpenHands&#39;,
-  &#39;Stars&#39;: &#39;34,095&#39;},
- {&#39;Forks&#39;: &#39;7,288&#39;,
-  &#39;Owner&#39;: &#39;frappe&#39;,
-  &#39;Repository&#39;: &#39;erpnext&#39;,
-  &#39;Stars&#39;: &#39;21,616&#39;},
- {&#39;Forks&#39;: &#39;7,249&#39;,
-  &#39;Owner&#39;: &#39;abi&#39;,
-  &#39;Repository&#39;: &#39;screenshot-to-code&#39;,
-  &#39;Stars&#39;: &#39;58,574&#39;},
- {&#39;Forks&#39;: &#39;46,154&#39;,
-  &#39;Owner&#39;: &#39;donnemartin&#39;,
-  &#39;Repository&#39;: &#39;system-design-primer&#39;,
-  &#39;Stars&#39;: &#39;274,420&#39;},
- {&#39;Forks&#39;: &#39;1,259&#39;,
-  &#39;Owner&#39;: &#39;Cinnamon&#39;,
-  &#39;Repository&#39;: &#39;kotaemon&#39;,
-  &#39;Stars&#39;: &#39;16,395&#39;},
- {&#39;Forks&#39;: &#39;927&#39;,
-  &#39;Owner&#39;: &#39;vanna-ai&#39;,
-  &#39;Repository&#39;: &#39;vanna&#39;,
-  &#39;Stars&#39;: &#39;11,585&#39;},
- {&#39;Forks&#39;: &#39;1,792&#39;,
-  &#39;Owner&#39;: &#39;roboflow&#39;,
-  &#39;Repository&#39;: &#39;supervision&#39;,
-  &#39;Stars&#39;: &#39;24,005&#39;},
- {&#39;Forks&#39;: &#39;323&#39;,
-  &#39;Owner&#39;: &#39;instructlab&#39;,
-  &#39;Repository&#39;: &#39;instructlab&#39;,
-  &#39;Stars&#39;: &#39;899&#39;},
- {&#39;Forks&#39;: &#39;1,006&#39;,
-  &#39;Owner&#39;: &#39;VikParuchuri&#39;,
-  &#39;Repository&#39;: &#39;marker&#39;,
-  &#39;Stars&#39;: &#39;17,520&#39;},
- {&#39;Forks&#39;: &#39;12,228&#39;,
-  &#39;Owner&#39;: &#39;geekcomputers&#39;,
-  &#39;Repository&#39;: &#39;Python&#39;,
-  &#39;Stars&#39;: &#39;31,470&#39;},
- {&#39;Forks&#39;: &#39;2,820&#39;,
-  &#39;Owner&#39;: &#39;Azure&#39;,
-  &#39;Repository&#39;: &#39;azure-sdk-for-python&#39;,
-  &#39;Stars&#39;: &#39;4,610&#39;},
- {&#39;Forks&#39;: &#39;1,589&#39;,
-  &#39;Owner&#39;: &#39;BerriAI&#39;,
-  &#39;Repository&#39;: &#39;litellm&#39;,
-  &#39;Stars&#39;: &#39;13,574&#39;},
- {&#39;Forks&#39;: &#39;74&#39;,
-  &#39;Owner&#39;: &#39;homebrewltd&#39;,
-  &#39;Repository&#39;: &#39;ichigo&#39;,
-  &#39;Stars&#39;: &#39;1,616&#39;},
- {&#39;Forks&#39;: &#39;4,348&#39;,
-  &#39;Owner&#39;: &#39;d2l-ai&#39;,
-  &#39;Repository&#39;: &#39;d2l-en&#39;,
-  &#39;Stars&#39;: &#39;23,811&#39;},
- {&#39;Forks&#39;: &#39;2,456&#39;, &#39;Owner&#39;: &#39;psf&#39;, &#39;Repository&#39;: &#39;black&#39;, &#39;Stars&#39;: &#39;38,902&#39;}]
-</pre></div>
-</div>
-</div>
 </div>
 <p><a class="reference external" href="https://github.com/raznem/parsera">Link to Parsera</a>.</p>
 </section>
@@ -1734,7 +1184,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>tabgan
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>!pip install tabgan
 </pre></div>
 </div>
 </div>
@@ -1746,7 +1196,7 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 <p>First, we create random input data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tabgan.sampler</span> <span class="kn">import</span> <span class="n">OriginalGenerator</span><span class="p">,</span> <span class="n">GANGenerator</span><span class="p">,</span> <span class="n">ForestDiffusionGenerator</span><span class="p">,</span> <span class="n">LLMGenerator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tabgan.sampler</span> <span class="kn">import</span> <span class="n">OriginalGenerator</span><span class="p">,</span> <span class="n">GANGenerator</span><span class="p">,</span> <span class="n">ForestDiffusionGenerator</span><span class="p">,</span> <span class="n">LLMGenerator</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -1766,63 +1216,17 @@ snscrape<span class="w"> </span>--max-results<span class="w"> </span><span class
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training Data:
-     A    B    C    D
-0   29  135   29  113
-1   88   77   28  126
-2  135   31   37  137
-3   25  138   16   79
-4   97  141  120   55
-
-Target Data:
-   Y
-0  0
-1  1
-2  1
-3  0
-4  0
-
-Test Data:
-    A   B   C   D
-0  77  98  56  15
-1  80  16  38   7
-2  63  87  57  50
-3  17  11  64  27
-4   9  29  85  75
-</pre></div>
-</div>
-</div>
 </div>
 <p>Next, we use the <code class="docutils literal notranslate"><span class="pre">OriginalGenerator</span></code> to generate synthetic data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_train1</span><span class="p">,</span> <span class="n">new_target1</span> <span class="o">=</span> <span class="n">OriginalGenerator</span><span class="p">()</span><span class="o">.</span><span class="n">generate_data_pipe</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_train1</span><span class="p">,</span> <span class="n">new_target1</span> <span class="o">=</span> <span class="n">OriginalGenerator</span><span class="p">()</span><span class="o">.</span><span class="n">generate_data_pipe</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training Data:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">new_train1</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Target Data:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">new_target1</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training Data:
-    A   B   C   D
-0  38  46  34  69
-1  38  46  34  69
-2  38  46  34  69
-3  38  46  34  69
-4  38  46  34  69
-
-Target Data:
-0    1
-1    1
-2    1
-3    1
-4    1
-Name: Y, dtype: int64
 </pre></div>
 </div>
 </div>
@@ -1840,7 +1244,7 @@ Name: Y, dtype: int64
 <p>Alternatively, we can use the <code class="docutils literal notranslate"><span class="pre">GANGenerator</span></code> to generate synthetic data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_train2</span><span class="p">,</span> <span class="n">new_target2</span> <span class="o">=</span> <span class="n">GANGenerator</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_train2</span><span class="p">,</span> <span class="n">new_target2</span> <span class="o">=</span> <span class="n">GANGenerator</span><span class="p">(</span>
     <span class="n">gen_params</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>  <span class="c1"># Process data in batches of 500 samples at a time</span>
         <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>       <span class="c1"># Train for a maximum of 10 epochs</span>
@@ -1853,25 +1257,6 @@ Name: Y, dtype: int64
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Target Data:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">new_target2</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6deb40c1b88c4c7ba6b064f5e430cd78", "version_major": 2, "version_minor": 0}</script><script type="application/vnd.jupyter.widget-view+json">{"model_id": "3b0a54c5fe5d4f82a885e8743fa7e3dd", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training Data:
-    A   B   C   D
-0  72  33  87  83
-1  80  16  81  84
-2  95  36  92  89
-3  88  39  68  91
-4   3   0  74  98
-
-Target Data:
-0    1
-1    0
-2    1
-3    0
-4    0
-Name: Y, dtype: int64
 </pre></div>
 </div>
 </div>
