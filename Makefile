@@ -1,9 +1,5 @@
-update: build copy git_add
-build: 
+update: build publish
+build:
 	jb build .
-copy: 
-	rm -rf docs/*
-	cp -r _build/html/* docs
-git_add:
-	git add .
-	git status
+publish:
+	ghp-import -n -p -f _build/html
