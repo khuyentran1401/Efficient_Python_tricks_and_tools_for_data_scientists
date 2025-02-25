@@ -166,8 +166,6 @@ gpt-commit-summarizer is a GitHub Action that leverages the power of GPT to summ
 
 This eliminates the need for manual summarization, saving you valuable time, especially when dealing with numerous changes within a commit.
 
-![](../img/gpt-commit.gif)
-
 +++
 
 
