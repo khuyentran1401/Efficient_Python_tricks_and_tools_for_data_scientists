@@ -1,0 +1,159 @@
+---
+title: Tools for Best Python Practices
+jupyter:
+  jupytext:
+    formats: ipynb,qmd
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
+
+This section cover tools that encourage best Python practices. 
+
+### Don’t Hard-Code. Use Hydra Instead
+
+```{python}
+#| tags: [hide-cell]
+!pip install hydra-core
+```
+
+When writing code, it is a good practice to put the values that you might change in a separate file from your original script.
+
+This practice not only saves you from wasting time searching for a specific variable in your scripts but also makes your scripts more reproducible.
+
+My favorite tool to handle config files is Hydra. The code below shows how to get values from a config file using Hydra.
+
+All parameters are specified in a configuration file named `config.yaml`: 
+
+```yaml
+# config.yaml
+data: data1 
+variables: 
+  drop_features: ['iid', 'id', 'idg', 'wave']
+  categorical_vars: ['undergra', 'zipcode']
+ ```
+
+In seperate file named `main.py`, the parameters in the `config.yaml` file are called using Hydra:
+```python
+# main.py
+import hydra 
+
+@hydra.main(config_name='config.yaml')
+def main(config):
+    print(f'Process {config.data}')
+    print(f'Drop features: {config.variables.drop_features}')
+
+if __name__ == '__main__':
+    main()
+```
+
+On your terminal, type:
+```bash
+$ python main.py
+```
+Output:
+
+```{python}
+#| tags: [hide-output]
+!python hydra_examples/main.py
+```
+
+[Link to my article about Hydra](https://towardsdatascience.com/introduction-to-hydra-cc-a-powerful-framework-to-configure-your-data-science-projects-ed65713a53c6?sk=eb08126922cc54a40c2fdfaea54c708d).
+
+[Link to Hydra](https://hydra.cc/). 
+
+
+### Store Sensitive Information Securely in Python with .env Files
+
+```{python}
+#| tags: [hide-cell]
+!pip install python-dotenv
+```
+
+Managing configuration and sensitive data in code results in security risks and deployment challenges as values are hard-coded or need to be manually set in different environments. This causes maintenance overhead and potential security breaches.
+
+```{python}
+PASSWORD=123
+USERNAME=myusername
+```
+
+Python-dotenv lets you separate configuration from code by loading environment variables from a `.env` file. You can:
+
+- Keep sensitive data out of code
+- Use different configurations per environment
+
+Here is an example:
+
+```{python}
+%%writefile .env
+PASSWORD=123
+USERNAME=myusername
+```
+
+```{python}
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+PASSWORD = os.getenv('PASSWORD')
+USERNAME = os.getenv('USERNAME')
+print(PASSWORD)
+print(USERNAME)
+```
+
+[Link to python-dotenv](https://github.com/theskumar/python-dotenv)
+
+### docopt: Create Beautiful Command-line Interfaces for Documentation in Python
+
+```{python}
+#| tags: [hide-cell]
+!pip install docopt 
+```
+
+Writing documentation for your Python script helps others understand how to use your script. However, instead of making them spend some time to find the documentation in your script, wouldn’t it be nice if they can view the documentation in the terminal?
+
+That is when docopt comes in handy. docopt allows you to create beautiful command-line interfaces by passing a Python string. 
+
+To understand how docopt works, we can add a docstring at the beginning of the file named `docopt_example.py`. 
+
+```{python}
+%%writefile docopt_example.py
+"""Extract keywords of an input file
+Usage:
+    docopt_example.py --data-dir=<data-directory> [--input-path=<path>]
+Options:
+    --data-dir=<path>    Directory of the data
+    --input-path=<path>  Name of the input file [default: input_text.txt]
+"""
+
+from docopt import docopt 
+
+if __name__ == '__main__':
+    args = docopt(__doc__, argv=None, help=True)
+    data_dir = args['--data-dir']
+    input_path = args['--input-path']
+
+    if data_dir:
+        print(f"Extracting keywords from {data_dir}/{input_path}")
+```
+
+Running the file `docopt_example.py` should give us the output like below:
+
+```bash
+$ python docopt_example.py
+```
+
+```{python}
+#| tags: [hide-input]
+!python docopt_example.py
+```
+
+[Link to docopt](http://docopt.org/).

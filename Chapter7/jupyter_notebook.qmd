@@ -1,0 +1,81 @@
+---
+title: Jupyter Notebook
+jupyter:
+  jupytext:
+    formats: ipynb,qmd
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
+
+This section covers some tools to work with Jupyter Notebook.
+
+### display in IPython: Display Math Equations in Jupyter Notebook
+
+If you want to use latex to display math equations in Jupyter Notebook, use the display module in the IPython library.
+
+```{python}
+from IPython.display import display, Math, Latex
+
+a = 3
+b = 5
+print("The equation is:")
+display(Math(f'y= {a}x+{b}'))
+```
+
+### Reuse The Notebook to Run The Same Code Across Different Data
+
+Have you ever wanted to reuse the notebook to run the same code across different data? This could be helpful to visualize different data without changing the code in the notebook itself.
+
+Papermill provides the tool for this. [Insert the tag `parameters` in a notebook cell that contains the variable you want to parameterize](https://papermill.readthedocs.io/en/latest/usage-parameterize.html).
+
+Then run the code below in the terminal. 
+
+```bash
+$ papermill input.ipynb output.ipynb -p data=data1
+```
+
+`-p` stands for parameters. In this case, I specify the data I want to run with `-p data=<name-data>`
+
+[Link to papermill](https://papermill.readthedocs.io/en/latest/usage-workflow.html)
+
+### watermark: Get Information About Your Hardware and the Packages Being Used within Your Notebook
+
+```{python}
+#| tags: [hide-cell]
+!pip install watermark 
+```
+
+If you want to get information about your hardware and the Python packages being used within your notebook, use the magic extension watermark.
+
+The code below shows the outputs of the watermark in my notebook.
+
+```{python}
+%load_ext watermark
+```
+
+```{python}
+%watermark
+```
+
+We can also use watermark to show the versions of the libraries being used:
+
+```{python}
+import numpy as np 
+import pandas as pd 
+import sklearn
+```
+
+```{python}
+%watermark --iversions 
+```
+
+[Link to watermark](https://github.com/rasbt/watermark#installation-and-updating).

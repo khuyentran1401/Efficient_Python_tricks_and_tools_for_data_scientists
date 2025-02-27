@@ -1,0 +1,249 @@
+---
+title: Work with Datetime
+jupyter:
+  jupytext:
+    formats: ipynb,qmd
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
+
+![](../img/datetime_pandas.png)
+
+### parse_dates: Convert Columns into Datetime When Using pandas to Read CSV Files
+
+If there are datetime columns in your CSV file, use the `parse_dates` parameter when reading CSV file with pandas. This reduces one extra step to convert these columns from string to datetime after reading the file.
+
+```{python}
+# Create data files
+import pandas as pd
+
+data = pd.DataFrame(
+    {
+        "date_column_1": ["2021/02/10", "2021/02/12"],
+        "date_column_2": ["2021/02/11", "2021/02/13"],
+        "value": [3, 3],
+    }
+)
+data.to_csv("data.csv", index=False)
+```
+
+```{python}
+import pandas as pd 
+
+df = pd.read_csv("data.csv", parse_dates=["date_column_1", "date_column_2"])
+```
+
+```{python}
+df
+```
+
+```{python}
+df.info()
+```
+
+### pandas' DateOffset: Add a Time Interval to a pandas Timestamp
+
+If you want to add days, months, or other time intervals to a pandas `Timestamp`,  use `pd.DateOffset`.
+
+```{python}
+import pandas as pd 
+from pandas.tseries.offsets import DateOffset, BDay
+
+ts = pd.Timestamp('2021-10-10 9:00:00')
+
+# Increase the timestamp by 3 months
+ts + DateOffset(months=3)
+```
+
+```{python}
+# Increase the timestamp by 3 years and 3 hours
+ts + DateOffset(years=3, hours=3)
+```
+
+You can also increase the timestamp by `n` business days using `BDay`. 
+
+```{python}
+# Increase the timestamp by 6 business days
+ts + BDay(n=6)
+```
+
+[Link to pandas DateOffset](https://pandas.pydata.org/docs/reference/api/pandas.tseries.offsets.DateOffset.html).
+
+### DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
+
+If you want to find the average of the previous n data points (simple moving average) with pandas, use `df.rolling(time_period).mean()`.
+
+The code below shows how to find the simple moving average of the previous 3 data-points.
+
+```{python}
+from datetime import date
+import pandas as pd 
+
+df = pd.DataFrame(
+    {
+        "date": [
+            date(2021, 1, 20),
+            date(2021, 1, 21),
+            date(2021, 1, 22),
+            date(2021, 1, 23),
+            date(2021, 1, 24),
+        ],
+        "value": [1, 2, 3, 4, 5],
+    }
+).set_index("date")
+
+df
+```
+
+```{python}
+df.rolling(3).mean()
+```
+
+### pandas Grouper: Group Values Based on a Specific Frequency
+
+Imagine you are given a DataFrame with a date column. If you want to group your DataFrame by a specific frequency, use `pd.Grouper`. A `Grouper` allows you to customize your groupby instruction.
+
+In the code below, I set `freq=1W` to group my DataFrame by weeks. 
+
+```{python}
+import pandas as pd
+
+df = pd.DataFrame(
+    {"date": ["3-15-22", "3-16-22", "3-22-22"], "price": [2, 3, 4]}
+)
+df["date"] = pd.to_datetime(df["date"])
+df
+```
+
+```{python}
+df.groupby(pd.Grouper(key="date", freq="1W")).mean()
+```
+
+### pandas.Series.dt: Access Datetime Properties of a pandas Series
+
+The easiest way to access datetime properties of pandas Series values is to use `pandas.Series.dt`.
+
+```{python}
+import pandas as pd 
+
+df = pd.DataFrame({"date": ["2021/05/13 15:00", "2022-6-20 14:00"], "values": [1, 3]})
+
+df["date"] = pd.to_datetime(df["date"])
+
+df["date"].dt.year
+```
+
+```{python}
+df["date"].dt.time
+```
+
+### Get Rows within a Year Range
+
+If you want to get all data starting in a particular year and exclude the previous years, simply use `df.loc['year':]` like below. This works when the index of your `pd.Dataframe` is `DatetimeIndex`.
+
+```{python}
+from datetime import datetime
+import pandas as pd 
+
+df = pd.DataFrame(
+    {
+        "date": [datetime(2018, 10, 1), datetime(2019, 10, 1), datetime(2020, 10, 1)],
+        "val": [1, 2, 3],
+    }
+).set_index("date")
+
+df
+```
+
+```{python}
+df.loc["2019":]
+```
+
+### pandas.reindex: Replace the Values of the Missing Dates with 0
+
+Have you ever got a time series with missing dates? This can cause a problem since many time series methods require a fixed frequency index.
+
+To fix this issue, you can replace the values of the missing dates with 0 using `pd.date_range` and `pd.reindex`.
+
+```{python}
+import pandas as pd 
+
+s = pd.Series([1, 2, 3], index=["2021-07-20", "2021-07-23", "2021-07-25"])
+s.index = pd.to_datetime(s.index)
+s
+```
+
+```{python}
+# Get dates ranging from 2021/7/20 to 2021/7/25
+new_index = pd.date_range("2021-07-20", "2021-07-25")
+
+# Conform Series to new index
+new_s = s.reindex(new_index, fill_value=0)
+new_s
+```
+
+### Select DataFrame Rows Before or After a Specific Date
+
+If you want to get the rows whose dates are before or after a specific date, use the comparison operator and a date string.
+
+```{python}
+import pandas as pd 
+
+df = pd.DataFrame(
+    {"date": pd.date_range(start="2021-7-19", end="2021-7-23"), "value": list(range(5))}
+)
+df
+```
+
+```{python}
+filtered_df = df[df.date <= "2021-07-21"]
+filtered_df
+```
+
+### resample: Resample Time-Series Data
+
+If you want to change the frequency of time-series data,  use `resample`. In the code below, I use `resample` to show the records every two days instead of every day. 
+
+```{python}
+import pandas as pd  
+from numpy.random import randint
+
+index = pd.date_range("2022-02-01", "2022-02-6")
+s = pd.Series(index=index, data=randint(0, 10, 6))
+s 
+```
+
+```{python}
+s.resample('2D').sum()
+```
+
+### Shift the Index of a DataFrame by a Specific Number of Periods 
+
+If you want to shift the index of a DataFrame by a specific number of periods, use `pandas.DataFrame.shift`.
+
+```{python}
+import pandas as pd
+
+df = pd.DataFrame(
+    {"a": [1, 2, 3], "b": [4, 5, 6]}, index=pd.date_range("2022-01-01", "2022-01-03")
+)
+df 
+```
+
+```{python}
+shifted = df.shift(periods=1)
+shifted
+```
+
+```{python}
+shifted.dropna()
+```

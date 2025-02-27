@@ -1,4 +1,6 @@
 update: build git_add
+clean: 
+	jb clean . --all
 build:
 	jb build .
 git_add:

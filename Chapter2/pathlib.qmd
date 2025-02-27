@@ -1,0 +1,135 @@
+---
+title: pathlib
+jupyter:
+  jupytext:
+    formats: ipynb,qmd
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
+
+pathlib is a Python library that makes it easy to handle file in Python. 
+
+### Create a New Directory and File
+
+You can use either os or pathlib to create new directories and files in Python. pathlib is my preferred choice because it is simpler to use and easier to understand.
+
+```{python}
+import os
+
+# Create a new directory
+if not os.path.exists("new"):
+    os.makedirs("new")
+
+# Create a new file inside new directory
+file = os.path.join("new", "new_file.txt")
+
+# Write text to the file
+with open(file, "w") as f:
+    f.write("Hello World!")
+
+# Read the file
+with open(file, "r") as f:
+    print(f.read())
+```
+
+```{python}
+from pathlib import Path
+
+# Create a new directory
+folder = Path("new")
+folder.mkdir(exist_ok=True)
+
+# Create new file inside new directory
+file = folder / "new_file.txt"
+
+# Write text
+file.write_text("Hello World!")
+
+# Read text
+file.read_text()
+```
+
+The following is the structure of the `new` folder:
+
+```bash
+.
+└── new/
+    └── new_file.txt
+```
+
+### Get Access to Files from Home Directory
+
+If you want to get the path to folders/files from the home directory, use `Path.home()`
+
+```{python}
+from pathlib import Path
+
+path = Path.home()
+
+docs = path / 'Documents'
+pictures = path / 'Pictures'
+
+print(docs)
+print(pictures)
+```
+
+Now you can use pathlib's methods to manipulate the folders/files in the obtained path.
+
+```{python}
+# Create a new file inside Documents
+file = docs / 'new_file.txt'
+file.touch()
+```
+
+```{python}
+!tree /Users/khuyen/Documents | grep new_file.txt 
+```
+
+### Get the Parent of the Current Path with pathlib
+
+If you want to get the parent path or the grandparent path easily, use pathlib's `.parent`.
+
+```{python}
+from pathlib import Path
+
+path = Path.cwd()
+
+print(f'Current path: {path}')
+print(f'Parent of the current path: {path.parent}')
+print(f'Grandparent of the current path: {path.parent.parent}')
+```
+
+### Get the Path Relative to Another Path
+
+If you want to get the path relative to another path, use `pathlib.Path.relative_to`.
+
+```{python}
+from pathlib import Path
+
+nlp = Path('/Users/khuyen/Data-science/nlp/')
+root = '/Users/khuyen/'
+nlp.relative_to(root)
+```
+
+### Check if Two File Paths Are the Same
+
+If you want to check whether two file paths are the same, use `Path.samefile()`.
+
+```{python}
+from pathlib import Path 
+
+home = Path.home()
+absolute = home / "book/book/Chapter2/pathlib.ipynb"
+relative = Path("pathlib.ipynb")
+
+absolute.samefile(relative)
+```

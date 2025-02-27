@@ -1,0 +1,179 @@
+---
+title: Pydantic
+jupyter:
+  jupytext:
+    formats: ipynb,qmd
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
+
+### Simplify Data Validation with Pydantic
+
+Dataclasses require manual implementation of validation.
+
+```{python}
+from dataclasses import dataclass
+
+@dataclass
+class Dog:
+    name: str
+    age: int
+
+    def __post_init__(self):
+        if not isinstance(self.name, str):
+            raise ValueError("Name must be a string")
+            
+        try:
+            self.age = int(self.age)
+        except (ValueError, TypeError):
+            raise ValueError("Age must be a valid integer, unable to parse string as an integer")
+
+# Usage
+try:
+    dog = Dog(name="Bim", age="ten")
+except ValueError as e:
+    print(f"Validation error: {e}")
+```
+
+On the other hand, Pydantic offers built-in validation that automatically validates data and provides informative error messages. This makes Pydantic particularly useful when working with data from external sources.
+
+```{python}
+from pydantic import BaseModel
+
+
+class Dog(BaseModel):
+    name: str
+    age: int
+
+try:
+    dog = Dog(name="Bim", age="ten")
+except ValueError as e:
+    print(f"Validation error: {e}")
+```
+
+### Use Pydantic's Field Class to Validate Numbers and Dates
+
+```{python}
+#| tags: [hide-cell]
+!pip install pydantic
+```
+
+In addition to checking the type, you may also want to check if numbers and dates match specific constraints. Pydantic's Field class provides keyword arguments that make this easy.
+
+```{python}
+from pydantic import BaseModel, Field
+from datetime import date
+
+
+class Song(BaseModel):
+    title: str
+    artist: str
+    duration: float = Field(gt=0.0)  # greater than 0
+    release_date: date = Field(lt=date.today())  # before today
+    beats_per_minute: int = Field(multiple_of=5)  # multiple of 5
+
+
+song1 = Song(
+    title="Believer",
+    artist="Imagine Dragons",
+    duration=0,
+    release_date=date(2024, 6, 1),
+    beats_per_minute=125,
+)
+```
+
+```bash
+ValidationError: 2 validation errors for Song
+duration
+  Input should be greater than 0 [type=greater_than, input_value=0, input_type=int]
+    For further information visit https://errors.pydantic.dev/2.5/v/greater_than
+release_date
+  Input should be less than 2024-05-10 [type=less_than, input_value=datetime.date(2024, 6, 1), input_type=date]
+    For further information visit https://errors.pydantic.dev/2.5/v/less_than
+```
+
+[Learn more about Pydantic's numeric constraints](https://bit.ly/4bbhthb).
+
+### Python Data Models: Pydantic or attrs?
+
+Pydantic is a popular library that provides built-in data validation and type checking. This makes it an excellent choice for web APIs and external data handling. However, this added functionality comes at a cost:
+
+*   Performance overhead
+*   High memory usage
+*   Harder to debug
+
+Here's an example of a Pydantic model:
+
+```{python}
+from pydantic import BaseModel
+
+class UserPydantic(BaseModel):
+    name: str
+    age: int
+```
+
+Attrs, on the other hand, is a lighter-weight library that provides a simpler way to define data models. While it doesn't have built-in data validation, it's ideal for internal data structures and simpler class creation:
+
+```{python}
+from attrs import define, field
+
+@define
+class UserAttrs:
+    name: str
+    age: int
+```
+
+Let's compare the performance of Pydantic and attrs using a simple benchmark:
+
+```{python}
+from timeit import timeit
+
+# Test data
+data = {"name": "Bob", "age": 30}
+
+# Benchmark
+pydantic_time = timeit(lambda: UserPydantic(**data), number=100000)
+attrs_time = timeit(lambda: UserAttrs(**data), number=100000)
+
+print(f"Pydantic: {pydantic_time:.4f} seconds")
+print(f"attrs: {attrs_time:.4f} seconds")
+print(f"Using attrs is {pydantic_time/attrs_time:.2f} times faster than using Pydantic")
+```
+
+The results show that attrs is approximately 6.9 times faster than Pydantic.
+
+While attrs doesn't have built-in data validation, you can easily add validation using a decorator:
+
+```{python}
+from attrs import define, field
+
+@define
+class UserAttrs:
+    name: str
+    age: int = field()
+
+    @age.validator
+    def check_age(self, attribute, value):
+        if value < 0:
+            raise ValueError("Age can't be negative")
+        return value  # accepts any positive age
+
+
+try:
+    user = UserAttrs(name="Bob", age=-1)
+except ValueError as e:
+    print("ValueError:", e)
+```
+
+In this example, we've added a validator to the `age` field to ensure it's not negative. If you try to create a `UserAttrs` instance with a negative age, it will raise a `ValueError`.
+
+[Link to attrs](https://github.com/python-attrs/attrs).
