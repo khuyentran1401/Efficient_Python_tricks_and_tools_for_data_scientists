@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>6.16. Delta Lake &#8212; Effective Python for Data Scientists</title>
+    <title>6.16. title: Delta Lake jupyter: jupytext: formats: ipynb,qmd text_representation: extension: .qmd format_name: quarto format_version: ‘1.0’ jupytext_version: 1.16.7 kernelspec: display_name: Python 3 (ipykernel) language: python name: python3 &#8212; Effective Python for Data Scientists</title>
   
   
   
@@ -265,7 +265,19 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="SQL.html">6.13. SQL Libraries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="polars.html">6.14. Polars</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spark.html">6.15. PySpark</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.16. Delta Lake</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">6.16. title: Delta Lake
+jupyter:
+jupytext:
+formats: ipynb,qmd
+text_representation:
+extension: .qmd
+format_name: quarto
+format_version: ‘1.0’
+jupytext_version: 1.16.7
+kernelspec:
+display_name: Python 3 (ipykernel)
+language: python
+name: python3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="llm.html">6.17. Large Language Model (LLM)</a></li>
 </ul>
 </li>
@@ -498,7 +510,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Delta Lake</h1>
+    <h1>title: Delta Lake
+jupyter:
+jupytext:
+formats: ipynb,qmd
+text_representation:
+extension: .qmd
+format_name: quarto
+format_version: ‘1.0’
+jupytext_version: 1.16.7
+kernelspec:
+display_name: Python 3 (ipykernel)
+language: python
+name: python3</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -513,11 +537,12 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-query-speed-with-data-partitioning">6.16.3. Optimize Query Speed with Data Partitioning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.16.4. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.16.5. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.6. Enforce Data Quality with Delta Lake Constraints</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.7. Efficient Data Updates and Scanning with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.9. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safe-data-deletion-with-delta-rs">6.16.6. Safe Data Deletion with delta-rs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.7. Enforce Data Quality with Delta Lake Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.8. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.10. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.11. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
 </ul>
             </nav>
         </div>
@@ -529,8 +554,21 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="delta-lake">
-<h1><span class="section-number">6.16. </span>Delta Lake<a class="headerlink" href="#delta-lake" title="Permalink to this heading">#</a></h1>
+  <hr class="docutils" />
+<section id="title-delta-lake-jupyter-jupytext-formats-ipynb-qmd-text-representation-extension-qmd-format-name-quarto-format-version-1-0-jupytext-version-1-16-7-kernelspec-display-name-python-3-ipykernel-language-python-name-python3">
+<h1><span class="section-number">6.16. </span>title: Delta Lake
+jupyter:
+jupytext:
+formats: ipynb,qmd
+text_representation:
+extension: .qmd
+format_name: quarto
+format_version: ‘1.0’
+jupytext_version: 1.16.7
+kernelspec:
+display_name: Python 3 (ipykernel)
+language: python
+name: python3<a class="headerlink" href="#title-delta-lake-jupyter-jupytext-formats-ipynb-qmd-text-representation-extension-qmd-format-name-quarto-format-version-1-0-jupytext-version-1-16-7-kernelspec-display-name-python-3-ipykernel-language-python-name-python3" title="Permalink to this heading">#</a></h1>
 <section id="version-your-pandas-dataframe-with-delta-lake">
 <h2><span class="section-number">6.16.1. </span>Version Your Pandas DataFrame with Delta Lake<a class="headerlink" href="#version-your-pandas-dataframe-with-delta-lake" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
@@ -1331,8 +1369,131 @@ Current version: 0
 </div>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
 </section>
+<section id="safe-data-deletion-with-delta-rs">
+<h2><span class="section-number">6.16.6. </span>Safe Data Deletion with delta-rs<a class="headerlink" href="#safe-data-deletion-with-delta-rs" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Data quality management and cleanup operations are critical in modern data lakes. Traditional approaches to data deletion can be problematic:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Create a large example dataset (1 million rows)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;customer_id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">),</span>
+    <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;inactive&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1_000_000</span> <span class="o">//</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s1">&#39;balance&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">1_000_000</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;customer_data.parquet&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional problematic approach</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># 1. Load entire file (1M rows) into memory</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;customer_data.parquet&#39;</span><span class="p">)</span>  <span class="c1"># Memory intensive</span>
+    
+    <span class="c1"># 2. Filter out inactive basic accounts with low balance</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;inactive&#39;</span><span class="p">)</span> <span class="o">&amp;</span> 
+                  <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;balance&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">))]</span>
+    
+    <span class="c1"># 3. Overwrite file - risk of corruption if process fails</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;customer_data.parquet&#39;</span><span class="p">)</span>  <span class="c1"># Unsafe</span>
+<span class="k">except</span> <span class="ne">MemoryError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not enough memory to process 1M rows&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>delta-rs provides a safer approach with transactional guarantees. Here’s how to perform safe deletions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deltalake</span> <span class="kn">import</span> <span class="n">write_deltalake</span><span class="p">,</span> <span class="n">DeltaTable</span>
+
+<span class="c1"># Write to Delta format</span>
+<span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;./customer_data&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform safe deletion</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;./customer_data&quot;</span><span class="p">)</span>
+<span class="n">dt</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    status = &#39;inactive&#39; AND </span>
+<span class="s2">    balance &lt; 100.0 </span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;num_added_files&#39;: 1,
+ &#39;num_removed_files&#39;: 1,
+ &#39;num_deleted_rows&#39;: 5019,
+ &#39;num_copied_rows&#39;: 994981,
+ &#39;execution_time_ms&#39;: 220121,
+ &#39;scan_time_ms&#39;: 69760,
+ &#39;rewrite_time_ms&#39;: 148}
+</pre></div>
+</div>
+</div>
+</div>
+<p>You can verify the operation and access previous versions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check operation history</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Operation History:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">history</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Version </span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">entry</span><span class="p">[</span><span class="s1">&#39;operation&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access the previous version if needed</span>
+<span class="n">dt_previous</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;./customer_data&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="n">dt</span><span class="o">.</span><span class="n">version</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Previous version data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_previous</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Operation History:
+Version 1: DELETE
+Version 0: CREATE TABLE
+
+Previous version data:
+   customer_id    status      balance
+0            0    active  2281.154365
+1            1  inactive  8330.057614
+2            2    active  9908.828674
+3            3  inactive  3766.795979
+4            4    active  8536.698571
+5            5  inactive  8681.325433
+6            6    active  1610.351636
+7            7  inactive  2537.934431
+8            8    active  4278.094055
+9            9  inactive  3531.708249
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to delta-rs</a></p>
+</section>
 <section id="enforce-data-quality-with-delta-lake-constraints">
-<h2><span class="section-number">6.16.6. </span>Enforce Data Quality with Delta Lake Constraints<a class="headerlink" href="#enforce-data-quality-with-delta-lake-constraints" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.16.7. </span>Enforce Data Quality with Delta Lake Constraints<a class="headerlink" href="#enforce-data-quality-with-delta-lake-constraints" title="Permalink to this heading">#</a></h2>
 <p>Delta Lake provides a convenient way to enforce data quality by adding constraints to a table, ensuring that only valid and consistent data can be added.</p>
 <p>In the provided code, attempting to add new data with a negative salary violates the constraint of a positive salary, and thus, the data is not added to the table.</p>
 <div class="cell tag_hide-cell docutils container">
@@ -1452,7 +1613,7 @@ Current version: 0
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
 </section>
 <section id="efficient-data-updates-and-scanning-with-delta-lake">
-<h2><span class="section-number">6.16.7. </span>Efficient Data Updates and Scanning with Delta Lake<a class="headerlink" href="#efficient-data-updates-and-scanning-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.16.8. </span>Efficient Data Updates and Scanning with Delta Lake<a class="headerlink" href="#efficient-data-updates-and-scanning-with-delta-lake" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1549,7 +1710,7 @@ Current version: 0
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
 </section>
 <section id="simplify-table-merge-operations-with-delta-lake">
-<h2><span class="section-number">6.16.8. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.16.9. </span>Simplify Table Merge Operations with Delta Lake<a class="headerlink" href="#simplify-table-merge-operations-with-delta-lake" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1771,7 +1932,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p><a class="reference external" href="https://github.com/delta-io/delta">Link to Delta Lake</a>.</p>
 </section>
 <section id="from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">
-<h2><span class="section-number">6.16.9. </span>From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution<a class="headerlink" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.16.10. </span>From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution<a class="headerlink" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1919,7 +2080,7 @@ Updates:
 </div>
 </section>
 <section id="the-best-way-to-append-mismatched-data-to-parquet-tables">
-<h2><span class="section-number">6.16.10. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.16.11. </span>The Best Way to Append Mismatched Data to Parquet Tables<a class="headerlink" href="#the-best-way-to-append-mismatched-data-to-parquet-tables" title="Permalink to this heading">#</a></h2>
 <p>Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.</p>
 <p>In the following code, the datatype of <code class="docutils literal notranslate"><span class="pre">col3</span></code> is supposed to be <code class="docutils literal notranslate"><span class="pre">int64</span></code> instead of <code class="docutils literal notranslate"><span class="pre">float64</span></code>.</p>
 <div class="cell docutils container">
@@ -2145,11 +2306,12 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-query-speed-with-data-partitioning">6.16.3. Optimize Query Speed with Data Partitioning</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overwrite-partitions-of-a-pandas-dataframe">6.16.4. Overwrite Partitions of a pandas DataFrame</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-appending-in-parquet-files-delta-lake-vs-pandas">6.16.5. Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.6. Enforce Data Quality with Delta Lake Constraints</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.7. Efficient Data Updates and Scanning with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.8. Simplify Table Merge Operations with Delta Lake</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.9. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.10. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safe-data-deletion-with-delta-rs">6.16.6. Safe Data Deletion with delta-rs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enforce-data-quality-with-delta-lake-constraints">6.16.7. Enforce Data Quality with Delta Lake Constraints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-data-updates-and-scanning-with-delta-lake">6.16.8. Efficient Data Updates and Scanning with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-table-merge-operations-with-delta-lake">6.16.9. Simplify Table Merge Operations with Delta Lake</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-complex-sql-to-simple-merges-delta-lake-s-upsert-solution">6.16.10. From Complex SQL to Simple Merges: Delta Lake’s Upsert Solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-best-way-to-append-mismatched-data-to-parquet-tables">6.16.11. The Best Way to Append Mismatched Data to Parquet Tables</a></li>
 </ul>
   </nav></div>
 
