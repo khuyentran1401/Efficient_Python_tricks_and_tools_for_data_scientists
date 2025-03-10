@@ -1,0 +1,307 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+## New Features in Python
+
+
+This section shows some new features in Python 3.10 and above. 
+
+
+### Simplify Conditional Execution with Match Statements
+
+
+It is common to use the if-else statements to execute multiple conditional statements.
+
+```{python}
+def get_price(food: str):
+    if food == "apple" or food == "peach":
+        return 4
+    elif food == "orange":
+        return 3
+    elif food == "grape":
+        return 5
+    else:
+        return "Unknown"
+
+
+get_price("peach")
+
+```
+
+In Python 3.10 and above, you can use the match statements to do the same thing. 
+
+Match statements can provide a more concise and readable syntax, especially when dealing with complex pattern matching scenarios. 
+
+```{python}
+def get_price(food: str):
+    match food:
+        case "apple" | "peach":
+            return 4
+        case "orange":
+            return 3
+        case "grape":
+            return 5
+        case _:
+            return "Unknown"
+
+
+get_price("peach")
+```
+
+### Structural Pattern Matching in Python 3.10
+
+
+Extracting data from nested structures often leads to complex, error-prone code with multiple checks and conditionals. Consider this traditional approach:
+
+```{python}
+def get_youngest_pet(pet_info):
+    if isinstance(pet_info, list) and len(pet_info) == 2:
+        if all("age" in pet for pet in pet_info):
+            print("Age is extracted from a list")
+            return min(pet_info[0]["age"], pet_info[1]["age"])
+    elif isinstance(pet_info, dict) and "age" in pet_info:
+        if isinstance(pet_info["age"], dict):
+            print("Age is extracted from a dict")
+            ages = pet_info["age"].values()
+            return min(ages)
+
+    # Handle other cases or raise an exception
+    raise ValueError("Invalid input format")
+```
+
+```{python}
+pet_info1 = [
+    {"name": "bim", "age": 1},
+    {"name": "pepper", "age": 9},
+]
+get_youngest_pet(pet_info1)
+```
+
+```{python}
+pet_info2 = {'age': {"bim": 1, "pepper": 9}}
+get_youngest_pet(pet_info2)
+```
+
+Python 3.10's pattern matching provides a more declarative and readable way to handle complex data structures, reducing the need for nested conditionals and type checks.
+
+```{python}
+def get_youngest_pet(pet_info):
+    match pet_info:
+        case [{"age": age1}, {"age": age2}]:
+            print("Age is extracted from a list")
+            return min(age1, age2)
+
+        case {'age': {}}:
+            print("Age is extracted from a dict")
+            ages = pet_info['age'].values()
+            return min(ages)
+
+        case _:
+            raise ValueError("Invalid input format")
+
+```
+
+```{python}
+pet_info1 = [
+    {"name": "bim", "age": 1},
+    {"name": "pepper", "age": 9},
+]
+get_youngest_pet(pet_info1)
+```
+
+```{python}
+pet_info2 = {'age': {"bim": 1, "pepper": 9}}
+get_youngest_pet(pet_info2)
+```
+
+### Enhance Code Readability with Python Dataclasses and Match Statements
+
+
+You can use Python dataclasses with Python match statements to create cleaner and more readable code. This approach can be particularly useful when setting conditions based on multiple attributes of a class, as it can simplify the code and make it easier to understand.
+
+
+
+Using if-else:
+
+```{python}
+from dataclasses import dataclass
+
+@dataclass
+class SubscriptionPlan:
+    name: str
+    price: float
+    unit: str
+
+def get_plan_details(plan):
+    if plan.name == "basic" and plan.unit == "month":
+        return f"${plan.price} per month for one month."
+    elif plan.name == "premium" and plan.unit == "year":
+        return f"${plan.price} per year for one year."
+    elif plan.name == "" and plan.price == 0.0 and plan.unit == "":
+        return "Invalid subscription plan"
+    else:
+        return "Unknown subscription plan"
+```
+
+```{python}
+basic_plan = SubscriptionPlan(name="basic", price=9.99, unit="month")
+premium_plan = SubscriptionPlan(name="premium", price=99.99, unit="year")
+
+print(get_plan_details(basic_plan))
+print(get_plan_details(premium_plan))
+```
+
+Using match statements:
+
+```{python}
+from dataclasses import dataclass
+
+
+@dataclass
+class SubscriptionPlan:
+    name: str
+    price: float
+    unit: str
+
+
+def get_plan_details(plan):
+    match plan:
+        case SubscriptionPlan(name="basic", price=price, unit="month"):
+            return f"${price} per month for one month."
+        case SubscriptionPlan(name="premium", price=price, unit="year"):
+            return f"${price} per year for one year."
+        case SubscriptionPlan():
+            return "Invalid subscription plan"
+        case _:
+            return "Unknown subscription plan"
+```
+
+```{python}
+basic_plan = SubscriptionPlan(name="basic", price=9.99, unit="month")
+premium_plan = SubscriptionPlan(name="premium", price=99.99, unit="year")
+
+print(get_plan_details(basic_plan))
+print(get_plan_details(premium_plan))
+```
+
+### Write Union Types as X|Y in Python 3.10
+
+
+Before Python 3.10, you need to use `typing.Union` to declare that a variable can have one of several different types.  
+
+```{python}
+from typing import Union
+
+num = 2.3
+isinstance(num, Union[int, float])
+```
+
+In Python 3.10, you can replace `Union[X, Y]` with `X | Y` to simplify the expression. 
+
+```{python}
+isinstance(num, int | float)
+```
+
+### Write Cleaner Python with the Walrus Operatorn
+
+
+The walrus operator (`:=`) in Python 3.8+ allows you to assign a variable in an expression, making your code more readable and efficient. It's useful in two main scenarios:
+
+1.  Giving a meaningful name to a complex expression for better readability.
+2.  Avoiding repeated computations by reusing a variable instead of recomputing the expression.
+
+
+Let's consider an example where we want to calculate the radius, area, and volume of a circle given its diameter and height:
+
+```{python}
+from math import pi
+
+diameter = 4
+height = 2
+```
+
+Without the walrus operator, we might compute the radius and area multiple times:
+
+```{python}
+circle = {
+    "radius": diameter / 2, # computed twice
+    "area": pi * (diameter / 2)**2, # computed twice
+    "volume": pi * (diameter / 2)**2 * height,
+}
+```
+
+To avoid repeated computations, we can assign the radius and area to variables before creating the dictionary:
+
+```{python}
+radius = diameter / 2
+area = pi * radius**2
+
+circle = {
+    "radius": radius,
+    "area": area,
+    "volume": area * height,
+}
+```
+
+To make the code more concise, we can use the walrus operator to assign the radius and area to variables while creating the dictionary.
+
+```{python}
+circle = {
+    "radius": (radius := diameter / 2),
+    "area": (area := pi * radius**2),
+    "volume": area * height,
+}
+```
+
+After executing the code with the walrus operator, we can access the assigned variables:
+
+```{python}
+print(radius)
+print(area)
+```
+
+### Fine-Grained Traceback in Python 3.11
+
+
+Having a clear traceback makes it faster to debug your code. Python 3.11 provides fine-grained error locations in tracebacks, enabling developers to quickly identify the exact location of errors. 
+
+The following examples illustrate the difference in traceback between Python 3.9 and Python 3.11.
+
+```{python}
+# %%writefile trackback_test.py
+def greet(name):
+    greeting = "Hello, " + name + "!"
+    print(greetng) # Error: Typo in variable name
+
+greet("Khuyen")
+```
+
+```bash
+# Python 3.9
+$ python trackback_test.py
+```
+
+```{python tags=c("remove-input")}
+# !python trackback_test.py
+```
+
+```bash
+# Python 3.11
+$ python trackback_test.py
+```
+
+```{python tags=c("remove-input")}
+# !python trackback_test.py
+```

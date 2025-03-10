@@ -1,0 +1,143 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+## Tools to Speed Up Code
+
+
+This section covers some tools to speed up your code.
+
+
+### Fastai's df_shrink: Shrink DataFrame's Memory Usage in One Line of Code
+
+```{python tags=c("hide-cell")}
+# !pip install fastai
+```
+
+Data analysts often struggle with large datasets that consume excessive memory, making it challenging to work efficiently, especially on machines with limited resources.
+
+The `df_shrink` method in `fastai` helps address this issue by:
+- Automatically reducing the memory usage of a pandas DataFrame
+- Downcasting numeric columns to the smallest possible dtype without losing information
+
+Here's a short code example to demonstrate the utility of `df_shrink`:
+
+```{python}
+from fastai.tabular.core import df_shrink
+import pandas as pd
+
+df = pd.DataFrame({"col1": [1, 2, 3], "col2": [1.0, 2.0, 3.0]})
+print(df.info())
+```
+
+```{python}
+new_df = df_shrink(df)
+print(new_df.info())
+```
+
+In this example, the memory usage of the DataFrame decreases from 200 bytes to 146 bytes.
+
+
+[Link to Fastai](https://docs.fast.ai/).
+
+
+### Swifter: Add One Word to Make Your Pandas Apply 23 Times Faster
+
+```{python tags=c("hide-cell")}
+# !pip install swifter
+```
+
+To have faster pandas apply when working with large data, use swifter. To use swifter, simply add `.swifter` before `.apply`. Everything else is the same.
+
+
+In the code below, I compared the speed of Pandas' `apply` and the speed of swifter's `apply` using the California housing dataset of 20640 rows.
+
+```{python}
+from time import time
+from sklearn.datasets import fetch_california_housing
+from scipy.special import boxcox1p
+import swifter
+import timeit
+
+X, y = fetch_california_housing(return_X_y=True, as_frame=True)
+
+
+def pandas_apply():
+    X["AveRooms"].apply(lambda x: boxcox1p(x, 0.25))
+
+
+def swifter_apply():
+    X["AveRooms"].swifter.apply(lambda x: boxcox1p(x, 0.25))
+
+
+num_experiments = 100
+pandas_time = timeit.timeit(pandas_apply, number=num_experiments)
+swifter_time = timeit.timeit(swifter_apply, number=num_experiments)
+
+pandas_vs_swifter = round(pandas_time / swifter_time, 2)
+print(f"Swifter apply is {pandas_vs_swifter} times faster than Pandas apply")
+```
+
+Using swifter apply is 23.56 times faster than Pandas apply! This ratio is calculated by taking the average run time of each method after 100 experiments.
+
+
+[Link to swifter](https://github.com/jmcarpenter2/swifter).
+
+
+### pyinstrument: Readable Python Profiler
+
+```{python tags=c("hide-cell")}
+# !pip install pyinstrument 
+```
+
+Identifying performance bottlenecks in Python code can be challenging, especially with complex applications or time-consuming processes. While cProfile and profile are useful, their outputs can be lengthy and difficult to interpret, particularly when using high-level libraries like pandas.
+
+
+`pyinstrument` helps solve this problem by:
+
+- Providing a low-overhead profiler that shows where time is being spent in Python programs
+- Generating easy-to-read, hierarchical output that highlights the most time-consuming parts of the code
+
+Here's a short code example to demonstrate the utility of `pyinstrument`:
+
+```{python}
+# %%writefile pyinstrument_example.py
+from pyinstrument import Profiler
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({'nums': np.random.randint(0, 100, 10000)})
+def is_even(num: int) -> int:
+    return num % 2 == 0
+
+profiler = Profiler()
+profiler.start()
+
+df = df.assign(is_even=lambda df_: is_even(df_.nums))
+
+profiler.stop()
+profiler.print()
+```
+
+On your terminal, type:
+```bash
+$ pyinstrument pyinstrument_example.py
+```
+... and you should see an output like below: 
+
+```{python tags=c("hide-input")}
+# !pyinstrument pyinstrument_example.py
+```
+
+[Link to pyinstrument](https://github.com/joerick/pyinstrument)

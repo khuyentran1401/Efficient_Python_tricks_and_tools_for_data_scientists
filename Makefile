@@ -8,3 +8,5 @@ git_add:
 	git status
 publish:
 	ghp-import -n -p -f _build/html
+	git commit -m 'add content'
+	git push
