@@ -14,8 +14,6 @@ jupyter:
     name: python3
 ---
 
-
-
 ### Version Your Pandas DataFrame with Delta Lake
 
 ```{python}
@@ -353,6 +351,78 @@ write_deltalake(table_path, df2, mode="append")
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
+### Safe Data Deletion with delta-rs
+
+```{python}
+#| tags: [hide-cell]
+!pip install deltalake
+```
+
+Data quality management and cleanup operations are critical in modern data lakes. Traditional approaches to data deletion can be problematic:
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Create a large example dataset (1 million rows)
+df = pd.DataFrame({
+    'customer_id': range(1_000_000),
+    'status': ['active', 'inactive'] * (1_000_000 // 2),
+    'balance': np.random.uniform(0, 10000, 1_000_000),
+})
+df.to_parquet('customer_data.parquet')
+```
+
+```{python}
+# Traditional problematic approach
+try:
+    # 1. Load entire file (1M rows) into memory
+    data = pd.read_parquet('customer_data.parquet')  # Memory intensive
+    
+    # 2. Filter out inactive basic accounts with low balance
+    data = data[~((data['status'] == 'inactive') & 
+                  (data['balance'] < 100))]
+    
+    # 3. Overwrite file - risk of corruption if process fails
+    data.to_parquet('customer_data.parquet')  # Unsafe
+except MemoryError:
+    print("Not enough memory to process 1M rows")
+```
+
+delta-rs provides a safer approach with transactional guarantees. Here's how to perform safe deletions:
+
+```{python}
+from deltalake import write_deltalake, DeltaTable
+
+# Write to Delta format
+write_deltalake("./customer_data", df)
+```
+
+```{python}
+# Perform safe deletion
+dt = DeltaTable("./customer_data")
+dt.delete("""
+    status = 'inactive' AND 
+    balance < 100.0 
+""")
+```
+
+You can verify the operation and access previous versions:
+
+```{python}
+# Check operation history
+print("Operation History:")
+for entry in dt.history():
+    print(f"Version {entry['version']}: {entry['operation']}")
+
+# Access the previous version if needed
+dt_previous = DeltaTable("./customer_data", version=dt.version() - 1)
+print("\nPrevious version data:")
+print(dt_previous.to_pandas().head(10))
+```
+
+[Link to delta-rs](https://github.com/delta-io/delta-rs)
+
 ### Enforce Data Quality with Delta Lake Constraints
 
 Delta Lake provides a convenient way to enforce data quality by adding constraints to a table, ensuring that only valid and consistent data can be added.
@@ -588,8 +658,6 @@ Delta Lake's merge operation solves this problem by allowing you to specify diff
 Here's an example that demonstrates the power and simplicity of Delta Lake's merge operation:
 
 First, let's set up our initial data:
-
-
 
 ```{python}
 # Create sample data for 'customers' DataFrame
