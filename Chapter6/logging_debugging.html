@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>7.5. Logging and Debugging &#8212; Effective Python for Data Scientists</title>
+    <title>7.14. rich.inspect: Produce a Beautiful Report on any Python Object &#8212; Effective Python for Data Scientists</title>
   
   
   
@@ -100,8 +100,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter6/logging_debugging';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.6. Better Outputs" href="better_outputs.html" />
-    <link rel="prev" title="7.4. Code Review" href="code_review.html" />
+    <link rel="next" title="7.27. Better Outputs" href="better_outputs.html" />
+    <link rel="prev" title="7.4. isort: Automatically Sort your Python Imports in 1 Line of Code" href="code_review.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -273,11 +273,32 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="alternative_approach.html">7.2. Alternative Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_automation.html">7.3. Workflow Automation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="code_review.html">7.4. Code Review</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.5. Logging and Debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="better_outputs.html">7.6. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="git_github.html">7.7. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="env_management.html">7.8. Environment Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_review.html">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="better_outputs.html">7.27. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_github.html">7.28. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_management.html">7.29. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -498,7 +519,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Logging and Debugging</h1>
+    <h1>rich.inspect: Produce a Beautiful Report on any Python Object</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -508,20 +529,21 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rich-inspect-produce-a-beautiful-report-on-any-python-object">7.5.1. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#richs-console-debug-your-python-function-in-one-line-of-code">7.5.2. Rich’s Console: Debug your Python Function in One Line of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-python-logging-with-loguru">7.5.3. Simplify Python Logging with Loguru</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loguru-print-readable-traceback-in-python">7.5.4. loguru: Print Readable Traceback in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icecream-never-use-print-to-debug-again">7.5.5. Icecream: Never use print() to debug again</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time">7.5.6. heartrate — Visualize the Execution of a Python Program in Real-Time</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyheat-simplify-code-profiling-with-heatmap-visualization">7.5.7. pyheat: Simplify Code Profiling with Heatmap Visualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">7.5.8. snoop : Smart Print to Debug your Python Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in-pandas-pipelines">7.5.9. Logging in Pandas Pipelines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-progress-bar-to-your-list-comprehension">7.5.10. Add Progress Bar to Your List Comprehension</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperfine-compare-the-speed-of-two-commands">7.5.11. Hyperfine: Compare the Speed of Two Commands</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">7.5.12. Timeline View of the Execution of Your Python Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wat-your-one-stop-tool-for-python-object-exploration">7.5.13. WAT: Your One-Stop Tool for Python Object Exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#richs-console-debug-your-python-function-in-one-line-of-code">7.15. Rich’s Console: Debug your Python Function in One Line of Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-python-logging-with-loguru">7.16. Simplify Python Logging with Loguru</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loguru-print-readable-traceback-in-python">7.17. loguru: Print Readable Traceback in Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#icecream-never-use-print-to-debug-again">7.18. Icecream: Never use print() to debug again</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time">7.19. heartrate — Visualize the Execution of a Python Program in Real-Time</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyheat-simplify-code-profiling-with-heatmap-visualization">7.20. pyheat: Simplify Code Profiling with Heatmap Visualization</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">7.21. snoop : Smart Print to Debug your Python Function</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in-pandas-pipelines">7.22. Logging in Pandas Pipelines</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#add-progress-bar-to-your-list-comprehension">7.23. Add Progress Bar to Your List Comprehension</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperfine-compare-the-speed-of-two-commands">7.24. Hyperfine: Compare the Speed of Two Commands</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">7.25. Timeline View of the Execution of Your Python Functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wat-your-one-stop-tool-for-python-object-exploration">7.26. WAT: Your One-Stop Tool for Python Object Exploration</a></li>
 </ul>
+
             </nav>
         </div>
     </div>
@@ -532,12 +554,10 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="logging-and-debugging">
-<h1><span class="section-number">7.5. </span>Logging and Debugging<a class="headerlink" href="#logging-and-debugging" title="Permalink to this heading">#</a></h1>
-<p><img alt="" src="../_images/logging_debugging.png" /></p>
+  <p><img alt="" src="../_images/logging_debugging.png" /></p>
 <p>Collections of tools for logging and debugging Python code.</p>
 <section id="rich-inspect-produce-a-beautiful-report-on-any-python-object">
-<h2><span class="section-number">7.5.1. </span>rich.inspect: Produce a Beautiful Report on any Python Object<a class="headerlink" href="#rich-inspect-produce-a-beautiful-report-on-any-python-object" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.14. </span>rich.inspect: Produce a Beautiful Report on any Python Object<a class="headerlink" href="#rich-inspect-produce-a-beautiful-report-on-any-python-object" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -633,7 +653,7 @@ document.write(`
 </div>
 </section>
 <section id="richs-console-debug-your-python-function-in-one-line-of-code">
-<h2><span class="section-number">7.5.2. </span>Rich’s Console: Debug your Python Function in One Line of Code<a class="headerlink" href="#richs-console-debug-your-python-function-in-one-line-of-code" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.15. </span>Rich’s Console: Debug your Python Function in One Line of Code<a class="headerlink" href="#richs-console-debug-your-python-function-in-one-line-of-code" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -698,7 +718,7 @@ Requirement already satisfied: mdurl~=0.1 in /Users/khuyentran/book/venv/lib/pyt
 <p><a class="reference external" href="https://github.com/willmcgugan/rich">Link to rich</a>.</p>
 </section>
 <section id="simplify-python-logging-with-loguru">
-<h2><span class="section-number">7.5.3. </span>Simplify Python Logging with Loguru<a class="headerlink" href="#simplify-python-logging-with-loguru" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.16. </span>Simplify Python Logging with Loguru<a class="headerlink" href="#simplify-python-logging-with-loguru" title="Permalink to this heading">#</a></h1>
 <p>Have you ever found yourself using print() instead of a proper logger due to the hassle of setup?</p>
 <p>With Loguru, you can get started with logging right away. A single import is all you need to begin logging with pre-configured color and format settings.</p>
 <p>Here is the comparison between the standard Python logging library and Loguru:</p>
@@ -752,7 +772,7 @@ Requirement already satisfied: mdurl~=0.1 in /Users/khuyentran/book/venv/lib/pyt
 <p><a class="reference external" href="https://github.com/Delgan/loguru">Link to loguru</a>.</p>
 </section>
 <section id="loguru-print-readable-traceback-in-python">
-<h2><span class="section-number">7.5.4. </span>loguru: Print Readable Traceback in Python<a class="headerlink" href="#loguru-print-readable-traceback-in-python" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.17. </span>loguru: Print Readable Traceback in Python<a class="headerlink" href="#loguru-print-readable-traceback-in-python" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -846,7 +866,7 @@ ValueError:<span class="w"> </span>Found<span class="w"> </span>input<span class
 </div>
 </section>
 <section id="icecream-never-use-print-to-debug-again">
-<h2><span class="section-number">7.5.5. </span>Icecream: Never use print() to debug again<a class="headerlink" href="#icecream-never-use-print-to-debug-again" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.18. </span>Icecream: Never use print() to debug again<a class="headerlink" href="#icecream-never-use-print-to-debug-again" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -928,7 +948,7 @@ ic<span class="p">|</span><span class="w"> </span>plus_one<span class="o">(</spa
 <p><a class="reference external" href="https://towardsdatascience.com/stop-using-print-to-debug-in-python-use-icecream-instead-79e17b963fcc">Link to my article about icecream</a></p>
 </section>
 <section id="heartrate-visualize-the-execution-of-a-python-program-in-real-time">
-<h2><span class="section-number">7.5.6. </span>heartrate — Visualize the Execution of a Python Program in Real-Time<a class="headerlink" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.19. </span>heartrate — Visualize the Execution of a Python Program in Real-Time<a class="headerlink" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1042,7 +1062,7 @@ The factorial of 5 is 120
 <p><a class="reference external" href="https://github.com/alexmojaki/heartrate">Link to heartrate</a>.</p>
 </section>
 <section id="pyheat-simplify-code-profiling-with-heatmap-visualization">
-<h2><span class="section-number">7.5.7. </span>pyheat: Simplify Code Profiling with Heatmap Visualization<a class="headerlink" href="#pyheat-simplify-code-profiling-with-heatmap-visualization" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.20. </span>pyheat: Simplify Code Profiling with Heatmap Visualization<a class="headerlink" href="#pyheat-simplify-code-profiling-with-heatmap-visualization" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1105,7 +1125,7 @@ The factorial of 5 is 120
 <p><a class="reference external" href="https://github.com/csurfer/pyheat">Link to pyheat</a>.</p>
 </section>
 <section id="snoop-smart-print-to-debug-your-python-function">
-<h2><span class="section-number">7.5.8. </span>snoop : Smart Print to Debug your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.21. </span>snoop : Smart Print to Debug your Python Function<a class="headerlink" href="#snoop-smart-print-to-debug-your-python-function" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1183,7 +1203,7 @@ The factorial of 5 is 120
 </div>
 </section>
 <section id="logging-in-pandas-pipelines">
-<h2><span class="section-number">7.5.9. </span>Logging in Pandas Pipelines<a class="headerlink" href="#logging-in-pandas-pipelines" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.22. </span>Logging in Pandas Pipelines<a class="headerlink" href="#logging-in-pandas-pipelines" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1252,7 +1272,7 @@ INFO:root:[encode_cat_variables(df)] time=0:00:00.003217 n_obs=3, n_col=1
 <p>Find more ways to customize your logging <a class="reference external" href="https://scikit-lego.netlify.app/pandas_pipeline.html#Logging-in-method-chaining">here</a></p>
 </section>
 <section id="add-progress-bar-to-your-list-comprehension">
-<h2><span class="section-number">7.5.10. </span>Add Progress Bar to Your List Comprehension<a class="headerlink" href="#add-progress-bar-to-your-list-comprehension" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.23. </span>Add Progress Bar to Your List Comprehension<a class="headerlink" href="#add-progress-bar-to-your-list-comprehension" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1315,7 +1335,7 @@ Processing fan
 <p><a class="reference external" href="https://github.com/tqdm/tqdm">Link to tqdm</a>.</p>
 </section>
 <section id="hyperfine-compare-the-speed-of-two-commands">
-<h2><span class="section-number">7.5.11. </span>Hyperfine: Compare the Speed of Two Commands<a class="headerlink" href="#hyperfine-compare-the-speed-of-two-commands" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.24. </span>Hyperfine: Compare the Speed of Two Commands<a class="headerlink" href="#hyperfine-compare-the-speed-of-two-commands" title="Permalink to this heading">#</a></h1>
 <p>If you want to compare the speed of two arbitrary commands, use hyperfine. hyperfine creates a statistical analysis across multiple runs and detects outliers.</p>
 <p>In the code below, I use hyperfine to compare the execution speed of two Python files.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>hyperfine<span class="w"> </span><span class="s1">&#39;python example1.py&#39;</span><span class="w"> </span><span class="s1">&#39;python example2.py&#39;</span>
@@ -1325,7 +1345,7 @@ Processing fan
 <p><a class="reference external" href="https://github.com/sharkdp/hyperfine">Link to hyperfine</a>.</p>
 </section>
 <section id="timeline-view-of-the-execution-of-your-python-functions">
-<h2><span class="section-number">7.5.12. </span>Timeline View of the Execution of Your Python Functions<a class="headerlink" href="#timeline-view-of-the-execution-of-your-python-functions" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.25. </span>Timeline View of the Execution of Your Python Functions<a class="headerlink" href="#timeline-view-of-the-execution-of-your-python-functions" title="Permalink to this heading">#</a></h1>
 <p>Have you ever wanted to see a timeline graph showing how the execution of your functions takes place in time? Prefect now allows you to do exactly that.</p>
 <p>To use Prefect, simply add <code class="docutils literal notranslate"><span class="pre">&#64;task</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;flow</span></code> to your Python functions.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">prefect</span> <span class="kn">import</span> <span class="n">task</span><span class="p">,</span> <span class="n">flow</span>
@@ -1353,7 +1373,7 @@ Processing fan
 <p>Check out the <a class="reference external" href="https://docs.prefect.io/tutorials/first-steps/">getting started tutorials</a> for basic concepts of Prefect.</p>
 </section>
 <section id="wat-your-one-stop-tool-for-python-object-exploration">
-<h2><span class="section-number">7.5.13. </span>WAT: Your One-Stop Tool for Python Object Exploration<a class="headerlink" href="#wat-your-one-stop-tool-for-python-object-exploration" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.26. </span>WAT: Your One-Stop Tool for Python Object Exploration<a class="headerlink" href="#wat-your-one-stop-tool-for-python-object-exploration" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1433,7 +1453,6 @@ Public attributes:
 </div>
 <p><a class="reference external" href="https://bit.ly/3YIEkgJ">Link to WAT</a>.</p>
 </section>
-</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1471,7 +1490,7 @@ Public attributes:
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">7.4. </span>Code Review</p>
+        <p class="prev-next-title"><span class="section-number">7.4. </span>isort: Automatically Sort your Python Imports in 1 Line of Code</p>
       </div>
     </a>
     <a class="right-next"
@@ -1479,7 +1498,7 @@ Public attributes:
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">7.6. </span>Better Outputs</p>
+        <p class="prev-next-title"><span class="section-number">7.27. </span>Better Outputs</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1498,20 +1517,21 @@ Public attributes:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rich-inspect-produce-a-beautiful-report-on-any-python-object">7.5.1. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#richs-console-debug-your-python-function-in-one-line-of-code">7.5.2. Rich’s Console: Debug your Python Function in One Line of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-python-logging-with-loguru">7.5.3. Simplify Python Logging with Loguru</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loguru-print-readable-traceback-in-python">7.5.4. loguru: Print Readable Traceback in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#icecream-never-use-print-to-debug-again">7.5.5. Icecream: Never use print() to debug again</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time">7.5.6. heartrate — Visualize the Execution of a Python Program in Real-Time</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pyheat-simplify-code-profiling-with-heatmap-visualization">7.5.7. pyheat: Simplify Code Profiling with Heatmap Visualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">7.5.8. snoop : Smart Print to Debug your Python Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in-pandas-pipelines">7.5.9. Logging in Pandas Pipelines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-progress-bar-to-your-list-comprehension">7.5.10. Add Progress Bar to Your List Comprehension</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperfine-compare-the-speed-of-two-commands">7.5.11. Hyperfine: Compare the Speed of Two Commands</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">7.5.12. Timeline View of the Execution of Your Python Functions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wat-your-one-stop-tool-for-python-object-exploration">7.5.13. WAT: Your One-Stop Tool for Python Object Exploration</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#richs-console-debug-your-python-function-in-one-line-of-code">7.15. Rich’s Console: Debug your Python Function in One Line of Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-python-logging-with-loguru">7.16. Simplify Python Logging with Loguru</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#loguru-print-readable-traceback-in-python">7.17. loguru: Print Readable Traceback in Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#icecream-never-use-print-to-debug-again">7.18. Icecream: Never use print() to debug again</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#heartrate-visualize-the-execution-of-a-python-program-in-real-time">7.19. heartrate — Visualize the Execution of a Python Program in Real-Time</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pyheat-simplify-code-profiling-with-heatmap-visualization">7.20. pyheat: Simplify Code Profiling with Heatmap Visualization</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#snoop-smart-print-to-debug-your-python-function">7.21. snoop : Smart Print to Debug your Python Function</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#logging-in-pandas-pipelines">7.22. Logging in Pandas Pipelines</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#add-progress-bar-to-your-list-comprehension">7.23. Add Progress Bar to Your List Comprehension</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#hyperfine-compare-the-speed-of-two-commands">7.24. Hyperfine: Compare the Speed of Two Commands</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#timeline-view-of-the-execution-of-your-python-functions">7.25. Timeline View of the Execution of Your Python Functions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#wat-your-one-stop-tool-for-python-object-exploration">7.26. WAT: Your One-Stop Tool for Python Object Exploration</a></li>
 </ul>
+
   </nav></div>
 
 </div></div>

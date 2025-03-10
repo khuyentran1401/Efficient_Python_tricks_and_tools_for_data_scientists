@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>7.4. Code Review &#8212; Effective Python for Data Scientists</title>
+    <title>7.4. isort: Automatically Sort your Python Imports in 1 Line of Code &#8212; Effective Python for Data Scientists</title>
   
   
   
@@ -100,7 +100,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'Chapter6/code_review';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="7.5. Logging and Debugging" href="logging_debugging.html" />
+    <link rel="next" title="7.14. rich.inspect: Produce a Beautiful Report on any Python Object" href="logging_debugging.html" />
     <link rel="prev" title="7.3. Workflow Automation" href="workflow_automation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -273,11 +273,32 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="alternative_approach.html">7.2. Alternative Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_automation.html">7.3. Workflow Automation</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.4. Code Review</a></li>
-<li class="toctree-l2"><a class="reference internal" href="logging_debugging.html">7.5. Logging and Debugging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="better_outputs.html">7.6. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="git_github.html">7.7. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="env_management.html">7.8. Environment Management</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="logging_debugging.html">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="better_outputs.html">7.27. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git_github.html">7.28. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_management.html">7.29. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -498,7 +519,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Code Review</h1>
+    <h1>isort: Automatically Sort your Python Imports in 1 Line of Code</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -508,17 +529,18 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isort-automatically-sort-your-python-imports-in-1-line-of-code">7.4.1. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.4.2. interrogate: Check your Python Code for Missing Docstrings</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.4.3. mypy: Static Type Checker for Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.4.4. Refurb: Refurbish and Modernize Python Codebases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.4.5. eradicate: Remove Junk Comments from Python Files</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.4.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.4.7. perfplot: Performance Analysis for Python Snippets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.4.8. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.4.9. Vulture: Automatically Find Dead Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beartype-fast-efficient-runtime-type-checking-for-python">7.4.10. Beartype: Fast, Efficient Runtime Type Checking for Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.5. interrogate: Check your Python Code for Missing Docstrings</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.6. mypy: Static Type Checker for Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.7. Refurb: Refurbish and Modernize Python Codebases</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.8. eradicate: Remove Junk Comments from Python Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.9. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.10. perfplot: Performance Analysis for Python Snippets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.11. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.12. Vulture: Automatically Find Dead Python Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#beartype-fast-efficient-runtime-type-checking-for-python">7.13. Beartype: Fast, Efficient Runtime Type Checking for Python</a></li>
 </ul>
+
             </nav>
         </div>
     </div>
@@ -529,11 +551,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="code-review">
-<h1><span class="section-number">7.4. </span>Code Review<a class="headerlink" href="#code-review" title="Permalink to this heading">#</a></h1>
-<p>This section covers some tools to automatically review and improve your code such as sorting imports, checking for missing docstrings, etc.</p>
+  <p>This section covers some tools to automatically review and improve your code such as sorting imports, checking for missing docstrings, etc.</p>
 <section id="isort-automatically-sort-your-python-imports-in-1-line-of-code">
-<h2><span class="section-number">7.4.1. </span>isort: Automatically Sort your Python Imports in 1 Line of Code<a class="headerlink" href="#isort-automatically-sort-your-python-imports-in-1-line-of-code" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.4. </span>isort: Automatically Sort your Python Imports in 1 Line of Code<a class="headerlink" href="#isort-automatically-sort-your-python-imports-in-1-line-of-code" title="Permalink to this heading">#</a></h1>
 <p>As your codebase expands, you may find yourself importing numerous libraries, which can become overwhelming to navigate. To avoid arranging your imports manually, use isort.</p>
 <p>isort is a Python library that automatically sorts imports alphabetically, grouping them by section and type.</p>
 <p>Consider the following example where your imports are unsorted:</p>
@@ -568,7 +588,7 @@ document.write(`
 <p><a class="reference external" href="https://github.com/pycqa/isort">Link to isort</a>.</p>
 </section>
 <section id="interrogate-check-your-python-code-for-missing-docstrings">
-<h2><span class="section-number">7.4.2. </span>interrogate: Check your Python Code for Missing Docstrings<a class="headerlink" href="#interrogate-check-your-python-code-for-missing-docstrings" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.5. </span>interrogate: Check your Python Code for Missing Docstrings<a class="headerlink" href="#interrogate-check-your-python-code-for-missing-docstrings" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -640,7 +660,7 @@ document.write(`
 <p><a class="reference external" href="https://interrogate.readthedocs.io/en/latest/">Link to interrogate</a>.</p>
 </section>
 <section id="mypy-static-type-checker-for-python">
-<h2><span class="section-number">7.4.3. </span>mypy: Static Type Checker for Python<a class="headerlink" href="#mypy-static-type-checker-for-python" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.6. </span>mypy: Static Type Checker for Python<a class="headerlink" href="#mypy-static-type-checker-for-python" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -701,7 +721,7 @@ document.write(`
 <p><a class="reference external" href="https://mypy.readthedocs.io/en/latest/introduction.html">Link to mypy</a>.</p>
 </section>
 <section id="refurb-refurbish-and-modernize-python-codebases">
-<h2><span class="section-number">7.4.4. </span>Refurb: Refurbish and Modernize Python Codebases<a class="headerlink" href="#refurb-refurbish-and-modernize-python-codebases" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.7. </span>Refurb: Refurbish and Modernize Python Codebases<a class="headerlink" href="#refurb-refurbish-and-modernize-python-codebases" title="Permalink to this heading">#</a></h1>
 <p>If you want to have some guidelines to improve and optimize your code, try Refurb.</p>
 <p>For example, if you have a file like this:</p>
 <div class="cell docutils container">
@@ -774,7 +794,7 @@ Run `refurb --explain ERR` to further explain an error. Use `--quiet` to silence
 <p><a class="reference external" href="https://github.com/dosisod/refurb">Link to Refurb</a>.</p>
 </section>
 <section id="eradicate-remove-junk-comments-from-python-files">
-<h2><span class="section-number">7.4.5. </span>eradicate: Remove Junk Comments from Python Files<a class="headerlink" href="#eradicate-remove-junk-comments-from-python-files" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.8. </span>eradicate: Remove Junk Comments from Python Files<a class="headerlink" href="#eradicate-remove-junk-comments-from-python-files" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -882,7 +902,7 @@ mean(nums)
 <p><a class="reference external" href="https://github.com/wemake-services/eradicate/">Link to eradicate</a>.</p>
 </section>
 <section id="pydantic-enforce-data-types-on-your-function-parameters-at-runtime">
-<h2><span class="section-number">7.4.6. </span>Pydantic: Enforce Data Types on Your Function Parameters at Runtime<a class="headerlink" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.9. </span>Pydantic: Enforce Data Types on Your Function Parameters at Runtime<a class="headerlink" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -949,7 +969,7 @@ mean(nums)
 <p><a class="reference external" href="https://towardsdatascience.com/build-a-full-stack-ml-application-with-pydantic-and-prefect-915f00fe0c62?sk=b1f8c5cb53a6a9d7f48d66fa778e9cf0">Build a full-stack ML application with Pydantic and Prefect</a>.</p>
 </section>
 <section id="perfplot-performance-analysis-for-python-snippets">
-<h2><span class="section-number">7.4.7. </span>perfplot: Performance Analysis for Python Snippets<a class="headerlink" href="#perfplot-performance-analysis-for-python-snippets" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.10. </span>perfplot: Performance Analysis for Python Snippets<a class="headerlink" href="#perfplot-performance-analysis-for-python-snippets" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1006,7 +1026,7 @@ mean(nums)
 <p><a class="reference external" href="https://github.com/nschloe/perfplot">Link to perfplot</a>.</p>
 </section>
 <section id="analyze-the-memory-usage-of-your-python-code">
-<h2><span class="section-number">7.4.8. </span>Analyze the Memory Usage of Your Python Code<a class="headerlink" href="#analyze-the-memory-usage-of-your-python-code" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.11. </span>Analyze the Memory Usage of Your Python Code<a class="headerlink" href="#analyze-the-memory-usage-of-your-python-code" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1076,7 +1096,7 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 <p><a class="reference external" href="https://github.com/pythonprofilers/memory_profiler">Link to memory_profiler</a>.</p>
 </section>
 <section id="vulture-automatically-find-dead-python-code">
-<h2><span class="section-number">7.4.9. </span>Vulture: Automatically Find Dead Python Code<a class="headerlink" href="#vulture-automatically-find-dead-python-code" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.12. </span>Vulture: Automatically Find Dead Python Code<a class="headerlink" href="#vulture-automatically-find-dead-python-code" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1153,7 +1173,7 @@ dead_code.py:17: unused method &#39;get_mean&#39; (60% confidence)
 <p><a class="reference external" href="https://github.com/jendrikseipp/vulture">Link to Vulture</a>.</p>
 </section>
 <section id="beartype-fast-efficient-runtime-type-checking-for-python">
-<h2><span class="section-number">7.4.10. </span>Beartype: Fast, Efficient Runtime Type Checking for Python<a class="headerlink" href="#beartype-fast-efficient-runtime-type-checking-for-python" title="Permalink to this heading">#</a></h2>
+<h1><span class="section-number">7.13. </span>Beartype: Fast, Efficient Runtime Type Checking for Python<a class="headerlink" href="#beartype-fast-efficient-runtime-type-checking-for-python" title="Permalink to this heading">#</a></h1>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1307,7 +1327,6 @@ dead_code.py:17: unused method &#39;get_mean&#39; (60% confidence)
 <p>Beartype offers efficient runtime type checking with constant time complexity. Its dynamic wrappers around functions and methods enable flexible and efficient type-checking, making it a great choice for ensuring type safety in your code.</p>
 <p><a class="reference external" href="https://github.com/beartype/beartype">Link to Beartype</a>.</p>
 </section>
-</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1353,7 +1372,7 @@ dead_code.py:17: unused method &#39;get_mean&#39; (60% confidence)
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">7.5. </span>Logging and Debugging</p>
+        <p class="prev-next-title"><span class="section-number">7.14. </span>rich.inspect: Produce a Beautiful Report on any Python Object</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1372,17 +1391,18 @@ dead_code.py:17: unused method &#39;get_mean&#39; (60% confidence)
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#isort-automatically-sort-your-python-imports-in-1-line-of-code">7.4.1. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.4.2. interrogate: Check your Python Code for Missing Docstrings</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.4.3. mypy: Static Type Checker for Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.4.4. Refurb: Refurbish and Modernize Python Codebases</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.4.5. eradicate: Remove Junk Comments from Python Files</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.4.6. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.4.7. perfplot: Performance Analysis for Python Snippets</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.4.8. Analyze the Memory Usage of Your Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.4.9. Vulture: Automatically Find Dead Python Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beartype-fast-efficient-runtime-type-checking-for-python">7.4.10. Beartype: Fast, Efficient Runtime Type Checking for Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interrogate-check-your-python-code-for-missing-docstrings">7.5. interrogate: Check your Python Code for Missing Docstrings</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#mypy-static-type-checker-for-python">7.6. mypy: Static Type Checker for Python</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#refurb-refurbish-and-modernize-python-codebases">7.7. Refurb: Refurbish and Modernize Python Codebases</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#eradicate-remove-junk-comments-from-python-files">7.8. eradicate: Remove Junk Comments from Python Files</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pydantic-enforce-data-types-on-your-function-parameters-at-runtime">7.9. Pydantic: Enforce Data Types on Your Function Parameters at Runtime</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#perfplot-performance-analysis-for-python-snippets">7.10. perfplot: Performance Analysis for Python Snippets</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#analyze-the-memory-usage-of-your-python-code">7.11. Analyze the Memory Usage of Your Python Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#vulture-automatically-find-dead-python-code">7.12. Vulture: Automatically Find Dead Python Code</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#beartype-fast-efficient-runtime-type-checking-for-python">7.13. Beartype: Fast, Efficient Runtime Type Checking for Python</a></li>
 </ul>
+
   </nav></div>
 
 </div></div>
