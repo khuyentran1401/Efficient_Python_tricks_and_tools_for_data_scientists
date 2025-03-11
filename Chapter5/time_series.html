@@ -547,12 +547,13 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.19. Hierarchical Forecasting in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.20. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.24. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-static-and-dynamic-features-in-time-series-forecasting-with-mlforecast">6.7.19. Handling Static and Dynamic Features in Time Series Forecasting with MLForecast</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.20. Hierarchical Forecasting in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.21. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.22. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.23. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.24. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.25. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
 </ul>
             </nav>
         </div>
@@ -629,9 +630,10 @@ Only day: 18
 <p>Time series analysis often benefits from date-based features like year, month, and day of week. Fastai’s <code class="docutils literal notranslate"><span class="pre">add_datepart</span></code> method generates these features in one line of code, simplifying data preparation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">fastai.tabular.core</span> <span class="kn">import</span> <span class="n">add_datepart</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
@@ -844,6 +846,7 @@ Only day: 18
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
 <span class="kn">import</span> <span class="nn">pytz</span>
 
 <span class="c1"># Creating a datetime</span>
@@ -856,7 +859,7 @@ Only day: 18
 
 <span class="c1"># Timezone handling</span>
 <span class="n">utc_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">UTC</span><span class="p">)</span>
-<span class="n">tokyo_tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s1">&#39;Asia/Tokyo&#39;</span><span class="p">)</span>
+<span class="n">tokyo_tz</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;Asia/Tokyo&quot;</span><span class="p">)</span>
 <span class="n">tokyo_time</span> <span class="o">=</span> <span class="n">utc_now</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">tokyo_tz</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time in Tokyo: </span><span class="si">{</span><span class="n">tokyo_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -864,7 +867,7 @@ Only day: 18
 <span class="n">parsed</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;2023-05-15 14:30:00&quot;</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
 
 <span class="c1"># Time difference (not human-readable)</span>
-<span class="n">diff</span> <span class="o">=</span> <span class="n">parsed</span> <span class="o">-</span> <span class="n">now</span> 
+<span class="n">diff</span> <span class="o">=</span> <span class="n">parsed</span> <span class="o">-</span> <span class="n">now</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difference: </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -937,8 +940,9 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Log working hours for each date</span>
-<span class="kn">import</span> <span class="nn">traces</span> 
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span> 
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">traces</span>
 
 <span class="n">working_hours</span> <span class="o">=</span> <span class="n">traces</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">()</span>
 <span class="n">working_hours</span><span class="p">[</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">10</span>
@@ -980,8 +984,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span> <span class="o">=</span> <span class="n">working_hours</span><span class="o">.</span><span class="n">distribution</span><span class="p">(</span>
-    <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
-    <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+    <span class="n">start</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">distribution</span>
 </pre></div>
@@ -1041,6 +1044,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
 <span class="kn">import</span> <span class="nn">holidays</span>
 
 <span class="n">us_holidays</span> <span class="o">=</span> <span class="n">holidays</span><span class="o">.</span><span class="n">UnitedStates</span><span class="p">()</span>
@@ -1145,9 +1149,10 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <p>To manage calendars, holidays, and working-day computations, use the <code class="docutils literal notranslate"><span class="pre">workalendar</span></code> package. It supports nearly 100 countries worldwide.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span> 
-<span class="kn">from</span> <span class="nn">workalendar.usa</span> <span class="kn">import</span> <span class="n">UnitedStates</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+
 <span class="kn">from</span> <span class="nn">workalendar.asia</span> <span class="kn">import</span> <span class="n">Japan</span>
+<span class="kn">from</span> <span class="nn">workalendar.usa</span> <span class="kn">import</span> <span class="n">UnitedStates</span>
 </pre></div>
 </div>
 </div>
@@ -1178,7 +1183,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span> <span class="c1"># Sunday</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>  <span class="c1"># Sunday</span>
 </pre></div>
 </div>
 </div>
@@ -1190,7 +1195,7 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="c1"># Labor Day</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">US_cal</span><span class="o">.</span><span class="n">is_working_day</span><span class="p">(</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># Labor Day</span>
 </pre></div>
 </div>
 </div>
@@ -1262,10 +1267,10 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <p>To achieve functionality similar to R’s <code class="docutils literal notranslate"><span class="pre">auto.arima</span></code> within a scikit-learn-like interface, use Pmdarima.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pmdarima</span> <span class="k">as</span> <span class="nn">pm</span>
-<span class="kn">from</span> <span class="nn">pmdarima.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pmdarima</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">from</span> <span class="nn">pmdarima.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="c1"># Load/split your data</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_wineind</span><span class="p">()</span>
@@ -1292,32 +1297,36 @@ Difference: -1 year -3 months -2 weeks -4 days -9 hours -28 minutes -20 seconds
 <p>Fitting a more complex pipeline on the sunspots dataset, serializing it, and then loading it from disk to make predictions:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pmdarima</span> <span class="k">as</span> <span class="nn">pm</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="kn">import</span> <span class="nn">pmdarima</span> <span class="k">as</span> <span class="nn">pm</span>
 <span class="kn">from</span> <span class="nn">pmdarima.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">pmdarima.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span> <span class="nn">pmdarima.preprocessing</span> <span class="kn">import</span> <span class="n">BoxCoxEndogTransformer</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
 
 <span class="c1"># Load/split your data</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">load_sunspots</span><span class="p">()</span>
 <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">train_size</span><span class="o">=</span><span class="mi">2700</span><span class="p">)</span>
 
 <span class="c1"># Define and fit your pipeline</span>
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;boxcox&#39;</span><span class="p">,</span> <span class="n">BoxCoxEndogTransformer</span><span class="p">(</span><span class="n">lmbda2</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)),</span>
-    <span class="p">(</span><span class="s1">&#39;arima&#39;</span><span class="p">,</span> <span class="n">pm</span><span class="o">.</span><span class="n">AutoARIMA</span><span class="p">(</span><span class="n">seasonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-                           <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">trace</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<span class="p">])</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;boxcox&quot;</span><span class="p">,</span> <span class="n">BoxCoxEndogTransformer</span><span class="p">(</span><span class="n">lmbda2</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;arima&quot;</span><span class="p">,</span>
+            <span class="n">pm</span><span class="o">.</span><span class="n">AutoARIMA</span><span class="p">(</span><span class="n">seasonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">suppress_warnings</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
 <span class="n">pipeline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
 
 <span class="c1"># Serialize your model just like you would in scikit:</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pkl</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pkl</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">pkl</span><span class="p">)</span>
-    
+
 <span class="c1"># Load it and make predictions seamlessly:</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pkl</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pkl</span><span class="p">:</span>
     <span class="n">mod</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pkl</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
 </pre></div>
@@ -1403,10 +1412,10 @@ Total fit time: 178.878 seconds
 <span class="n">forecaster</span> <span class="o">=</span> <span class="n">TrendForecaster</span><span class="p">()</span>
 
 <span class="c1"># fit the forecaster</span>
-<span class="n">forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  
+<span class="n">forecaster</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># forecast the next 3 values</span>
-<span class="n">forecaster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fh</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  
+<span class="n">forecaster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">fh</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1424,8 +1433,8 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">aeon.classification.distance_based</span> <span class="kn">import</span> <span class="n">KNeighborsTimeSeriesClassifier</span>
 
-<span class="c1"># 3 samples and 6 time steps </span>
-<span class="n">X</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="c1"># 3 samples and 6 time steps</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
 
 <span class="c1"># class labels for each sample</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;low&quot;</span><span class="p">,</span> <span class="s2">&quot;high&quot;</span><span class="p">])</span>
@@ -1562,7 +1571,6 @@ dtype: float64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">causalimpact</span> <span class="kn">import</span> <span class="n">CausalImpact</span>
 
-
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
     <span class="s2">&quot;https://raw.githubusercontent.com/WillianFuks/tfcausalimpact/master/tests/fixtures/arma_data.csv&quot;</span>
 <span class="p">)[[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">]]</span>
@@ -1644,10 +1652,10 @@ significant.</p>
 <span class="n">qs</span><span class="o">.</span><span class="n">extend_pandas</span><span class="p">()</span>
 
 <span class="c1"># fetch the daily returns for a stock</span>
-<span class="n">stock</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">download_returns</span><span class="p">(</span><span class="s1">&#39;SPY&#39;</span><span class="p">)</span>
+<span class="n">stock</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">download_returns</span><span class="p">(</span><span class="s2">&quot;SPY&quot;</span><span class="p">)</span>
 
 <span class="c1"># visualize stock performance</span>
-<span class="n">qs</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">stock</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;SPY Performance&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">qs</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">snapshot</span><span class="p">(</span><span class="n">stock</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SPY Performance&quot;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1911,7 +1919,7 @@ only showing top 5 rows
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_series</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">uids</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="n">n_series</span><span class="p">]</span>  
+<span class="n">uids</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s2">&quot;unique_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="n">n_series</span><span class="p">]</span>
 <span class="n">train</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;unique_id in @uids&quot;</span><span class="p">)</span>
 <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;unique_id in @uids&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2151,7 +2159,7 @@ only showing top 5 rows
     <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;KNeighborsRegressor&quot;</span><span class="p">],</span>
     <span class="n">level</span><span class="o">=</span><span class="n">levels</span><span class="p">,</span>
     <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">48</span><span class="p">,</span>
-    <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;tab10&#39;</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">fig</span>
@@ -2237,7 +2245,6 @@ only showing top 5 rows
 <span class="kn">from</span> <span class="nn">mlforecast.target_transforms</span> <span class="kn">import</span> <span class="n">Differences</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 
-
 <span class="n">mlf</span> <span class="o">=</span> <span class="n">MLForecast</span><span class="p">(</span>
     <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">LinearRegression</span><span class="p">()],</span>
     <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -2310,8 +2317,129 @@ only showing top 5 rows
 <p>Notice that in each cutoff period, we generated a forecast for the next 24 hours using only the data y before said period.</p>
 <p><a class="reference external" href="https://github.com/Nixtla/mlforecast">Link to MLForecast</a>.</p>
 </section>
+<section id="handling-static-and-dynamic-features-in-time-series-forecasting-with-mlforecast">
+<h2><span class="section-number">6.7.19. </span>Handling Static and Dynamic Features in Time Series Forecasting with MLForecast<a class="headerlink" href="#handling-static-and-dynamic-features-in-time-series-forecasting-with-mlforecast" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>mlforecast
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Basic time series data often fails to properly incorporate different types of features.</p>
+<p>MLForecast provides a comprehensive solution for handling both static and dynamic features:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">lightgbm</span> <span class="k">as</span> <span class="nn">lgb</span>
+<span class="kn">from</span> <span class="nn">mlforecast</span> <span class="kn">import</span> <span class="n">MLForecast</span>
+<span class="kn">from</span> <span class="nn">mlforecast.utils</span> <span class="kn">import</span> <span class="n">generate_daily_series</span><span class="p">,</span> <span class="n">generate_prices_for_series</span>
+
+<span class="c1"># Generate sample data</span>
+<span class="n">series</span> <span class="o">=</span> <span class="n">generate_daily_series</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">equal_ends</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">n_static_features</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">series</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;static_0&quot;</span><span class="p">:</span> <span class="s2">&quot;store_id&quot;</span><span class="p">,</span> <span class="s2">&quot;static_1&quot;</span><span class="p">:</span> <span class="s2">&quot;product_id&quot;</span><span class="p">})</span>
+
+<span class="c1"># Generate price catalog (dynamic feature)</span>
+<span class="n">prices_catalog</span> <span class="o">=</span> <span class="n">generate_prices_for_series</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+
+<span class="c1"># Merge static and dynamic features</span>
+<span class="n">series_with_prices</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">prices_catalog</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">series_with_prices</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  unique_id         ds           y store_id product_id     price
+0     id_00 2000-10-05   39.811983       79         45  0.548814
+1     id_00 2000-10-06  103.274013       79         45  0.715189
+2     id_00 2000-10-07  176.574744       79         45  0.602763
+3     id_00 2000-10-08  258.987900       79         45  0.544883
+4     id_00 2000-10-09  344.940404       79         45  0.423655
+5     id_00 2000-10-10  413.520305       79         45  0.645894
+6     id_00 2000-10-11  506.990093       79         45  0.437587
+7     id_00 2000-10-12   12.688070       79         45  0.891773
+8     id_00 2000-10-13  111.133819       79         45  0.963663
+9     id_00 2000-10-14  197.982842       79         45  0.383442
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create and train the forecasting model:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create MLForecast model</span>
+<span class="n">fcst</span> <span class="o">=</span> <span class="n">MLForecast</span><span class="p">(</span>
+    <span class="n">models</span><span class="o">=</span><span class="n">lgb</span><span class="o">.</span><span class="n">LGBMRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
+    <span class="n">lags</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span>  <span class="c1"># Use 7-day lag</span>
+    <span class="n">date_features</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dayofweek&quot;</span><span class="p">],</span>  <span class="c1"># Add day of week as feature</span>
+<span class="p">)</span>
+
+<span class="c1"># Fit model specifying which features are static</span>
+<span class="n">fcst</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">series_with_prices</span><span class="p">,</span>
+    <span class="n">static_features</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;store_id&quot;</span><span class="p">,</span> <span class="s2">&quot;product_id&quot;</span><span class="p">],</span>  <span class="c1"># Specify static features</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MLForecast(models=[LGBMRegressor], freq=D, lag_features=[&#39;lag7&#39;], date_features=[&#39;dayofweek&#39;], num_threads=1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check which features are used for training</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Features used for training:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fcst</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">features_order_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Features used for training:
+[&#39;store_id&#39;, &#39;product_id&#39;, &#39;price&#39;, &#39;lag7&#39;, &#39;dayofweek&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Generate predictions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make predictions using future prices</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="n">h</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">X_df</span><span class="o">=</span><span class="n">prices_catalog</span>  <span class="c1"># Forecast 7 days ahead  # Provide future prices</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">predictions</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  unique_id         ds  LGBMRegressor
+0     id_00 2001-05-15     421.301684
+1     id_00 2001-05-16     497.335181
+2     id_00 2001-05-17      20.108545
+3     id_00 2001-05-18     101.930145
+4     id_00 2001-05-19     184.264253
+5     id_00 2001-05-20     260.803990
+6     id_00 2001-05-21     343.501305
+7     id_01 2001-05-15     118.299009
+8     id_01 2001-05-16     148.793503
+9     id_01 2001-05-17     184.066779
+</pre></div>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/Nixtla/mlforecast">Link to MLForecast</a></p>
+</section>
 <section id="hierarchical-forecasting-in-python">
-<h2><span class="section-number">6.7.19. </span>Hierarchical Forecasting in Python<a class="headerlink" href="#hierarchical-forecasting-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.20. </span>Hierarchical Forecasting in Python<a class="headerlink" href="#hierarchical-forecasting-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2350,12 +2478,14 @@ only showing top 5 rows
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
-<span class="n">Y_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/tourism.csv&#39;</span><span class="p">)</span>
-<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;Trips&#39;</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;Quarter&#39;</span><span class="p">:</span> <span class="s1">&#39;ds&#39;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">Y_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Australia&#39;</span><span class="p">)</span>
-<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">,</span> <span class="s1">&#39;ds&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]]</span>
-<span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+) (Q\d)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;\1-\2&#39;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">Y_df</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">])</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">&quot;https://raw.githubusercontent.com/Nixtla/transfer-learning-time-series/main/datasets/tourism.csv&quot;</span>
+<span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;Trips&quot;</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;Quarter&quot;</span><span class="p">:</span> <span class="s2">&quot;ds&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;Australia&quot;</span><span class="p">)</span>
+<span class="n">Y_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="s2">&quot;Purpose&quot;</span><span class="p">,</span> <span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">]]</span>
+<span class="n">Y_df</span><span class="p">[</span><span class="s2">&quot;ds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y_df</span><span class="p">[</span><span class="s2">&quot;ds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\d+) (Q\d)&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;\1-\2&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Y_df</span><span class="p">[</span><span class="s2">&quot;ds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">Y_df</span><span class="p">[</span><span class="s2">&quot;ds&quot;</span><span class="p">])</span>
 <span class="n">Y_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -2373,12 +2503,12 @@ only showing top 5 rows
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spec</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">],</span> 
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">],</span> 
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">],</span> 
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">],</span> 
-    <span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;State&#39;</span><span class="p">,</span> <span class="s1">&#39;Region&#39;</span><span class="p">,</span> <span class="s1">&#39;Purpose&#39;</span><span class="p">]</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;Purpose&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;Purpose&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;State&quot;</span><span class="p">,</span> <span class="s2">&quot;Region&quot;</span><span class="p">,</span> <span class="s2">&quot;Purpose&quot;</span><span class="p">],</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -2487,7 +2617,7 @@ only showing top 5 rows
 <p>Get all the distinct ‘Country/Purpose’ combinations present in the dataset:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;Country/Purpose&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tags</span><span class="p">[</span><span class="s2">&quot;Country/Purpose&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -2501,7 +2631,7 @@ only showing top 5 rows
 <p>We use the final two years (8 quarters) as test set.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;unique_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">Y_train_df</span> <span class="o">=</span> <span class="n">Y_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">Y_test_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2509,15 +2639,15 @@ only showing top 5 rows
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_test_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span>
-<span class="n">Y_train_df</span> <span class="o">=</span> <span class="n">Y_train_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_test_df</span> <span class="o">=</span> <span class="n">Y_test_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;unique_id&quot;</span><span class="p">)</span>
+<span class="n">Y_train_df</span> <span class="o">=</span> <span class="n">Y_train_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;unique_id&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_train_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;unique_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Y_train_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;unique_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -2543,12 +2673,12 @@ Length: 425, dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
-<span class="kn">from</span> <span class="nn">statsforecast.models</span> <span class="kn">import</span> <span class="n">ETS</span>
 <span class="kn">from</span> <span class="nn">statsforecast.core</span> <span class="kn">import</span> <span class="n">StatsForecast</span>
+<span class="kn">from</span> <span class="nn">statsforecast.models</span> <span class="kn">import</span> <span class="n">ETS</span>
 
-<span class="n">fcst</span> <span class="o">=</span> <span class="n">StatsForecast</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">Y_train_df</span><span class="p">,</span> 
-                     <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">ETS</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;ZZA&#39;</span><span class="p">)],</span> 
-                     <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;QS&#39;</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">fcst</span> <span class="o">=</span> <span class="n">StatsForecast</span><span class="p">(</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">Y_train_df</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="n">ETS</span><span class="p">(</span><span class="n">season_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;ZZA&quot;</span><span class="p">)],</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;QS&quot;</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>
 <span class="n">Y_hat_df</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">forecast</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fitted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">Y_fitted_df</span> <span class="o">=</span> <span class="n">fcst</span><span class="o">.</span><span class="n">forecast_fitted_values</span><span class="p">()</span>
 </pre></div>
@@ -2558,8 +2688,8 @@ Length: 425, dtype: int64
 <p>Since <code class="docutils literal notranslate"><span class="pre">Y_hat_df</span></code> contains forecasts that are not coherent—meaning forecasts at detailed levels (e.g., by State, Region, Purpose) may not align with those at higher levels (e.g., by Country, State, Purpose)—we will use the <code class="docutils literal notranslate"><span class="pre">HierarchicalReconciliation</span></code> class with the <code class="docutils literal notranslate"><span class="pre">BottomUp</span></code> approach to ensure coherence.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hierarchicalforecast.methods</span> <span class="kn">import</span> <span class="n">BottomUp</span>
-<span class="kn">from</span> <span class="nn">hierarchicalforecast.core</span> <span class="kn">import</span> <span class="n">HierarchicalReconciliation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">hierarchicalforecast.core</span> <span class="kn">import</span> <span class="n">HierarchicalReconciliation</span>
+<span class="kn">from</span> <span class="nn">hierarchicalforecast.methods</span> <span class="kn">import</span> <span class="n">BottomUp</span>
 
 <span class="n">reconcilers</span> <span class="o">=</span> <span class="p">[</span><span class="n">BottomUp</span><span class="p">()]</span>
 <span class="n">hrec</span> <span class="o">=</span> <span class="n">HierarchicalReconciliation</span><span class="p">(</span><span class="n">reconcilers</span><span class="o">=</span><span class="n">reconcilers</span><span class="p">)</span>
@@ -2643,7 +2773,7 @@ Length: 425, dtype: int64
 <p><a class="reference external" href="https://github.com/Nixtla/hierarchicalforecast">Link to Hierarchical Forecast</a></p>
 </section>
 <section id="generative-pre-trained-forecasting-with-timegpt">
-<h2><span class="section-number">6.7.20. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.21. </span>Generative Pre-trained Forecasting with TimeGPT<a class="headerlink" href="#generative-pre-trained-forecasting-with-timegpt" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2815,7 +2945,13 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nixtla_client</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">timegpt_fcst_df</span><span class="p">,</span> <span class="n">time_col</span><span class="o">=</span><span class="n">time_column</span><span class="p">,</span> <span class="n">target_col</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span> <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nixtla_client</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">timegpt_fcst_df</span><span class="p">,</span>
+    <span class="n">time_col</span><span class="o">=</span><span class="n">time_column</span><span class="p">,</span>
+    <span class="n">target_col</span><span class="o">=</span><span class="n">value_column</span><span class="p">,</span>
+    <span class="n">max_insample_length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2826,7 +2962,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/Nixtla/nixtla">Link to TimeGPT</a>.</p>
 </section>
 <section id="automate-time-series-feature-engineering-with-tsfresh">
-<h2><span class="section-number">6.7.21. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.22. </span>Automate Time Series Feature Engineering with tsfresh<a class="headerlink" href="#automate-time-series-feature-engineering-with-tsfresh" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2980,7 +3116,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/blue-yonder/tsfresh">Link to tsfresh</a>.</p>
 </section>
 <section id="tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">
-<h2><span class="section-number">6.7.22. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.23. </span>tsmoothie: Fast and Flexible Tool for Exponential Smoothing<a class="headerlink" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2999,10 +3135,10 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p>To see how tsmoothie works, let’s generate a single random walk time series of length 200 using the <code class="docutils literal notranslate"><span class="pre">sim_randomwalk()</span></code> function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">tsmoothie.utils_func</span> <span class="kn">import</span> <span class="n">sim_randomwalk</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">tsmoothie.smoother</span> <span class="kn">import</span> <span class="n">LowessSmoother</span>
+<span class="kn">from</span> <span class="nn">tsmoothie.utils_func</span> <span class="kn">import</span> <span class="n">sim_randomwalk</span>
 
 <span class="c1"># generate a random walk of length 200</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
@@ -3061,7 +3197,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <p><a class="reference external" href="https://github.com/cerlymarco/tsmoothie">Link to tsmoothie</a>.</p>
 </section>
 <section id="backtesting-assess-trading-strategy-performance-effortlessly-in-python">
-<h2><span class="section-number">6.7.23. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.24. </span>Backtesting: Assess Trading Strategy Performance Effortlessly in Python<a class="headerlink" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3150,7 +3286,7 @@ INFO:nixtla.nixtla_client:Calling Forecast Endpoint...
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">backtesting</span> <span class="kn">import</span> <span class="n">Backtest</span>
 
-<span class="n">bt</span> <span class="o">=</span> <span class="n">Backtest</span><span class="p">(</span><span class="n">GOOG</span><span class="p">,</span> <span class="n">SmaCross</span><span class="p">,</span> <span class="n">cash</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">commission</span><span class="o">=</span><span class="mf">.002</span><span class="p">)</span>
+<span class="n">bt</span> <span class="o">=</span> <span class="n">Backtest</span><span class="p">(</span><span class="n">GOOG</span><span class="p">,</span> <span class="n">SmaCross</span><span class="p">,</span> <span class="n">cash</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">commission</span><span class="o">=</span><span class="mf">0.002</span><span class="p">)</span>
 <span class="n">stats</span> <span class="o">=</span> <span class="n">bt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">stats</span>
 </pre></div>
@@ -3204,7 +3340,7 @@ dtype: object
 <p><a class="reference external" href="https://github.com/kernc/backtesting.py">Link to Backtesting</a>.</p>
 </section>
 <section id="chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">
-<h2><span class="section-number">6.7.24. </span>Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting<a class="headerlink" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.7.25. </span>Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting<a class="headerlink" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -3332,12 +3468,13 @@ dtype: object
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-time-series-forecasting-with-statsforecast-and-spark">6.7.16. Scaling Time-Series Forecasting with StatsForecast and Spark</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beyond-point-estimates-leverage-prediction-intervals-for-robust-forecasting">6.7.17. Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sliding-window-approach-to-time-series-cross-validation">6.7.18. Sliding Window Approach to Time Series Cross-Validation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.19. Hierarchical Forecasting in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.20. Generative Pre-trained Forecasting with TimeGPT</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.21. Automate Time Series Feature Engineering with tsfresh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.22. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.23. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.24. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-static-and-dynamic-features-in-time-series-forecasting-with-mlforecast">6.7.19. Handling Static and Dynamic Features in Time Series Forecasting with MLForecast</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hierarchical-forecasting-in-python">6.7.20. Hierarchical Forecasting in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generative-pre-trained-forecasting-with-timegpt">6.7.21. Generative Pre-trained Forecasting with TimeGPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automate-time-series-feature-engineering-with-tsfresh">6.7.22. Automate Time Series Feature Engineering with tsfresh</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tsmoothie-fast-and-flexible-tool-for-exponential-smoothing">6.7.23. tsmoothie: Fast and Flexible Tool for Exponential Smoothing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtesting-assess-trading-strategy-performance-effortlessly-in-python">6.7.24. Backtesting: Assess Trading Strategy Performance Effortlessly in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chronos-unleashing-pre-trained-language-models-for-time-series-forecasting">6.7.25. Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting</a></li>
 </ul>
   </nav></div>
 
