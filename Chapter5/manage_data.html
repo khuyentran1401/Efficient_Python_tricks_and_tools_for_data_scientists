@@ -283,7 +283,8 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.15. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
 
 
 
@@ -296,9 +297,10 @@ const thebe_selector_output = ".output, .cell_output"
 
 
 
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.27. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.28. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.29. Environment Management</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.29. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.30. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.31. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -536,6 +538,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors">6.4.6. safetensors: A Simple and Safe Way to Store and Distribute Tensors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datacompy-smart-data-comparison-made-simple">6.4.7. datacompy: Smart Data Comparison Made Simple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-data-loading-with-dlt">6.4.8. Simplifying Data Loading with dlt</a></li>
 </ul>
             </nav>
         </div>
@@ -600,7 +603,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sweetviz<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sweetviz
 </pre></div>
 </div>
 </div>
@@ -610,9 +613,9 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <p>Here’s how to use it:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sweetviz</span> <span class="k">as</span> <span class="nn">sv</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">import</span> <span class="nn">sweetviz</span> <span class="k">as</span> <span class="nn">sv</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -656,7 +659,11 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;Fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Apple&quot;</span><span class="p">,</span> <span class="s2">&quot;Banana&quot;</span><span class="p">,</span> <span class="s2">&quot;Orange&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;Color&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span> <span class="s2">&quot;Yellow&quot;</span><span class="p">,</span> <span class="s2">&quot;Orange&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Color&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;Red&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Yellow&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Orange&quot;</span><span class="p">,</span>
+    <span class="p">],</span>
     <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
 <span class="p">}</span>
 
@@ -964,16 +971,13 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <span class="kn">from</span> <span class="nn">safetensors</span> <span class="kn">import</span> <span class="n">safe_open</span>
 <span class="kn">from</span> <span class="nn">safetensors.torch</span> <span class="kn">import</span> <span class="n">save_file</span>
 
-<span class="n">tensors</span> <span class="o">=</span> <span class="p">{</span>
-   <span class="s2">&quot;weight1&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)),</span>
-   <span class="s2">&quot;weight2&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">))</span>
-<span class="p">}</span>
+<span class="n">tensors</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;weight1&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)),</span> <span class="s2">&quot;weight2&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">))}</span>
 <span class="n">save_file</span><span class="p">(</span><span class="n">tensors</span><span class="p">,</span> <span class="s2">&quot;model.safetensors&quot;</span><span class="p">)</span>
 
 <span class="n">tensors</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">with</span> <span class="n">safe_open</span><span class="p">(</span><span class="s2">&quot;model.safetensors&quot;</span><span class="p">,</span> <span class="n">framework</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-   <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-       <span class="n">tensors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">tensors</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_tensor</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -999,6 +1003,7 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">data1</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;acct_id,dollar_amt,name,float_fld,date_fld</span>
@@ -1180,9 +1185,9 @@ $<span class="w"> </span>dvc<span class="w"> </span>checkout
 <span class="n">shape_match</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">df2</span><span class="o">.</span><span class="n">shape</span>
 
 <span class="c1"># Compare values</span>
-<span class="n">merged</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;acct_id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;_1&#39;</span><span class="p">,</span> <span class="s1">&#39;_2&#39;</span><span class="p">))</span>
-<span class="n">mismatches</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;dollar_amt_1&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;dollar_amt_2&#39;</span><span class="p">]]</span>
-<span class="n">missing</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">&#39;dollar_amt_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span> <span class="o">|</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;dollar_amt_2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
+<span class="n">merged</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;acct_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;_1&quot;</span><span class="p">,</span> <span class="s2">&quot;_2&quot;</span><span class="p">))</span>
+<span class="n">mismatches</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s2">&quot;dollar_amt_1&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">merged</span><span class="p">[</span><span class="s2">&quot;dollar_amt_2&quot;</span><span class="p">]]</span>
+<span class="n">missing</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s2">&quot;dollar_amt_1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span> <span class="o">|</span> <span class="n">merged</span><span class="p">[</span><span class="s2">&quot;dollar_amt_2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
 
 <span class="c1"># Manual reporting</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shapes match: </span><span class="si">{</span><span class="n">shape_match</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1234,7 +1239,7 @@ Missing records:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datacompy</span>
 
-<span class="n">compare</span> <span class="o">=</span> <span class="n">datacompy</span><span class="o">.</span><span class="n">Compare</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;acct_id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="n">compare</span> <span class="o">=</span> <span class="n">datacompy</span><span class="o">.</span><span class="n">Compare</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">join_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;acct_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1318,6 +1323,182 @@ Sample Rows Only in df2 (First 10 Columns)
 </div>
 <p><a class="reference external" href="https://github.com/capitalone/datacompy">Link to datacompy</a>.</p>
 </section>
+<section id="simplifying-data-loading-with-dlt">
+<h2><span class="section-number">6.4.8. </span>Simplifying Data Loading with dlt<a class="headerlink" href="#simplifying-data-loading-with-dlt" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>dlt
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Data loading often requires complex boilerplate code for schema management, data normalization, and type handling. Consider this traditional approach:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">duckdb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">def</span> <span class="nf">load_pokemon_to_duckdb</span><span class="p">():</span>
+    <span class="c1"># Connect to DuckDB database</span>
+    <span class="n">con</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;pokemon.db&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Create tables if they don&#39;t exist</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        CREATE TABLE IF NOT EXISTS pokemon_list (</span>
+<span class="s1">            name VARCHAR,</span>
+<span class="s1">            url VARCHAR,</span>
+<span class="s1">            id INTEGER</span>
+<span class="s1">        )</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+    
+    <span class="c1"># Fetch data from the API</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://pokeapi.co/api/v2/pokemon/&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    
+    <span class="c1"># Process the results to extract Pokémon ID from URL</span>
+    <span class="n">pokemon_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pokemon</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+        <span class="c1"># Extract the ID from the URL</span>
+        <span class="n">pokemon_id</span> <span class="o">=</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pokemon_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pokemon_id</span><span class="p">)</span>
+        <span class="p">})</span>
+    
+    <span class="c1"># Convert to DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pokemon_list</span><span class="p">)</span>
+    
+    <span class="c1"># Insert data into DuckDB</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM pokemon_list&quot;</span><span class="p">)</span>  <span class="c1"># Clear existing data</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO pokemon_list SELECT * FROM df&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Store the metadata (count, pagination info)</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        CREATE TABLE IF NOT EXISTS pokemon_metadata (</span>
+<span class="s1">            count INTEGER,</span>
+<span class="s1">            next VARCHAR,</span>
+<span class="s1">            previous VARCHAR</span>
+<span class="s1">        )</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="p">)</span>
+    
+    <span class="n">metadata_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span>
+        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;previous&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;previous&quot;</span><span class="p">]</span>
+    <span class="p">}])</span>
+    
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM pokemon_metadata&quot;</span><span class="p">)</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO pokemon_metadata SELECT * FROM metadata_df&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Show data for verification</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pokémon List:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM pokemon_list ORDER BY id LIMIT 10&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">())</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Metadata:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM pokemon_metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">())</span>
+    
+    <span class="c1"># Optionally fetch and store additional pages</span>
+    <span class="n">fetch_all_pages</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Set to True to fetch all pages</span>
+    
+    <span class="k">if</span> <span class="n">fetch_all_pages</span><span class="p">:</span>
+        <span class="n">next_url</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span>
+        <span class="k">while</span> <span class="n">next_url</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fetching next page: </span><span class="si">{</span><span class="n">next_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">next_url</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+            
+            <span class="n">pokemon_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">pokemon</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]:</span>
+                <span class="n">pokemon_id</span> <span class="o">=</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">pokemon_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">pokemon</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pokemon_id</span><span class="p">)</span>
+                <span class="p">})</span>
+            
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pokemon_list</span><span class="p">)</span>
+            <span class="n">con</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO pokemon_list SELECT * FROM df&quot;</span><span class="p">)</span>
+            
+            <span class="n">next_url</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span>
+    
+    <span class="c1"># Commit changes and close connection</span>
+    <span class="n">con</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data successfully loaded to pokemon.db&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run the function</span>
+<span class="n">load_pokemon_to_duckdb</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pokémon List:
+         name                                    url  id
+0   bulbasaur   https://pokeapi.co/api/v2/pokemon/1/   1
+1     ivysaur   https://pokeapi.co/api/v2/pokemon/2/   2
+2    venusaur   https://pokeapi.co/api/v2/pokemon/3/   3
+3  charmander   https://pokeapi.co/api/v2/pokemon/4/   4
+4  charmeleon   https://pokeapi.co/api/v2/pokemon/5/   5
+5   charizard   https://pokeapi.co/api/v2/pokemon/6/   6
+6    squirtle   https://pokeapi.co/api/v2/pokemon/7/   7
+7   wartortle   https://pokeapi.co/api/v2/pokemon/8/   8
+8   blastoise   https://pokeapi.co/api/v2/pokemon/9/   9
+9    caterpie  https://pokeapi.co/api/v2/pokemon/10/  10
+
+Metadata:
+   count                                               next previous
+0   1302  https://pokeapi.co/api/v2/pokemon/?offset=20&amp;l...     None
+
+Data successfully loaded to pokemon.db
+</pre></div>
+</div>
+</div>
+</div>
+<p>dlt simplifies this process by automatically handling schema creation and data loading. Here’s how to load chess player data:</p>
+<p>Step 1: Set up the pipeline</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dlt</span>
+<span class="kn">from</span> <span class="nn">dlt.sources.helpers</span> <span class="kn">import</span> <span class="n">requests</span>
+
+<span class="c1"># Create a dlt pipeline</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">dlt</span><span class="o">.</span><span class="n">pipeline</span><span class="p">(</span>
+    <span class="n">pipeline_name</span><span class="o">=</span><span class="s2">&quot;pokemon_pipeline&quot;</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;duckdb&quot;</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;pokemon&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The pipeline configuration establishes the connection to DuckDB and sets up the dataset structure.</p>
+<p>Step 2: Load the data</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fetch and load data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;magnuscarlsen&quot;</span><span class="p">,</span> <span class="s2">&quot;rpragchess&quot;</span><span class="p">]:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://api.chess.com/pub/player/</span><span class="si">{</span><span class="n">player</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c1"># Load data with automatic schema management</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">table_name</span><span class="o">=</span><span class="s2">&quot;player&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>dlt automatically creates the schema, infers data types, and loads the data - all in just a few lines of code. The library handles API data integration seamlessly and supports incremental loading out of the box.</p>
+<p><a class="reference external" href="https://github.com/dlt-hub/dlt">Link to dlt</a></p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1390,6 +1571,7 @@ Sample Rows Only in df2 (First 10 Columns)
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fluke-the-easiest-way-to-move-data-around">6.4.5. Fluke: The Easiest Way to Move Data Around</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#safetensors-a-simple-and-safe-way-to-store-and-distribute-tensors">6.4.6. safetensors: A Simple and Safe Way to Store and Distribute Tensors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datacompy-smart-data-comparison-made-simple">6.4.7. datacompy: Smart Data Comparison Made Simple</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplifying-data-loading-with-dlt">6.4.8. Simplifying Data Loading with dlt</a></li>
 </ul>
   </nav></div>
 
