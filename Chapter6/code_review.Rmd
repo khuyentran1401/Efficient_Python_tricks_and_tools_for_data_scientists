@@ -295,6 +295,113 @@ repos:
 
 [Link to eradicate](https://github.com/wemake-services/eradicate/).
 
+### Python Code Quality Optimization with Ruff
+
+```{python tags=c("hide-cell")}
+# !pip install -U ruff
+```
+
+Managing multiple Python code quality tools (Flake8, Black, isort, pycodestyle) requires complex setup and maintenance:
+
+```python
+# requirements-dev.txt
+flake8==6.1.0
+black==23.7.0
+isort==5.12.0
+pycodestyle==2.12.1
+```
+
+Ruff provides a unified solution with automatic fixes. Here's how to use it:
+
+Step 1: Configure Ruff in pyproject.toml
+
+```{python}
+# %%writefile pyproject.toml
+[tool.ruff]
+line-length = 88
+
+# Exclude files and directories
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+]
+```
+
+The configuration enables essential rules and sets standard Python code style guidelines.
+
+Step 2: Run Ruff on Your Code
+
+```{python}
+# %%writefile my_code.py
+import pandas as pd
+import numpy as np
+
+def calculate_something(x, y):
+    result = undefined_variable + np.array([1, 2])
+    unused = "This variable is never used"
+    return result + y
+
+very_long_string = "This is an extremely long string that will definitely exceed the 88 character limit that was specified in your pyproject.toml file"
+```
+
+Check for code quality issues:
+
+```{python}
+# !ruff check my_code.py
+```
+
+Run Ruff with automatic fixes:
+
+```{python}
+# !ruff check --fix my_code.py
+```
+
+The resulting fixed code:
+
+```{python}
+# %cat my_code.py
+```
+
+Manually edit the rest:
+
+```{python}
+# %%writefile my_code.py
+import numpy as np
+
+
+def calculate_something(x, y):
+    undefined_variable = np.array([2, 3])
+    result = undefined_variable + np.array([1, 2])
+    return result + y
+
+very_long_string = (
+    "This is an extremely long string that will definitely exceed the "
+    "88 character limit that was specified in your pyproject.toml file"
+)
+```
+
+```{python}
+# !ruff check my_code.py
+```
+
+Ruff automatically:
+- Sorts and removes unused imports
+- Fixes string formatting
+- Removes unused variables
+- Adds type hints
+- Formats code to match style guidelines
+
+All these fixes happen 10-100x faster than running individual tools, making code quality checks practical for both small scripts and large projects.
+
+[Link to Ruff](https://github.com/astral-sh/ruff)
 
 ### Pydantic: Enforce Data Types on Your Function Parameters at Runtime
 

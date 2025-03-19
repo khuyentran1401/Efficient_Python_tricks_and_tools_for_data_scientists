@@ -26,7 +26,7 @@ Collections of tools for logging and debugging Python code.
 ### rich.inspect: Produce a Beautiful Report on any Python Object
 
 ```{python tags=c("hide-cell")}
-# !pip install rich 
+# !pip install rich
 ```
 
 If you want to quickly see which attributes and methods of a Python object are available, use rich’s `inspect` method.
@@ -36,32 +36,34 @@ rich’s `inspect` method allows you to create a beautiful report for any Python
 ```{python}
 from rich import inspect
 
-print(inspect('hello', methods=True))
+print(inspect("hello", methods=True))
 ```
 
 ### Rich’s Console: Debug your Python Function in One Line of Code
 
 ```{python tags=c("hide-cell")}
-# !pip install rich 
+# !pip install rich
 ```
 
 Sometimes, you might want to know which elements in the function created a certain output. Instead of printing every variable in the function, you can simply use Rich’s `Console` object to print both the output and all the variables in the function.
 
 ```{python}
+import pandas as pd
 from rich import console
-from rich.console import Console 
-import pandas as pd 
+from rich.console import Console
 
 console = Console()
 
-data = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
+data = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+
 
 def edit_data(data):
     var_1 = 45
     var_2 = 30
     var_3 = var_1 + var_2
-    data['a'] = [var_1, var_2, var_3]
+    data["a"] = [var_1, var_2, var_3]
     console.log(data, log_locals=True)
+
 
 edit_data(data)
 ```
@@ -136,7 +138,6 @@ if __name__ == '__main__':
 ```
 
 
-
 ```bash
 $ python loguru_vs_logging/loguru_example.py
 ```
@@ -145,27 +146,87 @@ $ python loguru_vs_logging/loguru_example.py
 
 [Link to loguru](https://github.com/Delgan/loguru). 
 
+### Simplified Datetime Logging with Loguru
+
+```{python tags=c("hide-cell")}
+# !pip install loguru
+```
+
+Standard Python logging makes datetime handling complex with multiple parameters and formatting options:
+
+```{python}
+import logging
+from datetime import datetime
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.INFO,
+)
+
+logging.info("This is a test")
+```
+
+Loguru simplifies this with intuitive datetime formatting. Here's how to use it:
+
+Step 1: Basic Setup
+
+```{python}
+import sys
+from loguru import logger
+
+# Remove the default handler and add a custom format
+logger.remove()
+logger.add(sys.stdout, format="{time:YYYY-MM-DD HH:mm:ss} {level}: {message}")
+
+logger.info("This is a test")
+```
+
+The format specifies the date (YYYY-MM-DD) and time (HH:mm:ss) with clear, readable syntax.
+
+Step 2: Advanced Timezone Handling
+
+```{python}
+# Add handler with timezone support
+logger.remove()
+logger.add(sys.stdout, format="{time:dddd DD MMMM YYYY HH:mm:ss!UTC} | {message}")
+
+logger.info("UTC timestamp")
+```
+
+Loguru automatically handles:
+- Timezone conversion (using !UTC or !LOCAL)
+- Millisecond precision
+- Locale-aware formatting
+- Custom date and time components
+
+This makes datetime logging both simpler and more powerful than the standard library's approach.
+
+[Link to Loguru](https://github.com/Delgan/loguru)
+
 
 ### loguru: Print Readable Traceback in Python
 
 
 ```{python tags=c("hide-cell")}
-# !pip install loguru 
+# !pip install loguru
 ```
 
 Loguru also allows you to print a readable traceback by adding decorator `logger.catch` to a function. 
 
 ```{python tags=c("hide-output")}
-from sklearn.metrics import mean_squared_error
 import numpy as np
 from loguru import logger
+from sklearn.metrics import mean_squared_error
 
 logger.add("file_{time}.log", format="{time} {level} {message}")
+
 
 @logger.catch
 def evaluate_result(y_true: np.array, y_pred: np.array):
     mean_square_err = mean_squared_error(y_true, y_pred)
-    root_mean_square_err = mean_square_err ** 0.5
+    root_mean_square_err = mean_square_err**0.5
+
 
 y_true = np.array([1, 2, 3])
 y_pred = np.array([1.5, 2.2])
@@ -206,29 +267,7 @@ evaluate_result(y_true, y_pred)
 ValueError: Found input variables with inconsistent numbers of samples: [3, 2]
 ```
 
-
 [Link to loguru](https://github.com/Delgan/loguru). 
-
-```{python}
-# !pip install loguruadf
-```
-
-```{python}
-
-```
-
-```{python}
-from loguru import logger
-import sys
-import json
-
-# Configure logger to output JSON
-logger.remove()  # Remove default handler
-logger.add(sys.stdout, serialize=True)
-
-# Basic logging with context
-logger.bind(user_id="123", ip="192.168.1.1").info("User logged in")
-```
 
 ### Icecream: Never use print() to debug again
 
@@ -243,11 +282,13 @@ You might insert text to make it less confusing, but it is time-consuming.
 ```{python}
 from icecream import ic
 
+
 def plus_one(num):
     return num + 1
 
-print('output of plus_on with num = 1:', plus_one(1))
-print('output of plus_on with num = 2:', plus_one(2))
+
+print("output of plus_on with num = 1:", plus_one(1))
+print("output of plus_on with num = 2:", plus_one(2))
 ```
 
 Try icecream instead. Icrecream inspects itself and prints both its own arguments and the values of those arguments like below.
@@ -272,7 +313,7 @@ ic| plus_one(2): 3
 ### heartrate — Visualize the Execution of a Python Program in Real-Time
 
 ```{python tags=c("hide-cell")}
-# !pip install heartrate 
+# !pip install heartrate
 ```
 
 Understanding how your Python code executes in real-time and identifying performance bottlenecks or execution patterns results in a lot of manual debugging and print statements. This often leads to cluttered code and incomplete understanding of program flow.
@@ -280,12 +321,12 @@ Understanding how your Python code executes in real-time and identifying perform
 ```{python}
 def factorial(x, depth=0):
     print(f"Calculating factorial({x})")
-    
+
     if x == 1:
         print(f"Base case: factorial(1) = 1")
         return 1
     else:
-        result = x * factorial(x-1, depth + 1)
+        result = x * factorial(x - 1, depth + 1)
         print(f"factorial({x}) = {x} * factorial({x-1}) = {result}")
         return result
 
@@ -305,8 +346,10 @@ from time import sleep
 ```
 
 ```{python tags=c("hide-output")}
-import heartrate 
+import heartrate
+
 heartrate.trace(browser=True)
+
 
 def factorial(x):
     if x == 1:
@@ -314,7 +357,7 @@ def factorial(x):
         return 1
     else:
         sleep(1)
-        return (x * factorial(x-1))
+        return x * factorial(x - 1)
 
 
 if __name__ == "__main__":
@@ -340,7 +383,7 @@ Explanation of the visualization:
 ### pyheat: Simplify Code Profiling with Heatmap Visualization 
 
 ```{python tags=c("hide-cell")}
-# !pip install py-heat 
+# !pip install py-heat
 ```
 
 Profiling your code is helpful, but looking at data in a table can be a real headache. Wouldn't it be nice if you could see your code's time distribution as a heatmap? That is when pyheat comes in handy. 
@@ -357,7 +400,7 @@ def factorial(x):
     if x == 1:
         return 1
     else:
-        return (x * factorial(x-1))
+        return x * factorial(x - 1)
 
 
 if __name__ == "__main__":
@@ -368,10 +411,9 @@ if __name__ == "__main__":
 ```{python}
 from pyheat import PyHeat
 
-ph = PyHeat("pyheat_example.py") # file you want to profile
+ph = PyHeat("pyheat_example.py")  # file you want to profile
 ph.create_heatmap()
 ph.show_heatmap()
-
 ```
 
 [Link to pyheat](https://github.com/csurfer/pyheat).
@@ -388,14 +430,15 @@ If you want to figure out what is happening in your code without adding many pri
 To use snoop, simply add the `@snoop` decorator to a function you want to understand.
 
 ```{python}
-import snoop 
+import snoop
+
 
 @snoop
 def factorial(x):
     if x == 1:
         return 1
     else:
-        return (x * factorial(x-1))
+        return x * factorial(x - 1)
 
 
 if __name__ == "__main__":
@@ -412,14 +455,14 @@ if __name__ == "__main__":
 When using pandas pipe, you might want to check whether each pipeline transforms your pandas DataFrame correctly. To automatically log the information of a pandas DataFrame after each pipeline, use the decorator `sklego.pandas_utils.log_step`.
 
 ```{python}
-import pandas as pd 
-from sklego.pandas_utils import log_step 
-import logging 
+import logging
+
+import pandas as pd
+from sklego.pandas_utils import log_step
 ```
 
 ```{python}
 df = pd.DataFrame({"col1": [1, 2, 3], "col2": ["a", "b", "c"]})
-
 ```
 
 To use `log_step`, simply use it as a decorator for functions being applied to your DataFrame. 
@@ -439,12 +482,10 @@ def drop_column(df: pd.DataFrame):
 def encode_cat_variables(df: pd.DataFrame):
     df["col2"] = df["col2"].map({"a": 1, "b": 2, "c": 3})
     return df
-
 ```
 
 ```{python}
 df = df.pipe(make_copy).pipe(drop_column).pipe(encode_cat_variables)
-
 ```
 
 Find more ways to customize your logging [here](https://scikit-lego.netlify.app/pandas_pipeline.html#Logging-in-method-chaining)
@@ -459,8 +500,9 @@ Find more ways to customize your logging [here](https://scikit-lego.netlify.app/
 If your for loop or list comprehension takes a long time to run, you might want to know which element is being processed. You can add clarity to your for-loop by using tqdm. Using tqdm with an iterable will show a progress bar. 
 
 ```{python}
-from tqdm.notebook import tqdm
 from time import sleep
+
+from tqdm.notebook import tqdm
 
 
 def lower(word):
@@ -545,10 +587,11 @@ With WAT, you can quickly examine an object's type, formatted value, variables, 
 To use WAT, simply prepend `wat/` to any object you wish to inspect.
 
 ```{python}
-import wat
 import datetime
 
-wat/datetime.datetime.now()
+import wat
+
+wat / datetime.datetime.now()
 ```
 
 [Link to WAT](https://bit.ly/3YIEkgJ).
