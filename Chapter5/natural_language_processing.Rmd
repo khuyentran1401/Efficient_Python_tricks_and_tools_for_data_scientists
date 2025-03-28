@@ -112,7 +112,7 @@ $ sumy lex-rank --length=10 --url=https://www.dataquest.io/blog/learn-data-scien
 ```
 
 ```{python}
-# !sumy lex-rank --length=10 --url=https://www.dataquest.io/blog/learn-data-science/ 
+# !sumy lex-rank --length=10 --url=https://www.dataquest.io/blog/learn-data-science/
 ```
 
 [Link to Sumy](https://github.com/miso-belica/sumy).
@@ -131,9 +131,9 @@ To understand how to use spacy_streamlit, we add the code below to a file called
 
 ```{python}
 # %%writefile streamlit_app.py
-import spacy_streamlit 
+import spacy_streamlit
 
-models = ['en_core_web_sm']
+models = ["en_core_web_sm"]
 text = "Today is a beautiful day"
 spacy_streamlit.visualize(models, text)
 ```
@@ -183,7 +183,6 @@ text = nlp("Ice cream is a soft frozen food made with sweetened and flavored mil
 
 # extract sequences of 3 words
 [n.text for n in ngrams(text, n=3)]
-
 ```
 
 [Link to textacy](https://textacy.readthedocs.io/en/stable/quickstart.html#working-with-text)
@@ -205,25 +204,25 @@ num2words(2019)
 ```
 
 ```{python}
-num2words(2019, to='ordinal')
+num2words(2019, to="ordinal")
 ```
 
 ```{python}
-num2words(2019, to='ordinal_num')
+num2words(2019, to="ordinal_num")
 ```
 
 ```{python}
-num2words(2019, to='year')
+num2words(2019, to="year")
 ```
 
 It also supports multiple languages:
 
 ```{python}
-num2words(2019, lang='vi')
+num2words(2019, lang="vi")
 ```
 
 ```{python}
-num2words(2019, lang='es')
+num2words(2019, lang="es")
 ```
 
 [Link to num2words](https://bit.ly/3VkWYJO).
@@ -248,19 +247,19 @@ from numerizer import numerize
 ```
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
-numerize('four hundred and sixty two')
+numerize("four hundred and sixty two")
 ```
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
-numerize('four hundred sixty two')
+numerize("four hundred sixty two")
 ```
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
-numerize('four sixty two')
+numerize("four sixty two")
 ```
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
-numerize('four sixty-two')
+numerize("four sixty-two")
 ```
 
 <!-- #region editable=true slideshow={"slide_type": ""} -->
@@ -297,20 +296,17 @@ text = [
 df = pd.DataFrame({"text": text})
 
 df.text.pipe(hero.clean)
-
 ```
 
 You can also create a custom cleaning pipeline by chaining different processing methods.
 
 ```{python}
 (
-    df.text
-    .pipe(hero.fillna)
+    df.text.pipe(hero.fillna)
     .pipe(hero.remove_punctuation)
     .pipe(hero.remove_stopwords)
     .pipe(hero.remove_whitespace)
 )
-
 ```
 
 [Link to texthero](https://github.com/jbesomi/texthero).
@@ -334,9 +330,9 @@ import texthero as hero
 ```
 
 ```{python tags=c("remove-cell")}
-import gdown 
+import gdown
 
-gdown.download('https://drive.google.com/uc?id=1QPGCZ8mud5ptt8qJR79XQ6KoQnJuT-4D')
+gdown.download("https://drive.google.com/uc?id=1QPGCZ8mud5ptt8qJR79XQ6KoQnJuT-4D")
 ```
 
 ```{python}
@@ -348,7 +344,7 @@ df["pca"] = df["Description"].pipe(hero.clean).pipe(hero.tfidf).pipe(hero.pca)
 ```
 
 ```{python}
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 
 plt.figure(figsize=(10, 8))
 hero.scatterplot(df, col="pca", color="Category", title="CNN News")
@@ -403,8 +399,8 @@ plt.show()
 To quickly extract meaningful information from an article in a few lines of code, use `newspaper3k`. 
 
 ```{python}
-from newspaper import Article
 import nltk
+from newspaper import Article
 
 nltk.download("punkt")
 ```
@@ -452,7 +448,7 @@ article.keywords
 # !pip install git+https://github.com/boudinfl/pke.git
 
 # !python -m nltk.downloader universal_tagset
-# !python -m spacy download en 
+# !python -m spacy download en
 ```
 
 ```{python tags=c("hide-cell")}
@@ -464,8 +460,10 @@ Generating questions manually from a document can be time-consuming. `Questgen.a
 
 ```{python}
 from pprint import pprint
+
 import nltk
-nltk.download('stopwords')
+
+nltk.download("stopwords")
 from Questgen import main
 ```
 
@@ -493,13 +491,13 @@ pprint(output)
 ### Word Ninja: Slice Your Lumped-Together Words
 
 ```{python tags=c("hide-cell")}
-# !pip install wordninja 
+# !pip install wordninja
 ```
 
 Want to split compound words? `Word Ninja` is surprisingly effective at doing just that. Here are a few examples:
 
 ```{python}
-import wordninja 
+import wordninja
 
 wordninja.split("honeyinthejar")
 ```
@@ -527,7 +525,7 @@ To analyze text statistics such as readability scores and reading time, use the 
 To calculate the Automated Readability Index (ARI), which indicates the grade level required to understand a text, use `automated_readability_index`. For example, an ARI of 10.8 means the text is suitable for 10th to 11th graders.
 
 ```{python}
-import textstat 
+import textstat
 ```
 
 ```{python}
@@ -547,35 +545,62 @@ textstat.reading_time(text, ms_per_char=14.69)
 [Link to textstat](https://github.com/shivam5992/textstat).
 
 
-### RapidFuzz: Rapid String Matching in Python
+### Accelerate String Matching with RapidFuzz
 
 ```{python tags=c("hide-cell")}
 # !pip install rapidfuzz
 ```
 
-To find similar strings efficiently, use the `RapidFuzz` library.
+String matching and comparison are essential tasks in data cleaning and processing. Traditional exact matching often fails to capture similar entries due to typos or inconsistent formatting:
 
 ```{python}
-from rapidfuzz import fuzz
+companies = ["Apple Inc.", "Microsoft Corp.", "Google LLC"]
+search_term = "apple incorporated"
+
+# Traditional exact matching
+matches = [company for company in companies if company.lower() == search_term.lower()]
+print(f"Exact matches: {matches}")  # Returns empty list
 ```
 
-You can calculate the similarity ratio between two strings using the `fuzz.ratio` function:
+RapidFuzz provides powerful fuzzy string matching capabilities. Let's see how to use them effectively:
 
 ```{python}
-fuzz.ratio("Let's meet at 10 am tomorrow", "Let's meet at 10 am tommorrow")
+from rapidfuzz import fuzz, process
+
+# Compare two strings
+similarity = fuzz.ratio("Apple Inc.", "APPLE INC")
+print(f"Similarity score: {similarity:.3f}")
 ```
 
 ```{python}
-fuzz.ratio("here you go", "you go here")
+# Sample company names with variations
+companies = [
+    "Apple Inc.",
+    "Apple Incorporated",
+    "APPLE INC",
+    "Microsoft Corporation",
+    "Microsoft Corp.",
+    "Google LLC",
+    "Alphabet Inc.",
+]
+
+
+# Find best matches for "apple incorporated"
+matches = process.extract("apple incorporated", companies, scorer=fuzz.WRatio, limit=2)
+
+print("Best matches:")
+for match in matches:
+    print(f"Match: {match[0]}, Score: {match[1]:.3f}")
 ```
 
-For token sorting and matching, use `token_sort_ratio`:
+What makes RapidFuzz powerful:
+- Handles case sensitivity automatically
+- Provides multiple matching algorithms
+- Returns confidence scores for matches
+- Written in C++ for superior performance
+- MIT licensed for maximum flexibility
 
-```{python}
-fuzz.token_sort_ratio("here you go", "you go here")
-```
-
-[Link to RapidFuzz](https://github.com/maxbachmann/RapidFuzz).
+[Link to RapidFuzz](https://github.com/rapidfuzz/RapidFuzz)
 
 
 ### Checklist: Create Data to Test Your NLP Model
@@ -618,8 +643,8 @@ In this example, we will use the Top2Vec library to detect topics in a dataset o
 Load the "Fake-News" dataset from OpenML:
 
 ```{python}
-from top2vec import Top2Vec
 from sklearn.datasets import fetch_openml
+from top2vec import Top2Vec
 ```
 
 ```{python}
@@ -659,7 +684,9 @@ print(f"Second Topic - Top 5 Words: {topic_words[1][:5]}")
 Search for topics most similar to the keyword "president":
 
 ```{python}
-topic_words, word_scores, topic_scores, topic_nums = model.search_topics(keywords=["president"], num_topics=2)
+topic_words, word_scores, topic_scores, topic_nums = model.search_topics(
+    keywords=["president"], num_topics=2
+)
 
 first_five_words = [topic[:5] for topic in topic_words]
 
@@ -697,7 +724,7 @@ contractions.fix(sent)
 ### inflect: Generate Plurals, Singulars, and Indefinite Articles
 
 ```{python tags=c("hide-cell")}
-# !pip install inflect 
+# !pip install inflect
 ```
 
 To generate plurals, singulars, or indefinite articles from given words, use inflect. 
@@ -709,11 +736,11 @@ p = inflect.engine()
 ```
 
 ```{python}
-p.plural_noun('he')
+p.plural_noun("he")
 ```
 
 ```{python}
-p.plural_verb('sees')
+p.plural_verb("sees")
 ```
 
 ```{python}
@@ -722,16 +749,15 @@ p.singular_noun("they")
 ```
 
 ```{python}
-if p.compare_verbs('sees', 'see'):
+if p.compare_verbs("sees", "see"):
     print("same word")
 ```
 
 ```{python}
 # Add the correct "a" or "an" for a given word
-fruit1 = 'apple'
-fruit2 = 'banana'
-print(f"I got you {p.a(fruit1)} "
-      f"and {p.a(fruit2)}")
+fruit1 = "apple"
+fruit2 = "banana"
+print(f"I got you {p.a(fruit1)} " f"and {p.a(fruit2)}")
 ```
 
 [Link to inflect](https://github.com/jaraco/inflect).
@@ -752,22 +778,17 @@ from ekphrasis.dicts.emoticons import emoticons
 
 text_processor = TextPreProcessor(
     # terms that will be normalized
-    normalize=['url', 'user'],
+    normalize=["url", "user"],
     # terms that will be annotated
-    annotate={"hashtag", "allcaps", "elongated", "repeated",
-        'emphasis', 'censored'},
-    
-    # corpus for word segmentation 
-    segmenter="twitter", 
-    
+    annotate={"hashtag", "allcaps", "elongated", "repeated", "emphasis", "censored"},
+    # corpus for word segmentation
+    segmenter="twitter",
     unpack_hashtags=True,  # perform word segmentation on hashtags
     unpack_contractions=True,  # Unpack contractions (can't -> can not)
     spell_correct_elong=False,  # spell correction for elongated words
-
     tokenizer=SocialTokenizer(lowercase=True).tokenize,
-    
     # Replace emojis with words
-    dicts=[emoticons]
+    dicts=[emoticons],
 )
 
 sent = "@coolyazzy94 I'm learning to retweeeet!! Least it sucks LESS than Facebook haha :P #learn-twitter https://t.co/7RdyMCVPKx"
@@ -808,13 +829,9 @@ collection.add(
     ids=["1", "2", "3", "4"],
 )
 
-query_result = collection.query(
-    query_texts=["A man is eating pasta." ],
-    n_results=2
-)
+query_result = collection.query(query_texts=["A man is eating pasta."], n_results=2)
 
 print(query_result)
-
 ```
 
 [Link to Chroma](https://github.com/chroma-core/chroma).
@@ -831,7 +848,6 @@ To clean, gain insights, and create embeddings from massive unstructured text da
 ```{python}
 from galactic import GalacticDataset
 
-
 filter_func = lambda x: len(x["content"]) < 1024
 dataset = GalacticDataset.from_hugging_face_stream(
     "tiiuae/falcon-refinedweb",
@@ -845,6 +861,7 @@ dataset = GalacticDataset.from_hugging_face_stream(
 ```{python}
 # Detect the language of the text
 from collections import Counter
+
 dataset.detect_language(field="content")
 Counter(dataset["__language"])
 ```
@@ -865,9 +882,7 @@ Counter({'en': 4975,
 
 ```{python}
 # Get personal information from the text
-dataset.detect_pii(
-    fields=["content"]
-)
+dataset.detect_pii(fields=["content"])
 print("Email:", sum(dataset["__pii__email"]))
 print("Phone:", sum(dataset["__pii__phone"]))
 print("Username/Password:", sum(dataset["__pii__credential"]))
@@ -875,10 +890,7 @@ print("Username/Password:", sum(dataset["__pii__credential"]))
 
 ```{python}
 # Filter out all examples that have "blogspot" in the URL.
-dataset = dataset.filter_string(
-    fields=["url"],
-    values=["blogspot"]
-)
+dataset = dataset.filter_string(fields=["url"], values=["blogspot"])
 ```
 
 ```{python}
@@ -938,7 +950,8 @@ For this example, we use the popular 20 Newsgroups dataset which contains roughl
 
 ```{python editable=TRUE, id="JJij3WP6SEQD", slideshow={'slide_type': ''}}
 from sklearn.datasets import fetch_20newsgroups
-docs = fetch_20newsgroups(subset='all',  remove=('headers', 'footers', 'quotes'))['data']
+
+docs = fetch_20newsgroups(subset="all", remove=("headers", "footers", "quotes"))["data"]
 ```
 
 <!-- #region id="SBcNmZJzSTY8" -->
@@ -1026,14 +1039,16 @@ from bertopic import BERTopic
 from sklearn.datasets import fetch_20newsgroups
 
 # Load example data
-docs = fetch_20newsgroups(subset='all', remove=('headers', 'footers', 'quotes'))['data']
+docs = fetch_20newsgroups(subset="all", remove=("headers", "footers", "quotes"))["data"]
 ```
 
 ```{python}
 # Define seed topics
-seed_topic_list = [["drug", "cancer", "drugs", "doctor"],
-                   ["windows", "drive", "dos", "file"],
-                   ["space", "launch", "orbit", "lunar"]]
+seed_topic_list = [
+    ["drug", "cancer", "drugs", "doctor"],
+    ["windows", "drive", "dos", "file"],
+    ["space", "launch", "orbit", "lunar"],
+]
 
 # Create and train the model with seed topics
 topic_model = BERTopic(seed_topic_list=seed_topic_list)
@@ -1072,20 +1087,20 @@ Understanding how attention mechanisms work in transformer models is challenging
 BertViz allows you to interactively visualize and explore attention patterns through multiple views.
 
 ```{python}
-from transformers import AutoTokenizer, AutoModel, utils
+from transformers import AutoModel, AutoTokenizer, utils
 
 utils.logging.set_verbosity_error()  # Suppress standard warnings
 
 # Find popular HuggingFace models here: https://huggingface.co/models
-model_name = "microsoft/xtremedistil-l12-h384-uncased"  
+model_name = "microsoft/xtremedistil-l12-h384-uncased"
 input_text = "The cat sat on the mat"
 
 # Configure model to return attention values
-model = AutoModel.from_pretrained(model_name, output_attentions=True)  
+model = AutoModel.from_pretrained(model_name, output_attentions=True)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Tokenize input text
-inputs = tokenizer.encode(input_text, return_tensors='pt')
+inputs = tokenizer.encode(input_text, return_tensors="pt")
 
 # Run model
 outputs = model(inputs)
@@ -1098,7 +1113,7 @@ tokens = tokenizer.convert_ids_to_tokens(inputs[0])
 ```
 
 ```{python}
-from bertviz import model_view, head_view
+from bertviz import head_view, model_view
 
 # Display model view
 model_view(attention, tokens)
@@ -1134,23 +1149,25 @@ recipes = [
 ]
 
 # Step 2: Load a pre-trained model for creating embeddings
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Step 3: Create embeddings for our recipe descriptions
 recipe_embeddings = model.encode(recipes)
 
-# Step 4: Function to find similar recipes 
+
+# Step 4: Function to find similar recipes
 def find_similar_recipes(query, top_k=2):
     # Create embedding for the query
     query_embedding = model.encode([query])
-    
+
     # Calculate similarity
     similarities = cosine_similarity(query_embedding, recipe_embeddings)[0]
-    
-    # Get top k similar recipes 
+
+    # Get top k similar recipes
     top_indices = similarities.argsort()[-top_k:][::-1]
-    
+
     return [(recipes[i], similarities[i]) for i in top_indices]
+
 
 # Step 5: Test our semantic search
 query = "healthy dessert without sugar"
@@ -1182,9 +1199,9 @@ Here's a quick example:
 
 ```{python jupyter={'source_hidden': True}, tags=c("remove-output")}
 import spacy
-from spacy.matcher import PhraseMatcher
 from skillNer.general_params import SKILL_DB
 from skillNer.skill_extractor_class import SkillExtractor
+from spacy.matcher import PhraseMatcher
 
 # Load the spaCy model
 nlp = spacy.load("en_core_web_lg")
@@ -1223,8 +1240,8 @@ The nlpaug library offers diverse NLP data augmentation techniques, helping rese
 
 ```{python}
 import nlpaug.augmenter.char as nac
-import nlpaug.augmenter.word as naw
 import nlpaug.augmenter.sentence as nas
+import nlpaug.augmenter.word as naw
 ```
 
 Substitute character by keyboard distance:
@@ -1262,14 +1279,12 @@ print("Original:")
 print(text)
 print("Augmented Texts:")
 print(augmented_texts)
-
 ```
 
 Insert word by contextual word embeddings (BERT, DistilBERT, RoBERTA or XLNet):
 
 ```{python}
-aug = naw.ContextualWordEmbsAug(
-    model_path='bert-base-uncased', action="substitute")
+aug = naw.ContextualWordEmbsAug(model_path="bert-base-uncased", action="substitute")
 augmented_text = aug.augment(text)
 print("Original:")
 print(text)
@@ -1280,7 +1295,7 @@ print(augmented_text)
 Substitute word by WordNet's synonym:
 
 ```{python}
-aug = naw.SynonymAug(aug_src='wordnet')
+aug = naw.SynonymAug(aug_src="wordnet")
 augmented_text = aug.augment(text)
 print("Original:")
 print(text)

@@ -30,8 +30,7 @@ Here are the three powerful methods to create DataFrames in PySpark, each with i
 1. Using StructType and StructField:
 
 ```{python}
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-
+from pyspark.sql.types import IntegerType, StringType, StructField, StructType
 
 data = [("Alice", 25), ("Bob", 30), ("Charlie", 35)]
 schema = StructType(
@@ -133,7 +132,6 @@ To demonstrate this, let's start with creating a sample DataFrame:
 ```{python}
 from pyspark.sql.functions import col, upper
 
-
 data = [
     ("Alice", 28, "New York"),
     ("Bob", 35, "San Francisco"),
@@ -166,8 +164,8 @@ df_withColumn.show()
 ```{python tags=c("remove-cell")}
 # Create a parquet file for testing
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Set the number of rows
 num_rows = 1_000_000
@@ -263,9 +261,8 @@ psdf[["C", "D"]].abs()
 PySpark:
 
 ```{python}
-from pyspark.sql.functions import col
-from pyspark.sql.functions import abs
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import abs, col
 ```
 
 ```{python}
@@ -306,9 +303,10 @@ spark_data.select(abs(spark_data["C"]).alias("C"), abs(spark_data["D"]).alias("D
 ```
 
 ```{python}
-from pyspark.sql import SparkSession
-import pandas as pd
 from datetime import date, timedelta
+
+import pandas as pd
+from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.getOrCreate()
 ```
@@ -398,11 +396,11 @@ df.show()
 
 ```{python}
 from pyspark.sql.functions import (
-    col,
     array_append,
-    array_prepend,
     array_contains,
     array_distinct,
+    array_prepend,
+    col,
 )
 
 df.withColumn("orders", array_append(col("orders"), "🍇")).show()
@@ -435,51 +433,102 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
 ```
 
-SQL queries can often become complex and challenging to comprehend.
+Duplicated SQL logic across queries makes code hard to maintain and introduces risk of inconsistencies:
 
 ```{python}
-df = spark.createDataFrame(
-    [(1, "John Doe"), (2, "Jane Smith"), (3, "Bob Johnson")], ["id", "name"]
+customers_df = spark.createDataFrame(
+    [(1, "John", 25, 60000), (2, "Jane", 17, 0), (3, "Bob", 68, 45000)],
+    ["customer_id", "name", "age", "income"],
 )
 
 # Register the DataFrame as a temporary table or view
-df.createOrReplaceTempView("df")
+customers_df.createOrReplaceTempView("customers")
+```
 
+```{python}
 # Complex SQL query
 spark.sql(
     """
-    SELECT id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) AS modified_name
-    FROM df
+SELECT 
+  customer_id,
+  CASE 
+    WHEN age < 18 THEN 'minor'
+    WHEN age BETWEEN 18 AND 65 AND income > 50000 THEN 'prime'
+    WHEN age > 65 THEN 'senior'
+    ELSE 'standard'
+  END as customer_segment
+FROM customers
 """
 ).show()
 ```
 
-Using PySpark UDFs simplifies complex SQL queries by encapsulating complex operations into a single function call, resulting in cleaner queries. UDFs also allow for the reuse of complex logic across different queries. 
+```{python}
+spark.sql("""
+    SELECT CASE 
+            WHEN age < 18 THEN 'minor'
+            WHEN age > 65 THEN 'senior'
+            WHEN income > 50000 THEN 'prime'
+            ELSE 'standard'
+        END as segment,
+    COUNT(*) as count
+    FROM customers
+    GROUP BY CASE 
+        WHEN age < 18 THEN 'minor'
+        WHEN age > 65 THEN 'senior'
+        WHEN income > 50000 THEN 'prime'
+        ELSE 'standard'
+    END
+""").show()
+```
 
-In the code example below, we define a UDF called `modify_name` that converts the name to uppercase.
+PySpark UDFs allow you to centralize this logic in reusable Python functions. Here's how to implement it:
+
+Define the UDF to encapsulate customer segmentation logic:
 
 ```{python}
-from pyspark.sql.functions import udf
 from pyspark.sql.types import StringType
 
+def segment_customers(age, income):
+    if age is None or income is None:
+        return None
+    if age < 18:
+        return "minor"
+    elif age > 65:
+        return "senior"
+    elif income > 50000:
+        return "prime"
+    return "standard"
 
-# Define a UDF to modify the name
-@udf(returnType=StringType())
-def modify_name(name):
-    return name[0].upper() + name[1:].lower()
+spark.udf.register("segment_customers", segment_customers, StringType())
+```
 
+Use the UDF in your queries:
 
-spark.udf.register("modify_name", modify_name)
+```{python}
+# Query 1: Simple segmentation
+query1 = spark.sql("""
+    SELECT 
+        customer_id,
+        segment_customers(age, income) AS segment
+    FROM customers
+""")
 
-# Apply the UDF in the spark.sql query
-df.createOrReplaceTempView("df")
+# Query 2: Segment counts
+query2 = spark.sql("""
+    SELECT 
+        segment_customers(age, income) AS segment,
+        COUNT(*) as count
+    FROM customers
+    GROUP BY segment_customers(age, income)
+""")
+```
 
-spark.sql(
-    """
-    SELECT id, modify_name(name) AS modified_name
-    FROM df
-"""
-).show()
+```{python}
+query1.show()
+```
+
+```{python}
+query2.show()
 ```
 
 [Learn more about PySPark UDFs](https://bit.ly/3TEYPHh).
@@ -493,7 +542,7 @@ spark.sql(
 
 ```{python tags=c("hide-cell")}
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf, col
+from pyspark.sql.functions import col, udf
 from pyspark.sql.types import StringType
 
 # Create SparkSession
@@ -603,8 +652,8 @@ In PySpark, User-Defined Functions (UDFs) and User-Defined Table Functions (UDTF
 UDFs take input columns and return a single value. However, they are cumbersome when returning multiple rows and columns, resulting in complex and inefficient code.
 
 ```{python}
-from pyspark.sql.functions import udf, explode
-from pyspark.sql.types import ArrayType, StructType, StructField, IntegerType
+from pyspark.sql.functions import explode, udf
+from pyspark.sql.types import ArrayType, IntegerType, StructField, StructType
 
 # Define the schema of the output
 schema = ArrayType(
@@ -632,7 +681,7 @@ result_df.select("result.num", "result.squared").show()
 With UDTFs, you can create functions that return entire tables from a single input, making it easier to work with multiple rows and columns.
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
-from pyspark.sql.functions import udtf, lit
+from pyspark.sql.functions import lit, udtf
 from pyspark.sql.types import StringType
 
 
@@ -725,7 +774,6 @@ except AssertionError as e:
 
 ```{python tags=c("hide-cell")}
 # !pip install ipytest "pyspark[sql]"
-
 ```
 
 ```{python tags=c("remove-cell")}
@@ -750,7 +798,6 @@ def query():
 
 
 def test_query_return_correct_number_of_rows(query):
-
     spark = SparkSession.builder.getOrCreate()
 
     # Create a sample DataFrame
@@ -863,8 +910,8 @@ df.withColumn("val2", plus_one(df.val1)).show()
 ```
 
 ```{python}
-from pyspark.sql.functions import pandas_udf
 import pandas as pd
+from pyspark.sql.functions import pandas_udf
 
 
 # Pandas UDF
@@ -928,7 +975,6 @@ Thus, the choice between DataFrame API and spark.sql() depends on the following:
 
 ```{python tags=c("hide-cell")}
 # !pip install -U 'pyspark[sql]'
-
 ```
 
 ```{python tags=c("hide-cell")}
@@ -1003,7 +1049,6 @@ df = spark.createDataFrame(data, ["total_purchases", "loyalty_years", "returns"]
 ```{python}
 from pyspark.sql import functions as F
 
-
 df.withColumn(
     "discount_eligible",
     F.when(
@@ -1056,11 +1101,11 @@ In the following example, we need to have three separate DataFrames and join the
 ```{python}
 from pyspark.sql import SparkSession
 from pyspark.sql.types import (
-    StructType,
-    StructField, 
-    StringType,
+    FloatType,
     IntegerType,
-    FloatType
+    StringType,
+    StructField,
+    StructType,
 )
 
 spark = SparkSession.builder.getOrCreate()
@@ -1069,32 +1114,36 @@ spark = SparkSession.builder.getOrCreate()
 ```{python}
 # Traditional way with separate DataFrames
 # Define schemas
-customer_schema = StructType([
-    StructField("customer_id", IntegerType()),
-    StructField("first_name", StringType()),
-    StructField("last_name", StringType())
-])
+customer_schema = StructType(
+    [
+        StructField("customer_id", IntegerType()),
+        StructField("first_name", StringType()),
+        StructField("last_name", StringType()),
+    ]
+)
 
-order_schema = StructType([
-    StructField("order_id", IntegerType()),
-    StructField("customer_id", IntegerType()),
-    StructField("order_date", StringType()),
-    StructField("total", FloatType())
-])
+order_schema = StructType(
+    [
+        StructField("order_id", IntegerType()),
+        StructField("customer_id", IntegerType()),
+        StructField("order_date", StringType()),
+        StructField("total", FloatType()),
+    ]
+)
 
 # Create DataFrames with schemas
 customer_df = spark.createDataFrame(
-    [(1, "John", "Doe"), 
-     (2, "Emma", "Wilson"), 
-     (3, "Michael", "Brown")],
-    ["customer_id", "first_name", "last_name"]
+    [(1, "John", "Doe"), (2, "Emma", "Wilson"), (3, "Michael", "Brown")],
+    ["customer_id", "first_name", "last_name"],
 )
 
 order_df = spark.createDataFrame(
-    [(1, 1, "2023-01-01", 100.0),
-     (2, 2, "2023-01-02", 150.0),
-     (3, 3, "2023-01-03", 200.0)],
-    ["order_id", "customer_id", "order_date", "total"]
+    [
+        (1, 1, "2023-01-01", 100.0),
+        (2, 2, "2023-01-02", 150.0),
+        (3, 3, "2023-01-03", 200.0),
+    ],
+    ["order_id", "customer_id", "order_date", "total"],
 )
 
 # Join customer and order data
@@ -1160,7 +1209,6 @@ df.select("customer.first_name", "customer.last_name", "order_info.total").show(
 ```{python}
 # Filter orders above $150
 df.where("order_info.total >= 150").show()
-
 ```
 
 ### Tempo: Simplified Time Series Analysis in PySpark
@@ -1170,8 +1218,8 @@ df.where("order_info.total >= 150").show()
 ```
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
-from pyspark.sql import SparkSession, Window
 import pyspark.sql.functions as F
+from pyspark.sql import SparkSession, Window
 from pyspark.sql.types import *
 
 spark = SparkSession.builder.getOrCreate()
@@ -1182,8 +1230,8 @@ Tempo is a high-level API built on top of Apache Spark that simplifies the proce
 Here are some examples that compare PySpark and Tempo:
 
 ```{python}
-from pyspark.sql import functions as F
 from pyspark.sql import Window
+from pyspark.sql import functions as F
 
 # Create sample market data
 market_data = [
@@ -1296,10 +1344,10 @@ pyspark_grouped = market_df.groupBy("symbol", F.window("event_ts", "5 seconds"))
 pyspark_grouped.show()
 
 # Tempo Version
-tempo_grouped = market_tsdf.withGroupedStats(
-    metricCols=["price"], freq="5 seconds"
-)
-tempo_grouped.select('symbol', 'event_ts', 'mean_price', 'min_price', 'max_price').show()
+tempo_grouped = market_tsdf.withGroupedStats(metricCols=["price"], freq="5 seconds")
+tempo_grouped.select(
+    "symbol", "event_ts", "mean_price", "min_price", "max_price"
+).show()
 ```
 
 [Link to Tempo](https://github.com/databrickslabs/tempo).

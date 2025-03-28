@@ -27,21 +27,26 @@ If you want data manipulation library that's both fast and memory-efficient, try
 The code below compares the performance of Polars and pandas. 
 
 ```{python}
-import pandas as pd
-import polars as pl
-import numpy as np
 import time
 
-# Create two Pandas DataFrames with 1 million rows each
-pandas_df1 = pd.DataFrame({
-    'key': np.random.randint(0, 1000, size=1_000_000),
-    'value1': np.random.rand(1_000_000)
-})
+import numpy as np
+import pandas as pd
+import polars as pl
 
-pandas_df2 = pd.DataFrame({
-    'key': np.random.randint(0, 1000, size=1_000_000),
-    'value2': np.random.rand(1000000)
-})
+# Create two Pandas DataFrames with 1 million rows each
+pandas_df1 = pd.DataFrame(
+    {
+        "key": np.random.randint(0, 1000, size=1_000_000),
+        "value1": np.random.rand(1_000_000),
+    }
+)
+
+pandas_df2 = pd.DataFrame(
+    {
+        "key": np.random.randint(0, 1000, size=1_000_000),
+        "value2": np.random.rand(1000000),
+    }
+)
 
 # Create two Polars DataFrames from the Pandas DataFrames
 polars_df1 = pl.from_pandas(pandas_df1)
@@ -49,16 +54,15 @@ polars_df2 = pl.from_pandas(pandas_df2)
 
 # Merge the two DataFrames on the 'key' column
 start_time = time.time()
-pandas_merged = pd.merge(pandas_df1, pandas_df2, on='key')
+pandas_merged = pd.merge(pandas_df1, pandas_df2, on="key")
 pandas_time = time.time() - start_time
 
 start_time = time.time()
-polars_merged = polars_df1.join(polars_df2, on='key')
+polars_merged = polars_df1.join(polars_df2, on="key")
 polars_time = time.time() - start_time
 
 print(f"Pandas time: {pandas_time:.6f} seconds")
 print(f"Polars time: {polars_time:.6f} seconds")
-
 ```
 
 ```{python}
@@ -110,10 +114,8 @@ Create a pandas DataFrame and filter the DataFrame.
 ```{python}
 import pandas as pd
 
-
 df = pd.DataFrame(data)
 df.head()
-
 ```
 
 ```{python}
@@ -126,7 +128,6 @@ Create a polars DataFrame and filter the DataFrame.
 import polars as pl
 
 pl_df = pl.DataFrame(data)
-
 ```
 
 ```{python}
@@ -154,7 +155,7 @@ In the code below, it is 25.5 times faster to use Polars instead of Pandas to re
 
 ```{python}
 import pandas as pd
-import polars as pl 
+import polars as pl
 ```
 
 ```{python}
@@ -168,7 +169,6 @@ df[(df["type"] == "heliport") & (df["continent"] == "EU")]
 pl.scan_csv("airport-codes.csv").filter(
     (pl.col("type") == "heliport") & (pl.col("continent") == "EU")
 ).collect()
-
 ```
 
 ### Pandas vs Polars: Harnessing Parallelism for Faster Data Processing
@@ -180,14 +180,14 @@ pl.scan_csv("airport-codes.csv").filter(
 Pandas is a single-threaded library, utilizing only a single CPU core. To achieve parallelism with Pandas, you would need to use additional libraries like Dask.
 
 ```{python}
-import pandas as pd
 import multiprocessing as mp
-import dask.dataframe as dd
 
+import dask.dataframe as dd
+import pandas as pd
 
 df = pd.DataFrame({"A": range(1_000_000), "B": range(1_000_000)})
 
-# Perform the groupby and sum operation in parallel 
+# Perform the groupby and sum operation in parallel
 ddf = dd.from_pandas(df, npartitions=mp.cpu_count())
 result = ddf.groupby("A").sum().compute()
 ```
@@ -199,7 +199,7 @@ import polars as pl
 
 df = pl.DataFrame({"A": range(1_000_000), "B": range(1_000_000)})
 
-# Perform the groupby and sum operation in parallel 
+# Perform the groupby and sum operation in parallel
 result = df.group_by("A").sum()
 ```
 
@@ -220,9 +220,7 @@ Compared to pandas, Polars provides a more expressive syntax for creating comple
 ```{python}
 import pandas as pd
 
-df = pd.DataFrame(
-    {"A": [1, 2, 6], "B": ["a", "b", "c"], "C": [True, False, True]}
-)
+df = pd.DataFrame({"A": [1, 2, 6], "B": ["a", "b", "c"], "C": [True, False, True]})
 integer_columns = df.select_dtypes("int64")
 other_columns = df[["B"]]
 pd.concat([integer_columns, other_columns], axis=1)
@@ -231,9 +229,7 @@ pd.concat([integer_columns, other_columns], axis=1)
 ```{python}
 import polars as pl
 
-pl_df = pl.DataFrame(
-    {"A": [1, 2, 6], "B": ["a", "b", "c"], "C": [True, False, True]}
-)
+pl_df = pl.DataFrame({"A": [1, 2, 6], "B": ["a", "b", "c"], "C": [True, False, True]})
 pl_df.select([pl.col(pl.Int64), "B"])
 ```
 
@@ -255,14 +251,14 @@ First, you create a sample dataset:
 <!-- #endregion -->
 
 ```{python}
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Create a sample dataset
 num_rows = 10_000_000
 data = {
-    "Cat1": np.random.choice(['A', 'B', 'C'], size=num_rows),
-    'Num1': np.random.randint(low=1, high=100, size=num_rows)
+    "Cat1": np.random.choice(["A", "B", "C"], size=num_rows),
+    "Num1": np.random.randint(low=1, high=100, size=num_rows),
 }
 
 df = pd.DataFrame(data)
@@ -282,7 +278,7 @@ write_deltalake(save_path, df)
 Then, you can use Polars to read the data from Delta Lake and perform the grouping operation:
 
 ```{python}
-import polars as pl 
+import polars as pl
 
 pl_df = pl.read_delta(save_path)
 
@@ -315,57 +311,91 @@ print(previous_pl_df.tail())
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-
-### Parallel Execution of Multiple Files with Polars
+### Optimize Multiple DataFrame Computations with Polars collect_all
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
 ```
 
-```{python tags=c("remove-cell")}
-import polars as pl
-from pathlib import Path
+Data engineers frequently need to process multiple related datasets together. When using pandas, each DataFrame is typically processed sequentially, which can be inefficient and time-consuming.
 
-Path("test_data").mkdir(parents=True, exist_ok=True)
-
-df1 = pl.DataFrame(
-    {"Cat": ["A", "A", "B", "B", "C", "C"], "Num": [1, 1, 2, 2, 3, 3]}
-)
-
-df2 = pl.DataFrame(
-    {"Cat": ["C", "B", "A", "A", "C"], "Num": [1, 1, 2, 2, 3]}
-)
-
-df3 = pl.DataFrame(
-    {"Cat": ["A", "C", "B", "B"], "Num": [1, 1, 3, 2]}
-)
-
-# Save the dataframes as CSV files
-df1.write_csv("test_data/df1.csv")
-df2.write_csv("test_data/df2.csv")
-df3.write_csv("test_data/df3.csv")
-```
-
-If you have multiple files to process, Polars enables you to construct a query plan for each file beforehand. This allows for the efficient execution of multiple files concurrently, maximizing processing speed.
+Here's a common inefficient approach with pandas:
 
 ```{python}
-import glob
+import numpy as np
+import pandas as pd
 
-import polars as pl
 
-# Construct a query plan for each file
-queries = []
-for file in glob.glob("test_data/*.csv"):
-    q = pl.scan_csv(file).group_by("Cat").agg(pl.sum("Num"))
-    queries.append(q)
+def add_metric_scaled(df, metric_column):
+    return df.assign(
+        metric_scaled=lambda x: (x[metric_column] - x[metric_column].mean())
+        / x[metric_column].std()
+    )
 
-# Execute files in parallel
-dataframes = pl.collect_all(queries)
-dataframes
+
+# Create the first DataFrame with purchases data
+df1 = pd.DataFrame(
+    {"user_id": range(1000), "purchases": np.random.randint(1, 100, 1000)}
+)
+df1 = add_metric_scaled(df1, "purchases")
+
+# Create the second DataFrame with clicks data
+df2 = pd.DataFrame({"user_id": range(1000), "clicks": np.random.randint(1, 500, 1000)})
+df2 = add_metric_scaled(df2, "clicks")
+
+# Create the third DataFrame with page_views data
+df3 = pd.DataFrame(
+    {"user_id": range(1000), "page_views": np.random.randint(1, 1000, 1000)}
+)
+df3 = add_metric_scaled(df3, "page_views")
 ```
 
-[Link to polars](https://github.com/pola-rs/polars)
+Let's solve this using Polars' parallel processing capabilities:
 
+```{python}
+import numpy as np
+import polars as pl
+
+
+def add_metric_scaled(df, metric_column):
+    return df.with_columns(
+        [
+            (pl.col(metric_column) - pl.col(metric_column).mean())
+            / pl.col(metric_column).std().alias("metric_scaled")
+        ]
+    )
+
+
+# Create the first LazyFrame with purchases data
+lazy_frame1 = add_metric_scaled(
+    pl.DataFrame(
+        {"user_id": range(1000), "purchases": np.random.randint(1, 100, 1000)}
+    ).lazy(),
+    "purchases",
+)
+
+# Create the second LazyFrame with clicks data
+lazy_frame2 = add_metric_scaled(
+    pl.DataFrame(
+        {"user_id": range(1000), "clicks": np.random.randint(1, 500, 1000)}
+    ).lazy(),
+    "clicks",
+)
+
+# Create the third LazyFrame with page_views data
+lazy_frame3 = add_metric_scaled(
+    pl.DataFrame(
+        {"user_id": range(1000), "page_views": np.random.randint(1, 1000, 1000)}
+    ).lazy(),
+    "page_views",
+)
+
+# Process all frames in parallel
+results = pl.collect_all([lazy_frame1, lazy_frame2, lazy_frame3])
+print(results)
+```
+
+[Link to Polars](https://github.com/pola-rs/polars)
 
 ### Polars' Streaming Mode: A Solution for Large Data Sets
 
@@ -374,7 +404,7 @@ dataframes
 ```
 
 ```{python tags=c("remove-cell")}
-# !wget https://raw.githubusercontent.com/pola-rs/polars/main/docs/data/reddit.csv 
+# !wget https://raw.githubusercontent.com/pola-rs/polars/main/docs/data/reddit.csv
 ```
 
 The default collect method in Polars processes your data as a single batch, which means that all the data must fit into your available memory.
@@ -438,8 +468,8 @@ polars_df.filter(pl.col("Quantity") > 3)
 ```{python}
 pandas_df.groupby("Category").agg(
     {
-        "Quantity": "sum", 
-        "Price": "mean", 
+        "Quantity": "sum",
+        "Price": "mean",
     }
 )
 ```
@@ -491,11 +521,7 @@ import pandas as pd
 
 def analyze_sales_pandas(df):
     # Loads and processes everything in memory
-    return (
-        df.groupby("region")
-        .agg({"revenue": "sum"})
-        .loc[["North", "South"]]
-    )
+    return df.groupby("region").agg({"revenue": "sum"}).loc[["North", "South"]]
 
 
 pd_df = pd.DataFrame(data)

@@ -67,7 +67,7 @@ df = pd.read_sql("SELECT * FROM table_name", engine)
 ### FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
 
 ```{python tags=c("hide-cell")}
-# !pip install fugue 
+# !pip install fugue
 ```
 
 Do you like to use both Python and SQL to manipulate data? FugueSQL is an interface that allows users to use SQL to work with Pandas, Spark, and Dask DataFrames.
@@ -101,36 +101,32 @@ Interacting with SQL databases from Python code can often be challenging to writ
 import sqlite3
 
 # Connect to the database
-conn = sqlite3.connect('users.db')
+conn = sqlite3.connect("users.db")
 
 # Create a cursor object
 cursor = conn.cursor()
 
 # Define the SQL statement for creating the table
-create_table_sql = '''
+create_table_sql = """
     CREATE TABLE IF NOT EXISTS membership (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         age INTEGER,
         active INTEGER
     )
-'''
+"""
 
 # Execute the SQL statement to create the table
 cursor.execute(create_table_sql)
 
 # Define the SQL statement for inserting rows
-insert_rows_sql = '''
+insert_rows_sql = """
     INSERT INTO membership (username, age, active)
     VALUES (?, ?, ?)
-'''
+"""
 
 # Define the rows to be inserted
-rows = [
-    ('John', 25, 1),
-    ('Jane', 30, 0),
-    ('Mike', 35, 1)
-]
+rows = [("John", 25, 1), ("Jane", 30, 0), ("Mike", 35, 1)]
 
 # Execute the SQL statement for each row
 for row in rows:
@@ -154,12 +150,13 @@ from sqlmodel import Field, Session, SQLModel, create_engine
 
 class Membership(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    username: str 
-    age: int 
+    username: str
+    age: int
     active: int
-    
+
+
 # age is converted from str to int through type coercion
-user1 = Membership(username="John", age="25", active=1) 
+user1 = Membership(username="John", age="25", active=1)
 user2 = Membership(username="Jane", age="30", active=0)
 user3 = Membership(username="Mike", age="35", active=1)
 
@@ -286,11 +283,9 @@ SQL operations on data frames typically require setting up and maintaining separ
 import pandas as pd
 
 # Create sample data
-df = pd.DataFrame({
-    'customer_id': range(1000),
-    'revenue': range(1000),
-    'segment': ['A', 'B'] * 500
-})
+df = pd.DataFrame(
+    {"customer_id": range(1000), "revenue": range(1000), "segment": ["A", "B"] * 500}
+)
 ```
 
 ```{python}
@@ -298,14 +293,15 @@ import psycopg2
 from sqlalchemy import create_engine
 
 # Create a connection to PostgreSQL
-engine = create_engine('postgresql://postgres:postgres@localhost:5432/postgres')
+engine = create_engine("postgresql://postgres:postgres@localhost:5432/postgres")
 
 # Write the DataFrame to a PostgreSQL table
-df.to_sql('customers', engine, if_exists='replace', index=False)
+df.to_sql("customers", engine, if_exists="replace", index=False)
 
 # Execute SQL query against the PostgreSQL database
 with engine.connect() as conn:
-    result = pd.read_sql("""
+    result = pd.read_sql(
+        """
         SELECT 
             segment,
             AVG(revenue) as avg_revenue,
@@ -313,7 +309,9 @@ with engine.connect() as conn:
         FROM customers
         GROUP BY segment
         ORDER BY avg_revenue DESC
-    """, conn)
+    """,
+        conn,
+    )
 
 print("Segment Analysis:")
 print(result)
@@ -325,7 +323,8 @@ DuckDB simplifies this by providing direct SQL operations on DataFrames without 
 import duckdb
 
 # Direct SQL operations on DataFrame - no server needed
-result = duckdb.sql("""
+result = duckdb.sql(
+    """
     SELECT 
         segment,
         AVG(revenue) as avg_revenue,
@@ -333,7 +332,8 @@ result = duckdb.sql("""
     FROM df
     GROUP BY segment
     ORDER BY avg_revenue DESC
-""").df()
+"""
+).df()
 
 print("Segment Analysis:")
 print(result)
@@ -356,25 +356,26 @@ Using SQL with pandas empowers data scientists to leverage SQL's powerful queryi
 In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.
 
 ```{python}
-import pandas as pd
 import duckdb
+import pandas as pd
 
 df = pd.read_parquet("lineitemsf1.snappy.parquet")
 ```
 
 ```{python}
 # %%timeit
-df.groupby('l_returnflag').agg(
-  Sum=('l_extendedprice', 'sum'),
-  Min=('l_extendedprice', 'min'),
-  Max=('l_extendedprice', 'max'),
-  Avg=('l_extendedprice', 'mean')
+df.groupby("l_returnflag").agg(
+    Sum=("l_extendedprice", "sum"),
+    Min=("l_extendedprice", "min"),
+    Max=("l_extendedprice", "max"),
+    Avg=("l_extendedprice", "mean"),
 )
 ```
 
 ```{python}
 # %%timeit
-duckdb.query("""
+duckdb.query(
+    """
 SELECT
       l_returnflag,
       SUM(l_extendedprice),
@@ -384,7 +385,8 @@ SELECT
 FROM df
 GROUP BY
         l_returnflag
-""").to_df()
+"""
+).to_df()
 ```
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
@@ -392,7 +394,7 @@ GROUP BY
 ### Efficiently Handle Large Datasets with DuckDB and PyArrow
 
 ```{python}
-# !pip install deltalake duckdb 
+# !pip install deltalake duckdb
 ```
 
 ```{python}
@@ -406,8 +408,8 @@ In the code below, we convert a Delta Lake table with over 6 million rows to a p
 Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas. 
 
 ```{python}
-import pandas as pd
 import duckdb
+import pandas as pd
 from deltalake.writer import write_deltalake
 
 df = pd.read_parquet("lineitemsf1.snappy.parquet")
@@ -437,7 +439,7 @@ quack.filter("l_quantity > 50")
 ### Simplify CSV Data Management with DuckDB
 
 ```{python tags=c("hide-cell")}
-# !pip install duckdb 
+# !pip install duckdb
 ```
 
 Traditional database systems require a predefined table schema and a subsequent data import process when working with CSV data. 
@@ -487,6 +489,95 @@ duckdb.sql("SELECT * FROM 'customers.csv'")
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
+### Multiple CSV Files Processing with DuckDB
+
+```{python tags=c("hide-cell")}
+# !pip install duckdb
+```
+
+Processing multiple CSV files is a common task in data analysis and engineering workflows. Traditionally, handling multiple CSV files requires writing loops or list comprehensions, which can be verbose and error-prone.
+
+
+To demonstrate, let's assume we have 2 CSV files in the "folder" directory:
+
+```{python}
+from pathlib import Path
+
+import pandas as pd
+
+# Create example dataframe for first file
+df1 = pd.DataFrame(
+    {
+        "Date": ["2023-01-01", "2023-01-02", "2023-01-03"],
+        "Product": ["Laptop", "Phone", "Tablet"],
+        "Sales": [1200, 800, 600],
+    }
+)
+
+# Create example dataframe for second file
+df2 = pd.DataFrame(
+    {
+        "Date": ["2023-02-01", "2023-02-02", "2023-02-03"],
+        "Product": ["Laptop", "Monitor", "Mouse"],
+        "Sales": [1500, 400, 50],
+    }
+)
+
+Path("data").mkdir()
+df1.to_csv("data/sales_jan.csv", index=False)
+df2.to_csv("data/sales_feb.csv", index=False)
+```
+
+```{python}
+import glob
+import os
+
+import pandas as pd
+
+# Read all CSV files and concatenate them
+csv_files = glob.glob("data/*.csv")
+dfs = []
+
+for file in csv_files:
+    df = pd.read_csv(file)
+    dfs.append(df)
+
+# Concatenate all dataframes
+combined_df = pd.concat(dfs, ignore_index=True)
+
+# Perform grouping and aggregation
+result = (
+    combined_df.groupby("Date")["Sales"]
+    .sum()
+    .reset_index()
+    .rename(columns={"Sales": "total_sales"})
+    .sort_values("Date")
+)
+
+result
+```
+
+DuckDB simplifies reading multiple CSV files with a single line of code that efficiently processes the files:
+
+```{python}
+import duckdb
+
+# Read and analyze all CSV files at once
+result = duckdb.sql(
+    """
+    SELECT 
+        date,
+        SUM(sales) as total_sales
+    FROM 'data/*.csv'
+    GROUP BY date
+    ORDER BY date
+"""
+).df()
+result
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
 ### DuckDB: Query Pandas DataFrames Faster with Columnar Storage
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
@@ -499,17 +590,16 @@ Example using SQLite (row-based):
 
 ```{python}
 import sqlite3
+
 import pandas as pd
 
-customer = pd.DataFrame({
-    "id": [1, 2, 3],
-    "name": ["Alex", "Ben", "Chase"],
-    "age": [25, 30, 35]
-})
+customer = pd.DataFrame(
+    {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
+)
 
 # Load data to SQLite and query
-conn = sqlite3.connect(':memory:')
-customer.to_sql('customer', conn, index=False)
+conn = sqlite3.connect(":memory:")
+customer.to_sql("customer", conn, index=False)
 
 # Must read all columns internally even though we only need 'age'
 query = "SELECT age FROM customer"
@@ -522,11 +612,9 @@ DuckDB uses columnar storage, allowing you to efficiently read and process only 
 import duckdb
 import pandas as pd
 
-customer = pd.DataFrame({
-    "id": [1, 2, 3],
-    "name": ["Alex", "Ben", "Chase"],
-    "age": [25, 30, 35]
-})
+customer = pd.DataFrame(
+    {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
+)
 
 
 query = "SELECT age FROM customer"
