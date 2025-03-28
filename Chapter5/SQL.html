@@ -273,32 +273,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.27. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.28. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.29. Environment Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -538,10 +517,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.13.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.13.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.13.9. Simplify CSV Data Management with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.10. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.11. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.12. SQLGlot: Write Once, Run Anywhere SQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.13. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-csv-files-processing-with-duckdb">6.13.10. Multiple CSV Files Processing with DuckDB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.11. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.12. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.13. SQLGlot: Write Once, Run Anywhere SQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.14. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
             </nav>
         </div>
@@ -634,7 +614,7 @@ WHERE
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>fugue<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>fugue
 </pre></div>
 </div>
 </div>
@@ -695,36 +675,32 @@ Total count: 2
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
 
 <span class="c1"># Connect to the database</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;users.db&#39;</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;users.db&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create a cursor object</span>
 <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 
 <span class="c1"># Define the SQL statement for creating the table</span>
-<span class="n">create_table_sql</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    CREATE TABLE IF NOT EXISTS membership (</span>
-<span class="s1">        id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
-<span class="s1">        username TEXT,</span>
-<span class="s1">        age INTEGER,</span>
-<span class="s1">        active INTEGER</span>
-<span class="s1">    )</span>
-<span class="s1">&#39;&#39;&#39;</span>
+<span class="n">create_table_sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    CREATE TABLE IF NOT EXISTS membership (</span>
+<span class="s2">        id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s2">        username TEXT,</span>
+<span class="s2">        age INTEGER,</span>
+<span class="s2">        active INTEGER</span>
+<span class="s2">    )</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
 <span class="c1"># Execute the SQL statement to create the table</span>
 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_table_sql</span><span class="p">)</span>
 
 <span class="c1"># Define the SQL statement for inserting rows</span>
-<span class="n">insert_rows_sql</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    INSERT INTO membership (username, age, active)</span>
-<span class="s1">    VALUES (?, ?, ?)</span>
-<span class="s1">&#39;&#39;&#39;</span>
+<span class="n">insert_rows_sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    INSERT INTO membership (username, age, active)</span>
+<span class="s2">    VALUES (?, ?, ?)</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
 <span class="c1"># Define the rows to be inserted</span>
-<span class="n">rows</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;Jane&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">]</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
 
 <span class="c1"># Execute the SQL statement for each row</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
@@ -750,12 +726,13 @@ Total count: 2
 
 <span class="k">class</span> <span class="nc">Membership</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="nb">id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> 
-    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span> 
+    <span class="n">username</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">active</span><span class="p">:</span> <span class="nb">int</span>
-    
+
+
 <span class="c1"># age is converted from str to int through type coercion</span>
-<span class="n">user1</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;25&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="n">user1</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;25&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">user2</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">user3</span> <span class="o">=</span> <span class="n">Membership</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="s2">&quot;35&quot;</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
@@ -929,11 +906,9 @@ FROM my_table
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Create sample data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;customer_id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
-    <span class="s1">&#39;revenue&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span>
-    <span class="s1">&#39;segment&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">500</span>
-<span class="p">})</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">500</span><span class="p">}</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -944,22 +919,25 @@ FROM my_table
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 
 <span class="c1"># Create a connection to PostgreSQL</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;postgresql://postgres:postgres@localhost:5432/postgres&#39;</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;postgresql://postgres:postgres@localhost:5432/postgres&quot;</span><span class="p">)</span>
 
 <span class="c1"># Write the DataFrame to a PostgreSQL table</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Execute SQL query against the PostgreSQL database</span>
 <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        SELECT </span>
-<span class="s2">            segment,</span>
-<span class="s2">            AVG(revenue) as avg_revenue,</span>
-<span class="s2">            COUNT(*) as customer_count</span>
-<span class="s2">        FROM customers</span>
-<span class="s2">        GROUP BY segment</span>
-<span class="s2">        ORDER BY avg_revenue DESC</span>
-<span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT </span>
+<span class="sd">            segment,</span>
+<span class="sd">            AVG(revenue) as avg_revenue,</span>
+<span class="sd">            COUNT(*) as customer_count</span>
+<span class="sd">        FROM customers</span>
+<span class="sd">        GROUP BY segment</span>
+<span class="sd">        ORDER BY avg_revenue DESC</span>
+<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">conn</span><span class="p">,</span>
+    <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Segment Analysis:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -981,15 +959,17 @@ FROM my_table
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
 
 <span class="c1"># Direct SQL operations on DataFrame - no server needed</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">    SELECT </span>
-<span class="s2">        segment,</span>
-<span class="s2">        AVG(revenue) as avg_revenue,</span>
-<span class="s2">        COUNT(*) as customer_count</span>
-<span class="s2">    FROM df</span>
-<span class="s2">    GROUP BY segment</span>
-<span class="s2">    ORDER BY avg_revenue DESC</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT </span>
+<span class="sd">        segment,</span>
+<span class="sd">        AVG(revenue) as avg_revenue,</span>
+<span class="sd">        COUNT(*) as customer_count</span>
+<span class="sd">    FROM df</span>
+<span class="sd">    GROUP BY segment</span>
+<span class="sd">    ORDER BY avg_revenue DESC</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Segment Analysis:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -1027,8 +1007,8 @@ FROM my_table
 <p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">duckdb</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1038,11 +1018,11 @@ FROM my_table
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;l_returnflag&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-  <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
-  <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
-  <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">),</span>
-  <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;l_extendedprice&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;l_returnflag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
+    <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">),</span>
+    <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">),</span>
+    <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1056,17 +1036,19 @@ FROM my_table
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT</span>
-<span class="s2">      l_returnflag,</span>
-<span class="s2">      SUM(l_extendedprice),</span>
-<span class="s2">      MIN(l_extendedprice),</span>
-<span class="s2">      MAX(l_extendedprice),</span>
-<span class="s2">      AVG(l_extendedprice)</span>
-<span class="s2">FROM df</span>
-<span class="s2">GROUP BY</span>
-<span class="s2">        l_returnflag</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
+<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">SELECT</span>
+<span class="sd">      l_returnflag,</span>
+<span class="sd">      SUM(l_extendedprice),</span>
+<span class="sd">      MIN(l_extendedprice),</span>
+<span class="sd">      MAX(l_extendedprice),</span>
+<span class="sd">      AVG(l_extendedprice)</span>
+<span class="sd">FROM df</span>
+<span class="sd">GROUP BY</span>
+<span class="sd">        l_returnflag</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1082,7 +1064,7 @@ FROM my_table
 <h2><span class="section-number">6.13.8. </span>Efficiently Handle Large Datasets with DuckDB and PyArrow<a class="headerlink" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb
 </pre></div>
 </div>
 </div>
@@ -1099,8 +1081,8 @@ FROM my_table
 <p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">duckdb</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">deltalake.writer</span> <span class="kn">import</span> <span class="n">write_deltalake</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
@@ -1157,7 +1139,7 @@ FROM my_table
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
 </pre></div>
 </div>
 </div>
@@ -1225,8 +1207,225 @@ FROM my_table
 </div>
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
 </section>
+<section id="multiple-csv-files-processing-with-duckdb">
+<h2><span class="section-number">6.13.10. </span>Multiple CSV Files Processing with DuckDB<a class="headerlink" href="#multiple-csv-files-processing-with-duckdb" title="Permalink to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Processing multiple CSV files is a common task in data analysis and engineering workflows. Traditionally, handling multiple CSV files requires writing loops or list comprehensions, which can be verbose and error-prone.</p>
+<p>To demonstrate, let’s assume we have 2 CSV files in the “folder” directory:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Create example dataframe for first file</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Product&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;Phone&quot;</span><span class="p">,</span> <span class="s2">&quot;Tablet&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Create example dataframe for second file</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2023-02-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-02-02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-02-03&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Product&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor&quot;</span><span class="p">,</span> <span class="s2">&quot;Mouse&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+<span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data/sales_jan.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data/sales_feb.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Read all CSV files and concatenate them</span>
+<span class="n">csv_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;data/*.csv&quot;</span><span class="p">)</span>
+<span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">csv_files</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># Concatenate all dataframes</span>
+<span class="n">combined_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Perform grouping and aggregation</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">combined_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)[</span><span class="s2">&quot;Sales&quot;</span><span class="p">]</span>
+    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="s2">&quot;total_sales&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>total_sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-01-01</td>
+      <td>1200</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-01-02</td>
+      <td>800</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-01-03</td>
+      <td>600</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-02-01</td>
+      <td>1500</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-02-02</td>
+      <td>400</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-02-03</td>
+      <td>50</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>DuckDB simplifies reading multiple CSV files with a single line of code that efficiently processes the files:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
+
+<span class="c1"># Read and analyze all CSV files at once</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SELECT </span>
+<span class="sd">        date,</span>
+<span class="sd">        SUM(sales) as total_sales</span>
+<span class="sd">    FROM &#39;data/*.csv&#39;</span>
+<span class="sd">    GROUP BY date</span>
+<span class="sd">    ORDER BY date</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>total_sales</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-01-01</td>
+      <td>1200.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-01-02</td>
+      <td>800.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-01-03</td>
+      <td>600.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-02-01</td>
+      <td>1500.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-02-02</td>
+      <td>400.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-02-03</td>
+      <td>50.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
+</section>
 <section id="duckdb-query-pandas-dataframes-faster-with-columnar-storage">
-<h2><span class="section-number">6.13.10. </span>DuckDB: Query Pandas DataFrames Faster with Columnar Storage<a class="headerlink" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.11. </span>DuckDB: Query Pandas DataFrames Faster with Columnar Storage<a class="headerlink" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1245,17 +1444,16 @@ FROM my_table
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]</span>
-<span class="p">})</span>
+<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]}</span>
+<span class="p">)</span>
 
 <span class="c1"># Load data to SQLite and query</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;:memory:&#39;</span><span class="p">)</span>
-<span class="n">customer</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s1">&#39;customer&#39;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
+<span class="n">customer</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Must read all columns internally even though we only need &#39;age&#39;</span>
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT age FROM customer&quot;</span>
@@ -1270,11 +1468,9 @@ FROM my_table
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">duckdb</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]</span>
-<span class="p">})</span>
+<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]}</span>
+<span class="p">)</span>
 
 
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT age FROM customer&quot;</span>
@@ -1326,7 +1522,7 @@ FROM my_table
 <p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
 </section>
 <section id="sql-metadata-extract-components-from-a-sql-statement-in-python">
-<h2><span class="section-number">6.13.11. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.12. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1370,7 +1566,7 @@ Limit: (10, 0)
 <p><a class="reference external" href="https://github.com/macbre/sql-metadata">Link to sql-metadata</a>.</p>
 </section>
 <section id="sqlglot-write-once-run-anywhere-sql">
-<h2><span class="section-number">6.13.12. </span>SQLGlot: Write Once, Run Anywhere SQL<a class="headerlink" href="#sqlglot-write-once-run-anywhere-sql" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.13. </span>SQLGlot: Write Once, Run Anywhere SQL<a class="headerlink" href="#sqlglot-write-once-run-anywhere-sql" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1430,7 +1626,7 @@ FROM `products`
 <p><a class="reference external" href="https://bit.ly/4dGyTmP">Link to SQLGlot</a>.</p>
 </section>
 <section id="sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">
-<h2><span class="section-number">6.13.13. </span>SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations<a class="headerlink" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.13.14. </span>SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations<a class="headerlink" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1604,10 +1800,11 @@ P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.13.7. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.13.8. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.13.9. Simplify CSV Data Management with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.10. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.11. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.12. SQLGlot: Write Once, Run Anywhere SQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.13. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-csv-files-processing-with-duckdb">6.13.10. Multiple CSV Files Processing with DuckDB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.11. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.12. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.13. SQLGlot: Write Once, Run Anywhere SQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.14. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
   </nav></div>
 

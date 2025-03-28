@@ -273,32 +273,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.27. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.28. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.29. Environment Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -535,7 +514,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.14.4. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.14.5. Simple and Expressive Data Transformation with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.14.6. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.14.7. Parallel Execution of Multiple Files with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-multiple-dataframe-computations-with-polars-collect-all">6.14.7. Optimize Multiple DataFrame Computations with Polars collect_all</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>
@@ -571,21 +550,26 @@ document.write(`
 <p>The code below compares the performance of Polars and pandas.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
 <span class="c1"># Create two Pandas DataFrames with 1 million rows each</span>
-<span class="n">pandas_df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
-    <span class="s1">&#39;value1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)</span>
-<span class="p">})</span>
+<span class="n">pandas_df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
+        <span class="s2">&quot;value1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 
-<span class="n">pandas_df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
-    <span class="s1">&#39;value2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)</span>
-<span class="p">})</span>
+<span class="n">pandas_df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">),</span>
+        <span class="s2">&quot;value2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000000</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 
 <span class="c1"># Create two Polars DataFrames from the Pandas DataFrames</span>
 <span class="n">polars_df1</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">pandas_df1</span><span class="p">)</span>
@@ -593,11 +577,11 @@ document.write(`
 
 <span class="c1"># Merge the two DataFrames on the &#39;key&#39; column</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">pandas_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pandas_df1</span><span class="p">,</span> <span class="n">pandas_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="n">pandas_merged</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pandas_df1</span><span class="p">,</span> <span class="n">pandas_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">)</span>
 <span class="n">pandas_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">polars_merged</span> <span class="o">=</span> <span class="n">polars_df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">polars_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+<span class="n">polars_merged</span> <span class="o">=</span> <span class="n">polars_df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">polars_df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;key&quot;</span><span class="p">)</span>
 <span class="n">polars_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pandas time: </span><span class="si">{</span><span class="n">pandas_time</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
@@ -680,7 +664,6 @@ Polars time: 41.079080 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -822,7 +805,7 @@ Polars time: 41.079080 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span> 
+<span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 </pre></div>
 </div>
 </div>
@@ -875,14 +858,14 @@ Polars time: 41.079080 seconds
 <p>Pandas is a single-threaded library, utilizing only a single CPU core. To achieve parallelism with Pandas, you would need to use additional libraries like Dask.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
-<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 
+<span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="nn">dd</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">),</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)})</span>
 
-<span class="c1"># Perform the groupby and sum operation in parallel </span>
+<span class="c1"># Perform the groupby and sum operation in parallel</span>
 <span class="n">ddf</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">npartitions</span><span class="o">=</span><span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">())</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">ddf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 </pre></div>
@@ -896,7 +879,7 @@ Polars time: 41.079080 seconds
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">),</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">)})</span>
 
-<span class="c1"># Perform the groupby and sum operation in parallel </span>
+<span class="c1"># Perform the groupby and sum operation in parallel</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -925,9 +908,7 @@ Polars time: 41.079080 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]}</span>
-<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
 <span class="n">integer_columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s2">&quot;int64&quot;</span><span class="p">)</span>
 <span class="n">other_columns</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;B&quot;</span><span class="p">]]</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">integer_columns</span><span class="p">,</span> <span class="n">other_columns</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -981,9 +962,7 @@ Polars time: 41.079080 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
-<span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]}</span>
-<span class="p">)</span>
+<span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">],</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]})</span>
 <span class="n">pl_df</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">Int64</span><span class="p">),</span> <span class="s2">&quot;B&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -1020,14 +999,14 @@ Polars time: 41.079080 seconds
 <p>First, you create a sample dataset:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Create a sample dataset</span>
 <span class="n">num_rows</span> <span class="o">=</span> <span class="mi">10_000_000</span>
 <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
-    <span class="s1">&#39;Num1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">)</span>
+    <span class="s2">&quot;Cat1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
+    <span class="s2">&quot;Num1&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_rows</span><span class="p">),</span>
 <span class="p">}</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -1103,7 +1082,7 @@ Polars time: 41.079080 seconds
 <p>Then, you can use Polars to read the data from Delta Lake and perform the grouping operation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
 <span class="n">pl_df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_delta</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
 
@@ -1189,8 +1168,8 @@ Polars time: 41.079080 seconds
 <p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
 <p><a class="reference external" href="https://github.com/delta-io/delta-rs">Link to Delta Lake</a>.</p>
 </section>
-<section id="parallel-execution-of-multiple-files-with-polars">
-<h2><span class="section-number">6.14.7. </span>Parallel Execution of Multiple Files with Polars<a class="headerlink" href="#parallel-execution-of-multiple-files-with-polars" title="Permalink to this heading">#</a></h2>
+<section id="optimize-multiple-dataframe-computations-with-polars-collect-all">
+<h2><span class="section-number">6.14.7. </span>Optimize Multiple DataFrame Computations with Polars collect_all<a class="headerlink" href="#optimize-multiple-dataframe-computations-with-polars-collect-all" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1204,61 +1183,144 @@ Polars time: 41.079080 seconds
 </div>
 </details>
 </div>
-<p>If you have multiple files to process, Polars enables you to construct a query plan for each file beforehand. This allows for the efficient execution of multiple files concurrently, maximizing processing speed.</p>
+<p>Data engineers frequently need to process multiple related datasets together. When using pandas, each DataFrame is typically processed sequentially, which can be inefficient and time-consuming.</p>
+<p>Here’s a common inefficient approach with pandas:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+
+<span class="k">def</span> <span class="nf">add_metric_scaled</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metric_column</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">metric_scaled</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">metric_column</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">metric_column</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+        <span class="o">/</span> <span class="n">x</span><span class="p">[</span><span class="n">metric_column</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Create the first DataFrame with purchases data</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;purchases&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+<span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="s2">&quot;purchases&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create the second DataFrame with clicks data</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;clicks&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="s2">&quot;clicks&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create the third DataFrame with page_views data</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;page_views&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+<span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span><span class="n">df3</span><span class="p">,</span> <span class="s2">&quot;page_views&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s solve this using Polars’ parallel processing capabilities:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">polars</span> <span class="k">as</span> <span class="nn">pl</span>
 
-<span class="c1"># Construct a query plan for each file</span>
-<span class="n">queries</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;test_data/*.csv&quot;</span><span class="p">):</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">scan_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;Cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;Num&quot;</span><span class="p">))</span>
-    <span class="n">queries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 
-<span class="c1"># Execute files in parallel</span>
-<span class="n">dataframes</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">collect_all</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
-<span class="n">dataframes</span>
+<span class="k">def</span> <span class="nf">add_metric_scaled</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metric_column</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">with_columns</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">metric_column</span><span class="p">)</span> <span class="o">-</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">metric_column</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+            <span class="o">/</span> <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="n">metric_column</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;metric_scaled&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+
+<span class="c1"># Create the first LazyFrame with purchases data</span>
+<span class="n">lazy_frame1</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;purchases&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">lazy</span><span class="p">(),</span>
+    <span class="s2">&quot;purchases&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the second LazyFrame with clicks data</span>
+<span class="n">lazy_frame2</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;clicks&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">lazy</span><span class="p">(),</span>
+    <span class="s2">&quot;clicks&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Create the third LazyFrame with page_views data</span>
+<span class="n">lazy_frame3</span> <span class="o">=</span> <span class="n">add_metric_scaled</span><span class="p">(</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;page_views&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">lazy</span><span class="p">(),</span>
+    <span class="s2">&quot;page_views&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Process all frames in parallel</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">collect_all</span><span class="p">([</span><span class="n">lazy_frame1</span><span class="p">,</span> <span class="n">lazy_frame2</span><span class="p">,</span> <span class="n">lazy_frame3</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[shape: (3, 2)
- ┌─────┬─────┐
- │ Cat ┆ Num │
- │ --- ┆ --- │
- │ str ┆ i64 │
- ╞═════╪═════╡
- │ A   ┆ 2   │
- │ C   ┆ 6   │
- │ B   ┆ 4   │
- └─────┴─────┘,
- shape: (3, 2)
- ┌─────┬─────┐
- │ Cat ┆ Num │
- │ --- ┆ --- │
- │ str ┆ i64 │
- ╞═════╪═════╡
- │ B   ┆ 5   │
- │ A   ┆ 1   │
- │ C   ┆ 1   │
- └─────┴─────┘,
- shape: (3, 2)
- ┌─────┬─────┐
- │ Cat ┆ Num │
- │ --- ┆ --- │
- │ str ┆ i64 │
- ╞═════╪═════╡
- │ C   ┆ 4   │
- │ A   ┆ 4   │
- │ B   ┆ 1   │
- └─────┴─────┘]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[shape: (1_000, 2)
+┌─────────┬───────────┐
+│ user_id ┆ purchases │
+│ ---     ┆ ---       │
+│ i64     ┆ f64       │
+╞═════════╪═══════════╡
+│ 0       ┆ -1.553524 │
+│ 1       ┆ -0.528352 │
+│ 2       ┆ -1.200017 │
+│ 3       ┆ -1.093965 │
+│ 4       ┆ -1.412121 │
+│ …       ┆ …         │
+│ 995     ┆ 1.027081  │
+│ 996     ┆ -1.553524 │
+│ 997     ┆ -0.669755 │
+│ 998     ┆ -0.705106 │
+│ 999     ┆ 0.03726   │
+└─────────┴───────────┘, shape: (1_000, 2)
+┌─────────┬───────────┐
+│ user_id ┆ clicks    │
+│ ---     ┆ ---       │
+│ i64     ┆ f64       │
+╞═════════╪═══════════╡
+│ 0       ┆ -1.32932  │
+│ 1       ┆ 1.250184  │
+│ 2       ┆ -0.560815 │
+│ 3       ┆ 0.047306  │
+│ 4       ┆ 1.31701   │
+│ …       ┆ …         │
+│ 995     ┆ 1.611047  │
+│ 996     ┆ 1.169992  │
+│ 997     ┆ 0.354708  │
+│ 998     ┆ -0.914995 │
+│ 999     ┆ 1.136579  │
+└─────────┴───────────┘, shape: (1_000, 2)
+┌─────────┬────────────┐
+│ user_id ┆ page_views │
+│ ---     ┆ ---        │
+│ i64     ┆ f64        │
+╞═════════╪════════════╡
+│ 0       ┆ 0.042274   │
+│ 1       ┆ 1.50377    │
+│ 2       ┆ -0.368771  │
+│ 3       ┆ -1.72487   │
+│ 4       ┆ -1.742436  │
+│ …       ┆ …          │
+│ 995     ┆ -0.814949  │
+│ 996     ┆ 1.531876   │
+│ 997     ┆ -1.728383  │
+│ 998     ┆ -0.249322  │
+│ 999     ┆ 0.741403   │
+└─────────┴────────────┘]
 </pre></div>
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to polars</a></p>
+<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to Polars</a></p>
 </section>
 <section id="polars-streaming-mode-a-solution-for-large-data-sets">
 <h2><span class="section-number">6.14.8. </span>Polars’ Streaming Mode: A Solution for Large Data Sets<a class="headerlink" href="#polars-streaming-mode-a-solution-for-large-data-sets" title="Permalink to this heading">#</a></h2>
@@ -1464,8 +1526,8 @@ Polars time: 41.079080 seconds
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pandas_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> 
-        <span class="s2">&quot;Price&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> 
+        <span class="s2">&quot;Quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Price&quot;</span><span class="p">:</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">)</span>
 </pre></div>
@@ -1575,11 +1637,7 @@ Polars time: 41.079080 seconds
 
 <span class="k">def</span> <span class="nf">analyze_sales_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="c1"># Loads and processes everything in memory</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
-        <span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;North&quot;</span><span class="p">,</span> <span class="s2">&quot;South&quot;</span><span class="p">]]</span>
-    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="s2">&quot;North&quot;</span><span class="p">,</span> <span class="s2">&quot;South&quot;</span><span class="p">]]</span>
 
 
 <span class="n">pd_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -1701,7 +1759,7 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-harnessing-parallelism-for-faster-data-processing">6.14.4. Pandas vs Polars: Harnessing Parallelism for Faster Data Processing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-and-expressive-data-transformation-with-polars">6.14.5. Simple and Expressive Data Transformation with Polars</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#harness-polars-and-delta-lake-for-blazing-fast-performance">6.14.6. Harness Polars and Delta Lake for Blazing Fast Performance</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-execution-of-multiple-files-with-polars">6.14.7. Parallel Execution of Multiple Files with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimize-multiple-dataframe-computations-with-polars-collect-all">6.14.7. Optimize Multiple DataFrame Computations with Polars collect_all</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>

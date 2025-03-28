@@ -273,32 +273,11 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/best_python_practice_tools.html">7.1. Tools for Best Python Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/alternative_approach.html">7.2. Alternative Approach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../Chapter6/workflow_automation.html">7.3. Workflow Automation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. isort: Automatically Sort your Python Imports in 1 Line of Code</a></li>
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.14. rich.inspect: Produce a Beautiful Report on any Python Object</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.27. Better Outputs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.28. Git and GitHub</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.29. Environment Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/code_review.html">7.4. Code Review</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/logging_debugging.html">7.5. Logging and Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/better_outputs.html">7.6. Better Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/git_github.html">7.7. Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Chapter6/env_management.html">7.8. Environment Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../Chapter7/Chapter7.html">8. Jupyter Notebook</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -578,8 +557,7 @@ document.write(`
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StructType</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">)]</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
@@ -782,7 +760,6 @@ Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/py
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">upper</span>
-
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">),</span>
@@ -1188,9 +1165,8 @@ only showing top 5 rows
 <p>PySpark:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">abs</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">col</span>
 </pre></div>
 </div>
 </div>
@@ -1309,9 +1285,10 @@ Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/py
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </pre></div>
@@ -1489,11 +1466,11 @@ Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/py
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">col</span><span class="p">,</span>
     <span class="n">array_append</span><span class="p">,</span>
-    <span class="n">array_prepend</span><span class="p">,</span>
     <span class="n">array_contains</span><span class="p">,</span>
     <span class="n">array_distinct</span><span class="p">,</span>
+    <span class="n">array_prepend</span><span class="p">,</span>
+    <span class="n">col</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">array_append</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;orders&quot;</span><span class="p">),</span> <span class="s2">&quot;🍇&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1587,78 +1564,187 @@ Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/py
 </div>
 </details>
 </div>
-<p>SQL queries can often become complex and challenging to comprehend.</p>
+<p>Duplicated SQL logic across queries makes code hard to maintain and introduces risk of inconsistencies:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John Doe&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane Smith&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob Johnson&quot;</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">customers_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">60000</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">45000</span><span class="p">)],</span>
+    <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;income&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="c1"># Register the DataFrame as a temporary table or view</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;df&quot;</span><span class="p">)</span>
-
-<span class="c1"># Complex SQL query</span>
-<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    SELECT id, CONCAT(UPPER(SUBSTRING(name, 1, 1)), LOWER(SUBSTRING(name, 2))) AS modified_name</span>
-<span class="sd">    FROM df</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------------+
-| id|modified_name|
-+---+-------------+
-|  1|     John doe|
-|  2|   Jane smith|
-|  3|  Bob johnson|
-+---+-------------+
+<span class="n">customers_df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Using PySpark UDFs simplifies complex SQL queries by encapsulating complex operations into a single function call, resulting in cleaner queries. UDFs also allow for the reuse of complex logic across different queries.</p>
-<p>In the code example below, we define a UDF called <code class="docutils literal notranslate"><span class="pre">modify_name</span></code> that converts the name to uppercase.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
-
-
-<span class="c1"># Define a UDF to modify the name</span>
-<span class="nd">@udf</span><span class="p">(</span><span class="n">returnType</span><span class="o">=</span><span class="n">StringType</span><span class="p">())</span>
-<span class="k">def</span> <span class="nf">modify_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-
-<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;modify_name&quot;</span><span class="p">,</span> <span class="n">modify_name</span><span class="p">)</span>
-
-<span class="c1"># Apply the UDF in the spark.sql query</span>
-<span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;df&quot;</span><span class="p">)</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Complex SQL query</span>
 <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    SELECT id, modify_name(name) AS modified_name</span>
-<span class="sd">    FROM df</span>
+<span class="sd">SELECT </span>
+<span class="sd">  customer_id,</span>
+<span class="sd">  CASE </span>
+<span class="sd">    WHEN age &lt; 18 THEN &#39;minor&#39;</span>
+<span class="sd">    WHEN age BETWEEN 18 AND 65 AND income &gt; 50000 THEN &#39;prime&#39;</span>
+<span class="sd">    WHEN age &gt; 65 THEN &#39;senior&#39;</span>
+<span class="sd">    ELSE &#39;standard&#39;</span>
+<span class="sd">  END as customer_segment</span>
+<span class="sd">FROM customers</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>24/03/30 14:36:24 WARN SimpleFunctionRegistry: The function modify_name replaced a previously registered function.
-                                                                                
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+---+-------------+
-| id|modified_name|
-+---+-------------+
-|  1|     John doe|
-|  2|   Jane smith|
-|  3|  Bob johnson|
-+---+-------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----------+----------------+
+|customer_id|customer_segment|
++-----------+----------------+
+|          1|           prime|
+|          2|           minor|
+|          3|          senior|
++-----------+----------------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT CASE </span>
+<span class="s2">            WHEN age &lt; 18 THEN &#39;minor&#39;</span>
+<span class="s2">            WHEN age &gt; 65 THEN &#39;senior&#39;</span>
+<span class="s2">            WHEN income &gt; 50000 THEN &#39;prime&#39;</span>
+<span class="s2">            ELSE &#39;standard&#39;</span>
+<span class="s2">        END as segment,</span>
+<span class="s2">    COUNT(*) as count</span>
+<span class="s2">    FROM customers</span>
+<span class="s2">    GROUP BY CASE </span>
+<span class="s2">        WHEN age &lt; 18 THEN &#39;minor&#39;</span>
+<span class="s2">        WHEN age &gt; 65 THEN &#39;senior&#39;</span>
+<span class="s2">        WHEN income &gt; 50000 THEN &#39;prime&#39;</span>
+<span class="s2">        ELSE &#39;standard&#39;</span>
+<span class="s2">    END</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 12:&gt;                                                         (0 + 8) / 8]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+
+|segment|count|
++-------+-----+
+|  prime|    1|
+|  minor|    1|
+| senior|    1|
++-------+-----+
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+</div>
+</div>
+<p>PySpark UDFs allow you to centralize this logic in reusable Python functions. Here’s how to implement it:</p>
+<p>Define the UDF to encapsulate customer segmentation logic:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
+
+<span class="k">def</span> <span class="nf">segment_customers</span><span class="p">(</span><span class="n">age</span><span class="p">,</span> <span class="n">income</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">age</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">income</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;minor&quot;</span>
+    <span class="k">elif</span> <span class="n">age</span> <span class="o">&gt;</span> <span class="mi">65</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;senior&quot;</span>
+    <span class="k">elif</span> <span class="n">income</span> <span class="o">&gt;</span> <span class="mi">50000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;prime&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;standard&quot;</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;segment_customers&quot;</span><span class="p">,</span> <span class="n">segment_customers</span><span class="p">,</span> <span class="n">StringType</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>25/03/19 13:02:16 WARN SimpleFunctionRegistry: The function segment_customers replaced a previously registered function.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function __main__.segment_customers(age, income)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use the UDF in your queries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Query 1: Simple segmentation</span>
+<span class="n">query1</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        customer_id,</span>
+<span class="s2">        segment_customers(age, income) AS segment</span>
+<span class="s2">    FROM customers</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="c1"># Query 2: Segment counts</span>
+<span class="n">query2</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT </span>
+<span class="s2">        segment_customers(age, income) AS segment,</span>
+<span class="s2">        COUNT(*) as count</span>
+<span class="s2">    FROM customers</span>
+<span class="s2">    GROUP BY segment_customers(age, income)</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-----------+-------+
+|customer_id|segment|
++-----------+-------+
+|          1|  prime|
+|          2|  minor|
+|          3| senior|
++-----------+-------+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query2</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Stage 9:&gt;                                                          (0 + 8) / 8]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>+-------+-----+
+|segment|count|
++-------+-----+
+|  prime|    1|
+|  minor|    1|
+| senior|    1|
++-------+-----+
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                                                
 </pre></div>
 </div>
 </div>
@@ -1688,7 +1774,7 @@ Requirement already satisfied: six&gt;=1.5 in /Users/khuyentran/book/venv/lib/py
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span><span class="p">,</span> <span class="n">col</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">udf</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
 
 <span class="c1"># Create SparkSession</span>
@@ -1866,8 +1952,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p>UDFs take input columns and return a single value. However, they are cumbersome when returning multiple rows and columns, resulting in complex and inefficient code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span><span class="p">,</span> <span class="n">explode</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">ArrayType</span><span class="p">,</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">IntegerType</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">explode</span><span class="p">,</span> <span class="n">udf</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">ArrayType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StructType</span>
 
 <span class="c1"># Define the schema of the output</span>
 <span class="n">schema</span> <span class="o">=</span> <span class="n">ArrayType</span><span class="p">(</span>
@@ -1908,7 +1994,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p>With UDTFs, you can create functions that return entire tables from a single input, making it easier to work with multiple rows and columns.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udtf</span><span class="p">,</span> <span class="n">lit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">lit</span><span class="p">,</span> <span class="n">udtf</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StringType</span>
 
 
@@ -2088,7 +2174,6 @@ def query():
 
 
 def test_query_return_correct_number_of_rows(query):
-
     spark = SparkSession.builder.getOrCreate()
 
     # Create a sample DataFrame
@@ -2325,8 +2410,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">pandas_udf</span>
 
 
 <span class="c1"># Pandas UDF</span>
@@ -2600,7 +2685,6 @@ Number of Orders:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
 
-
 <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
     <span class="s2">&quot;discount_eligible&quot;</span><span class="p">,</span>
     <span class="n">F</span><span class="o">.</span><span class="n">when</span><span class="p">(</span>
@@ -2690,11 +2774,11 @@ Number of Orders:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">StructType</span><span class="p">,</span>
-    <span class="n">StructField</span><span class="p">,</span> 
-    <span class="n">StringType</span><span class="p">,</span>
+    <span class="n">FloatType</span><span class="p">,</span>
     <span class="n">IntegerType</span><span class="p">,</span>
-    <span class="n">FloatType</span>
+    <span class="n">StringType</span><span class="p">,</span>
+    <span class="n">StructField</span><span class="p">,</span>
+    <span class="n">StructType</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
@@ -2706,32 +2790,36 @@ Number of Orders:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Traditional way with separate DataFrames</span>
 <span class="c1"># Define schemas</span>
-<span class="n">customer_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">())</span>
-<span class="p">])</span>
+<span class="n">customer_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;last_name&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
-<span class="n">order_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
-    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">())</span>
-<span class="p">])</span>
+<span class="n">order_schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">()),</span>
+        <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">FloatType</span><span class="p">()),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
 <span class="c1"># Create DataFrames with schemas</span>
 <span class="n">customer_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Doe&quot;</span><span class="p">),</span> 
-     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Emma&quot;</span><span class="p">,</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">),</span> 
-     <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Michael&quot;</span><span class="p">,</span> <span class="s2">&quot;Brown&quot;</span><span class="p">)],</span>
-    <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">]</span>
+    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Doe&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Emma&quot;</span><span class="p">,</span> <span class="s2">&quot;Wilson&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Michael&quot;</span><span class="p">,</span> <span class="s2">&quot;Brown&quot;</span><span class="p">)],</span>
+    <span class="p">[</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;first_name&quot;</span><span class="p">,</span> <span class="s2">&quot;last_name&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="n">order_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span>
-    <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
-     <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">),</span>
-     <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">)],</span>
-    <span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">]</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">),</span>
+        <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">),</span>
+    <span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;order_id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;order_date&quot;</span><span class="p">,</span> <span class="s2">&quot;total&quot;</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="c1"># Join customer and order data</span>
@@ -2876,8 +2964,8 @@ Number of Orders:
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">Window</span>
-<span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">F</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark.sql.functions</span> <span class="k">as</span> <span class="nn">F</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span><span class="p">,</span> <span class="n">Window</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
@@ -2898,8 +2986,8 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <p>Here are some examples that compare PySpark and Tempo:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
-<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Window</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span>
 
 <span class="c1"># Create sample market data</span>
 <span class="n">market_data</span> <span class="o">=</span> <span class="p">[</span>
@@ -3117,10 +3205,10 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 <span class="n">pyspark_grouped</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># Tempo Version</span>
-<span class="n">tempo_grouped</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">withGroupedStats</span><span class="p">(</span>
-    <span class="n">metricCols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;5 seconds&quot;</span>
-<span class="p">)</span>
-<span class="n">tempo_grouped</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;symbol&#39;</span><span class="p">,</span> <span class="s1">&#39;event_ts&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_price&#39;</span><span class="p">,</span> <span class="s1">&#39;min_price&#39;</span><span class="p">,</span> <span class="s1">&#39;max_price&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">tempo_grouped</span> <span class="o">=</span> <span class="n">market_tsdf</span><span class="o">.</span><span class="n">withGroupedStats</span><span class="p">(</span><span class="n">metricCols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;price&quot;</span><span class="p">],</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;5 seconds&quot;</span><span class="p">)</span>
+<span class="n">tempo_grouped</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="s2">&quot;event_ts&quot;</span><span class="p">,</span> <span class="s2">&quot;mean_price&quot;</span><span class="p">,</span> <span class="s2">&quot;min_price&quot;</span><span class="p">,</span> <span class="s2">&quot;max_price&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
