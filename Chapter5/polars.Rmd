@@ -13,10 +13,10 @@ jupyter:
     name: python3
 ---
 
-## Polars
+# Polars
 
 
-### Polars: Blazing Fast DataFrame Library
+# Polars: Blazing Fast DataFrame Library
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -52,7 +52,7 @@ pandas_df2 = pd.DataFrame(
 polars_df1 = pl.from_pandas(pandas_df1)
 polars_df2 = pl.from_pandas(pandas_df2)
 
-# Merge the two DataFrames on the 'key' column
+## Merge the two DataFrames on the 'key' column
 start_time = time.time()
 pandas_merged = pd.merge(pandas_df1, pandas_df2, on="key")
 pandas_time = time.time() - start_time
@@ -72,7 +72,7 @@ print(f"Polars is {pandas_time/polars_time:.2f} times faster than Pandas")
 [Link to polars](https://github.com/pola-rs/polars)
 
 
-### Polars: Speed Up Data Processing 12x with Lazy Execution
+## Polars: Speed Up Data Processing 12x with Lazy Execution
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -94,13 +94,13 @@ import numpy as np
 # Create a random seed for reproducibility
 np.random.seed(42)
 
-# Number of rows in the dataset
+## Number of rows in the dataset
 num_rows = 10_000_000
 
-# Sample data for categorical columns
+## Sample data for categorical columns
 categories = ["a", "b", "c", "d"]
 
-# Generate random data for the dataset
+## Generate random data for the dataset
 data = {
     "Cat1": np.random.choice(categories, size=num_rows),
     "Cat2": np.random.choice(categories, size=num_rows),
@@ -137,7 +137,7 @@ pl_df = pl.DataFrame(data)
 [Link to polars](https://github.com/pola-rs/polars)
 
 
-### Polars vs. Pandas for CSV Loading and Filtering
+## Polars vs. Pandas for CSV Loading and Filtering
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -171,7 +171,7 @@ pl.scan_csv("airport-codes.csv").filter(
 ).collect()
 ```
 
-### Pandas vs Polars: Harnessing Parallelism for Faster Data Processing
+## Pandas vs Polars: Harnessing Parallelism for Faster Data Processing
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -187,7 +187,7 @@ import pandas as pd
 
 df = pd.DataFrame({"A": range(1_000_000), "B": range(1_000_000)})
 
-# Perform the groupby and sum operation in parallel
+## Perform the groupby and sum operation in parallel
 ddf = dd.from_pandas(df, npartitions=mp.cpu_count())
 result = ddf.groupby("A").sum().compute()
 ```
@@ -199,14 +199,14 @@ import polars as pl
 
 df = pl.DataFrame({"A": range(1_000_000), "B": range(1_000_000)})
 
-# Perform the groupby and sum operation in parallel
+## Perform the groupby and sum operation in parallel
 result = df.group_by("A").sum()
 ```
 
 [Link to Polars](https://bit.ly/3v9dmCT).
 
 
-### Simple and Expressive Data Transformation with Polars
+## Simple and Expressive Data Transformation with Polars
 
 
 Extract features and select only relevant features for each time series.
@@ -233,7 +233,7 @@ pl_df = pl.DataFrame({"A": [1, 2, 6], "B": ["a", "b", "c"], "C": [True, False, T
 pl_df.select([pl.col(pl.Int64), "B"])
 ```
 
-### Harness Polars and Delta Lake for Blazing Fast Performance 
+## Harness Polars and Delta Lake for Blazing Fast Performance 
 
 ```{python tags=c("hide-cell")}
 # !pip install polars deltalake
@@ -309,7 +309,7 @@ print(previous_pl_df.tail())
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Optimize Multiple DataFrame Computations with Polars collect_all
+## Optimize Multiple DataFrame Computations with Polars collect_all
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -388,14 +388,14 @@ lazy_frame3 = add_metric_scaled(
     "page_views",
 )
 
-# Process all frames in parallel
+## Process all frames in parallel
 results = pl.collect_all([lazy_frame1, lazy_frame2, lazy_frame3])
 print(results)
 ```
 
 [Link to Polars](https://github.com/pola-rs/polars)
 
-### Polars' Streaming Mode: A Solution for Large Data Sets
+## Polars' Streaming Mode: A Solution for Large Data Sets
 
 ```{python tags=c("hide-cell")}
 # !pip install polars
@@ -423,7 +423,7 @@ df = (
 [Learn more about Streaming API in Polars](https://bit.ly/3wlTZXR).
 
 
-### Pandas vs Polars: Syntax Comparison for Data Scientists
+## Pandas vs Polars: Syntax Comparison for Data Scientists
 
 
 As a data scientist, you're likely familiar with the popular data analysis libraries Pandas and Polars. Both provide powerful tools for working with tabular data, but how do their syntaxes compare?
@@ -455,7 +455,7 @@ polars_df.select(["Category", "Price"])
 ```
 
 ```{python}
-# Filtering rows where Quantity > 3
+## Filtering rows where Quantity > 3
 pandas_df[pandas_df["Quantity"] > 3]
 ```
 
@@ -481,7 +481,7 @@ polars_df.group_by("Category").agg(
 )
 ```
 
-### Faster Data Analysis with Polars: A Guide to Lazy Execution
+## Faster Data Analysis with Polars: A Guide to Lazy Execution
 
 
 When processing data, the execution approach significantly impacts performance. Pandas, a popular Python data manipulation library, uses eager execution by default, processing data immediately and loading everything into memory. This works well for small to medium-sized datasets but can lead to slow computations and high memory usage with large datasets.
@@ -503,7 +503,7 @@ With eager execution, Pandas will:
 ```{python}
 import numpy as np
 
-# Generate sample data
+## Generate sample data
 N = 10_000_000
 
 data = {

@@ -13,10 +13,10 @@ jupyter:
     name: python3
 ---
 
-## Delta Lake
+# Delta Lake
 
 
-### Version Your Pandas DataFrame with Delta Lake
+# Version Your Pandas DataFrame with Delta Lake
 
 ```{python tags=c("hide-cell")}
 # !pip install deltalake
@@ -92,7 +92,7 @@ dt0.to_pandas()
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Beyond Parquet: Reliable Data Storage with Delta Lake
+## Beyond Parquet: Reliable Data Storage with Delta Lake
 
 Traditional data storage methods, such as plain Parquet files, are susceptible to partial failures during write operations. This can result in incomplete data files and a lack of clear recovery options in the event of a system crash.
 
@@ -143,7 +143,7 @@ except Exception as e:
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Optimize Query Speed with Data Partitioning
+## Optimize Query Speed with Data Partitioning
 
 Partitioning data allows queries to target specific segments rather than scanning the entire table, which speeds up data retrieval.
 
@@ -181,32 +181,32 @@ df[["month", "day", "hour", "value"]].head(5)
 ```
 
 ```{python}
-# Write to a Delta table
+## Write to a Delta table
 table_path = 'delta_lake'
 write_deltalake(table_path, df)
 ```
 
 ```{python}
 # %%timeit
-# Load the data from the Delta table
+## Load the data from the Delta table
 DeltaTable(table_path).to_pandas().query("month == 1 & day == 1")
 ```
 
 ```{python}
-# Write to a Delta table
+## Write to a Delta table
 table_path = "delta_lake2"
 write_deltalake(table_path, df, partition_by=["month", "day"])
 ```
 
 ```{python}
 # %%timeit
-# Load the data from the Delta table
+## Load the data from the Delta table
 DeltaTable(table_path).to_pandas([("month", "=", "1"), ("day", "=", "1")])
 ```
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Overwrite Partitions of a pandas DataFrame
+## Overwrite Partitions of a pandas DataFrame
 
 ```{python tags=c("hide-cell")}
 # !pip install deltalake
@@ -292,7 +292,7 @@ DeltaTable(table_path, version=0).to_pandas()
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas
+## Efficient Data Appending in Parquet Files: Delta Lake vs. Pandas
 
 ```{python tags=c("hide-cell")}
 # !pip install deltalake
@@ -322,10 +322,10 @@ df2 = pd.DataFrame([
 # Save to a parquet file
 df1.to_parquet("data.parquet")
 
-# Read the data
+## Read the data
 existing_data = pd.read_parquet("data.parquet")
 
-# Concat two dataframes
+## Concat two dataframes
 df3 = pd.concat([df1, df2])
 
 # Save to a file
@@ -341,16 +341,16 @@ from deltalake.writer import write_deltalake
 
 table_path = "employees"
 
-# Write to Delta Lake
+## Write to Delta Lake
 write_deltalake(table_path, df1)
 
-# Append to Delta Lake
+## Append to Delta Lake
 write_deltalake(table_path, df2, mode="append")
 ```
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Safe Data Deletion with delta-rs
+## Safe Data Deletion with delta-rs
 
 ```{python tags=c("hide-cell")}
 # !pip install deltalake
@@ -372,7 +372,7 @@ df.to_parquet('customer_data.parquet')
 ```
 
 ```{python}
-# Traditional problematic approach
+## Traditional problematic approach
 try:
     # 1. Load entire file (1M rows) into memory
     data = pd.read_parquet('customer_data.parquet')  # Memory intensive
@@ -392,12 +392,12 @@ delta-rs provides a safer approach with transactional guarantees. Here's how to 
 ```{python}
 from deltalake import write_deltalake, DeltaTable
 
-# Write to Delta format
+## Write to Delta format
 write_deltalake("./customer_data", df)
 ```
 
 ```{python}
-# Perform safe deletion
+## Perform safe deletion
 dt = DeltaTable("./customer_data")
 dt.delete("""
     status = 'inactive' AND 
@@ -408,7 +408,7 @@ dt.delete("""
 You can verify the operation and access previous versions:
 
 ```{python}
-# Check operation history
+## Check operation history
 print("Operation History:")
 for entry in dt.history():
     print(f"Version {entry['version']}: {entry['operation']}")
@@ -421,7 +421,7 @@ print(dt_previous.to_pandas().head(10))
 
 [Link to delta-rs](https://github.com/delta-io/delta-rs)
 
-### Enforce Data Quality with Delta Lake Constraints
+## Enforce Data Quality with Delta Lake Constraints
 
 Delta Lake provides a convenient way to enforce data quality by adding constraints to a table, ensuring that only valid and consistent data can be added.
 
@@ -477,7 +477,7 @@ DeltaProtocolError: Invariant violations: ["Check or Invariant (salary > 0) viol
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Efficient Data Updates and Scanning with Delta Lake
+## Efficient Data Updates and Scanning with Delta Lake
 
 ```{python tags=c("hide-cell")}
 # !pip install -U "deltalake==0.10.1"
@@ -522,7 +522,7 @@ df = dt.to_pandas()
 
 [Link to Delta Lake](https://github.com/delta-io/delta-rs).
 
-### Simplify Table Merge Operations with Delta Lake
+## Simplify Table Merge Operations with Delta Lake
 
 ```{python tags=c("hide-cell")}
 # !pip install delta-spark
@@ -540,7 +540,7 @@ The following code demonstrates merging two datasets using Delta Lake:
 import pyspark
 from delta import *
 
-# Configure Spark to use Delta
+## Configure Spark to use Delta
 builder = (
     pyspark.sql.SparkSession.builder.appName("MyApp")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
@@ -568,7 +568,7 @@ df = (
     .repartition(1)
 )
 
-# Write to a delta table
+## Write to a delta table
 path = "tmp/interviews"
 df.write.format("delta").save(path)
 ```
@@ -576,12 +576,12 @@ df.write.format("delta").save(path)
 ```{python tags=c("hide-cell")}
 from delta.tables import DeltaTable
 
-# Update the delta table
+## Update the delta table
 people_table = DeltaTable.forPath(spark, path)
 ```
 
 ```{python}
-# Target table
+## Target table
 people_table.toDF().show()
 ```
 
@@ -593,7 +593,7 @@ new_df = (
 ```
 
 ```{python}
-# Source table
+## Source table
 new_df.show()
 ```
 
@@ -616,7 +616,7 @@ people_table.toDF().show()
 
 [Link to Delta Lake](https://github.com/delta-io/delta).
 
-### From Complex SQL to Simple Merges: Delta Lake's Upsert Solution
+## From Complex SQL to Simple Merges: Delta Lake's Upsert Solution
 
 ```{python tags=c("hide-cell")}
 # !pip install delta-spark
@@ -626,7 +626,7 @@ people_table.toDF().show()
 import pyspark
 from delta import *
 
-# Configure Spark to use Delta
+## Configure Spark to use Delta
 builder = (
     pyspark.sql.SparkSession.builder.appName("MyApp")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
@@ -666,7 +666,7 @@ updates_data = [
 ]
 updates = spark.createDataFrame(updates_data, ["customer_id", "name", "email"])
 
-# Show the initial data
+## Show the initial data
 print("Initial Customers:")
 customers.show()
 print("Updates:")
@@ -676,10 +676,10 @@ updates.show()
 Next, we create a Delta table from our initial customer data:
 
 ```{python}
-# Define the path where you want to save the Delta table
+## Define the path where you want to save the Delta table
 delta_table_path = "customers_delta"
 
-# Write the DataFrame as a Delta table
+## Write the DataFrame as a Delta table
 customers.write.format("delta").mode("overwrite").save(delta_table_path)
 
 # Create a DeltaTable object
@@ -691,7 +691,7 @@ print("Customers Delta Table created successfully")
 Now, here's the key part - the merge operation that handles both updates and inserts in a single statement:
 
 ```{python}
-# Assume 'customers_delta' is your target table and 'updates' is your source of new data
+## Assume 'customers_delta' is your target table and 'updates' is your source of new data
 customers_delta.alias("target").merge(
     updates.alias("source"),
     "target.customer_id = source.customer_id"
@@ -708,12 +708,12 @@ customers_delta.alias("target").merge(
 ```
 
 ```{python}
-# Verify the updated data
+## Verify the updated data
 print("Updated Customers Delta Table:")
 customers_delta.toDF().show()
 ```
 
-### The Best Way to Append Mismatched Data to Parquet Tables
+## The Best Way to Append Mismatched Data to Parquet Tables
 
 Appending mismatched data to a Parquet table involves reading the existing data, concatenating it with the new data, and overwriting the existing Parquet file. This approach can be expensive and may lead to schema inconsistencies.
 
@@ -729,11 +729,11 @@ import pandas as pd
 
 filepath = 'test.parquet'
 
-# Write a dataframe to a parquet file
+## Write a dataframe to a parquet file
 df1 = pd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
 df1.to_parquet(filepath)
 
-# Append a dataframe to a parquet file
+## Append a dataframe to a parquet file
 df2 = pd.DataFrame({'col1': [2], 'col2': [7], 'col3': [0]})
 concatenation = pd.concat([df1, df2]) # concatenate dataframes
 concatenation.to_parquet(filepath) # overwrite original file
@@ -751,7 +751,7 @@ With Delta Lake, you can effortlessly append DataFrames with extra columns while
 import pyspark
 from delta import *
 
-# Configure Spark to use Delta
+## Configure Spark to use Delta
 builder = (
     pyspark.sql.SparkSession.builder.appName("MyApp")
     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
@@ -774,7 +774,7 @@ df1 = (
     .repartition(1)
 )
 
-# Write to a delta table
+## Write to a delta table
 path = "tmp"
 df1.write.format("delta").save(path)
 ```
@@ -789,12 +789,12 @@ df2.show()
 ```
 
 ```{python}
-# Append to the existing Delta table
+## Append to the existing Delta table
 df2.write.option("mergeSchema", "true").mode("append").format("delta").save(path)
 ```
 
 ```{python}
-# Read the Delta table
+## Read the Delta table
 from delta.tables import DeltaTable
 
 table = DeltaTable.forPath(spark, path)

@@ -13,10 +13,10 @@ jupyter:
     name: python3
 ---
 
-## PySpark
+# PySpark
 
 
-### 3 Powerful Ways to Create PySpark DataFrames
+## 3 Powerful Ways to Create PySpark DataFrames
 
 ```{python}
 from pyspark.sql import SparkSession
@@ -77,7 +77,7 @@ Pros:
 - Familiar to data scientists who frequently use Pandas
 
 
-### Distributed Data Joining with Shuffle Joins in PySpark
+## Distributed Data Joining with Shuffle Joins in PySpark
 
 ```{python tags=c("hide-cell")}
 # !pip install 'pyspark[sql]'
@@ -104,7 +104,7 @@ employees = spark.createDataFrame(
 
 salaries = spark.createDataFrame([(1, 5000), (2, 6000), (4, 7000)], ["id", "salary"])
 
-# Perform an inner join using the join key "id"
+## Perform an inner join using the join key "id"
 joined_df = employees.join(salaries, "id", "inner")
 
 joined_df.show()
@@ -112,7 +112,7 @@ joined_df.show()
 
 In this example, PySpark performs a shuffle join behind the scenes to combine the two DataFrames. The process involves partitioning the data based on the join key ("id"), shuffling the partitions across the worker nodes, performing local joins on each worker node, and finally merging the results.
 
-### PySpark DataFrame Transformations: select vs withColumn
+## PySpark DataFrame Transformations: select vs withColumn
 
 ```{python tags=c("hide-cell")}
 # !pip install 'pyspark[sql]'
@@ -154,7 +154,7 @@ df_withColumn = df.withColumn("upper_city", upper(col("city")))
 df_withColumn.show()
 ```
 
-### Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation
+## Spark DataFrame: Avoid Out-of-Memory Errors with Lazy Evaluation
 
 ```{python tags=c("hide-cell")}
 # !pip install 'pyspark[sql]'
@@ -166,7 +166,7 @@ df_withColumn.show()
 import numpy as np
 import pandas as pd
 
-# Set the number of rows
+## Set the number of rows
 num_rows = 1_000_000
 
 # Create a categorical column with three categories as strings
@@ -205,7 +205,7 @@ processed_df = df.filter(df["val1"] >= 50).groupBy("cat").agg({"val2": "mean"})
 processed_df.collect()
 ```
 
-### Pandas-Friendly Big Data Processing with Spark
+## Pandas-Friendly Big Data Processing with Spark
 
 ```{python}
 # !pip install "pyspark[pandas_on_spark]"
@@ -295,7 +295,7 @@ spark_data.filter(col("C") > 0.4).show()
 spark_data.select(abs(spark_data["C"]).alias("C"), abs(spark_data["D"]).alias("D"))
 ```
 
-### Writing Safer and Cleaner Spark SQL with PySpark's Parameterized Queries
+## Writing Safer and Cleaner Spark SQL with PySpark's Parameterized Queries
 
 ```{python tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -366,7 +366,7 @@ spark.sql(query, item_price=item_price, transaction_date=transaction_date).show(
 This method allows for easy parameter substitution and direct use of DataFrames, making your Spark SQL queries both safer and more convenient to write and maintain.
 
 
-### Working with Arrays Made Easier in Spark 3.5
+## Working with Arrays Made Easier in Spark 3.5
 
 ```{python tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -420,7 +420,7 @@ df.withColumn("has_🍋", array_contains(col("orders"), "🍋")).show()
 [View other array functions](https://bit.ly/4c0txD1).
 
 
-### Simplify Complex SQL Queries with PySpark UDFs
+## Simplify Complex SQL Queries with PySpark UDFs
 
 ```{python tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -440,12 +440,12 @@ customers_df = spark.createDataFrame(
     ["customer_id", "name", "age", "income"],
 )
 
-# Register the DataFrame as a temporary table or view
+## Register the DataFrame as a temporary table or view
 customers_df.createOrReplaceTempView("customers")
 ```
 
 ```{python}
-# Complex SQL query
+## Complex SQL query
 spark.sql(
     """
 SELECT 
@@ -508,7 +508,7 @@ spark.udf.register("segment_customers", segment_customers, StringType())
 Use the UDF in your queries:
 
 ```{python}
-# Query 1: Simple segmentation
+## Query 1: Simple segmentation
 query1 = spark.sql(
     """
     SELECT 
@@ -518,7 +518,7 @@ query1 = spark.sql(
 """
 )
 
-# Query 2: Segment counts
+## Query 2: Segment counts
 query2 = spark.sql(
     """
     SELECT 
@@ -541,7 +541,7 @@ query2.show()
 [Learn more about PySPark UDFs](https://bit.ly/3TEYPHh).
 
 
-### Leverage Spark UDFs for Reusable Complex Logic in SQL Queries
+## Leverage Spark UDFs for Reusable Complex Logic in SQL Queries
 
 ```{python tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -559,16 +559,16 @@ spark = SparkSession.builder.getOrCreate()
 Duplicated code in SQL queries can lead to inconsistencies if changes are made to one instance of the duplicated code but not to others.
 
 ```{python}
-# Sample DataFrame
+## Sample DataFrame
 df = spark.createDataFrame(
     [("Product 1", 10.0, 5), ("Product 2", 15.0, 3), ("Product 3", 8.0, 2)],
     ["name", "price", "quantity"],
 )
 
-# Use df within Spark SQL queries
+## Use df within Spark SQL queries
 df.createOrReplaceTempView("products")
 
-# Select Statement 1
+## Select Statement 1
 result1 = spark.sql(
     """
     SELECT name, price, quantity,
@@ -581,7 +581,7 @@ result1 = spark.sql(
 """
 )
 
-# Select Statement 2
+## Select Statement 2
 result2 = spark.sql(
     """
     SELECT name,
@@ -595,7 +595,7 @@ result2 = spark.sql(
 """
 )
 
-# Display the results
+## Display the results
 result1.show()
 result2.show()
 ```
@@ -605,7 +605,7 @@ Spark UDFs (User-Defined Functions) can help address these issues by encapsulati
 In the code example above, we define a UDF `assign_category_label` that assigns category labels based on price. This UDF is then reused in two different SQL statements.
 
 ```{python}
-# Define UDF to assign category label based on price
+## Define UDF to assign category label based on price
 @udf(returnType=StringType())
 def assign_category_label(price):
     if price < 10.0:
@@ -616,10 +616,10 @@ def assign_category_label(price):
         return "High"
 
 
-# Register UDF
+## Register UDF
 spark.udf.register("assign_category_label", assign_category_label)
 
-# Select Statement 1
+## Select Statement 1
 result1 = spark.sql(
     """
     SELECT name, price, quantity, assign_category_label(price) AS category
@@ -627,7 +627,7 @@ result1 = spark.sql(
 """
 )
 
-# Select Statement 2
+## Select Statement 2
 result2 = spark.sql(
     """
     SELECT name, assign_category_label(price) AS category
@@ -636,12 +636,12 @@ result2 = spark.sql(
 """
 )
 
-# Display the results
+## Display the results
 result1.show()
 result2.show()
 ```
 
-### Transform Single Inputs into Tables Using PySpark UDTFs
+## Transform Single Inputs into Tables Using PySpark UDTFs
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -662,7 +662,7 @@ UDFs take input columns and return a single value. However, they are cumbersome 
 from pyspark.sql.functions import explode, udf
 from pyspark.sql.types import ArrayType, IntegerType, StructField, StructType
 
-# Define the schema of the output
+## Define the schema of the output
 schema = ArrayType(
     StructType(
         [
@@ -673,13 +673,13 @@ schema = ArrayType(
 )
 
 
-# Define the UDF
+## Define the UDF
 @udf(returnType=schema)
 def square_numbers_udf(start: int, end: int):
     return [(num, num * num) for num in range(start, end + 1)]
 
 
-# Use in Python
+## Use in Python
 df = spark.createDataFrame([(1, 3)], ["start", "end"])
 result_df = df.select(explode(square_numbers_udf(df.start, df.end)).alias("result"))
 result_df.select("result.num", "result.squared").show()
@@ -702,7 +702,7 @@ class SquareNumbers:
 SquareNumbers(lit(1), lit(3)).show()
 ```
 
-### Best Practices for PySpark DataFrame Comparison Testing
+## Best Practices for PySpark DataFrame Comparison Testing
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -721,7 +721,7 @@ For example, the following test will fail due to ordering issues, resulting in a
 
 
 ```{python}
-# Manual DataFrame comparison
+## Manual DataFrame comparison
 result_df = spark.createDataFrame(
     [(1, "Alice", 100), (2, "Bob", 200)], ["id", "name", "value"]
 )
@@ -740,7 +740,7 @@ except AssertionError as e:
 
 
 ```{python}
-# Testing with DataFrame equality
+## Testing with DataFrame equality
 from pyspark.testing.utils import assertDataFrameEqual
 ```
 
@@ -754,7 +754,7 @@ For example, the following test will pass, even though there is a type mismatch.
 
 
 ```{python}
-# Manual DataFrame comparison
+## Manual DataFrame comparison
 result_df = spark.createDataFrame(
     [(1, "Alice", 100), (2, "Bob", 200)], ["id", "name", "value"]
 )
@@ -776,7 +776,7 @@ except AssertionError as e:
 ```
 
 <!-- #region editable=true slideshow={"slide_type": ""} -->
-### Simplify Unit Testing of SQL Queries with PySpark
+## Simplify Unit Testing of SQL Queries with PySpark
 <!-- #endregion -->
 
 ```{python tags=c("hide-cell")}
@@ -830,7 +830,7 @@ def test_query_return_correct_number_of_rows(query):
     assertDataFrameEqual(actual_df, expected_df)
 ```
 
-### Update Multiple Columns in Spark 3.3 and Later
+## Update Multiple Columns in Spark 3.3 and Later
 
 ```{python tags=c("hide-cell")}
 # !pip install -U "pyspark[sql]"
@@ -856,7 +856,7 @@ df.show()
 Prior to PySpark 3.3, appending multiple columns to a Spark DataFrame required chaining multiple `withColumn` calls.
 
 ```{python}
-# Before Spark 3.3
+## Before Spark 3.3
 new_df = df.withColumn("first_name", trim(col("first_name"))).withColumn(
     "age_after_10_years", col("age") + 10
 )
@@ -877,7 +877,7 @@ new_df = df.withColumns(
 new_df.show()
 ```
 
-### Vectorized Operations in PySpark: pandas_udf vs Standard UDF
+## Vectorized Operations in PySpark: pandas_udf vs Standard UDF
 
 ```{python tags=c("hide-cell")}
 # !pip install -U pyspark
@@ -895,7 +895,7 @@ Standard UDF functions process data row-by-row, resulting in Python function cal
 In contrast, pandas_udf uses Pandas' vectorized operations to process entire columns in a single operation, significantly improving performance.
 
 ```{python}
-# Sample DataFrame
+## Sample DataFrame
 data = [(1.0,), (2.0,), (3.0,), (4.0,)]
 df = spark.createDataFrame(data, ["val1"])
 
@@ -906,13 +906,13 @@ df.show()
 from pyspark.sql.functions import udf
 
 
-# Standard UDF
+## Standard UDF
 @udf("double")
 def plus_one(val):
     return val + 1
 
 
-# Apply the Standard UDF
+## Apply the Standard UDF
 df.withColumn("val2", plus_one(df.val1)).show()
 ```
 
@@ -921,20 +921,20 @@ import pandas as pd
 from pyspark.sql.functions import pandas_udf
 
 
-# Pandas UDF
+## Pandas UDF
 @pandas_udf("double")
 def pandas_plus_one(val: pd.Series) -> pd.Series:
     return val + 1
 
 
-# Apply the Pandas UDF
+## Apply the Pandas UDF
 df.withColumn("val2", pandas_plus_one(df.val1)).show()
 ```
 
 [Learn more about pandas_udf](https://bit.ly/4aRBNTX).
 
 
-### Optimizing PySpark Queries: DataFrame API or SQL?
+## Optimizing PySpark Queries: DataFrame API or SQL?
 
 ```{python tags=c("hide-cell")}
 # !pip install "pyspark[sql]"
@@ -978,7 +978,7 @@ Thus, the choice between DataFrame API and spark.sql() depends on the following:
 - **Complexity of Transformations**: The DataFrame API is more flexible for complex manipulations, while SQL is more concise for simpler queries.
 
 
-### Enhance Code Modularity and Reusability with Temporary Views in PySpark
+## Enhance Code Modularity and Reusability with Temporary Views in PySpark
 
 ```{python tags=c("hide-cell")}
 # !pip install -U 'pyspark[sql]'
@@ -1019,11 +1019,11 @@ orders_df.createOrReplaceTempView("orders")
 With the temporary view created, we can perform various operations on it using SQL queries. 
 
 ```{python}
-# Perform operations on the temporary view
+## Perform operations on the temporary view
 total_revenue = spark.sql("SELECT SUM(revenue) AS total_revenue FROM orders")
 order_count = spark.sql("SELECT COUNT(*) AS order_count FROM orders")
 
-# Display the results
+## Display the results
 print("Total Revenue:")
 total_revenue.show()
 
@@ -1032,7 +1032,7 @@ order_count.show()
 ```
 
 <!-- #region editable=true slideshow={"slide_type": ""} -->
-### PySpark Best Practices: Simplifying Logical Chain Conditions
+## PySpark Best Practices: Simplifying Logical Chain Conditions
 <!-- #endregion -->
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
@@ -1070,12 +1070,12 @@ df.withColumn(
 To improve readability and maintainability, break down complex logic into meaningful variables:
 
 ```{python}
-# Define loyal customer conditions
+## Define loyal customer conditions
 has_high_spend = F.col("total_purchases") > 1000
 is_long_term = F.col("loyalty_years") >= 2
 has_few_returns = F.col("returns") < 3
 
-# Combine conditions for discount eligibility
+## Combine conditions for discount eligibility
 loyal_customer_condition = has_high_spend & is_long_term & has_few_returns
 
 (
@@ -1091,7 +1091,7 @@ Benefits of this approach:
 - Easier to add new conditions without cluttering main logic.
 
 
-### Optimizing PySpark Queries with Nested Data Structures
+## Optimizing PySpark Queries with Nested Data Structures
 
 ```{python tags=c("hide-cell")}
 # !pip install -U 'pyspark[sql]'
@@ -1119,8 +1119,8 @@ spark = SparkSession.builder.getOrCreate()
 ```
 
 ```{python}
-# Traditional way with separate DataFrames
-# Define schemas
+## Traditional way with separate DataFrames
+## Define schemas
 customer_schema = StructType(
     [
         StructField("customer_id", IntegerType()),
@@ -1153,7 +1153,7 @@ order_df = spark.createDataFrame(
     ["order_id", "customer_id", "order_date", "total"],
 )
 
-# Join customer and order data
+## Join customer and order data
 result_df = customer_df.join(order_df, "customer_id")
 result_df.show()
 ```
@@ -1168,7 +1168,7 @@ With nested StructType in PySpark, you can:
 In the following example, we combine three DataFrames into one nested DataFrame with StructType.
 
 ```{python}
-# Define nested schema
+## Define nested schema
 order_schema = StructType(
     [
         StructField("order_id", IntegerType()),
@@ -1194,7 +1194,7 @@ order_schema = StructType(
     ]
 )
 
-# Sample data with nested structure
+## Sample data with nested structure
 data = [
     (1, (1, "John", "Doe"), ("2023-01-01", 100.0)),
     (2, (2, "Emma", "Wilson"), ("2023-01-02", 150.0)),
@@ -1209,16 +1209,16 @@ With this, you can access all related data in one place using intuitive dot nota
 
 
 ```{python}
-# Select specific nested fields
+## Select specific nested fields
 df.select("customer.first_name", "customer.last_name", "order_info.total").show()
 ```
 
 ```{python}
-# Filter orders above $150
+## Filter orders above $150
 df.where("order_info.total >= 150").show()
 ```
 
-### Simplify DataFrame Operations Using selectExpr in PySpark
+## Simplify DataFrame Operations Using selectExpr in PySpark
 
 ```{python tags=c("hide-cell")}
 # !pip install -U 'pyspark[sql]'
@@ -1245,7 +1245,7 @@ df.show()
 ```{python}
 from pyspark.sql.functions import col
 
-# Perform transformations using .select
+## Perform transformations using .select
 df_transformed = df.select(
     "Name",
     (col("Age") + 10).alias("Age_In_10_Years"),
@@ -1255,7 +1255,7 @@ df_transformed.show()
 ```
 
 ```{python}
-# Perform transformations using .selectExpr
+## Perform transformations using .selectExpr
 df_transformed = df.selectExpr(
     "Name",
     "Age + 10 as Age_In_10_Years",
@@ -1273,7 +1273,7 @@ In the code above:
 
 [Link to PySpark](https://spark.apache.org/docs/latest/api/python/index.html).
 
-### Tempo: Simplified Time Series Analysis in PySpark
+## Tempo: Simplified Time Series Analysis in PySpark
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install -U 'pyspark[sql]' 'dbl-tempo'
@@ -1312,7 +1312,7 @@ market_df = spark.createDataFrame(
     market_data, ["symbol", "event_ts", "price", "volume", "bid", "ask"]
 )
 
-# Convert timestamp string to timestamp type
+## Convert timestamp string to timestamp type
 market_df = market_df.withColumn("event_ts", F.to_timestamp("event_ts"))
 ```
 
@@ -1326,12 +1326,12 @@ market_tsdf = TSDF(market_df, ts_col="event_ts", partition_cols=["symbol"])
 Get data at specific time:
 
 ```{python}
-# PySpark Version
+## PySpark Version
 target_time = "2024-01-01 09:30:10"
 pyspark_at_target = market_df.filter(F.col("event_ts") == target_time)
 pyspark_at_target.show()
 
-# Tempo Version
+## Tempo Version
 tempo_at_target = market_tsdf.at(target_time)
 tempo_at_target.show()
 ```
@@ -1340,7 +1340,7 @@ Get data between time interval:
 
 
 ```{python}
-# PySpark Version
+## PySpark Version
 start_ts = "2024-01-01 09:30:05"
 end_ts = "2024-01-01 09:30:15"
 pyspark_interval = market_df.filter(
@@ -1348,7 +1348,7 @@ pyspark_interval = market_df.filter(
 )
 pyspark_interval.show()
 
-# Tempo Version
+## Tempo Version
 tempo_interval = market_tsdf.between(start_ts, end_ts)
 tempo_interval.show()
 ```
@@ -1357,7 +1357,7 @@ Get oldest n records per symbol:
 
 
 ```{python}
-# PySpark Version
+## PySpark Version
 n = 2
 windowSpec = Window.partitionBy("symbol").orderBy("event_ts")
 pyspark_oldest = (
@@ -1367,7 +1367,7 @@ pyspark_oldest = (
 )
 pyspark_oldest.show()
 
-# Tempo Version
+## Tempo Version
 tempo_oldest = market_tsdf.earliest(n)
 tempo_oldest.show()
 ```
@@ -1376,7 +1376,7 @@ Moving averages (10-second window):
 
 
 ```{python}
-# PySpark Version
+## PySpark Version
 market_df = market_df.withColumn("event_ts_seconds", F.unix_timestamp("event_ts"))
 movingWindowSpec = (
     Window.partitionBy("symbol").orderBy("event_ts_seconds").rangeBetween(-10, 0)
@@ -1388,7 +1388,7 @@ pyspark_moving_stats = market_df.withColumn(
 
 pyspark_moving_stats.select("symbol", "event_ts", "price", "mean_price").show()
 
-# Tempo Version
+## Tempo Version
 tempo_moving_stats = market_tsdf.withRangeStats("price", rangeBackWindowSecs=10)
 tempo_moving_stats.select("symbol", "event_ts", "price", "mean_price").show()
 ```
@@ -1397,7 +1397,7 @@ Grouped statistics:
 
 
 ```{python}
-# PySpark Version
+## PySpark Version
 pyspark_grouped = market_df.groupBy("symbol", F.window("event_ts", "5 seconds")).agg(
     F.avg("price").alias("mean_price"),
     F.min("price").alias("min_price"),
@@ -1405,7 +1405,7 @@ pyspark_grouped = market_df.groupBy("symbol", F.window("event_ts", "5 seconds"))
 )
 pyspark_grouped.show()
 
-# Tempo Version
+## Tempo Version
 tempo_grouped = market_tsdf.withGroupedStats(metricCols=["price"], freq="5 seconds")
 tempo_grouped.select(
     "symbol", "event_ts", "mean_price", "min_price", "max_price"

@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-## Itertools
+# Itertools
 
 
 ![](../img/itertools.png)
@@ -22,7 +22,7 @@ jupyter:
 [itertools](https://docs.python.org/3/library/itertools.html) is a built-in Python library that creates iterators for efficient looping. This section will show you some useful methods of itertools.
 
 
-### itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
+## itertools.combinations: A Better Way to Iterate Through a Pair of Values in a Python List
 
 
 If you want to iterate through a pair of values in a list and the order does not matter (`(a,b)` is the same as `(b, a)`), a naive approach is to use two for-loops.
@@ -48,7 +48,7 @@ for pair in list(comb):
     print(pair)
 ```
 
-### itertools.product: Nested For-Loops in a Generator Expression 
+## itertools.product: Nested For-Loops in a Generator Expression 
 
 
 Are you using nested for-loops to experiment with different combinations of parameters? 
@@ -81,7 +81,7 @@ for combination in product(*params.values()):
     print(combination)
 ```
 
-### itertools.starmap: Apply a Function With More Than 2 Arguments to Elements in a List
+## itertools.starmap: Apply a Function With More Than 2 Arguments to Elements in a List
 
 
 `map` is a useful method that allows you to apply a function to elements in a list. However, it can't apply a function with more than one argument to a list.
@@ -104,7 +104,7 @@ from itertools import starmap
 list(starmap(multiply, nums))
 ```
 
-### itertools.compress: Filter a List Using Booleans
+## itertools.compress: Filter a List Using Booleans
 
 
 Normally, you cannot filter a list using a list.
@@ -123,7 +123,7 @@ from itertools import compress
 list(compress(fruits, chosen))
 ```
 
-### itertools.groupby: Group Elements in an Iterable by a Key
+## itertools.groupby: Group Elements in an Iterable by a Key
 
 
 If you want to group elements in a list by a key, use `itertools.groupby`. In the example below, I grouped elements in the list by the first element in each tuple. 
@@ -135,15 +135,15 @@ prices = [("apple", 3), ("orange", 2), ("apple", 4), ("orange", 1), ("grape", 3)
 
 key_func = lambda x: x[0]
 
-# Sort the elements in the list by the key
+## Sort the elements in the list by the key
 prices.sort(key=key_func)
 
-# Group elements in the list by the key
+## Group elements in the list by the key
 for key, group in groupby(prices, key_func):
     print(key, ":", list(group))
 ```
 
-### itertools.zip_longest: Zip Iterables of Different Lengths
+## itertools.zip_longest: Zip Iterables of Different Lengths
 
 
 `zip` allows you to aggregate elements from each of the iterables. However, `zip` doesn't show all pairs of elements when iterables have different lengths. 
@@ -167,7 +167,7 @@ from itertools import zip_longest
 list(zip_longest(fruits, prices, fillvalue="-"))
 ```
 
-### Python's dropwhile: A Clean Approach to Sequential Filtering
+# Python's dropwhile: A Clean Approach to Sequential Filtering
 
 
 Repeatedly checking elements in an iteration until a condition is met results in verbose and less readable code, especially when you want to skip elements at the beginning of a sequence.
@@ -200,16 +200,16 @@ print(''.join(alpha_part))
 In this example, `dropwhile` takes a predicate function (`str.isdigit`) and the text string. It skips digits until it finds a non-digit character, then returns the rest of the string. 
 
 
-### itertools.islice: Efficient Data Processing for Large Data Streams
+## itertools.islice: Efficient Data Processing for Large Data Streams
 
 
 Working with large data streams or files can be challenging due to memory limitations. Index slicing is not feasible for extremely large data sets as it requires the entire list to reside in memory.
 
 ```python
-# Load all log entries into memory as a list
+## Load all log entries into memory as a list
 large_log = [log_entry for log_entry in open("large_log_file.log")]
 
-# Iterate over the first 100 entries of the list
+## Iterate over the first 100 entries of the list
 for entry in large_log[:100]:
     process_log_entry(entry)
 ```
@@ -221,10 +221,10 @@ itertools.islice() allows you to process only a portion of the data stream at a 
 ```python
 import itertools
 
-# Lazily read file lines with a generator
+## Lazily read file lines with a generator
 large_log = (log_entry for log_entry in open("large_log_file.log"))
 
-# Get the first 100 entries from the generator
+## Get the first 100 entries from the generator
 for entry in itertools.islice(large_log, 100):
     process_log_entry(entry)
 ```

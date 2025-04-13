@@ -13,9 +13,9 @@ jupyter:
     name: python3
 ---
 
-## DuckDB
+# DuckDB
 
-### SQL Analytics with DuckDB
+# SQL Analytics with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install psycopg2 duckdb
@@ -85,7 +85,7 @@ print(result)
 
 [Link to DuckDB](https://github.com/duckdb/duckdb)
 
-### Efficient SQL Operations with DuckDB on Pandas DataFrames
+## Efficient SQL Operations with DuckDB on Pandas DataFrames
 
 ```{python}
 # !pip install --quiet duckdb
@@ -135,7 +135,7 @@ GROUP BY
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Efficiently Handle Large Datasets with DuckDB and PyArrow
+## Efficiently Handle Large Datasets with DuckDB and PyArrow
 
 ```{python}
 # !pip install deltalake duckdb
@@ -180,7 +180,7 @@ quack.filter("l_quantity > 50")
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Simplify CSV Data Management with DuckDB
+## Simplify CSV Data Management with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb
@@ -233,7 +233,7 @@ duckdb.sql("SELECT * FROM 'customers.csv'")
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Automate CSV Parsing with DuckDB's read_csv
+## Automate CSV Parsing with DuckDB's read_csv
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb
@@ -251,11 +251,11 @@ csv_content = """FlightDate|UniqueCarrier|OriginCityName|DestCityName
 1988-01-03|AA|New York, NY|Los Angeles, CA
 """
 
-# Writing the CSV content to a file
+## Writing the CSV content to a file
 with open("example.csv", "w") as f:
     f.write(csv_content)
 
-# Reading the CSV file with pandas without specifying the delimiter
+## Reading the CSV file with pandas without specifying the delimiter
 df = pd.read_csv("example.csv")
 print(df)
 ```
@@ -267,7 +267,7 @@ DuckDB's `read_csv` feature addresses this issue by automatically detecting the 
 ```{python}
 import duckdb
 
-# Use DuckDB to automatically detect and read the CSV structure
+## Use DuckDB to automatically detect and read the CSV structure
 result = duckdb.query("SELECT * FROM read_csv('example.csv')").to_df()
 print(result)
 ```
@@ -283,7 +283,7 @@ The output shows that DuckDB automatically detected the correct delimiter (`|`) 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
 
-### Multiple CSV Files Processing with DuckDB
+## Multiple CSV Files Processing with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb
@@ -328,7 +328,7 @@ import os
 
 import pandas as pd
 
-# Read all CSV files and concatenate them
+## Read all CSV files and concatenate them
 csv_files = glob.glob("data/*.csv")
 dfs = []
 
@@ -336,10 +336,10 @@ for file in csv_files:
     df = pd.read_csv(file)
     dfs.append(df)
 
-# Concatenate all dataframes
+## Concatenate all dataframes
 combined_df = pd.concat(dfs, ignore_index=True)
 
-# Perform grouping and aggregation
+## Perform grouping and aggregation
 result = (
     combined_df.groupby("Date")["Sales"]
     .sum()
@@ -356,7 +356,7 @@ DuckDB simplifies reading multiple CSV files with a single line of code that eff
 ```{python}
 import duckdb
 
-# Read and analyze all CSV files at once
+## Read and analyze all CSV files at once
 result = duckdb.sql(
     """
     SELECT 
@@ -372,7 +372,7 @@ result
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### DuckDB: Query Pandas DataFrames Faster with Columnar Storage
+## DuckDB: Query Pandas DataFrames Faster with Columnar Storage
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install duckdb
@@ -391,11 +391,11 @@ customer = pd.DataFrame(
     {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
 )
 
-# Load data to SQLite and query
+## Load data to SQLite and query
 conn = sqlite3.connect(":memory:")
 customer.to_sql("customer", conn, index=False)
 
-# Must read all columns internally even though we only need 'age'
+## Must read all columns internally even though we only need 'age'
 query = "SELECT age FROM customer"
 result = pd.read_sql(query, conn)
 ```
@@ -420,7 +420,7 @@ In this example, DuckDB only needs to access the 'age' column in memory, while S
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Query Nested Parquet Files Easily Using DuckDB
+## Query Nested Parquet Files Easily Using DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb pandas pyarrow
@@ -437,7 +437,7 @@ data = {
     "details": [{"name": "Alice", "age": 25}, {"name": "Bob", "age": 30}],
 }
 
-# Convert to a DataFrame
+## Convert to a DataFrame
 df = pd.DataFrame(data)
 
 # Save as a nested Parquet file
@@ -446,7 +446,7 @@ print(df)
 ```
 
 ```{python}
-# Read the DataFrame from Parquet file
+## Read the DataFrame from Parquet file
 df = pd.read_parquet("nested_data.parquet")
 
 # Create a new DataFrame with the flattened structure
@@ -468,7 +468,7 @@ To load and query nested Parquet files with DuckDB:
 ```{python}
 import duckdb
 
-# Query the nested Parquet file directly
+## Query the nested Parquet file directly
 query_result = duckdb.query(
     """
     SELECT 

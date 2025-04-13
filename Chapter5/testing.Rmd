@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Testing
+# Testing
 
 
 ![](../img/test.png)
 
 
-### Efficiently Resume Work After Breaks with Failing Tests
+# Efficiently Resume Work After Breaks with Failing Tests
 
 
 Do you forget what feature to implement when taking a break from work? 
@@ -46,7 +46,7 @@ def test_calculate_average_empty_list():
 ```
 
 
-### Choose a Descriptive Name Over a Short One When Naming Your Function
+# Choose a Descriptive Name Over a Short One When Naming Your Function
 
 
 Using a short and unclear name for a testing function may lead to confusion and misunderstandings. To make your tests more readable, use a descriptive name instead, even if it results in a longer name. 
@@ -86,7 +86,7 @@ def test_contain_word_different_case():
 ```
 
 
-### pytest benchmark: A Pytest Fixture to Benchmark Your Code
+## pytest benchmark: A Pytest Fixture to Benchmark Your Code
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest-benchmark
@@ -121,7 +121,7 @@ Now you should see the statistics of the time it takes to execute the test funct
 [Link to pytest-benchmark](https://github.com/ionelmc/pytest-benchmark).
 
 
-### pytest.mark.parametrize: Test Your Functions with Multiple Inputs
+## pytest.mark.parametrize: Test Your Functions with Multiple Inputs
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest
@@ -169,7 +169,7 @@ Sweet! 2 tests passed when running pytest.
 
 
 
-### pytest parametrize twice: Test All Possible Combinations of Two Sets of Parameters
+## pytest parametrize twice: Test All Possible Combinations of Two Sets of Parameters
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest
@@ -186,7 +186,7 @@ def average(n1, n2):
 def perc_difference(n1, n2):
     return (n2 - n1)/n1 * 100
 
-# Test the combinations of operations and inputs
+## Test the combinations of operations and inputs
 @pytest.mark.parametrize("operation, n1, n2", [(average, 1, 2), (average, 2, 3), (perc_difference, 1, 2), (perc_difference, 2, 3)])
 def test_is_float(operation, n1, n2):
     assert isinstance(operation(n1, n2), float)
@@ -208,7 +208,7 @@ def perc_difference(n1, n2):
     return (n2 - n1) / n1 * 100
 
 
-# Test the combinations of operations and inputs
+## Test the combinations of operations and inputs
 @pytest.mark.parametrize("operation", [average, perc_difference])
 @pytest.mark.parametrize("n1, n2", [(1, 2), (2, 3)])
 def test_is_float(operation, n1, n2):
@@ -227,7 +227,7 @@ $ pytest -v pytest_combination.py
 From the output above, we can see that all possible combinations of the given operations and inputs are tested.
 
 
-### Assign IDs to Test Cases
+## Assign IDs to Test Cases
 
 
 When using pytest parametrize, it can be difficult to understand the role of each test case.
@@ -319,7 +319,7 @@ $ pytest -v pytest_param.py
 # !pytest -v pytest_param.py
 ```
 
-### Pytest Fixtures: Use The Same Data for Different Tests
+## Pytest Fixtures: Use The Same Data for Different Tests
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest textblob
@@ -363,7 +363,7 @@ Output:
 # !pytest pytest_fixture.py
 ```
 
-### Execute a Fixture Only Once per Session
+## Execute a Fixture Only Once per Session
 
 
 By default, every time you use a pytest fixture in a test, a fixture will be executed.
@@ -429,7 +429,7 @@ Test modulus...
 ```
 
 
-### Pytest skipif: Skip a Test When a Condition is Not Met
+## Pytest skipif: Skip a Test When a Condition is Not Met
 
 
 If you want to skip a test when a condition is not met, use pytest `skipif`. For example, in the code below, I use `skipif` to skip a test if the python version is less than 3.9.
@@ -461,7 +461,7 @@ Output:
 # !pytest pytest_skip.py -v
 ```
 
-### Pytest xfail: Mark a Test as Expected to Fail
+## Pytest xfail: Mark a Test as Expected to Fail
 
 
 If you expect a test to fail, use pytest `xfail` marker. This will prevent pytest from marking a test as failed when there is an exception.
@@ -512,7 +512,7 @@ We can see that no test failed.
 # !pytest pytest_mark_xfail.py
 ```
 
-### Stop Flaky Float Tests with pytest.approx()
+## Stop Flaky Float Tests with pytest.approx()
 
 
 When working with floating-point numbers in tests, comparing exact equality often fails due to inherent precision limitations, which results in flaky or unreliable tests.
@@ -527,19 +527,19 @@ Here's a code example to show its usefulness:
 import pytest
 
 
-# Without pytest.approx - test fails
+## Without pytest.approx - test fails
 def test_calculation_without_approx():
     result = 0.1 + 0.2
     assert result == 0.3  # This fails!
 
 
-# With pytest.approx - test passes
+## With pytest.approx - test passes
 def test_calculation_with_approx():
     result = 0.1 + 0.2
     assert result == pytest.approx(0.3)  # This passes!
 
 
-# Works with sequences too
+## Works with sequences too
 def test_list_of_floats():
     results = [0.1 + 0.2, 0.2 + 0.4]
     expected = [0.3, 0.6]
@@ -556,7 +556,7 @@ In these examples:
 - The third example shows how it works with lists of numbers, making it convenient for comparing multiple results at once.
 
 
-### Test for Specific Exceptions in Unit Testing
+## Test for Specific Exceptions in Unit Testing
 
 
 To test for a specific exception in unit testing, use `pytest.raises`.
@@ -590,7 +590,7 @@ $ pytest pytest_to_fail.py
 # !pytest pytest_to_fail.py
 ```
 
-### Organize and Control Test Execution using pytest.mark
+## Organize and Control Test Execution using pytest.mark
 
 
 pytest.mark lets you label test functions for conditional or selective execution based on specific needs. 
@@ -654,7 +654,7 @@ $ pytest pytest_mark.py -m "not db"
 # !pytest pytest_mark.py -m "not db" --disable-pytest-warnings
 ```
 
-### Verify Logging Error with pytest
+## Verify Logging Error with pytest
 
 
 To ensure that your application logs an error under a specific condition, use the built-in fixture called `caplog` in pytest. 
@@ -689,7 +689,7 @@ $ pytest test_logging.py
 # !pytest test_logging.py
 ```
 
-### Pytest repeat
+## Pytest repeat
 
 
 ```{python tags=c("hide-cell")}
@@ -729,7 +729,7 @@ We can see that 100 experiments are executed and passed:
 [Link to pytest-repeat](https://github.com/pytest-dev/pytest-repeat)
 
 
-### pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
+## pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest-sugar
@@ -757,7 +757,7 @@ $ pytest pytest_sugar_example
 [Link to pytest-sugar](https://github.com/Teemu/pytest-sugar).
 
 
-### pytest-steps: Share Data Between Tests
+## pytest-steps: Share Data Between Tests
 
 
 Have you ever wanted to use the result of one test for another test? That is when pytest_steps comes in handy. 
@@ -811,7 +811,7 @@ $ pytest test_steps.py
 [Link to pytest_steps](https://smarie.github.io/python-pytest-steps/).
 
 
-### pytest-picked: Run the Tests Related to the Unstaged Files in Git
+## pytest-picked: Run the Tests Related to the Unstaged Files in Git
 
 
 It can be time-consuming to run all tests in your project. Wouldn't it be nice if you can run only the tests related to the unstaged files in Git? That is when pytest-picked comes in handy.
@@ -847,7 +847,7 @@ $ pytest --picked
 [Link to pytest-picked](https://github.com/anapaulagomes/pytest-picked).
 
 
-### Efficient Testing of Python Class with setUp Method
+## Efficient Testing of Python Class with setUp Method
 
 
 When testing a Python class, it can be repetitive and time-consuming to create multiple instances to test a large number of instance methods. 
@@ -903,7 +903,7 @@ class TestDog(unittest.TestCase):
         self.dog.bark() == "Max is barking"
 ```
 
-### FreezeGun: Freezing Time for Reliable Python Testing
+## FreezeGun: Freezing Time for Reliable Python Testing
 
 ```{python tags=c("hide-cell")}
 # !pip install freezegun
@@ -946,7 +946,7 @@ The test calls `get_day_of_week()` and checks if it returns 6 (Sunday). This tes
 [Link to FreezeGun](https://github.com/spulec/freezegun).
 
 
-### Simplify Mocking External Services with pytest-mock
+## Simplify Mocking External Services with pytest-mock
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest pytest-mock
@@ -1044,7 +1044,7 @@ Outputs:
 
 [Link to pytest-mock](https://pypi.org/project/pytest-mock/)
 
-### pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests
+## pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest-mock
@@ -1113,7 +1113,7 @@ Key differences:
 [Link to pytest-mock](https://bit.ly/4dBDAOE).
 
 
-### tmp_path: Create a Temporary Directory for Testing
+## tmp_path: Create a Temporary Directory for Testing
 
 
 Use the `tmp_path` fixture in pytest to create a temporary directory for testing the function that interacts with files. This will prevent any changes to the actual filesystem or production files.
@@ -1153,7 +1153,7 @@ $ pytest test_tmp_path.py
 # !pytest test_tmp_path.py
 ```
 
-### Pandera: a Python Library to Validate Your Pandas DataFrame
+## Pandera: a Python Library to Validate Your Pandas DataFrame
 
 ```{python tags=c("hide-cell")}
 # !pip install -U pandera
@@ -1260,7 +1260,7 @@ except pa.errors.SchemaError as err:
 [Link to Pandera](https://github.com/unionai-oss/pandera).
 
 
-### Validating Polars DataFrames with Pandera
+## Validating Polars DataFrames with Pandera
 
 
 ```{python}
@@ -1315,7 +1315,7 @@ filter_state(lf, "CA").collect()
 [Link to Pandera](https://github.com/unionai-oss/pandera).
 
 
-### Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis
+## Efficiently Generate Falsified Examples for Unit Tests with Pandera and Hypothesis
 
 ```{python tags=c("hide-cell")}
 # !pip install hypothesis pandera pytest
@@ -1330,7 +1330,7 @@ Pandera allows you to define constraints for inputs and outputs, while Hypothesi
 import hypothesis
 import pandera as pa
 
-# Specify the schema of the df used for testing
+## Specify the schema of the df used for testing
 schema = pa.DataFrameSchema(
     {
         "val1": pa.Column(int, pa.Check.in_range(-2, 3)),
@@ -1389,7 +1389,7 @@ Falsifying example: test_processing_fn(
 ```
 
 
-### DeepDiff Find Deep Differences of Python Objects
+## DeepDiff Find Deep Differences of Python Objects
 
 ```{python tags=c("hide-cell")}
 # !pip install deepdiff
@@ -1424,7 +1424,7 @@ DeepDiff(price1, price2)
 With DeepDiff, you also have full control of which characteristics of the Python object DeepDiff should ignore. In the example below, since the order is ignored `[3, 2]` is equivalent to `[2, 3]`.
 
 ```{python}
-# Ignore orders
+## Ignore orders
 
 DeepDiff(price1, price2, ignore_order=True)
 ```
@@ -1454,7 +1454,7 @@ DeepDiff(num1, num2, significant_digits=2)
 [Link to DeepDiff](https://github.com/seperman/deepdiff).
 
 
-### dirty-equals: Write Declarative Assertions in Your Unit Tests
+## dirty-equals: Write Declarative Assertions in Your Unit Tests
 
 ```{python tags=c("hide-cell")}
 # !pip install dirty-equals
@@ -1489,7 +1489,7 @@ assert shopping == {
 [Link to dirty-equals](https://github.com/samuelcolvin/dirty-equals).
 
 
-### hypothesis: Property-based Testing in Python
+## hypothesis: Property-based Testing in Python
 
 ```{python tags=c("hide-code")}
 # !pip install hypothesis
@@ -1525,7 +1525,7 @@ Now I can rewrite my code to make it more robust against these edge cases.
 [Link to hypothesis](https://hypothesis.readthedocs.io/en/latest/quickstart.html).
 
 
-### Deepchecks: Check Category Mismatch Between Train and Test Set
+## Deepchecks: Check Category Mismatch Between Train and Test Set
 
 ```{python tags=c("hide-cell")}
 # !pip install deepchecks
@@ -1557,7 +1557,7 @@ CategoryMismatchTrainTest().run(train_ds, test_ds)
 [Link to Deepchecks](https://docs.deepchecks.com/en/stable/)
 
 
-### leAB: AB Testing Analysis in Python
+## leAB: AB Testing Analysis in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install leab
@@ -1568,7 +1568,7 @@ AB testing is crucial for assessing the effectiveness of changes in a controlled
 ```{python}
 from leab import before
 
-# What is the number of sample needed per variation to detect a 1% result
+## What is the number of sample needed per variation to detect a 1% result
 # difference in a population with a 15% conversion rate?
 ab_test = before.leSample(conversion_rate=15, min_detectable_effect=1)
 ab_test.get_size_per_variation()
@@ -1579,7 +1579,7 @@ After reaching the sample size, you can compare the successes between group A an
 ```{python}
 from leab import after, leDataset
 
-# Import sample data for A and B
+## Import sample data for A and B
 data = leDataset.SampleLeSuccess()
 data.A.head()
 ```
@@ -1587,14 +1587,14 @@ data.A.head()
 ```{python}
 ab_test = after.leSuccess(data.A, data.B, confidence_level=0.95)
 
-# Get the conclusion on the test
+## Get the conclusion on the test
 ab_test.get_verdict()
 ```
 
 [Link to leAB](https://github.com/tlentali/leab).
 
 
-### pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite
+## pytest-postgresql: Incorporate Database Testing into Your pytest Test Suite
 
 ```{python tags=c("hide-cell")}
 # !pip install pytest-postgresql
@@ -1633,7 +1633,7 @@ $ pytest test_postgres.py
 [Link to pytest-postgresql](https://github.com/ClearcodeHQ/pytest-postgresql).
 
 
-### Maintain the Accuracy of Docstring Examples with Doctest
+## Maintain the Accuracy of Docstring Examples with Doctest
 
 
 Including examples in a docstring is helpful. However, examples can become obsolete as the function evolves.
@@ -1674,7 +1674,7 @@ $ python example.py -v
 # !python example.py -v
 ```
 
-### DeepEval: Unit Testing for Your LLM Model
+## DeepEval: Unit Testing for Your LLM Model
 
 ```{python tags=c("hide-cell")}
 # !pip install -U deepeval

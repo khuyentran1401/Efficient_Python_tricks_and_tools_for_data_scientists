@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Better Pandas
+# Better Pandas
 
 
 This section cover tools to make your experience with Pandas a litte bit better.
 
 
-### tqdm: Add Progress Bar to Your Pandas Apply
+## tqdm: Add Progress Bar to Your Pandas Apply
 
 ```{python tags=c("hide-cell")}
 # !pip install tqdm
@@ -49,7 +49,7 @@ df["a"].progress_apply(func)
 [Link to tqdm](https://github.com/tqdm/tqdm).
 
 
-### pandarallel: A Simple Tool to Parallelize Pandas Operations 
+## pandarallel: A Simple Tool to Parallelize Pandas Operations 
 
 ```{python tags=c("hide-cell")}
 # !pip install pandarallel
@@ -77,7 +77,7 @@ df.parallel_apply(lambda x: x**2)
 [Link to pandarallel](https://github.com/nalepae/pandarallel).
 
 
-### PandasAI: Gain Insights From Your pandas DataFrame With AI
+## PandasAI: Gain Insights From Your pandas DataFrame With AI
 
 ```{python tags=c("hide-cell")}
 # !pip install pandasai
@@ -105,10 +105,10 @@ df.head(5)
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
 
-# Instantiate a LLM
+## Instantiate a LLM
 llm = OpenAI(api_token="YOUR_API_TOKEN")
 
-# Use pandasai
+## Use pandasai
 pandas_ai = PandasAI(llm, conversational=False)
 print(
     pandas_ai.run(
@@ -132,7 +132,7 @@ print(pandas_ai.run(df, prompt="Within what range of years does the dataset span
 
 [Link to PandasAI](https://github.com/gventuri/pandas-ai).
 
-### Combine SQL and Python Efficiently with Ibis
+## Combine SQL and Python Efficiently with Ibis
 
 ```{python tags=c("hide-cell")}
 # !pip install 'ibis-framework[duckdb,examples]'
@@ -148,16 +148,16 @@ To mix SQL and Python using Ibis:
 ```{python}
 import ibis
 
-# Enable interactive mode
+## Enable interactive mode
 ibis.options.interactive = True
 
-# Load example data
+## Load example data
 t = ibis.examples.penguins.fetch()
 
-# Perform an SQL query on the Ibis table
+## Perform an SQL query on the Ibis table
 a = t.sql("SELECT species, island, count(*) AS count FROM penguins GROUP BY 1, 2")
 
-# Continue with Python operations
+## Continue with Python operations
 b = a.order_by("count")
 print(b)
 ```
@@ -170,7 +170,7 @@ Here’s the breakdown:
 [Link to Ibis](https://github.com/ibis-project/ibis).
 
 
-### fugue: Use pandas Functions on the Spark and Dask Engines. 
+## fugue: Use pandas Functions on the Spark and Dask Engines. 
 
 ```{python tags=c("hide-cell")}
 # !pip install fugue pyspark
@@ -209,7 +209,7 @@ df.show()
 [Link to fugue](https://github.com/fugue-project/fugue).
 
 
-### Simplifying Geographic Calculations with GeoPandas
+## Simplifying Geographic Calculations with GeoPandas
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install geopandas
@@ -220,11 +220,11 @@ Working with geographic data in Python without proper tools can be complex and c
 Example of working with geographic data without specialized tools:
 
 ```{python}
-# Manually handling coordinates and spatial operations
+## Manually handling coordinates and spatial operations
 import numpy as np
 import pandas as pd
 
-# Complex manual handling of polygon coordinates
+## Complex manual handling of polygon coordinates
 df = pd.DataFrame(
     {
         "name": ["Area1", "Area2"],
@@ -233,7 +233,7 @@ df = pd.DataFrame(
 )
 
 
-# Calculate area
+## Calculate area
 def calculate_polygon_area(coordinates):
     x_coords = [point[0] for point in coordinates]
     y_coords = [point[1] for point in coordinates]
@@ -255,7 +255,7 @@ df["area"]
 ```
 
 ```{python}
-# Calculate parameter
+## Calculate parameter
 def calculate_perimeter(coordinates):
     # Add first point to end to close the polygon if not already closed
     if coordinates[0] != coordinates[-1]:
@@ -296,17 +296,17 @@ p2 = Polygon([(2, 0), (3, 0), (3, 1), (2, 1)])
 # Create a GeoSeries from the polygons
 g = geopandas.GeoSeries([p1, p2])
 
-# Print the GeoSeries
+## Print the GeoSeries
 g
 ```
 
 ```{python}
-# Calculate area
+## Calculate area
 g.area
 ```
 
 ```{python}
-# Perimater of each polygon
+## Perimater of each polygon
 g.length
 ```
 

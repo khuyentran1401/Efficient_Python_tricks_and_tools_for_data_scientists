@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Machine Learning
+# Machine Learning
 
 
 ![](../img/machine_learning.png)
 
 
-### Scikit-LLM: Supercharge Text Analysis with ChatGPT and scikit-learn Integration 
+# Scikit-LLM: Supercharge Text Analysis with ChatGPT and scikit-learn Integration 
 
 ```{python tags=c("hide-cell")}
 # !pip install scikit-llm
@@ -57,7 +57,7 @@ print(f"Accuracy: {accuracy_score(y, labels):.2f}")
 [Link to Scikit-LLM](https://github.com/iryna-kondr/scikit-llm).
 
 
-### Create a Readable Machine Learning Pipeline in One Line of Code
+# Create a Readable Machine Learning Pipeline in One Line of Code
 
 
 If you want to create a readable machine learning pipeline in a single line of code, try the `make_pipeline` function in scikit-learn.
@@ -84,7 +84,7 @@ pipeline.score(X_test, y_test)
 
 ```
 
-### Pipeline + GridSearchCV: Prevent Data Leakage when Scaling the Data
+## Pipeline + GridSearchCV: Prevent Data Leakage when Scaling the Data
 
 
 Scaling the data before using GridSearchCV can lead to data leakage since the scaling tells some information about the entire data. To prevent this, assemble both the scaler and machine learning models in a pipeline then use it as the estimator for GridSearchCV. 
@@ -107,7 +107,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 # Create a pipeline variable
 make_pipe = make_pipeline(StandardScaler(), SVC())
 
-# Defining parameters grid
+## Defining parameters grid
 grid_params = {"svc__C": [0.1, 1, 10, 100, 1000], "svc__gamma": [0.1, 1, 10, 100]}
 
 # hypertuning
@@ -121,7 +121,7 @@ y_pred = grid.predict(X_test)
 The estimator is now the entire pipeline instead of just the machine learning model.
 
 
-### squared=False: Get RMSE from Sklearn’s mean_squared_error method
+## squared=False: Get RMSE from Sklearn’s mean_squared_error method
 
 
 To obtain the root mean squared error (RMSE) using scikit-learn, use the `squared=False` parameter in the `mean_squared_error` method.
@@ -136,7 +136,7 @@ rmse
 ```
 
 <!-- #region jupyter={"source_hidden": true} -->
-### modelkit: Build Production ML Systems in Python
+## modelkit: Build Production ML Systems in Python
 <!-- #endregion -->
 
 ```{python tags=c("hide-cell")}
@@ -230,7 +230,7 @@ sentiment_analyzer("Today is a beautiful day!")
 [Link to modelkit](https://github.com/Cornerstone-OnDemand/modelkit/).
 
 
-### Decomposing High-Dimensional Data into Two or Three Dimensions
+## Decomposing High-Dimensional Data into Two or Three Dimensions
 
 ```{python tags=c("hide-cell")}
 # !pip install yellowbrick
@@ -259,7 +259,7 @@ visualizer.show()
 [Link to Yellowbrick](https://www.scikit-yb.org/en/latest/)
 
 
-### Visualize Feature Importances with Yellowbrick
+## Visualize Feature Importances with Yellowbrick
 
 ```{python tags=c("hide-cell")}
 # !pip install yellowbrick
@@ -290,7 +290,7 @@ From the plot above, it seems like the light is the most important feature to De
 [Link to Yellowbrick](https://www.scikit-yb.org/en/latest/)
 
 
-### Validation Curve: Determine if an Estimator Is Underfitting Over Overfitting
+## Validation Curve: Determine if an Estimator Is Underfitting Over Overfitting
 
 ```{python tags=c("hide-cell")}
 # !pip install yellowbrick
@@ -307,7 +307,7 @@ import numpy as np
 ```
 
 ```{python}
-# Load data
+## Load data
 X, y = load_occupancy()
 ```
 
@@ -328,7 +328,7 @@ Thus, the sweet spot will be where the cross-validation score neither increases 
 [Link to Yellowbrick](https://www.scikit-yb.org/en/latest/index.html).
 
 
-### Mlxtend: Plot Decision Regions of Your ML Classifiers
+## Mlxtend: Plot Decision Regions of Your ML Classifiers
 
 ```{python tags=c("hide-cell")}
 # !pip install mlxtend  
@@ -347,17 +347,17 @@ from mlxtend.classifier import EnsembleVoteClassifier
 from mlxtend.data import iris_data
 from mlxtend.plotting import plot_decision_regions
 
-# Initializing Classifiers
+## Initializing Classifiers
 clf1 = LogisticRegression(random_state=0)
 clf2 = RandomForestClassifier(random_state=0)
 clf3 = SVC(random_state=0, probability=True)
 eclf = EnsembleVoteClassifier(clfs=[clf1, clf2, clf3], weights=[2, 1, 1], voting='soft')
 
-# Loading some example data
+## Loading some example data
 X, y = iris_data()
 X = X[:,[0, 2]]
 
-# Plotting Decision Regions
+## Plotting Decision Regions
 gs = gridspec.GridSpec(2, 2)
 fig = plt.figure(figsize=(10, 8))
 
@@ -376,7 +376,7 @@ Mlxtend (machine learning extensions) is a Python library of useful tools for th
 Find other useful functionalities of Mlxtend [here](https://github.com/rasbt/mlxtend).
 
 
-### imbalanced-learn: Deal with an Imbalanced Dataset
+## imbalanced-learn: Deal with an Imbalanced Dataset
 
 ```{python tags=c("hide-cell")}
 # !pip install imbalanced-learn==0.10.0 mlxtend==0.21.0 scikit-learn==1.2.2
@@ -395,11 +395,11 @@ warnings.simplefilter("ignore", UserWarning)
 ```
 
 ```{python}
-# Libraries for plotting
+## Libraries for plotting
 import matplotlib.pyplot as plt
 from mlxtend.plotting import plot_decision_regions
 
-# Libraries for machine learning
+## Libraries for machine learning
 from sklearn.datasets import make_classification
 from sklearn.svm import LinearSVC
 from imblearn.over_sampling import RandomOverSampler
@@ -430,7 +430,7 @@ X_resampled, y_resampled = ros.fit_resample(X, y)
 Plot the decision regions of the dataset before and after resampling using a LinearSVC classifier:
 
 ```{python}
-# Plotting Decision Regions
+## Plotting Decision Regions
 fig, (ax0, ax1) = plt.subplots(nrows=2, ncols=1, sharey=True, figsize=(6, 10))
 
 for Xi, yi, ax, title in zip(
@@ -452,7 +452,7 @@ The plot reveals that the resampling process has added more data points to the m
 [Link to imbalanced-learn](https://github.com/scikit-learn-contrib/imbalanced-learn).
 
 
-### Estimate Prediction Intervals in Scikit-Learn Models with MAPIE 
+## Estimate Prediction Intervals in Scikit-Learn Models with MAPIE 
 
 ```{python tags=c("hide-cell")}
 # !pip install mapie
@@ -471,7 +471,7 @@ from sklearn.datasets import make_regression
 # Create data
 X, y = make_regression(n_samples=200, n_features=1, noise=50, random_state=0)
 
-# Train and predict
+## Train and predict
 alpha = [0.05, 0.32]
 mapie = MapieRegressor(LinearRegression())
 mapie.fit(X, y)
@@ -491,7 +491,7 @@ coverage_scores = [
 ```
 
 ```{python}
-# Plot the estimated prediction intervals
+## Plot the estimated prediction intervals
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -527,7 +527,7 @@ plt.show()
 [Link to MAPIE](https://github.com/scikit-learn-contrib/MAPIE).
 
 
-### mlforecast: Scalable Machine Learning for Time Series
+## mlforecast: Scalable Machine Learning for Time Series
 
 
 If you want to perform time series forecasting using machine learning models and scale to massive amounts of data with distributed training, try mlforecast. 
@@ -540,7 +540,7 @@ from mlforecast.target_transforms import Differences
 # Create Dask Dataframe
 series_ddf = ...
 
-# Perform distributed training
+## Perform distributed training
 fcst = DistributedMLForecast(
     models=DaskLGBMForecast(),
     freq='D', # daily frequency
@@ -556,7 +556,7 @@ fcst.fit(series_ddf)
 [Link to mlforecast](https://github.com/Nixtla/mlforecast).
 
 
-### MLEM: Capture Your Machine Learning Model's Metadata
+## MLEM: Capture Your Machine Learning Model's Metadata
 
 ```{python tags=c("hide-cell")}
 # !pip install mlem 
@@ -578,23 +578,23 @@ from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
-# Load the diabetes dataset
+## Load the diabetes dataset
 diabetes = datasets.load_diabetes()
 
-# Split the dataset into training and testing sets
+## Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(diabetes.data, diabetes.target, test_size=0.2, random_state=0)
 
 # Create a linear regression model
 model = LinearRegression()
 
-# Train the model on the training set
+## Train the model on the training set
 model.fit(X_train, y_train)
 ```
 
 ```{python}
 from mlem.api import save 
 
-# Instead of joblib.dump(model, 'model/diabetes_model')
+## Instead of joblib.dump(model, 'model/diabetes_model')
 save(model, 'model/diabetes_model', sample_data=X_test)
 ```
 
@@ -657,7 +657,7 @@ requirements:
 [How to deploy your model with MLEM](https://towardsdatascience.com/automate-machine-learning-deployment-with-github-actions-f752766981b1?sk=6e234bb505e6bc426bb4760e4b20da1b).
 
 
-### Distributed Machine Learning with MLlib
+## Distributed Machine Learning with MLlib
 
 ```{python tags=c("hide-cell")}
 # !pip install pyspark
@@ -677,7 +677,7 @@ from pyspark.sql import SparkSession
 
 spark = SparkSession.builder.getOrCreate()
 
-# Prepare training data from a list of (label, features) tuples.
+## Prepare training data from a list of (label, features) tuples.
 training = spark.createDataFrame(
     [
         (1.0, Vectors.dense([0.0, 1.1, 0.1])),
@@ -688,7 +688,7 @@ training = spark.createDataFrame(
     ["label", "features"],
 )
 
-# Prepare test data
+## Prepare test data
 test = spark.createDataFrame(
     [
         (1.0, Vectors.dense([-1.0, 1.5, 1.3])),
@@ -701,11 +701,11 @@ test = spark.createDataFrame(
 # Create a LogisticRegression instance. This instance is an Estimator.
 lr = LogisticRegression(maxIter=10, regParam=0.01)
 
-# Learn a LogisticRegression model. This uses the parameters stored in lr.
+## Learn a LogisticRegression model. This uses the parameters stored in lr.
 model1 = lr.fit(training)
 
-# Make predictions on test data using the Transformer.transform() method.
-# LogisticRegression.transform will only use the 'features' column.
+## Make predictions on test data using the Transformer.transform() method.
+## LogisticRegression.transform will only use the 'features' column.
 prediction = model1.transform(test)
 result = prediction.select("features", "label", "probability", "prediction").collect()
 
@@ -720,7 +720,7 @@ for row in result:
 [Link to MLlib](https://spark.apache.org/docs/latest/ml-guide.html).
 
 
-### Rapid Prototyping and Comparison of Basic Models with Lazy Predict
+## Rapid Prototyping and Comparison of Basic Models with Lazy Predict
 
 
 Lazy Predict enables rapid prototyping and comparison of multiple basic models without extensive manual coding or parameter tuning. 
@@ -783,7 +783,7 @@ print(models)
 [Link to Lazy Predict](https://github.com/shankarpandala/lazypredict).
 
 
-### AutoGluon: Fast and Accurate ML in 3 Lines of Code
+## AutoGluon: Fast and Accurate ML in 3 Lines of Code
 
 
 The traditional scikit-learn approach requires extensive manual work, including data preprocessing, model selection, and hyperparameter tuning.
@@ -797,7 +797,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 
-# Preprocessing Pipeline
+## Preprocessing Pipeline
 numeric_transformer = SimpleImputer(strategy='mean')
 categorical_transformer = OneHotEncoder(handle_unknown='ignore')
 
@@ -807,7 +807,7 @@ preprocessor = ColumnTransformer(
         ('cat', categorical_transformer, categorical_columns)
     ])
 
-# Machine Learning Pipeline
+## Machine Learning Pipeline
 model = RandomForestClassifier()
 
 pipeline = Pipeline(steps=[
@@ -816,7 +816,7 @@ pipeline = Pipeline(steps=[
     ('model', model)
 ])
 
-# Hyperparameter Tuning
+## Hyperparameter Tuning
 param_grid = {
     'model__n_estimators': [100, 200, 300],
     'model__max_depth': [5, 10, None],
@@ -843,7 +843,7 @@ predictions = predictor.predict(test_data)
 [Link to AutoGluon](https://github.com/autogluon/autogluon).
 
 
-### Model Logging Made Easy: MLflow vs. Pickle
+## Model Logging Made Easy: MLflow vs. Pickle
 
 
 Here is why using MLflow to log model is superior to using pickle to save model:
@@ -923,7 +923,7 @@ The `conda.yaml` and `python_env.yaml` files outline the environment dependencie
 [Learn more about MLFlow Models](https://mlflow.org/docs/latest/models.html#python-function-python-function).
 
 
-### Simplifying ML Model Integration with FastAPI
+## Simplifying ML Model Integration with FastAPI
 
 ```{python tags=c("hide-cell")}
 # !pip3 install joblib "fastapi[standard]"
@@ -943,7 +943,7 @@ model = ...
 # Save model
 joblib.dump(model, "model.joblib")
 
-# Load model
+## Load model
 model = joblib.load(model)
 ```
 
@@ -970,19 +970,19 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import joblib
 
-# Load dataset
+## Load dataset
 X, y = fetch_california_housing(as_frame=True, return_X_y=True)
 
-# Split dataset into training and test sets
+## Split dataset into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# Initialize and train the logistic regression model
+## Initialize and train the logistic regression model
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Predict and evaluate the model
+## Predict and evaluate the model
 y_pred = model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)
 print(f"Mean squared error: {mse:.2f}")
@@ -1004,10 +1004,10 @@ import pandas as pd
 # Create a FastAPI application instance
 app = FastAPI()
 
-# Load the pre-trained machine learning model
+## Load the pre-trained machine learning model
 model = joblib.load("lr.joblib")
 
-# Define a POST endpoint for making predictions
+## Define a POST endpoint for making predictions
 @app.post("/predict/")
 def predict(data: list[float]):
     # Define the column names for the input features
@@ -1062,7 +1062,7 @@ This will return the predicted price as a JSON object, rounded to 2 decimal plac
 ```
 
 
-### imodels: Simplifying Machine Learning with Interpretable Models
+## imodels: Simplifying Machine Learning with Interpretable Models
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install imodels
@@ -1080,18 +1080,18 @@ Here's an example of fitting an interpretable decision tree to predict juvenile 
 from sklearn.model_selection import train_test_split
 from imodels import get_clean_dataset, HSTreeClassifierCV 
 
-# Prepare data
+## Prepare data
 X, y, feature_names = get_clean_dataset('juvenile')
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
-# Initialize a tree model and specify only 4 leaf nodes
+## Initialize a tree model and specify only 4 leaf nodes
 model = HSTreeClassifierCV(max_leaf_nodes=4)  
 model.fit(X_train, y_train, feature_names=feature_names)  
 
-# Make predictions
+## Make predictions
 preds = model.predict(X_test) 
 
-# Print the model
+## Print the model
 print(model)
 ```
 
@@ -1101,7 +1101,7 @@ This tree structure clearly shows how predictions are made based on feature valu
 [Link to imodels](https://github.com/csinva/imodels).
 
 
-### How to Build a Recommendation Engine Using Surprise in Python
+## How to Build a Recommendation Engine Using Surprise in Python
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install scikit-surprise
@@ -1110,7 +1110,7 @@ This tree structure clearly shows how predictions are made based on feature valu
 Building reliable recommendation systems from scratch requires complex algorithms and data handling, which results in spending significant time implementing common algorithms like SVD or handling cross-validation procedures.
 
 ```python
-# Without a dedicated library, you'd need to implement basic collaborative filtering:
+## Without a dedicated library, you'd need to implement basic collaborative filtering:
 import numpy as np
 
 def calculate_similarity(ratings_matrix):
@@ -1121,7 +1121,7 @@ def predict_rating(user_id, item_id, ratings, similarities):
     # Complex prediction logic
     pass
 
-# Handle cross-validation manually
+## Handle cross-validation manually
 def cross_validate(ratings_data, n_folds):
     # Manual implementation of CV
     pass
@@ -1137,7 +1137,7 @@ from surprise import Dataset, SVD, Reader
 from surprise.model_selection import cross_validate
 
 
-# Creation of the dataframe. Column names are irrelevant.
+## Creation of the dataframe. Column names are irrelevant.
 ratings_dict = {
     "itemID": [1, 1, 1, 2, 2],
     "userID": [9, 32, 2, 45, 4],
@@ -1145,15 +1145,15 @@ ratings_dict = {
 }
 df = pd.DataFrame(ratings_dict)
  
-# A reader is still needed but only the rating_scale param is required.
+## A reader is still needed but only the rating_scale param is required.
 reader = Reader(rating_scale=(1, 5))
 
-# The columns must correspond to user id, item id and ratings (in that order).
+## The columns must correspond to user id, item id and ratings (in that order).
 data = Dataset.load_from_df(df[["userID", "itemID", "rating"]], reader)
 
 algo = SVD()
 
-# Run 2-fold cross-validation and print results.
+## Run 2-fold cross-validation and print results.
 result = cross_validate(algo, data, cv=2, measures=['RMSE', 'MAE'], verbose=True)
 ```
 
@@ -1172,7 +1172,7 @@ Surprise also provides a variety of basic algorithms, k-NN inspired algorithms, 
 [Link to Surprise](https://github.com/NicolasHug/Surprise).
 
 
-### PyOD: Simplifying Outlier Detection in Python
+## PyOD: Simplifying Outlier Detection in Python
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install pyod

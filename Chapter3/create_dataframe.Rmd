@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Create a DataFrame
+# Create a DataFrame
 
 
 This section shows some tips to read or create a DataFrame.
 
 
-### Leverage PyArrow for Efficient Parquet Data Filtering
+# Leverage PyArrow for Efficient Parquet Data Filtering
 
 
 When dealing with Parquet files in pandas, it is common to first load the data into a pandas DataFrame and then apply filters.
@@ -55,7 +55,7 @@ pd.read_parquet(file_path).query("id == 50000")
 pd.read_parquet(file_path, filters=[("id", "=", 50000)])
 ```
 
-### Fix Unnamed:0 When Reading a CSV in pandas
+## Fix Unnamed:0 When Reading a CSV in pandas
 
 
 Sometimes, when reading a CSV in pandas, you will get an `Unnamed:0` column.
@@ -82,7 +82,7 @@ df = pd.read_csv("data.csv", index_col=0)
 print(df)
 ```
 
-### Read Data from a Website
+## Read Data from a Website
 
 
 pandas allows you to read data from a website without downloading the data. 
@@ -104,7 +104,7 @@ df = pd.read_csv(
 df.head(5)
 ```
 
-### Divide a Large pandas DataFrame into Chunks
+## Divide a Large pandas DataFrame into Chunks
 
 
 Large dataframes can consume a significant amount of memory. By processing data in smaller chunks, you can avoid running out of memory and access data faster.
@@ -141,7 +141,7 @@ for df_ in df_chunks:
     print(df_.shape)
 ```
 
-### Read HTML Tables Using Pandas
+## Read HTML Tables Using Pandas
 
 
 If you want to quickly extract a table on a website and turn it into a Pandas DataFrame, use `pd.read_html`. In the code below, I extracted the table from a Wikipedia page in one line of code. 
@@ -153,7 +153,7 @@ df = pd.read_html("https://en.wikipedia.org/wiki/Poverty")
 df[1]
 ```
 
-### DataFrame.copy(): Make a Copy of a DataFrame
+## DataFrame.copy(): Make a Copy of a DataFrame
 
 
 Have you ever tried to make a copy of a DataFrame using `=`? You will not get a copy but a reference to the original DataFrame. Thus, changing the new DataFrame will also change the original DataFrame.  
@@ -179,14 +179,14 @@ df = pd.DataFrame({"col1": [1, 2, 3], "col2": [4, 5, 6]})
 # Create a copy of the original DataFrame
 df3 = df.copy()
 
-# Change the value of the copy
+## Change the value of the copy
 df3["col1"] = [7, 8, 9]
 
-# Check if the original DataFrame has been changed
+## Check if the original DataFrame has been changed
 df
 ```
 
-### Copy on Write Mode in pandas 2.0
+## Copy on Write Mode in pandas 2.0
 
 ```{python tags=c("hide-cell")}
 # !pip install pandas==2.0.0
@@ -202,10 +202,10 @@ df1 = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
 # Create a view of the original DataFrame
 df2 = df1["col1"]
 
-# Change the value of the view
+## Change the value of the view
 df2.iloc[0] = 10
 
-# The original DataFrame has been changed
+## The original DataFrame has been changed
 df1
 ```
 
@@ -219,10 +219,10 @@ df1 = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
 # Create a copy of the original DataFrame
 df2 = df1["col1"]
 
-# Change the value of the copy
+## Change the value of the copy
 df2.iloc[0] = 10
 
-# The original DataFrame has not been changed
+## The original DataFrame has not been changed
 df1
 ```
 
@@ -242,7 +242,7 @@ df = pd.DataFrame(data)
 df.to_csv("data.csv", index=False)
 ```
 
-### Specify Datetime Columns with parse_dates
+## Specify Datetime Columns with parse_dates
 
 
 Use the `parse_dates` parameter to specify datetime columns when creating a pandas DataFrame from a CSV, rather than converting columns to datetime post-creation. This keeps the code concise and easier to read.
@@ -260,7 +260,7 @@ print(f'Datatypes after converting to datetime\n{df.dtypes}')
 ```
 
 ```{python}
-# Do this
+## Do this
 df = pd.read_csv('data.csv', parse_dates=['start_date', 'end_date'])
 df.dtypes
 ```

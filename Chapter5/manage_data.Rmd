@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Manage Data
+# Manage Data
 
 
 This section covers some tools to work with your data. 
 
 
-### DVC: A Data Version Control Tool for Your Data Science Projects
+# DVC: A Data Version Control Tool for Your Data Science Projects
 
 ```{python tags=c("hide-cell")}
 # !pip install dvc
@@ -42,13 +42,13 @@ $ git commit -m "add data"
 # Store the data remotely
 $ dvc remote add -d remote gdrive://lynNBbT-4J0ida0eKYQqZZbC93juUUUbVH
 
-# Push the data to remote storage
+## Push the data to remote storage
 $ dvc push 
 
-# Get the data
+## Get the data
 $ dvc pull 
 
-# Switch between different version
+## Switch between different version
 $ git checkout HEAD^1 data.dvc
 $ dvc checkout
 ```
@@ -57,7 +57,7 @@ $ dvc checkout
 [Link to DVC](https://dvc.org/)
 
 
-### sweetviz: Compare the similar features between 2 different datasets
+## sweetviz: Compare the similar features between 2 different datasets
 
 ```{python tags=c("hide-cell")}
 # !pip install sweetviz 
@@ -85,7 +85,7 @@ report.show_html()
 [Link to sweetviz](https://github.com/fbdesignpro/sweetviz)
 
 
-### quadratic: Data Science Speadsheet with Python and SQL
+## quadratic: Data Science Speadsheet with Python and SQL
 
 If you want to use Python or SQL in an Excel sheet, use quadratic.
 
@@ -95,7 +95,7 @@ If you want to use Python or SQL in an Excel sheet, use quadratic.
 
 
 
-### whylogs: Data Logging Made Easy
+## whylogs: Data Logging Made Easy
 
 ```{python tags=c("hide-cell")}
 # !pip install whylogs
@@ -117,10 +117,10 @@ data = {
 
 df = pd.DataFrame(data)
 
-# Log the DataFrame using whylogs and create a profile
+## Log the DataFrame using whylogs and create a profile
 profile = why.log(df).profile()
 
-# View the profile and convert it to a pandas DataFrame
+## View the profile and convert it to a pandas DataFrame
 prof_view = profile.view()
 prof_df = prof_view.to_pandas()
 prof_df
@@ -137,7 +137,7 @@ prof_df.columns
 [Link to whylogs](https://github.com/whylabs/whylogs).
 
 
-### Fluke: The Easiest Way to Move Data Around
+## Fluke: The Easiest Way to Move Data Around
 
 
 Transferring data between locations—such as from a remote server to cloud storage—can be cumbersome, especially with Python libraries that involve complex HTTP/SSH connections and directory handling. 
@@ -151,14 +151,14 @@ Example usage:
 ```python
 from fluke.auth import RemoteAuth, AWSAuth
 
-# This object will be used to authenticate
+## This object will be used to authenticate
 # with the remote machine.
 rmt_auth = RemoteAuth.from_password(
     hostname="host",
     username="user",
     password="password")
 
-# This object will be used to authenticate
+## This object will be used to authenticate
 # with AWS.
 aws_auth = AWSAuth(
     aws_access_key_id="aws_access_key",
@@ -180,7 +180,7 @@ with (
 [Link to Fluke](https://github.com/manoss96/fluke).
 
 
-### safetensors: A Simple and Safe Way to Store and Distribute Tensors
+## safetensors: A Simple and Safe Way to Store and Distribute Tensors
 
 ```{python tags=c("hide-cell")}
 # !pip install torch safetensors
@@ -210,7 +210,7 @@ with safe_open("model.safetensors", framework="pt", device="cpu") as f:
 [Link to safetensors](https://bit.ly/3vqzbhl).
 
 
-### datacompy: Smart Data Comparison Made Simple
+## datacompy: Smart Data Comparison Made Simple
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install datacompy
@@ -249,15 +249,15 @@ df2
 ```
 
 ```{python}
-# Check if shapes match
+## Check if shapes match
 shape_match = df1.shape == df2.shape
 
-# Compare values
+## Compare values
 merged = df1.merge(df2, on=['acct_id', 'name'], how='outer', suffixes=('_1', '_2'))
 mismatches = merged[merged['dollar_amt_1'] != merged['dollar_amt_2']]
 missing = merged[merged['dollar_amt_1'].isna() | merged['dollar_amt_2'].isna()]
 
-# Manual reporting
+## Manual reporting
 print(f"Shapes match: {shape_match}")
 print("\nMismatches:")
 print(mismatches)

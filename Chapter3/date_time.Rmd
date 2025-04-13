@@ -13,13 +13,13 @@ jupyter:
     name: python3
 ---
 
-## Work with Datetime 
+# Work with Datetime 
 
 
 ![](../img/datetime_pandas.png)
 
 
-### parse_dates: Convert Columns into Datetime When Using pandas to Read CSV Files
+## parse_dates: Convert Columns into Datetime When Using pandas to Read CSV Files
 
 
 If there are datetime columns in your CSV file, use the `parse_dates` parameter when reading CSV file with pandas. This reduces one extra step to convert these columns from string to datetime after reading the file.
@@ -53,7 +53,7 @@ df
 df.info()
 ```
 
-### pandas' DateOffset: Add a Time Interval to a pandas Timestamp
+## pandas' DateOffset: Add a Time Interval to a pandas Timestamp
 
 
 If you want to add days, months, or other time intervals to a pandas `Timestamp`,  use `pd.DateOffset`.
@@ -64,26 +64,26 @@ from pandas.tseries.offsets import DateOffset, BDay
 
 ts = pd.Timestamp('2021-10-10 9:00:00')
 
-# Increase the timestamp by 3 months
+## Increase the timestamp by 3 months
 ts + DateOffset(months=3)
 ```
 
 ```{python}
-# Increase the timestamp by 3 years and 3 hours
+## Increase the timestamp by 3 years and 3 hours
 ts + DateOffset(years=3, hours=3)
 ```
 
 You can also increase the timestamp by `n` business days using `BDay`. 
 
 ```{python}
-# Increase the timestamp by 6 business days
+## Increase the timestamp by 6 business days
 ts + BDay(n=6)
 ```
 
 [Link to pandas DateOffset](https://pandas.pydata.org/docs/reference/api/pandas.tseries.offsets.DateOffset.html).
 
 
-### DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
+## DataFrame rolling: Find The Average of The Previous n Datapoints Using pandas
 
 
 If you want to find the average of the previous n data points (simple moving average) with pandas, use `df.rolling(time_period).mean()`.
@@ -114,7 +114,7 @@ df
 df.rolling(3).mean()
 ```
 
-### pandas Grouper: Group Values Based on a Specific Frequency
+## pandas Grouper: Group Values Based on a Specific Frequency
 
 
 Imagine you are given a DataFrame with a date column. If you want to group your DataFrame by a specific frequency, use `pd.Grouper`. A `Grouper` allows you to customize your groupby instruction.
@@ -136,7 +136,7 @@ df
 df.groupby(pd.Grouper(key="date", freq="1W")).mean()
 ```
 
-### pandas.Series.dt: Access Datetime Properties of a pandas Series
+## pandas.Series.dt: Access Datetime Properties of a pandas Series
 
 
 The easiest way to access datetime properties of pandas Series values is to use `pandas.Series.dt`.
@@ -155,7 +155,7 @@ df["date"].dt.year
 df["date"].dt.time
 ```
 
-### Get Rows within a Year Range
+## Get Rows within a Year Range
 
 
 If you want to get all data starting in a particular year and exclude the previous years, simply use `df.loc['year':]` like below. This works when the index of your `pd.Dataframe` is `DatetimeIndex`.
@@ -178,7 +178,7 @@ df
 df.loc["2019":]
 ```
 
-### pandas.reindex: Replace the Values of the Missing Dates with 0
+## pandas.reindex: Replace the Values of the Missing Dates with 0
 
 
 Have you ever got a time series with missing dates? This can cause a problem since many time series methods require a fixed frequency index.
@@ -194,15 +194,15 @@ s
 ```
 
 ```{python}
-# Get dates ranging from 2021/7/20 to 2021/7/25
+## Get dates ranging from 2021/7/20 to 2021/7/25
 new_index = pd.date_range("2021-07-20", "2021-07-25")
 
-# Conform Series to new index
+## Conform Series to new index
 new_s = s.reindex(new_index, fill_value=0)
 new_s
 ```
 
-### Select DataFrame Rows Before or After a Specific Date
+## Select DataFrame Rows Before or After a Specific Date
 
 
 If you want to get the rows whose dates are before or after a specific date, use the comparison operator and a date string.
@@ -221,7 +221,7 @@ filtered_df = df[df.date <= "2021-07-21"]
 filtered_df
 ```
 
-### resample: Resample Time-Series Data
+## resample: Resample Time-Series Data
 
 
 If you want to change the frequency of time-series data,  use `resample`. In the code below, I use `resample` to show the records every two days instead of every day. 
@@ -239,7 +239,7 @@ s
 s.resample('2D').sum()
 ```
 
-### Shift the Index of a DataFrame by a Specific Number of Periods 
+## Shift the Index of a DataFrame by a Specific Number of Periods 
 
 
 If you want to shift the index of a DataFrame by a specific number of periods, use `pandas.DataFrame.shift`.

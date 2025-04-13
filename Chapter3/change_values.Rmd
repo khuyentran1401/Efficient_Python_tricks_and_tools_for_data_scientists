@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-## Change Values
+# Change Values
 
 ```{python tags=c("remove-cell")}
 import warnings
@@ -25,7 +25,7 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 ![](../img/change_values.png)
 
 
-### Apply Multiple Functions to a DataFrame with Pipe
+# Apply Multiple Functions to a DataFrame with Pipe
 
 ```{python tags=c("hide-cell")}
 # !pip install textblob
@@ -51,7 +51,7 @@ df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 df.pipe(get_sum).pipe(drop_column, "a")
 ```
 
-### Apply a Function to a Column of a DataFrame
+# Apply a Function to a Column of a DataFrame
 
 
 If you want to apply only one function to a column of a DataFrame, use `apply`.
@@ -70,7 +70,7 @@ df
 
 ```
 
-### Apply a Function to a DataFrame Elementwise
+# Apply a Function to a DataFrame Elementwise
 
 
 The `apply` method applies a function along an axis of a DataFrame. If you want to apply a function to a DataFrame elementwise, use `applymap`.
@@ -88,7 +88,7 @@ df.applymap(lambda val: "failed" if val < 5 else "passed")
 
 ```
 
-### Assign Values to Multiple New Columns
+# Assign Values to Multiple New Columns
 
 
 If you want to assign values to multiple new columns, instead of assigning them separately, you can do everything in one line of code with `df.assign`.
@@ -107,7 +107,7 @@ df
 
 ```
 
-### pandas.Series.map: Change Values of a Pandas Series Using a Dictionary	
+## pandas.Series.map: Change Values of a Pandas Series Using a Dictionary	
 
 
 If you want to change values of a pandas Series using a dictionary, use `pd.Series.map`.
@@ -131,7 +131,7 @@ s.map("Today I got some {} from my garden.".format)
 
 ```
 
-### pandas.DataFrame.explode: Transform Each Element in an Iterable to a Row
+## pandas.DataFrame.explode: Transform Each Element in an Iterable to a Row
 
 
 When working with `pandas DataFrame`, if you want to transform each element in an iterable to a row, use `explode`.
@@ -149,7 +149,7 @@ df.explode("a")
 
 ```
 
-### Split a String into Multiple Rows
+## Split a String into Multiple Rows
 
 
 Sometimes, you might have a column whose values are strings representing different items such as `"1, 2"`. 
@@ -165,7 +165,7 @@ df
 To turn each string into a list, use `Series.str.split()`:
 
 ```{python}
-# Split by comma
+## Split by comma
 df.a = df.a.str.split(",")
 df
 
@@ -178,7 +178,7 @@ df.explode("a")
 
 ```
 
-### Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value
+## Forward Fill in pandas: Use the Previous Value to Fill the Current Missing Value
 
 
 If you want to use the previous value in a column or a row to fill the current missing value in a pandas DataFrame, use `df.fillna(method=’ffill’)`. `ffill` stands for forward fill.
@@ -198,7 +198,7 @@ df
 
 ```
 
-### Replace the Missing Values with the Most Frequent Categories in a Column
+## Replace the Missing Values with the Most Frequent Categories in a Column
 
 
 If you want to replace missing values with the most frequent categories in a column, find the mode of your DataFrame and use it to fill the missing values. 
@@ -217,7 +217,7 @@ df.fillna(df.mode().iloc[0])
 
 ```
 
-### Encode Categorical Values in a Pandas DataFrame
+## Encode Categorical Values in a Pandas DataFrame
 
 
 There are multiple ways for you to encode a categorical column in a pandas DataFrame. If you simply want to convert each value in a column to a number, use `cat.codes`.  
@@ -227,16 +227,16 @@ import pandas as pd
 
 df = pd.DataFrame({"col1": ["a", "b", "b", "c"]})
 
-# Convert col1 to a category
+## Convert col1 to a category
 df["col1"] = df["col1"].astype("category")
 
-# Encode col1
+## Encode col1
 df["encoded_col1"] = df["col1"].cat.codes
 print(df)
 
 ```
 
-### Optimize Your Pandas Code with Vectorized Operations
+## Optimize Your Pandas Code with Vectorized Operations
 
 
 Use pandas' vectorized operations instead of performing operations on each column individually. This leverages pandas' optimized C implementation for better performance, especially with large datasets.
@@ -257,20 +257,20 @@ data = pd.DataFrame(
 
 fill_dict = {"A": 3, "B": 1}
 
-# Iterate over each column and fill missing values with 0
+## Iterate over each column and fill missing values with 0
 df = data.copy()
 for col, value in fill_dict.items():
     df[col] = df[col].fillna(value)
 print(df)
 
-# Use vectorized operations to fill missing values
+## Use vectorized operations to fill missing values
 df = data.copy()
 df = df.fillna(fill_dict)
 print(df)
 
 ```
 
-### Raise an Exception for a Chained Assignment in pandas
+## Raise an Exception for a Chained Assignment in pandas
 
 
 Pandas allows chained assignments, which involve performing multiple indexing operations in a single statement, but they can lead to unexpected results or errors.
@@ -283,7 +283,7 @@ import pandas as pd
 df = pd.DataFrame({"col1": [-2, 2], "col2": [0, 0]})
 
 # Create a new copy of the selected rows
-# Sets the value of `col2` to 1 in the new copy
+## Sets the value of `col2` to 1 in the new copy
 df[df["col1"] > 0]["col2"] = 1
 df
 

@@ -13,9 +13,9 @@ jupyter:
     name: python3
 ---
 
-## SQL Libraries
+# SQL Libraries
 
-### SQL Analytics with DuckDB
+# SQL Analytics with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install psycopg2 duckdb
@@ -85,7 +85,7 @@ print(result)
 
 [Link to DuckDB](https://github.com/duckdb/duckdb)
 
-### Efficient SQL Operations with DuckDB on Pandas DataFrames
+## Efficient SQL Operations with DuckDB on Pandas DataFrames
 
 ```{python}
 # !pip install --quiet duckdb
@@ -135,7 +135,7 @@ GROUP BY
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Efficiently Handle Large Datasets with DuckDB and PyArrow
+## Efficiently Handle Large Datasets with DuckDB and PyArrow
 
 ```{python}
 # !pip install deltalake duckdb
@@ -180,7 +180,7 @@ quack.filter("l_quantity > 50")
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Simplify CSV Data Management with DuckDB
+## Simplify CSV Data Management with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb
@@ -233,7 +233,7 @@ duckdb.sql("SELECT * FROM 'customers.csv'")
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### Multiple CSV Files Processing with DuckDB
+## Multiple CSV Files Processing with DuckDB
 
 ```{python tags=c("hide-cell")}
 # !pip install duckdb
@@ -278,7 +278,7 @@ import os
 
 import pandas as pd
 
-# Read all CSV files and concatenate them
+## Read all CSV files and concatenate them
 csv_files = glob.glob("data/*.csv")
 dfs = []
 
@@ -286,10 +286,10 @@ for file in csv_files:
     df = pd.read_csv(file)
     dfs.append(df)
 
-# Concatenate all dataframes
+## Concatenate all dataframes
 combined_df = pd.concat(dfs, ignore_index=True)
 
-# Perform grouping and aggregation
+## Perform grouping and aggregation
 result = (
     combined_df.groupby("Date")["Sales"]
     .sum()
@@ -306,7 +306,7 @@ DuckDB simplifies reading multiple CSV files with a single line of code that eff
 ```{python}
 import duckdb
 
-# Read and analyze all CSV files at once
+## Read and analyze all CSV files at once
 result = duckdb.sql(
     """
     SELECT 
@@ -322,7 +322,7 @@ result
 
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
-### DuckDB: Query Pandas DataFrames Faster with Columnar Storage
+## DuckDB: Query Pandas DataFrames Faster with Columnar Storage
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install duckdb
@@ -341,11 +341,11 @@ customer = pd.DataFrame(
     {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
 )
 
-# Load data to SQLite and query
+## Load data to SQLite and query
 conn = sqlite3.connect(":memory:")
 customer.to_sql("customer", conn, index=False)
 
-# Must read all columns internally even though we only need 'age'
+## Must read all columns internally even though we only need 'age'
 query = "SELECT age FROM customer"
 result = pd.read_sql(query, conn)
 ```
@@ -371,7 +371,7 @@ In this example, DuckDB only needs to access the 'age' column in memory, while S
 [Link to DuckDB](https://github.com/duckdb/duckdb).
 
 
-### Create Dynamic SQL Statements with Python string Template
+# Create Dynamic SQL Statements with Python string Template
 
 ```{python}
 # %%writefile query.sql
@@ -389,10 +389,10 @@ WHERE
 import pathlib
 from string import Template
 
-# Read the query from the file
+## Read the query from the file
 query = pathlib.Path("query.sql").read_text()
 
-# Substitute the placeholders with the values
+## Substitute the placeholders with the values
 t = Template(query)
 substitutions = {"limit": 10, "start_date": "2021-01-01"}
 print(t.substitute(substitutions))
@@ -413,11 +413,11 @@ engine = sqlalchemy.create_engine(
 )
 
 
-# Read a SQL table into a DataFrame
+## Read a SQL table into a DataFrame
 df = pd.read_sql("SELECT * FROM table_name", engine)
 ```
 
-### FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
+## FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames
 
 ```{python tags=c("hide-cell")}
 # !pip install fugue
@@ -442,7 +442,7 @@ fsql(query).run()
 
 [Link to fugue](https://github.com/fugue-project/fugue).
 
-### SQLModel: Simplify SQL Database Interactions in Python
+## SQLModel: Simplify SQL Database Interactions in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install sqlmodel
@@ -453,13 +453,13 @@ Interacting with SQL databases from Python code can often be challenging to writ
 ```{python}
 import sqlite3
 
-# Connect to the database
+## Connect to the database
 conn = sqlite3.connect("users.db")
 
 # Create a cursor object
 cursor = conn.cursor()
 
-# Define the SQL statement for creating the table
+## Define the SQL statement for creating the table
 create_table_sql = """
     CREATE TABLE IF NOT EXISTS membership (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -469,26 +469,26 @@ create_table_sql = """
     )
 """
 
-# Execute the SQL statement to create the table
+## Execute the SQL statement to create the table
 cursor.execute(create_table_sql)
 
-# Define the SQL statement for inserting rows
+## Define the SQL statement for inserting rows
 insert_rows_sql = """
     INSERT INTO membership (username, age, active)
     VALUES (?, ?, ?)
 """
 
-# Define the rows to be inserted
+## Define the rows to be inserted
 rows = [("John", 25, 1), ("Jane", 30, 0), ("Mike", 35, 1)]
 
-# Execute the SQL statement for each row
+## Execute the SQL statement for each row
 for row in rows:
     cursor.execute(insert_rows_sql, row)
 
-# Commit the changes to the database
+## Commit the changes to the database
 conn.commit()
 
-# Close the cursor and the database connection
+## Close the cursor and the database connection
 cursor.close()
 conn.close()
 ```
@@ -528,7 +528,7 @@ with Session(engine) as session:
 
 [Link to SQLModel](https://github.com/tiangolo/sqlmodel).
 
-### SQLFluff: A Linter and Auto-Formatter for Your SQL Code
+## SQLFluff: A Linter and Auto-Formatter for Your SQL Code
 
 ```{python tags=c("hide-cell")}
 # !pip install sqlfluff
@@ -570,7 +570,7 @@ Now, the SQL code is formatted and readable.
 
 [Link to SQLFluff](https://github.com/sqlfluff/sqlfluff).
 
-### PostgresML: Integrate Machine Learning with PostgreSQL
+## PostgresML: Integrate Machine Learning with PostgreSQL
 
 If you want to seamlessly integrate machine learning models into your PostgreSQL database, use PostgresML. 
 
@@ -625,7 +625,7 @@ LIMIT 5;
 
 [Link to PostgresML](https://github.com/postgresml/postgresml).s
 
-### sql-metadata: Extract Components From a SQL Statement in Python
+## sql-metadata: Extract Components From a SQL Statement in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install sql-metadata
@@ -649,7 +649,7 @@ print(f"Limit: {parsed_query.limit_and_offset}")
 
 [Link to sql-metadata](https://github.com/macbre/sql-metadata).
 
-### SQLGlot: Write Once, Run Anywhere SQL
+## SQLGlot: Write Once, Run Anywhere SQL
 
 ```{python tags=c("hide-cell")}
 # !pip install "sqlglot[rs]"
@@ -672,16 +672,16 @@ sqlglot.transpile("SELECT STRFTIME(x, '%y-%-m-%S')", read="duckdb", write="hive"
 Convert a SQL query to Spark SQL:
 
 ```{python}
-# Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`
+## Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`
 sql = "SELECT id, name, CAST(price AS REAL) AS converted_price FROM products"
 
-# Translates the query into Spark SQL, formats it, and delimits all of its identifiers
+## Translates the query into Spark SQL, formats it, and delimits all of its identifiers
 print(sqlglot.transpile(sql, write="spark", identify=True, pretty=True)[0])
 ```
 
 [Link to SQLGlot](https://bit.ly/4dGyTmP).
 
-### SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations
+## SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations
 
 ```{python tags=c("hide-cell")}
 # !pip install sqlitedict

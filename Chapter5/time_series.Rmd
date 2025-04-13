@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-## Time Series
+# Time Series
 
 
 This section shows some tools to work with datetime and time series. 
@@ -22,7 +22,7 @@ This section shows some tools to work with datetime and time series.
 ![](../img/datetime.png)
 
 
-### Extract Dates from Text with Datefinder
+# Extract Dates from Text with Datefinder
 
 ```{python tags=c("hide-cell")}
 # !pip install datefinder
@@ -64,7 +64,7 @@ I hope you can attend one of the meetings.
 # Extract dates from text
 matches = datefinder.find_dates(string_with_dates)
 
-# Print each match
+## Print each match
 for match in matches:
     print(match)
 ```
@@ -79,10 +79,10 @@ and another meeting on 5/18/2021 at 10:00.
 I hope you can attend one of the meetings.
 """
 
-# Extract dates from text
+## Extract dates from text
 matches = datefinder.find_dates(string_with_dates)
 
-# Print each match
+## Print each match
 for match in matches:
     print(match)
 ```
@@ -96,7 +96,7 @@ In the above code:
 [Link to Datefinder](https://github.com/akoumjian/datefinder).
 
 
-### Fastai's add_datepart: Add Relevant DateTime Features in One Line of Code
+## Fastai's add_datepart: Add Relevant DateTime Features in One Line of Code
 
 ```{python tags=c("hide-cell")}
 # !pip install fastai
@@ -133,7 +133,7 @@ df.columns
 [Link to Fastai's methods to work with tabular data](https://docs.fast.ai/tabular.core.html)
 
 
-### Maya: Convert the string to datetime automatically
+## Maya: Convert the string to datetime automatically
 
 ```{python tags=c("hide-cell")}
 # !pip install maya
@@ -144,7 +144,7 @@ Date string conversion to datetime can be tedious using `strptime()`. The `maya`
 ```{python}
 import maya
 
-# Automatically parse datetime string
+## Automatically parse datetime string
 string = "2016-12-16 18:23:45.423992+00:00"
 maya.parse(string).datetime()
 ```
@@ -158,7 +158,7 @@ maya.parse(string).datetime(to_timezone="US/Central")
 [Link to maya](https://github.com/timofurrer/maya).
 
 
-### Pendulum: Python Datetimes Made Easy
+## Pendulum: Python Datetimes Made Easy
 
 ```{python tags=c("hide-cell")}
 # !pip install pendulum
@@ -178,24 +178,24 @@ from datetime import datetime, timedelta
 
 import pytz
 
-# Creating a datetime
+## Creating a datetime
 now = datetime.now()
 print(f"Current time: {now}")
 
-# Date arithmetic
+## Date arithmetic
 future = now + timedelta(days=7)
 print(f"7 days from now: {future}")
 
-# Timezone handling
+## Timezone handling
 utc_now = datetime.now(pytz.UTC)
 tokyo_tz = pytz.timezone("Asia/Tokyo")
 tokyo_time = utc_now.astimezone(tokyo_tz)
 print(f"Time in Tokyo: {tokyo_time}")
 
-# Parsing (requires exact format)
+## Parsing (requires exact format)
 parsed = datetime.strptime("2023-05-15 14:30:00", "%Y-%m-%d %H:%M:%S")
 
-# Time difference (not human-readable)
+## Time difference (not human-readable)
 diff = parsed - now
 print(f"Difference: {diff}")
 ```
@@ -205,23 +205,23 @@ Pendulum:
 ```{python}
 import pendulum
 
-# Creating a datetime
+## Creating a datetime
 now = pendulum.now()
 print(f"Current time: {now}")
 
-# Date arithmetic (more intuitive than datetime)
+## Date arithmetic (more intuitive than datetime)
 future = now.add(days=7)
 print(f"7 days from now: {future}")
 
-# Timezone handling
+## Timezone handling
 tokyo_time = now.in_timezone("Asia/Tokyo")
 print(f"Time in Tokyo: {tokyo_time}")
 
-# Parsing without specifying format
+## Parsing without specifying format
 parsed = pendulum.parse("2023-05-15 14:30:00")
 print(f"Parsed date: {parsed}")
 
-# Human-readable differences
+## Human-readable differences
 diff = parsed - now
 print(f"Difference: {diff.in_words()}")
 ```
@@ -229,7 +229,7 @@ print(f"Difference: {diff.in_words()}")
 [Link to Pendulum](https://bit.ly/49aJ4gS).
 
 
-### traces: A Python Library for Unevenly-Spaced Time Series Analysis
+## traces: A Python Library for Unevenly-Spaced Time Series Analysis
 
 
 ```{python tags=c("hide-cell")}
@@ -242,7 +242,7 @@ To analyze unevenly-spaced time series, you can use the `traces` library. It all
 Here’s an example where we log working hours for several dates but miss a few:
 
 ```{python}
-# Log working hours for each date
+## Log working hours for each date
 from datetime import datetime
 
 import traces
@@ -257,12 +257,12 @@ working_hours[datetime(2021, 9, 16)] = 2
 To retrieve the hours for dates where no data was logged, `traces` fills in the gaps using neighboring values:
 
 ```{python}
-# Get value on 2021/09/11
+## Get value on 2021/09/11
 working_hours[datetime(2021, 9, 11)]
 ```
 
 ```{python}
-# Get value on 2021/09/14
+## Get value on 2021/09/14
 working_hours[datetime(2021, 9, 14)]
 ```
 
@@ -291,7 +291,7 @@ distribution.mean()
 [Link to traces](https://github.com/datascopeanalytics/traces)
 
 
-### Extract holiday from date column
+## Extract holiday from date column
 
 ```{python tags=c("hide-cell")}
 # !pip install holidays
@@ -324,7 +324,7 @@ us_holidays.get("2014/7/4")
 [Link to holidays](https://pypi.org/project/holidays/).
 
 
-### Workalendar: Handle Working-Day Computation in Python  
+## Workalendar: Handle Working-Day Computation in Python  
 
 ```{python tags=c("hide-cell")}
 # !pip install workalendar
@@ -340,7 +340,7 @@ from workalendar.usa import UnitedStates
 ```
 
 ```{python}
-# Get all holidays in the US
+## Get all holidays in the US
 
 US_cal = UnitedStates()
 US_cal.holidays(2024)
@@ -355,12 +355,12 @@ US_cal.is_working_day(date(2024, 9, 2))  # Labor Day
 ```
 
 ```{python}
-# Calculate working days between 2024/1/19 and 2024/5/15
+## Calculate working days between 2024/1/19 and 2024/5/15
 US_cal.get_working_days_delta(date(2024, 1, 19), date(2024, 5, 15))
 ```
 
 ```{python}
-# Get holidays in Japan
+## Get holidays in Japan
 JA_cal = Japan()
 JA_cal.holidays(2024)
 ```
@@ -368,7 +368,7 @@ JA_cal.holidays(2024)
 [Link to Workalendar](https://github.com/workalendar/workalendar).
 
 
-### Pmdarima: Harness R's auto.arima Power with a scikit-learn-Like Interface
+## Pmdarima: Harness R's auto.arima Power with a scikit-learn-Like Interface
 
 ```{python tags=c("hide-cell")}
 # !pip install pmdarima
@@ -382,17 +382,17 @@ import numpy as np
 import pmdarima as pm
 from pmdarima.model_selection import train_test_split
 
-# Load/split your data
+## Load/split your data
 y = pm.datasets.load_wineind()
 train, test = train_test_split(y, train_size=150)
 
-# Fit your model
+## Fit your model
 model = pm.auto_arima(train, seasonal=True, m=12)
 
-# Make your forecasts
+## Make your forecasts
 forecasts = model.predict(test.shape[0])  # predict N steps into the future
 
-# Visualize the forecasts (blue=train, green=forecasts)
+## Visualize the forecasts (blue=train, green=forecasts)
 x = np.arange(y.shape[0])
 plt.plot(x[:150], train, c="blue")
 plt.plot(x[150:], forecasts, c="green")
@@ -409,11 +409,11 @@ from pmdarima.model_selection import train_test_split
 from pmdarima.pipeline import Pipeline
 from pmdarima.preprocessing import BoxCoxEndogTransformer
 
-# Load/split your data
+## Load/split your data
 y = pm.datasets.load_sunspots()
 train, test = train_test_split(y, train_size=2700)
 
-# Define and fit your pipeline
+## Define and fit your pipeline
 pipeline = Pipeline(
     [
         ("boxcox", BoxCoxEndogTransformer(lmbda2=1e-6)),
@@ -430,7 +430,7 @@ pipeline.fit(train)
 with open("model.pkl", "wb") as pkl:
     pickle.dump(pipeline, pkl)
 
-# Load it and make predictions seamlessly:
+## Load it and make predictions seamlessly:
 with open("model.pkl", "rb") as pkl:
     mod = pickle.load(pkl)
     print(mod.predict(15))
@@ -439,7 +439,7 @@ with open("model.pkl", "rb") as pkl:
 [Link to Pmdarima](https://github.com/alkaline-ml/pmdarima).
 
 
-### aeon: The Ultimate Library for Time-Series Forecasting and Classification
+## aeon: The Ultimate Library for Time-Series Forecasting and Classification
 
 ```{python tags=c("hide-cell")}
 # !pip install aeon
@@ -471,16 +471,16 @@ X = np.array([[1, 2, 3, 4, 5, 5], [1, 2, 3, 4, 4, 2], [8, 7, 6, 5, 4, 4]])
 # class labels for each sample
 y = np.array(["low", "low", "high"])
 
-# Define the classifier
+## Define the classifier
 clf = KNeighborsTimeSeriesClassifier(distance="dtw")
 
 # fit the classifier on train data
 clf.fit(X, y)
 
-# Test data
+## Test data
 X_test = np.array([[2, 2, 2, 2, 2, 2], [6, 6, 6, 6, 6, 6]])
 
-# Make class predictions on new data
+## Make class predictions on new data
 y_pred = clf.predict(X_test)
 y_pred
 ```
@@ -488,7 +488,7 @@ y_pred
 [Link to aeon](https://github.com/aeon-toolkit/aeon).
 
 
-### Ruptures: Detecting Change Points in Non-Stationary Signals
+## Ruptures: Detecting Change Points in Non-Stationary Signals
 
 ```{python tags=c("hide-cell")}
 # !pip install ruptures
@@ -521,7 +521,7 @@ plt.show()
 [Link to ruptures](https://github.com/deepcharles/ruptures).
 
 
-### GluonTS: Probabilistic Time Series Modeling in Python
+## GluonTS: Probabilistic Time Series Modeling in Python
 
 
 Probabilistic models offer a range of possible future outcomes, rather than a single fixed prediction, allowing for the assessment of risk associated with adverse events. 
@@ -537,7 +537,7 @@ from gluonts.dataset.pandas import PandasDataset
 from gluonts.dataset.split import split
 from gluonts.torch import DeepAREstimator
 
-# Load data from a CSV file into a PandasDataset
+## Load data from a CSV file into a PandasDataset
 df = pd.read_csv(
     "https://raw.githubusercontent.com/AileenNielsen/"
     "TimeSeriesAnalysisWithPython/master/data/AirPassengers.csv",
@@ -546,18 +546,18 @@ df = pd.read_csv(
 )
 dataset = PandasDataset(df, target="#Passengers")
 
-# Split the data for training and testing
+## Split the data for training and testing
 training_data, test_gen = split(dataset, offset=-36)
 test_data = test_gen.generate_instances(prediction_length=12, windows=3)
 
-# Train the model and make predictions
+## Train the model and make predictions
 model = DeepAREstimator(
     prediction_length=12, freq="M", trainer_kwargs={"max_epochs": 5}
 ).train(training_data)
 
 forecasts = list(model.predict(test_data.input))
 
-# Plot predictions
+## Plot predictions
 plt.plot(df["1954":], color="black")
 for forecast in forecasts:
   forecast.plot()
@@ -572,7 +572,7 @@ plt.show()
 [Link to GluonTS](https://github.com/awslabs/gluonts).
 
 
-### tfcausalimpact: Understand Causal Relationships in Time Series Data
+## tfcausalimpact: Understand Causal Relationships in Time Series Data
 
 ```{python tags=c("hide-cell")}
 # !pip install tfcausalimpact
@@ -661,7 +661,7 @@ significant.
 [Link to tfcausalimpact](https://github.com/WillianFuks/tfcausalimpact).
 
 
-### QuantStats: Simplify Stock Performance Analysis in Python
+## QuantStats: Simplify Stock Performance Analysis in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install quantstats
@@ -696,7 +696,7 @@ Running the code above will generate a report that looks similar to this:
 [Link to QuantStats](https://github.com/ranaroussi/quantstats).
 
 
-### kneed: Knee-Point Detection in Time Series
+## kneed: Knee-Point Detection in Time Series
 
 ```{python tags=c("hide-cell")}
 # !pip install "kneed[plot]"
@@ -717,7 +717,7 @@ kneedle.plot_knee_normalized()
 
 [Link to kneed](https://github.com/arvkevi/kneed).
 
-### Visualize Time Series with `plot_series`
+## Visualize Time Series with `plot_series`
 
 ```{python tags=c("hide-cell")}
 # !pip install utilsforecast
@@ -740,7 +740,7 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Plotting without any framework - raw visualization
+## Plotting without any framework - raw visualization
 plt.plot(df["ds"], df["y"], label="Observed Values")
 plt.xlabel("Date")
 plt.ylabel("Value")
@@ -760,7 +760,7 @@ Utilize `plot_series` to visualize time series data and forecasts using the foll
 ```{python}
 from utilsforecast.data import generate_series
 
-# Generate example time series data
+## Generate example time series data
 level = [80, 95]  # Confidence intervals
 series = generate_series(
     n_series=1,  # Number of time series
@@ -771,7 +771,7 @@ series = generate_series(
     level=level,
 )
 
-# Split data into training and testing
+## Split data into training and testing
 test_pd = series.groupby("unique_id", observed=True).tail(10).copy()
 train_pd = series.drop(test_pd.index)
 ```
@@ -784,10 +784,10 @@ We utilize the `plot_series` function to visualize both the training and forecas
 import matplotlib.pyplot as plt
 from utilsforecast.plotting import plot_series
 
-# Style for plots
+## Style for plots
 plt.style.use("ggplot")
 
-# Plot using plot_series
+## Plot using plot_series
 fig = plot_series(
     train_pd,  # Training dataset
     forecasts_df=test_pd,  # Forecast dataset
@@ -812,7 +812,7 @@ The output reveals the time series trends, forecasts, and anomalies. Confidence 
 
 [Link to Plotting - Nixtla](https://nixtlaverse.nixtla.io/utilsforecast/plotting.html).
 
-### NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax
+## NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax
 
 ```{python tags=c("hide-cell")}
 pip install neuralforecast
@@ -836,7 +836,7 @@ nf.predict()
 [Link to NeuralForecast](https://github.com/Nixtla/neuralforecast).
 
 
-### Scaling Time-Series Forecasting with StatsForecast and Spark
+## Scaling Time-Series Forecasting with StatsForecast and Spark
 
 ```{python tags=c("hide-cell")}
 # !pip install statsforecast pyspark
@@ -865,7 +865,7 @@ horizon = 7
 
 series = generate_series(n_series)
 
-# Convert to Spark
+## Convert to Spark
 spark_df = spark.createDataFrame(series)
 spark_df.show(5)
 ```
@@ -873,14 +873,14 @@ spark_df.show(5)
 ```{python}
 sf = StatsForecast(models=[AutoETS(season_length=7)], freq="D")
 
-# Returns a Spark DataFrame
+## Returns a Spark DataFrame
 sf.forecast(df=spark_df, h=horizon, level=[90]).show(5)
 ```
 
 [Link to StatsForecast.](https://github.com/Nixtla/statsforecast/)
 
 
-### Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting
+## Beyond Point Estimates: Leverage Prediction Intervals for Robust Forecasting
 
 ```{python tags=c("hide-cell")}
 # !pip install mlforecast utilsforecast
@@ -963,13 +963,13 @@ mlf.fit(
 Generate forecasts with prediction intervals:
 
 ```{python}
-# A list of floats with the confidence levels of the prediction intervals
+## A list of floats with the confidence levels of the prediction intervals
 levels = [50, 80, 95]
 
-# Predict the next 48 hours
+## Predict the next 48 hours
 horizon = 48
 
-# Generate forecasts with prediction intervals
+## Generate forecasts with prediction intervals
 forecasts = mlf.predict(h=horizon, level=levels)
 forecasts.head()
 ```
@@ -1000,7 +1000,7 @@ fig
 [Link to MLForecast](https://github.com/Nixtla/mlforecast).
 
 
-### Sliding Window Approach to Time Series Cross-Validation
+## Sliding Window Approach to Time Series Cross-Validation
 
 ```{python tags=c("hide-cell")}
 # !pip install mlforecast
@@ -1092,7 +1092,7 @@ Notice that in each cutoff period, we generated a forecast for the next 24 hours
 
 [Link to MLForecast](https://github.com/Nixtla/mlforecast).
 
-### Handling Static and Dynamic Features in Time Series Forecasting with MLForecast
+## Handling Static and Dynamic Features in Time Series Forecasting with MLForecast
 
 ```{python tags=c("hide-cell")}
 # !pip install mlforecast
@@ -1108,14 +1108,14 @@ import lightgbm as lgb
 from mlforecast import MLForecast
 from mlforecast.utils import generate_daily_series, generate_prices_for_series
 
-# Generate sample data
+## Generate sample data
 series = generate_daily_series(100, equal_ends=True, n_static_features=2)
 series = series.rename(columns={"static_0": "store_id", "static_1": "product_id"})
 
-# Generate price catalog (dynamic feature)
+## Generate price catalog (dynamic feature)
 prices_catalog = generate_prices_for_series(series)
 
-# Merge static and dynamic features
+## Merge static and dynamic features
 series_with_prices = series.merge(prices_catalog, how="left")
 print(series_with_prices.head(10))
 ```
@@ -1131,7 +1131,7 @@ fcst = MLForecast(
     date_features=["dayofweek"],  # Add day of week as feature
 )
 
-# Fit model specifying which features are static
+## Fit model specifying which features are static
 fcst.fit(
     series_with_prices,
     static_features=["store_id", "product_id"],  # Specify static features
@@ -1139,7 +1139,7 @@ fcst.fit(
 ```
 
 ```{python}
-# Check which features are used for training
+## Check which features are used for training
 print("\nFeatures used for training:")
 print(fcst.ts.features_order_)
 ```
@@ -1147,7 +1147,7 @@ print(fcst.ts.features_order_)
 Generate predictions:
 
 ```{python}
-# Make predictions using future prices
+## Make predictions using future prices
 predictions = fcst.predict(
     h=7, X_df=prices_catalog  # Forecast 7 days ahead  # Provide future prices
 )
@@ -1157,7 +1157,7 @@ print(predictions.head(10))
 [Link to MLForecast](https://github.com/Nixtla/mlforecast)
 
 
-### Hierarchical Forecasting in Python
+## Hierarchical Forecasting in Python
 
 ```{python tags=c("hide-cell")}
 # %%capture
@@ -1289,7 +1289,7 @@ Y_rec_df.head()
 [Link to Hierarchical Forecast](https://github.com/Nixtla/hierarchicalforecast)
 
 
-### Generative Pre-trained Forecasting with TimeGPT
+## Generative Pre-trained Forecasting with TimeGPT
 
 ```{python tags=c("hide-cell")}
 # !pip install nixtla
@@ -1340,7 +1340,7 @@ nixtla_client.plot(
 [Link to TimeGPT](https://github.com/Nixtla/nixtla).
 
 
-### Automate Time Series Feature Engineering with tsfresh
+## Automate Time Series Feature Engineering with tsfresh
 
 ```{python tags=c("hide-cell")}
 # !pip install tsfresh
@@ -1387,7 +1387,7 @@ You can now use the features in `features_filtered` to train your classification
 [Link to tsfresh](https://github.com/blue-yonder/tsfresh).
 
 
-### tsmoothie: Fast and Flexible Tool for Exponential Smoothing
+## tsmoothie: Fast and Flexible Tool for Exponential Smoothing
 
 ```{python tags=c("hide-cell")}
 pip install --upgrade tsmoothie
@@ -1445,7 +1445,7 @@ This graph effectively highlights the trend and seasonal components present in t
 [Link to tsmoothie](https://github.com/cerlymarco/tsmoothie).
 
 
-### Backtesting: Assess Trading Strategy Performance Effortlessly in Python
+## Backtesting: Assess Trading Strategy Performance Effortlessly in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install -U backtesting
@@ -1527,7 +1527,7 @@ bt.plot()
 [Link to Backtesting](https://github.com/kernc/backtesting.py).
 
 <!-- #region editable=true slideshow={"slide_type": ""} -->
-### Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting
+## Chronos: Unleashing Pre-trained Language Models for Time Series Forecasting
 <!-- #endregion -->
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}

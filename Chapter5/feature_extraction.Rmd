@@ -19,10 +19,10 @@ import warnings
 warnings.filterwarnings("ignore")
 ```
 
-## Feature Extraction
+# Feature Extraction
 
 
-### distfit: Find The Best Theoretical Distribution For Your Data
+## distfit: Find The Best Theoretical Distribution For Your Data
 
 ```{python tags=c("hide-cell")}
 # !pip install distfit
@@ -36,10 +36,10 @@ from distfit import distfit
 
 X = np.random.normal(0, 3, 1000)
 
-# Initialize model
+## Initialize model
 dist = distfit()
 
-# Find best theoretical distribution for empirical data X
+## Find best theoretical distribution for empirical data X
 distribution = dist.fit_transform(X)
 dist.plot()
 ```
@@ -50,7 +50,7 @@ Beyond finding the optimal distribution, `distfit` can also help identify outlie
 [Link to distfit](https://github.com/erdogant/distfit).
 
 
-### Geopy: Extract Location Based on Python String
+## Geopy: Extract Location Based on Python String
 
 ```{python tags=c("hide-cell")}
 # !pip install geopy
@@ -80,7 +80,7 @@ location.latitude, location.longitude
 [Link to Geopy](https://github.com/geopy/geopy).
 
 
-### fastai’s cont_cat_split: Separate Continuous and Categorical Variables
+## fastai’s cont_cat_split: Separate Continuous and Categorical Variables
 
 ```{python tags=c("hide-cell")}
 # !pip install fastai
@@ -114,7 +114,7 @@ print("Categorical columns:", cat_names)
 [Link to the documentation](https://docs.fast.ai/tabular.core.html).
 
 
-### Formulaic: Write Clear Feature Engineering Code
+## Formulaic: Write Clear Feature Engineering Code
 
 ```{python tags=c("hide-cell")}
 # !pip install formulaic
@@ -131,10 +131,10 @@ print(df)
 import numpy as np
 import pandas as pd
 
-# Sample dataset
+## Sample dataset
 df = pd.DataFrame({"x": ["A", "B", "C"], "z": [0.3, 0.1, 0.2], "y": [0, 1, 2]})
 
-# Manual feature engineering
+## Manual feature engineering
 df["x_B"] = (df["x"] == "B").astype(int)
 df["x_C"] = (df["x"] == "C").astype(int)
 df["z_squared"] = df["z"] ** 2
@@ -149,10 +149,10 @@ Formulaic streamlines feature engineering by allowing you to define transformati
 ```{python}
 from formulaic import Formula
 
-# Define a formula for feature engineering
+## Define a formula for feature engineering
 formula = "y ~ x + I(z**2)"
 
-# Apply the formula to get the response and design matrices
+## Apply the formula to get the response and design matrices
 y, X = Formula(formula).get_model_matrix(df)
 
 print("Response (y):")
@@ -172,7 +172,7 @@ The output demonstrates how Formulaic automatically handles categorical encoding
 [Link to Formulaic](https://github.com/matthewwardrop/formulaic)
 
 
-### yarl: Create and Extract Elements from a URL Using Python
+## yarl: Create and Extract Elements from a URL Using Python
 
 ```{python tags=c("hide-cell")}
 # !pip install yarl
@@ -215,20 +215,20 @@ print(url)
 ```
 
 ```{python}
-# Replace the query
+## Replace the query
 
 print(url.with_query({"q": "python"}))
 ```
 
 ```{python}
-# Replace the path
+## Replace the path
 
 new_path = url.with_path("khuyentran1401/Data-science")
 print(new_path)
 ```
 
 ```{python}
-# Update the fragment
+## Update the fragment
 
 print(new_path.with_fragment("contents"))
 ```
@@ -236,7 +236,7 @@ print(new_path.with_fragment("contents"))
 [Link to yarl](https://github.com/aio-libs/yarl).
 
 
-### Pigeon: Quickly Annotate Your Data on Jupyter Notebook
+## Pigeon: Quickly Annotate Your Data on Jupyter Notebook
 
 ```{python tags=c("hide-cell")}
 # !pip install pigeon-jupyter
@@ -266,7 +266,7 @@ After labeling all your data, you can get the examples along with their labels b
 [Link to Pigeon](https://github.com/agermanidis/pigeon)
 
 
-### probablepeople: Parse Unstructured Names Into Structured Components
+## probablepeople: Parse Unstructured Names Into Structured Components
 
 ```{python tags=c("hide-cell")}
 # !pip install probablepeople
@@ -291,7 +291,7 @@ pp.parse("Prefect Technologies, Inc")
 [Link to probablepeople](https://github.com/datamade/probablepeople).
 
 
-### Extract PDF Text Precisely with PyPDF
+## Extract PDF Text Precisely with PyPDF
 
 ```{python tags=c("hide-cell")}
 # !pip install fpdf pypdf
@@ -334,7 +334,7 @@ pdf.output(str(duck_pdf_path))
 ```{python}
 from PyPDF2 import PdfReader
 
-# Extracting text without filtering headers, footers, or specific elements
+## Extracting text without filtering headers, footers, or specific elements
 reader = PdfReader("duck_biology.pdf")
 page = reader.pages[0]
 text = page.extract_text()
@@ -351,14 +351,14 @@ The code snippet below demonstrates how to filter out small-font text (e.g., hea
 ```{python}
 from PyPDF2 import PdfReader
 
-# Threshold to consider "small" text
+## Threshold to consider "small" text
 SMALL_FONT_THRESHOLD = 10
 
-# Prepare a list to store the filtered text
+## Prepare a list to store the filtered text
 parts = []
 
 
-# Visitor function to filter text based on font size
+## Visitor function to filter text based on font size
 def visitor_body(text, cm, tm, font_dict, font_size):
     if font_size < SMALL_FONT_THRESHOLD:
         parts.append(text)
@@ -379,7 +379,7 @@ reader = PdfReader("duck_biology.pdf")
 page = reader.pages[0]
 page.extract_text(visitor_text=visitor_body)
 
-# Combine all filtered parts into a single string
+## Combine all filtered parts into a single string
 text_body = "".join(parts)
 
 print(text_body)

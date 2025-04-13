@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-## Feature Engineer
+# Feature Engineer
 
 
 ![](../img/feature_engineer.png)
@@ -22,7 +22,7 @@ jupyter:
 This section covers some libraries for feature engineering. 
 
 
-### Split Data in a Stratified Fashion in scikit-learn
+# Split Data in a Stratified Fashion in scikit-learn
 
 
 Normally, after using scikit-learn's `train_test_split`, the proportion of values in the sample will be different from the proportion of values in the entire dataset. 
@@ -41,13 +41,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 ```
 
 ```{python}
-# Get count of each class in the train set
+## Get count of each class in the train set
 
 np.bincount(y_train)
 ```
 
 ```{python}
-# Get count of each class in the test set
+## Get count of each class in the test set
 
 np.bincount(y_test)
 ```
@@ -66,7 +66,7 @@ np.bincount(y_train)
 np.bincount(y_test)
 ```
 
-### Avoiding Data Leakage in Time Series Data
+## Avoiding Data Leakage in Time Series Data
 
 
 In time-sensitive datasets, a random split can cause data leakage by including future data in the training set, which biases the model. To prevent this, split data chronologically:
@@ -77,7 +77,7 @@ from datetime import datetime
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-# Sample data
+## Sample data
 data = {
     "customer_id": [1, 2, 3, 4, 5],
     "amount": [10.00, 20.00, 15.00, 25.00, 30.00],
@@ -86,13 +86,13 @@ data = {
 df = pd.DataFrame(data)
 df["date"] = pd.to_datetime(df["date"])
 
-# Random split
+## Random split
 train_data, test_data = train_test_split(df, test_size=0.3, random_state=42)
 print("Random split:\n")
 print("Train data:\n", train_data)  # May contain future dates
 print("Test data:\n", test_data)
 
-# Time-based split
+## Time-based split
 cutoff_date = datetime(2021, 1, 4)
 train_data = df[df["date"] < cutoff_date]
 test_data = df[df["date"] >= cutoff_date]
@@ -101,7 +101,7 @@ print("Train data:\n", train_data)  # Data before the cutoff
 print("Test data:\n", test_data)  # Data after the cutoff
 ```
 
-### TimeSeriesSplit for Cross-Validation in Time Series
+## TimeSeriesSplit for Cross-Validation in Time Series
 
 
 For time series data, using `TimeSeriesSplit` ensures the temporal order is maintained during cross-validation:
@@ -127,7 +127,7 @@ This approach ensures:
 4.  **No Data Leakage**: Future information is never used to predict past events.
 
 
-### Enhancing Data Handling with scikit-learn's DataFrame Support
+## Enhancing Data Handling with scikit-learn's DataFrame Support
 
 
 By default, scikit-learn transformers return NumPy arrays. To return pandas DataFrames, use the `set_output` method:
@@ -156,7 +156,7 @@ pipeline = Pipeline(
 print(pipeline.fit_transform(df))
 ```
 
-### Efficient Feature Transformation with make_column_transformer in scikit-learn
+## Efficient Feature Transformation with make_column_transformer in scikit-learn
 
 
 `make_column_transformer` allows you to apply different transformations to specific feature sets:
@@ -183,11 +183,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# Define the numeric and categorical features
+## Define the numeric and categorical features
 numeric_features = ["num1", "num2"]
 categorical_features = ["cat1", "cat2"]
 
-# Define the transformers and their corresponding columns
+## Define the transformers and their corresponding columns
 numeric_transformer = make_pipeline(SimpleImputer(strategy="median"), StandardScaler())
 
 categorical_transformer = make_pipeline(
@@ -200,7 +200,7 @@ preprocessor = make_column_transformer(
     verbose_feature_names_out=False,
 ).set_output(transform="pandas")
 
-# Fit and transform the data
+## Fit and transform the data
 X_transformed = preprocessor.fit_transform(X)
 X_transformed
 ```
@@ -217,7 +217,7 @@ pipe.predict(X)
 This streamlines feature preprocessing and modeling in one unified workflow.
 
 
-### FunctionTransformer: Build Robust Preprocessing Pipelines with Custom Transformations
+## FunctionTransformer: Build Robust Preprocessing Pipelines with Custom Transformations
 
 
 If you need to apply custom transformations within a scikit-learn pipeline, the `FunctionTransformer` is a useful tool to wrap any function for preprocessing.
@@ -250,32 +250,32 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Split the DataFrame into features and target
+## Split the DataFrame into features and target
 X = df[["feature1", "feature2"]]
 y = df["target"]
 
-# Define the FunctionTransformer
+## Define the FunctionTransformer
 log_transformer = FunctionTransformer(np.log1p)
 
 
-# Define the pipeline
+## Define the pipeline
 pipeline = Pipeline(
     [("log_transform", log_transformer), ("classifier", LogisticRegression())]
 )
 
-# Fit the pipeline on the data
+## Fit the pipeline on the data
 pipeline.fit(X, y)
 
-# Make predictions on new data
+## Make predictions on new data
 new_data = {"feature1": [6, 7], "feature2": [11, 12]}
 new_df = pd.DataFrame(new_data)
 predictions = pipeline.predict(new_df)
 
-# Print the predictions
+## Print the predictions
 print("Predictions:", predictions)
 ```
 
-### Simplify Tabular Dataset Preparation with TabularPandas
+## Simplify Tabular Dataset Preparation with TabularPandas
 
 ```{python tags=c("hide-cell")}
 # !pip install fastai
@@ -291,7 +291,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# Sample dataset
+## Sample dataset
 data = {
     "age": [25, 30, None, 22, 35],
     "salary": [50000, 60000, 45000, None, 80000],
@@ -300,7 +300,7 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Define preprocessing steps for columns
+## Define preprocessing steps for columns
 numerical_features = ["age", "salary"]
 categorical_features = ["job"]
 
@@ -315,7 +315,7 @@ categorical_transformer = Pipeline(
     ]
 )
 
-# Combine preprocessing steps
+## Combine preprocessing steps
 preprocessor = ColumnTransformer(
     transformers=[
         ("num", numerical_transformer, numerical_features),
@@ -323,7 +323,7 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# Apply preprocessing to dataset
+## Apply preprocessing to dataset
 X = df.drop(columns=["target"])
 y = df["target"]
 
@@ -346,10 +346,10 @@ from fastai.tabular.all import (
     range_of,
 )
 
-# Define preprocessing steps
+## Define preprocessing steps
 procs = [FillMissing, Categorify, Normalize]
 
-# Define categorical and continuous variables
+## Define categorical and continuous variables
 cat_names = ["job"]
 cont_names = ["age", "salary"]
 y_names = "target"
@@ -376,7 +376,7 @@ The output shows how TabularPandas automatically processes the dataset in a sing
 
 [Link to fastai](https://github.com/fastai/fastai)
 
-### Drop Correlated Features
+## Drop Correlated Features
 
 ```{python tags=c("hide-cell")}
 # !pip install feature_engine
@@ -399,15 +399,15 @@ X, y = make_classification(
     random_state=0,
 )
 
-# Convert the dataset to a DataFrame
+## Convert the dataset to a DataFrame
 colnames = ["var_" + str(i) for i in range(6)]
 X = pd.DataFrame(X, columns=colnames)
 
-# Drop features with correlation above 0.8
+## Drop features with correlation above 0.8
 tr = DropCorrelatedFeatures(threshold=0.8)
 Xt = tr.fit_transform(X)
 
-# Check correlated features
+## Check correlated features
 print("Correlated features:", tr.correlated_feature_sets_)
 print("Remaining features:", Xt.columns)
 ```
@@ -415,7 +415,7 @@ print("Remaining features:", Xt.columns)
 [Link to feature-engine](https://feature-engine.trainindata.com).
 
 
-### Encode Rare Labels with Feature-engine
+## Encode Rare Labels with Feature-engine
 
 
 Handling rare categories in high-cardinality categorical features can be simplified using the `RareLabelEncoder`. This encoder groups infrequent categories into a single value.
@@ -429,7 +429,7 @@ data.head(10)
 ```
 
 ```{python}
-# Drop rows with missing values in 'education' column
+## Drop rows with missing values in 'education' column
 
 processed = data.dropna(subset=["education"])
 ```
@@ -453,7 +453,7 @@ encoded["education"].sample(10)
 [Link to feature-engine](https://feature-engine.trainindata.com).
 
 
-### Encode Categorical Data Using Frequency
+## Encode Categorical Data Using Frequency
 
 ```{python tags=c("hide-cell")}
 # !pip install feature-engine
@@ -495,7 +495,7 @@ p_test
 [Link to feature-engine](https://feature-engine.trainindata.com).
 
 
-### Similarity Encoding for Dirty Categories Using dirty_cat
+## Similarity Encoding for Dirty Categories Using dirty_cat
 
 ```{python tags=c("hide-cell")}
 # !pip install dirty-cat
@@ -580,7 +580,7 @@ As we can see from the matrix above,
 [Link to dirty-cat](https://dirty-cat.github.io/).
 
 
-### How to Handle Misspellings in Real-World Datasets
+## How to Handle Misspellings in Real-World Datasets
 
 ```{python tags=c("hide-cell")}
 # !pip install git+https://github.com/skrub-data/skrub.git
@@ -636,14 +636,14 @@ print(translation_table.sample(10, random_state=2))
 [Link to skub](https://github.com/skrub-data/skrub/).
 
 
-### Solving Data Mismatches: Joining Tables with Fuzzy Matching
+## Solving Data Mismatches: Joining Tables with Fuzzy Matching
 
 ```{python tags=c("hide-cell")}
 # !pip install git+https://github.com/skrub-data/skrub.git
 ```
 
 ```{python tags=c("remove-cell")}
-# We will ignore the warnings:
+## We will ignore the warnings:
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -687,13 +687,13 @@ df1 = fuzzy_join(
 )
 
 print(df1[["Country", "Country Name", "matching_score"]].tail(20))
-# We merged the first WB table to our initial one.
+## We merged the first WB table to our initial one.
 ```
 
 [Link to skrub](https://github.com/skrub-data/skrub/).
 
 
-### Snorkel — Programmatically Build Training Data in Python
+## Snorkel — Programmatically Build Training Data in Python
 
 ```{python tags=c("hide-cell")}
 # !pip install snorkel
@@ -780,7 +780,7 @@ This analysis provides insights on coverage, accuracy, and overlaps between labe
 [Link to Snorkel](https://www.snorkel.org/).
 
 
-### sketch: AI Code-Writing Assistant That Understands Data Content
+## sketch: AI Code-Writing Assistant That Understands Data Content
 
 
 Wouldn't it be nice if you could get insights into your data by simply asking a question? Sketch allows you to do exactly that.
