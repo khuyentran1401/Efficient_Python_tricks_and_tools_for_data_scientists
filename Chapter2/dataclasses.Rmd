@@ -73,7 +73,7 @@ Now changing the attribute `color` of  the `DataClassDog`'s instance will throw 
 
 ```{python}
 pepper = DataClassDog(color="black", age=9)
-pepper.color = 'golden'
+pepper.color = "golden"
 ```
 
 ### Compare Between Two Data Classes
@@ -86,10 +86,10 @@ class Dog:
     def __init__(self, type, age):
         self.type = type
         self.age = age
-    
+
     def __eq__(self, other):
-        return (self.type == other.type 
-        and self.age == other.age)
+        return self.type == other.type and self.age == other.age
+
 
 pepper = Dog(type="Dachshund", age=7)
 bim = Dog(type="Dachshund", age=7)
@@ -101,6 +101,7 @@ dataclasses automatically implements the `__eq__` method for you. With dataclass
 ```{python}
 from dataclasses import dataclass
 
+
 @dataclass
 class DataClassDog:
     type: str
@@ -110,7 +111,7 @@ class DataClassDog:
 ```{python}
 pepper = DataClassDog(type="Dachshund", age=7)
 bim = DataClassDog(type="Dachshund", age=7)
-pepper == bim 
+pepper == bim
 ```
 
 ### Post-init: Add Init Method to a Data Class
@@ -142,10 +143,10 @@ class Dogs:
 ```
 
 ```{python}
-names = ['Bim', 'Pepper']
+names = ["Bim", "Pepper"]
 ages = [5, 6]
 dogs = Dogs(names, ages)
-dogs.info 
+dogs.info
 ```
 
 ```{python}
@@ -207,3 +208,72 @@ print(book2.authors)
 ```
 
 Now, each instance has its own separate list object, and modifying one instance's list does not affect others.
+
+### Simplify Nested Structures with Python Data Classes
+
+
+Working with nested structures typically requires manual management of nested dictionaries or objects. This can lead to errors and increase code complexity.
+
+```{python}
+# Example of managing nested structures manually
+person_data = {
+    "name": "Alice",
+    "address": {"street": "123 Maple St", "city": "Springfield", "zip": "12345"},
+    "contacts": {"email": "alice@example.com", "phone": "555-1234"},
+}
+
+# Accessing nested data
+street = person_data["address"]["street"]
+email = person_data["contacts"]["email"]
+
+print(f"Street: {street}, Email: {email}")
+```
+
+The `dataclasses` module in Python simplifies the creation and handling of nested structures by providing a clean, declarative syntax.
+
+Define nested data classes to represent more complex hierarchical structures:
+
+```{python}
+from dataclasses import dataclass
+
+
+# Define nested data classes
+@dataclass
+class Address:
+    street: str
+    city: str
+    zip: str
+
+
+@dataclass
+class Contacts:
+    email: str
+    phone: str
+
+
+@dataclass
+class Person:
+    name: str
+    address: Address
+    contacts: Contacts
+
+
+# Create and use nested data classes
+person = Person(
+    name="Alice",
+    address=Address(street="123 Maple St", city="Springfield", zip="12345"),
+    contacts=Contacts(email="alice@example.com", phone="555-1234"),
+)
+
+print(f"Street: {person.address.street}, Email: {person.contacts.email}")
+```
+
+In the code above:
+
+- `dataclass` is used to define simple, immutable, and type-safe structures.
+- `Address`, `Contacts`, and `Person` are nested classes representing various levels of the hierarchy.
+- Accessing nested data like `person.address.street` is more intuitive and less error-prone compared to using dictionaries.
+
+
+The output displays the street and email address of the person. Using nested data classes, each level of the hierarchy is type-safe and easy to access.
+

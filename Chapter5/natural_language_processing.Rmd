@@ -227,20 +227,16 @@ num2words(2019, lang="es")
 
 [Link to num2words](https://bit.ly/3VkWYJO).
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
 ### Numerizer: Standardizing Numerical Data in Text
-<!-- #endregion -->
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
 # !pip install numerizer
 ```
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
 Converting textual numbers to numeric values is challenging due to diverse language representations.
 
 Numerizer simplifies this process by turning various text formats into corresponding numbers.
 
-<!-- #endregion -->
 
 ```{python editable=TRUE, slideshow={'slide_type': ''}}
 from numerizer import numerize
@@ -262,54 +258,94 @@ numerize("four sixty two")
 numerize("four sixty-two")
 ```
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
 [Link to numerizer](https://github.com/jaidevd/numerizer).
-<!-- #endregion -->
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
+
 ### Preprocess Text in One Line of Code with Texthero
-<!-- #endregion -->
+
+```{python}
+import warnings
+
+warnings.simplefilter("ignore", FutureWarning)
+```
 
 ```{python tags=c("hide-cell")}
-# !pip install texthero
+# !pip install -U texthero==1.0.5
 ```
 
-Processing text in a DataFrame often involves writing lengthy code. Texthero simplifies this by enabling one-line preprocessing, including: 
-- filling missing values
-- converting upper case to lower case
-- removing digits
-- removing punctuation
-- removing stopwords
-- removing whitespace
+Cleaning text data is often cumbersome and requires multiple steps such as removing punctuation, stopwords, diacritics, and extra spaces. 
+
+To demonstrate this, create example text data:
 
 ```{python}
-import numpy as np
+import re
+
 import pandas as pd
+from nltk.corpus import stopwords
+from unidecode import unidecode
+
+# Example text data
+data = {
+    "text": [
+        "This sèntencé (123 /) needs to [OK!] be cleaned!   ",
+        "Texthero    simplifies    text preprocessing  tasks!!!",
+        "Extra  spaces  and  punctuations, must be removed...",
+    ]
+}
+
+df = pd.DataFrame(data)
+print(df)
+```
+
+Cleaning this dataset typically involves using multiple libraries and functions, leading to longer, repetitive code:
+
+```{python}
+# Text preprocessing without Texthero
+def preprocess_text(text):
+    text = re.sub(r"[^\w\s]", "", text)  # Remove punctuation
+    text = " ".join(
+        [
+            word
+            for word in text.split()
+            if word.lower() not in stopwords.words("english")
+        ]
+    )  # Remove stopwords
+    text = unidecode(text)  # Remove diacritics
+    text = re.sub(r"\s+", " ", text).strip()  # Remove extra spaces
+    text = text.lower()  # Convert text to lowercase
+    return text
+
+
+df["processed_text"] = df["text"].apply(preprocess_text)
+print(df["processed_text"])
+```
+
+To clean text data in one line of code, use `texthero.clean`:
+
+```{python}
 import texthero as hero
 
-text = [
-    "Today is a    beautiful day",
-    "There are 3 ducks in this pond",
-    "This is. very cool.",
-    np.nan,
-]
-df = pd.DataFrame({"text": text})
-
-df.text.pipe(hero.clean)
+# Clean text data
+df["cleaned_text"] = hero.clean(df["text"])
+print(df["cleaned_text"])
 ```
 
-You can also create a custom cleaning pipeline by chaining different processing methods.
+Texthero also allows users to tailor text preprocessing according to specific project needs while maintaining simplicity:
 
 ```{python}
-(
-    df.text.pipe(hero.fillna)
-    .pipe(hero.remove_punctuation)
-    .pipe(hero.remove_stopwords)
-    .pipe(hero.remove_whitespace)
+# Custom cleaning pipeline
+df["custom_cleaned_text"] = (
+    df["text"]
+    .pipe(hero.remove_digits)       # Remove digits
+    .pipe(hero.remove_punctuation)  # Remove punctuation
+    .pipe(hero.remove_diacritics)   # Remove diacritics
+    .pipe(hero.remove_whitespace)   # Remove extra spaces
 )
+print(df["custom_cleaned_text"])
 ```
 
-[Link to texthero](https://github.com/jbesomi/texthero).
+
+[Link to Texthero](https://github.com/jbesomi/texthero).
 
 
 ### texthero: Reduce Dimension and Visualize Text in One Line of Code
@@ -592,13 +628,6 @@ print("Best matches:")
 for match in matches:
     print(f"Match: {match[0]}, Score: {match[1]:.3f}")
 ```
-
-What makes RapidFuzz powerful:
-- Handles case sensitivity automatically
-- Provides multiple matching algorithms
-- Returns confidence scores for matches
-- Written in C++ for superior performance
-- MIT licensed for maximum flexibility
 
 [Link to RapidFuzz](https://github.com/rapidfuzz/RapidFuzz)
 
@@ -940,13 +969,9 @@ new_sentence
 
 Managing and understanding large collections of text documents results in complex workflows with multiple preprocessing steps and difficult-to-interpret results. This causes data scientists to spend significant time trying to make sense of their document clusters and explaining them to stakeholders.
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
 With BERTopic, you can leverage state-of-the-art language models to create more meaningful and interpretable topics. You get automatic topic labeling, visualization capabilities, and the flexibility to customize the modeling process according to your needs.
-<!-- #endregion -->
 
-<!-- #region editable=true id="Y3VGFZ1USMTu" slideshow={"slide_type": ""} -->
 For this example, we use the popular 20 Newsgroups dataset which contains roughly 18000 newsgroups posts
-<!-- #endregion -->
 
 ```{python editable=TRUE, id="JJij3WP6SEQD", slideshow={'slide_type': ''}}
 from sklearn.datasets import fetch_20newsgroups
@@ -954,16 +979,12 @@ from sklearn.datasets import fetch_20newsgroups
 docs = fetch_20newsgroups(subset="all", remove=("headers", "footers", "quotes"))["data"]
 ```
 
-<!-- #region id="SBcNmZJzSTY8" -->
 In this example, we will go through the main components of BERTopic and the steps necessary to create a strong topic model.
 
 
 
-<!-- #endregion -->
 
-<!-- #region id="QI6vwelqnTL-" -->
 We start by instantiating BERTopic. We set language to `english` since our documents are in the English language.
-<!-- #endregion -->
 
 ```{python colab={'base_uri': 'https://localhost:8080/', 'height': 453, 'referenced_widgets': ['11f92fdcd9734ee883a98bf7d64441b2', 'ab97eac14145428c8977aa81fa223865', 'b16e51d7467547aa96f17b076d1fffe3', '7afada084577495dac21948c8723de75', '90a601e96edf46e488cd9f66356475cc', 'c9bb9d766e5c4fa5bbf496e571547aff', '37692e481ffe49d7b6ddaa84844deb01', 'a6f200cf31dc497b86ada1752118e59f', 'fcadde72381f42c6beff807fe5517933', '6144fe4535d4467f9ab7618afd3a0de2', '5ba767c6a7384e10b89f546a648137cb', '050f3bd3b7604af4bc04faf9c2d24aca', 'a1d0cae4886a46f4a7df1cf609de2941', '6e1271d7eb7a4d55b0c57f554e2eee6c', '08c0cbefee4c4233959252be914e9651', 'eed5268b499849879beb87df1577820e', '64abaa2714654f6498111dd4060d6c85', 'e34ef193f7d54751b149e5f5cf42cded', '5171da807c304800b63dda419fe505f6', 'f1120d69f45d4940b803b74d38aa4267', '9db81cfed22549edb65871adfada1f38', '8dc04f61740a470ebc2ddaf9ca985b2c', '8bab1f41e55345f1b32c9ed549b7cacb', '1f444df7dc41409ba737cc34fd3759b1', '6b6c11fd3f6f43118f833cac813e7a95', '89748a71005e40a6a430d139957dba74', 'd9e56e12fb8e4468b12be19aeb439058', '201fe878ad1b4487ae09c5feb5c68c2e', '2c65c96c214e4c8f8bf8e0b2ddc8f15c', '5cd8823600334387b6f820b9c13ff875', '236722fa23624b3e9d1fd2db3597c41a', 'b1399b9c3c8c41fb9ab561fff04adf88', '0dedaca218f940269b1fa2c77d197e69', '4993487dda804769be12ed80f5a0ba1f', 'db84a621349b478aa2dd0f0c51613ee4', 'a084c426f4f1406caa4b61ea5f7d0597', '7a2219db3e224357bbfe2c67d85e7f1b', '9195b74202c9493e884bad686a49e687', 'ef0f6e08164441dcbd2ffd70c6a7837d', '69fe53a8a50d4bf58f29b12652650c95', '72a920198eb74ba794804f7416585f8f', 'dc8d955025f64ba08854e834540b55c8', 'a96c566423124ad1af6cbbf426c23714', '1af379c21da04f5eb76c30a28c793d2a', '1ac1ec5ccc9e49b7b1f4d5d0f75a28cc', '2694fe1ceeeb43f5bc7d48753d6cfa3c', '1a34ebfc412f4852bfc75f1403ca9711', '88dee3b64c644e8c987d215590666367', '38f35a2054b64376b4520e5468b5a5c9', '0d109983418a44e494026cc2e1d01a4d', '493787120d774090b375fb718d281b8d', '302635d5f94147a4bd805341691d225c', 'cd2a773537a34f62b122b271f2eba9a3', '49baeecf41ac49148c1582fc011b38f6', '119d56c86dfc40ecb082c5a4877b4896', '058890a9257b495c882114efcd8c6987', '3c4095a5470041dcb87b02ff7d501b8e', '0b051498baf947319c474179eefa239d', '4cf7524d16b24dc2aa49f378682869ea', '5242f947dd2643cf86d3c595af13c8fb', '5f7616ac5c694906a31c65c19a57333a', '4fcfb5edfe8e4205b7496d1f3d01fa07', '22b846963a10408591f8519170114cd9', '9c169e0cf33a44ce883d640a08a59c48', '4eb5d68b7f16457b923ff0c1645686a2', 'ebd1ee7483b046ba9b538eea82db69be', '0768adbd8c554e0a923d55fa62140f70', 'd548b44b4f5d4281acf61e37f18bb7d6', 'c1dd125cf61d4438a26ee57a1efcb1de', '7d8c4dfecc474c1aa757ef7ded4cdd55', '74e7ab4585324e4f9e18f6a0ad4f54f5', '604456945f8a45139f0a29e82acbfb25', 'c6dbfcf25a8a4a1381879f84c5d6f8a4', '38b5984b43124e02a883d27fb0fd94f5', '7bb5a260a7854b51b66957ebf68bea5f', 'ad3d2452bdd64279be86bbafb65f5fe7', 'b3250c2f180d418abc1f92594a1915e5', '95e9a59d2fd84febb8c0fbda398e295f', 'e6a4c53239884fb9b1813d905d05592f', '73ae6c75741145339bad4f6e9e169b49', '0cb87870f9c543dcb792e32fa95ee324', '3b98f41d250545dea21203bbca27c11e', '658573d1b72948fd9c2026b57e29b09f', '04e4da585a2a4f4883afe0438ffe2c9c', '8f8188bddcb8442ba8b4a4ef7ab16718', '2a6560a4894d4e589f6d16598a103c70', 'a263765c073947dfa86b9aef86cba81f', 'b2369edc51504835b7022c99ba5ef46d', '9451969faa6c4dfca3e91f976aed6398', '8a479cae31b64ec59348111daae3a303', '5d1d1822fcd44d3fbcf7fa46b730f7c9', '9bfdd3910e8f4fd88065594ef25b29de', 'aef4cd0d462846438eb98abe01d74cb6', 'c0344970c2e74ddc913c62cbc148d472', '6e3bed9d7a994e82b17d10f35b797832', 'de1505fd50e64305859aa71c9dfcdb78', '9550a4100a204e1596e7659db1bd8127', '38c0f36324054c29a8c1ad3fb592c8f0', '73514077146d4b069495b184009f6b87', '6b945640a2884e9c9e2bb5064e953862', '8cdf6d0427ba49f8af99883d7f15185d', 'bd585fe8c3914b01b6da8a5e97dee8ce', 'a965671bb5964c3cb759d4908fc7d05d', '62f3e02df14d44f28de9e99973046760', '595c0c6fb73d4d598d201a8ebd2cec36', '4ca4c7c771954283b6918527f0c18009', 'e754dd72b44540b8a9476f7a64fb752f', '285cb4d8cb934472bce29b9dfe6e5d67', '39390b9f5f14430ea65cf66cada721d6', 'd1974f3fc978409eb0cd5380a6cdf6e5', 'd1a1a7a2d3724979ac8c80479a0478c2', '8d0c27b3c1784fa886266e95c795023f', 'e1c7544dda374d1a94c1d9a2da0bf7f7', '75411ae0f844419fbc987ae25c10c8ef', 'afb465ed9c8f453391e33a06f19bf0c2', '5d2b16e655774462aad43487425d6e37', '105ec09c7139491eb0212678f4418884', 'dc43bcd09db94cf09bf979a45766a35c', '46c4854e59294187ab98ca4beea9d227', 'f546d47a4ce44e50b1caaaee7059e800', '0cfd2a010ba140db8bc8d05e2d195a2c', '774ec98d68994b97abe86ff3ed3b76f3', '95e813a2d777402b8e3e463a80fc18d2', '720aeed12981455898fe676801ad31d0', '5ae311098bdc4820905b27cdc24e5d91', 'b0179833d14247e48a49e8c7852586db', 'c84640a03d8d4881ba230233976eaf18', 'af63d7a0ddde4e7b897ce1cba5292529', 'd957bd0a7ddc43758f302bbf1cb01947', '1350f8de7a7e46d2bac62044405ab30d', '49429184f2244ce6b6a9e0d9b3aa1040', '219a32964b984c90a33acf72981a499c']}, editable=TRUE, id="TfhfzqkoSJ1I", outputId="d69cb33b-91b7-4423-899c-98471f411ed3", slideshow={'slide_type': ''}, tags=c("hide-output")}
 from bertopic import BERTopic
@@ -972,18 +993,14 @@ topic_model = BERTopic(language="english", verbose=True)
 topics, probs = topic_model.fit_transform(docs)
 ```
 
-<!-- #region id="A5O3KpHTnVpz" -->
 After fitting our model, we can start by looking at the results. Typically, we look at the most frequent topics first as they best represent the collection of documents.
-<!-- #endregion -->
 
 ```{python id="ScBUgXn06IK6"}
 freq = topic_model.get_topic_info()
 freq.head(5)
 ```
 
-<!-- #region id="-BtOgifV7Q-H" -->
 -1 refers to all outliers and should typically be ignored. Next, let's take a look at a frequent topic that were generated:
-<!-- #endregion -->
 
 ```{python colab={'base_uri': 'https://localhost:8080/'}, id="IVpvT4bA6KiN", outputId="9cf99b89-30bb-45fe-b98b-063f8f3624d9"}
 topic_model.get_topic(0)  # Select the most frequent topic
@@ -995,26 +1012,20 @@ Access the predicted topics for the first 10 documents:
 topic_model.topics_[:10]
 ```
 
-<!-- #region id="M8c8LenB8Zyl" -->
 Visualize topics:
-<!-- #endregion -->
 
 ```{python colab={'base_uri': 'https://localhost:8080/', 'height': 667}, editable=TRUE, id="S9qDqEHddgKq", outputId="3fddd5f1-194e-4708-a7dc-f0c5602c140a", slideshow={'slide_type': ''}}
 topic_model.visualize_topics()
 ```
 
-<!-- #region id="4spXl2_C6flq" -->
 We can visualize the selected terms for a few topics by creating bar charts out of the c-TF-IDF scores for each topic representation. Insights can be gained from the relative c-TF-IDF scores between and within topics. Moreover, you can easily compare topic representations to each other.
-<!-- #endregion -->
 
 ```{python colab={'base_uri': 'https://localhost:8080/', 'height': 617}, editable=TRUE, id="zpm9LsKW6mi5", outputId="1197affc-dde2-44c1-9ba7-c9fb36a1143c", slideshow={'slide_type': ''}}
 fig = topic_model.visualize_barchart(top_n_topics=8)
 fig.show()
 ```
 
-<!-- #region editable=true slideshow={"slide_type": ""} -->
 [Link to BertTopic](https://bit.ly/4fjwU9T).
-<!-- #endregion -->
 
 ### BertTopic: Enhance Topic Models with Expert-Defined Themes
 
@@ -1327,7 +1338,6 @@ print(augmented_text)
 # !python -m spacy download en_core_web_sm
 ```
 
-<!-- #region -->
 Traditional NER models are limited to predefined entity types. For example, spaCy's default English model is trained to recognize only the follwoing entity types:
 
 - PERSON (e.g., "John Smith")
@@ -1338,7 +1348,6 @@ Traditional NER models are limited to predefined entity types. For example, spaC
 
 
 Example of a traditional approach with spaCy:
-<!-- #endregion -->
 
 ```{python}
 import spacy

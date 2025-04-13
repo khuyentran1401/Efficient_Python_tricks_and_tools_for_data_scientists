@@ -1,0 +1,493 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+## DuckDB
+
+### SQL Analytics with DuckDB
+
+```{python tags=c("hide-cell")}
+# !pip install psycopg2 duckdb
+```
+
+SQL operations on data frames typically require setting up and maintaining separate database servers, adding complexity to analytical workflows:
+
+```{python}
+import pandas as pd
+
+# Create sample data
+df = pd.DataFrame(
+    {"customer_id": range(1000), "revenue": range(1000), "segment": ["A", "B"] * 500}
+)
+```
+
+```{python}
+import psycopg2
+from sqlalchemy import create_engine
+
+# Create a connection to PostgreSQL
+engine = create_engine("postgresql://postgres:postgres@localhost:5432/postgres")
+
+# Write the DataFrame to a PostgreSQL table
+df.to_sql("customers", engine, if_exists="replace", index=False)
+
+# Execute SQL query against the PostgreSQL database
+with engine.connect() as conn:
+    result = pd.read_sql(
+        """
+        SELECT 
+            segment,
+            AVG(revenue) as avg_revenue,
+            COUNT(*) as customer_count
+        FROM customers
+        GROUP BY segment
+        ORDER BY avg_revenue DESC
+    """,
+        conn,
+    )
+
+print("Segment Analysis:")
+print(result)
+```
+
+DuckDB simplifies this by providing direct SQL operations on DataFrames without server setup:
+
+```{python}
+import duckdb
+
+# Direct SQL operations on DataFrame - no server needed
+result = duckdb.sql(
+    """
+    SELECT 
+        segment,
+        AVG(revenue) as avg_revenue,
+        COUNT(*) as customer_count
+    FROM df
+    GROUP BY segment
+    ORDER BY avg_revenue DESC
+"""
+).df()
+
+print("Segment Analysis:")
+print(result)
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb)
+
+### Efficient SQL Operations with DuckDB on Pandas DataFrames
+
+```{python}
+# !pip install --quiet duckdb
+```
+
+```{python}
+# !wget -q https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+```
+
+Using SQL with pandas empowers data scientists to leverage SQL's powerful querying capabilities alongside the data manipulation functionalities of pandas.
+
+In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.
+
+```{python}
+import duckdb
+import pandas as pd
+
+df = pd.read_parquet("lineitemsf1.snappy.parquet")
+```
+
+```{python}
+# %%timeit
+df.groupby("l_returnflag").agg(
+    Sum=("l_extendedprice", "sum"),
+    Min=("l_extendedprice", "min"),
+    Max=("l_extendedprice", "max"),
+    Avg=("l_extendedprice", "mean"),
+)
+```
+
+```{python}
+# %%timeit
+duckdb.query(
+    """
+SELECT
+      l_returnflag,
+      SUM(l_extendedprice),
+      MIN(l_extendedprice),
+      MAX(l_extendedprice),
+      AVG(l_extendedprice)
+FROM df
+GROUP BY
+        l_returnflag
+"""
+).to_df()
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+### Efficiently Handle Large Datasets with DuckDB and PyArrow
+
+```{python}
+# !pip install deltalake duckdb
+```
+
+```{python}
+# !wget -q https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
+```
+
+DuckDB leverages various optimizations for query execution, while PyArrow efficiently handles in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.
+
+In the code below, we convert a Delta Lake table with over 6 million rows to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB. 
+
+Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas. 
+
+```{python}
+import duckdb
+import pandas as pd
+from deltalake.writer import write_deltalake
+
+df = pd.read_parquet("lineitemsf1.snappy.parquet")
+write_deltalake("delta_lake", df)
+```
+
+```{python}
+from deltalake import DeltaTable
+
+table = DeltaTable("delta_lake")
+```
+
+```{python}
+# %%timeit
+quack = duckdb.df(table.to_pandas())
+quack.filter("l_quantity > 50")
+```
+
+```{python}
+# %%timeit
+quack = duckdb.arrow(table.to_pyarrow_dataset())
+quack.filter("l_quantity > 50")
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+### Simplify CSV Data Management with DuckDB
+
+```{python tags=c("hide-cell")}
+# !pip install duckdb
+```
+
+Traditional database systems require a predefined table schema and a subsequent data import process when working with CSV data. 
+
+To demonstrate this, let's create a CSV file called `customer.csv`:
+
+```{python editable=TRUE, slideshow={'slide_type': ''}}
+import pandas as pd
+
+# Create a sample dataframe
+data = {
+    "name": ["Alice", "Bob", "Charlie", "David", "Eve"],
+    "age": [25, 32, 45, 19, 38],
+    "city": ["New York", "London", "Paris", "Berlin", "Tokyo"],
+}
+
+df = pd.DataFrame(data)
+
+# Save the dataframe as a CSV file
+df.to_csv("customers.csv", index=False)
+```
+
+To load this CSV file in Postgres, you need to run the following query:
+
+```sql
+-- Create the table
+CREATE TABLE customers (
+    name VARCHAR(100),
+    age INT,
+    city VARCHAR(100)
+);
+
+-- Load data from CSV
+COPY customers
+FROM 'customers.csv'
+DELIMITER ','
+CSV HEADER;
+```
+
+In contrast, DuckDB allows for direct reading of CSV files from disk, eliminating the need for explicit table creation and data loading.
+
+```{python}
+import duckdb
+
+duckdb.sql("SELECT * FROM 'customers.csv'")
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+### Automate CSV Parsing with DuckDB's read_csv
+
+```{python tags=c("hide-cell")}
+# !pip install duckdb
+```
+
+Reading a CSV file using pandas without specifying parameters like the delimiter or header can lead to incorrect parsing, especially when the structure has custom delimiters or specific formatting.
+
+```{python}
+import pandas as pd
+
+# Example CSV content with a custom delimiter
+csv_content = """FlightDate|UniqueCarrier|OriginCityName|DestCityName
+1988-01-01|AA|New York, NY|Los Angeles, CA
+1988-01-02|AA|New York, NY|Los Angeles, CA
+1988-01-03|AA|New York, NY|Los Angeles, CA
+"""
+
+# Writing the CSV content to a file
+with open("example.csv", "w") as f:
+    f.write(csv_content)
+
+# Reading the CSV file with pandas without specifying the delimiter
+df = pd.read_csv("example.csv")
+print(df)
+```
+
+The pandas code above does not specify the delimiter, leading to incorrect parsing. The default delimiter (`,`) is assumed, which results in the entire row being treated as a single column.
+
+DuckDB's `read_csv` feature addresses this issue by automatically detecting the structure of the CSV file, including delimiters, headers, and column types.
+
+```{python}
+import duckdb
+
+# Use DuckDB to automatically detect and read the CSV structure
+result = duckdb.query("SELECT * FROM read_csv('example.csv')").to_df()
+print(result)
+```
+
+In this example:
+
+- `read_csv` automatically detects the pipe (|) delimiter, identifies the column headers, and infers the correct data types for each column.
+- `duckdb.query` runs the SQL query to read the file and returns the result as a DataFrame using `.to_df()`.
+
+
+The output shows that DuckDB automatically detected the correct delimiter (`|`) and correctly parsed the data into columns.
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+
+### Multiple CSV Files Processing with DuckDB
+
+```{python tags=c("hide-cell")}
+# !pip install duckdb
+```
+
+Processing multiple CSV files is a common task in data analysis and engineering workflows. Traditionally, handling multiple CSV files requires writing loops or list comprehensions, which can be verbose and error-prone.
+
+
+To demonstrate, let's assume we have 2 CSV files in the "folder" directory:
+
+```{python}
+from pathlib import Path
+
+import pandas as pd
+
+# Create example dataframe for first file
+df1 = pd.DataFrame(
+    {
+        "Date": ["2023-01-01", "2023-01-02", "2023-01-03"],
+        "Product": ["Laptop", "Phone", "Tablet"],
+        "Sales": [1200, 800, 600],
+    }
+)
+
+# Create example dataframe for second file
+df2 = pd.DataFrame(
+    {
+        "Date": ["2023-02-01", "2023-02-02", "2023-02-03"],
+        "Product": ["Laptop", "Monitor", "Mouse"],
+        "Sales": [1500, 400, 50],
+    }
+)
+
+Path("data").mkdir()
+df1.to_csv("data/sales_jan.csv", index=False)
+df2.to_csv("data/sales_feb.csv", index=False)
+```
+
+```{python}
+import glob
+import os
+
+import pandas as pd
+
+# Read all CSV files and concatenate them
+csv_files = glob.glob("data/*.csv")
+dfs = []
+
+for file in csv_files:
+    df = pd.read_csv(file)
+    dfs.append(df)
+
+# Concatenate all dataframes
+combined_df = pd.concat(dfs, ignore_index=True)
+
+# Perform grouping and aggregation
+result = (
+    combined_df.groupby("Date")["Sales"]
+    .sum()
+    .reset_index()
+    .rename(columns={"Sales": "total_sales"})
+    .sort_values("Date")
+)
+
+result
+```
+
+DuckDB simplifies reading multiple CSV files with a single line of code that efficiently processes the files:
+
+```{python}
+import duckdb
+
+# Read and analyze all CSV files at once
+result = duckdb.sql(
+    """
+    SELECT 
+        date,
+        SUM(sales) as total_sales
+    FROM 'data/*.csv'
+    GROUP BY date
+    ORDER BY date
+"""
+).df()
+result
+```
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+### DuckDB: Query Pandas DataFrames Faster with Columnar Storage
+
+```{python editable=TRUE, slideshow={'slide_type': ''}, tags=c("hide-cell")}
+# !pip install duckdb
+```
+
+When analyzing data with operations like GROUP BY, SUM, or AVG on specific columns, row-based storage results in reading unnecessary data and inefficient memory usage since entire rows must be loaded even when only a few columns are needed.
+
+Example using SQLite (row-based):
+
+```{python}
+import sqlite3
+
+import pandas as pd
+
+customer = pd.DataFrame(
+    {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
+)
+
+# Load data to SQLite and query
+conn = sqlite3.connect(":memory:")
+customer.to_sql("customer", conn, index=False)
+
+# Must read all columns internally even though we only need 'age'
+query = "SELECT age FROM customer"
+result = pd.read_sql(query, conn)
+```
+
+DuckDB uses columnar storage, allowing you to efficiently read and process only the columns needed for your analysis. This improves both query speed and memory usage:
+
+```{python}
+import duckdb
+import pandas as pd
+
+customer = pd.DataFrame(
+    {"id": [1, 2, 3], "name": ["Alex", "Ben", "Chase"], "age": [25, 30, 35]}
+)
+
+
+query = "SELECT age FROM customer"
+result = duckdb.sql(query).df()
+result
+```
+
+In this example, DuckDB only needs to access the 'age' column in memory, while SQLite must read all columns ('id', 'name', 'age') internally even though only 'age' is selected. DuckDB also provides a simpler workflow by querying pandas DataFrames directly.
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).
+
+### Query Nested Parquet Files Easily Using DuckDB
+
+```{python tags=c("hide-cell")}
+# !pip install duckdb pandas pyarrow
+```
+
+Analyzing large, nested Parquet files often requires pre-processing to flatten the data or writing complex scripts to extract nested fields, which can be time-consuming and error-prone.
+
+```{python}
+import pandas as pd
+
+# Create a nested dataset and save it as a Parquet file
+data = {
+    "id": [1, 2],
+    "details": [{"name": "Alice", "age": 25}, {"name": "Bob", "age": 30}],
+}
+
+# Convert to a DataFrame
+df = pd.DataFrame(data)
+
+# Save as a nested Parquet file
+df.to_parquet("nested_data.parquet")
+print(df)
+```
+
+```{python}
+# Read the DataFrame from Parquet file
+df = pd.read_parquet("nested_data.parquet")
+
+# Create a new DataFrame with the flattened structure
+flat_df = pd.DataFrame(
+    {
+        "id": df["id"],
+        "name": [detail["name"] for detail in df["details"]],
+        "age": [detail["age"] for detail in df["details"]],
+    }
+)
+
+print(flat_df)
+```
+
+DuckDB allows querying nested Parquet files directly using SQL without needing to flatten or preprocess the data.
+
+To load and query nested Parquet files with DuckDB:
+
+```{python}
+import duckdb
+
+# Query the nested Parquet file directly
+query_result = duckdb.query(
+    """
+    SELECT 
+        id, 
+        details.name AS name, 
+        details.age AS age 
+    FROM read_parquet('nested_data.parquet')
+"""
+).to_df()
+
+print(query_result)
+```
+
+In this example:
+
+- `read_parquet('nested_data.parquet')` reads the nested Parquet file.
+- SQL syntax allows you to access nested fields using dot notation (e.g., `details.name`).
+
+
+The output is a flattened representation of the nested data, directly queried from the Parquet file without additional preprocessing.
+
+[Link to DuckDB](https://github.com/duckdb/duckdb).

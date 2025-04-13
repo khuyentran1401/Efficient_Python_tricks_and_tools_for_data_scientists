@@ -22,24 +22,28 @@ This section cover tools to make your experience with Pandas a litte bit better.
 ### tqdm: Add Progress Bar to Your Pandas Apply
 
 ```{python tags=c("hide-cell")}
-# !pip install tqdm 
+# !pip install tqdm
 ```
 
 If you want to keep informed about the progress of a pandas apply operation, use tqdm.
 
 ```{python}
-import pandas as pd 
-from tqdm import tqdm 
-import time 
+import time
 
-df = pd.DataFrame({'a': [1, 2, 3, 4, 5], 'b': [2, 3, 4, 5, 6]})
+import pandas as pd
+from tqdm import tqdm
+
+df = pd.DataFrame({"a": [1, 2, 3, 4, 5], "b": [2, 3, 4, 5, 6]})
 
 tqdm.pandas()
+
+
 def func(row):
     time.sleep(1)
     return row + 1
 
-df['a'].progress_apply(func)
+
+df["a"].progress_apply(func)
 ```
 
 [Link to tqdm](https://github.com/tqdm/tqdm).
@@ -54,9 +58,9 @@ df['a'].progress_apply(func)
 If you want to parallelize your Pandas operations on all available CPUs by adding only one line of code, try pandarallel. 
 
 ```{python}
-from pandarallel import pandarallel
 import pandas as pd
 from numpy.random import randint
+from pandarallel import pandarallel
 
 df = pd.DataFrame(
     {
@@ -68,7 +72,6 @@ df = pd.DataFrame(
 
 pandarallel.initialize(progress_bar=True)
 df.parallel_apply(lambda x: x**2)
-
 ```
 
 [Link to pandarallel](https://github.com/nalepae/pandarallel).
@@ -86,9 +89,11 @@ If you want to quickly gain insights from your pandas DataFrame with AI, use Pan
 - Not a tool to process your DataFrame
 
 ```{python}
-import pandas as pd  
+import pandas as pd
 
-df = pd.read_csv("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/flights.csv")
+df = pd.read_csv(
+    "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/flights.csv"
+)
 df.head(10)
 ```
 
@@ -111,7 +116,6 @@ print(
         prompt="Which month of the years has the highest number of passengers on average?",
     )
 )
-
 ```
 
 ```{python}
@@ -120,15 +124,50 @@ print(
         df, prompt="Which are the five years with the highest passenger numbers?"
     )
 )
-
 ```
 
 ```{python}
 print(pandas_ai.run(df, prompt="Within what range of years does the dataset span?"))
-
 ```
 
 [Link to PandasAI](https://github.com/gventuri/pandas-ai).
+
+### Combine SQL and Python Efficiently with Ibis
+
+```{python tags=c("hide-cell")}
+# !pip install 'ibis-framework[duckdb,examples]'
+```
+
+Data scientists often need to leverage SQL for database queries and Python for advanced data manipulation.
+
+
+Ibis allows seamless integration of SQL and Python, enabling users to interact with databases using SQL while performing complex operations in Python.
+
+To mix SQL and Python using Ibis:
+
+```{python}
+import ibis
+
+# Enable interactive mode
+ibis.options.interactive = True
+
+# Load example data
+t = ibis.examples.penguins.fetch()
+
+# Perform an SQL query on the Ibis table
+a = t.sql("SELECT species, island, count(*) AS count FROM penguins GROUP BY 1, 2")
+
+# Continue with Python operations
+b = a.order_by("count")
+print(b)
+```
+
+Here’s the breakdown:
+
+- `t.sql()`: Enables SQL queries directly on the Ibis table.
+- `order_by("count")`: Applies Pythonic dataframe operations on the SQL query result.
+
+[Link to Ibis](https://github.com/ibis-project/ibis).
 
 
 ### fugue: Use pandas Functions on the Spark and Dask Engines. 
@@ -142,8 +181,9 @@ Wouldn't it be nice if you can leverage Spark or Dask to parallelize data scienc
 Fugue provides the `transform` function allowing users to use pandas functions on the Spark and Dask engines. 
 
 ```{python}
-import pandas as pd
 from typing import Dict
+
+import pandas as pd
 from fugue import transform
 from fugue_spark import SparkExecutionEngine
 
@@ -181,36 +221,37 @@ Example of working with geographic data without specialized tools:
 
 ```{python}
 # Manually handling coordinates and spatial operations
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Complex manual handling of polygon coordinates
-df = pd.DataFrame({
-    'name': ['Area1', 'Area2'],
-    'coordinates': [
-        [(0, 0), (1, 0), (1, 1)],
-        [(2, 0), (3, 0), (3, 1), (2, 1)]
-    ]
-})
+df = pd.DataFrame(
+    {
+        "name": ["Area1", "Area2"],
+        "coordinates": [[(0, 0), (1, 0), (1, 1)], [(2, 0), (3, 0), (3, 1), (2, 1)]],
+    }
+)
+
 
 # Calculate area
 def calculate_polygon_area(coordinates):
     x_coords = [point[0] for point in coordinates]
     y_coords = [point[1] for point in coordinates]
-    
+
     # Add first point to end to close the polygon
-    x_shifted = x_coords[1:] + x_coords[:1] 
+    x_shifted = x_coords[1:] + x_coords[:1]
     y_shifted = y_coords[1:] + y_coords[:1]
-    
+
     # Calculate using shoelace formula
     first_sum = sum(x * y for x, y in zip(x_coords, y_shifted))
     second_sum = sum(x * y for x, y in zip(x_shifted, y_coords))
     area = 0.5 * abs(first_sum - second_sum)
-    
+
     return area
 
-df['area'] = df['coordinates'].apply(calculate_polygon_area)
-df['area']
+
+df["area"] = df["coordinates"].apply(calculate_polygon_area)
+df["area"]
 ```
 
 ```{python}
@@ -219,20 +260,21 @@ def calculate_perimeter(coordinates):
     # Add first point to end to close the polygon if not already closed
     if coordinates[0] != coordinates[-1]:
         coordinates = coordinates + [coordinates[0]]
-    
+
     # Calculate distance between consecutive points
     distances = []
-    for i in range(len(coordinates)-1):
+    for i in range(len(coordinates) - 1):
         point1 = coordinates[i]
-        point2 = coordinates[i+1]
+        point2 = coordinates[i + 1]
         # Euclidean distance formula
-        distance = np.sqrt((point2[0] - point1[0])**2 + (point2[1] - point1[1])**2)
+        distance = np.sqrt((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2)
         distances.append(distance)
-    
+
     return sum(distances)
 
-df['perimeter'] = df['coordinates'].apply(calculate_perimeter)
-df['perimeter']
+
+df["perimeter"] = df["coordinates"].apply(calculate_perimeter)
+df["perimeter"]
 ```
 
 With GeoPandas, you can:
@@ -250,10 +292,10 @@ from shapely.geometry import Polygon
 # Create two polygons
 p1 = Polygon([(0, 0), (1, 0), (1, 1)])
 p2 = Polygon([(2, 0), (3, 0), (3, 1), (2, 1)])
-    
+
 # Create a GeoSeries from the polygons
 g = geopandas.GeoSeries([p1, p2])
-    
+
 # Print the GeoSeries
 g
 ```

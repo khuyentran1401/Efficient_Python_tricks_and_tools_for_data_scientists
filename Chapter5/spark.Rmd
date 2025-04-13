@@ -112,7 +112,6 @@ joined_df.show()
 
 In this example, PySpark performs a shuffle join behind the scenes to combine the two DataFrames. The process involves partitioning the data based on the join key ("id"), shuffling the partitions across the worker nodes, performing local joins on each worker node, and finally merging the results.
 
-
 ### PySpark DataFrame Transformations: select vs withColumn
 
 ```{python tags=c("hide-cell")}
@@ -463,7 +462,8 @@ FROM customers
 ```
 
 ```{python}
-spark.sql("""
+spark.sql(
+    """
     SELECT CASE 
             WHEN age < 18 THEN 'minor'
             WHEN age > 65 THEN 'senior'
@@ -478,7 +478,8 @@ spark.sql("""
         WHEN income > 50000 THEN 'prime'
         ELSE 'standard'
     END
-""").show()
+"""
+).show()
 ```
 
 PySpark UDFs allow you to centralize this logic in reusable Python functions. Here's how to implement it:
@@ -487,6 +488,7 @@ Define the UDF to encapsulate customer segmentation logic:
 
 ```{python}
 from pyspark.sql.types import StringType
+
 
 def segment_customers(age, income):
     if age is None or income is None:
@@ -499,6 +501,7 @@ def segment_customers(age, income):
         return "prime"
     return "standard"
 
+
 spark.udf.register("segment_customers", segment_customers, StringType())
 ```
 
@@ -506,21 +509,25 @@ Use the UDF in your queries:
 
 ```{python}
 # Query 1: Simple segmentation
-query1 = spark.sql("""
+query1 = spark.sql(
+    """
     SELECT 
         customer_id,
         segment_customers(age, income) AS segment
     FROM customers
-""")
+"""
+)
 
 # Query 2: Segment counts
-query2 = spark.sql("""
+query2 = spark.sql(
+    """
     SELECT 
         segment_customers(age, income) AS segment,
         COUNT(*) as count
     FROM customers
     GROUP BY segment_customers(age, income)
-""")
+"""
+)
 ```
 
 ```{python}
@@ -1210,6 +1217,61 @@ df.select("customer.first_name", "customer.last_name", "order_info.total").show(
 # Filter orders above $150
 df.where("order_info.total >= 150").show()
 ```
+
+### Simplify DataFrame Operations Using selectExpr in PySpark
+
+```{python tags=c("hide-cell")}
+# !pip install -U 'pyspark[sql]'
+```
+
+The `selectExpr` feature in PySpark simplifies column transformations by allowing SQL-like expressions in a single step.
+
+
+```{python}
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.getOrCreate()
+```
+
+```{python}
+# Create a sample DataFrame
+data = [("John", 25, 50000), ("Mary", 30, 60000), ("Sam", 35, 70000)]
+columns = ["Name", "Age", "Salary"]
+
+df = spark.createDataFrame(data, columns)
+df.show()
+```
+
+```{python}
+from pyspark.sql.functions import col
+
+# Perform transformations using .select
+df_transformed = df.select(
+    "Name",
+    (col("Age") + 10).alias("Age_In_10_Years"),
+    (col("Salary") / 1000).alias("Salary_In_Thousands"),
+)
+df_transformed.show()
+```
+
+```{python}
+# Perform transformations using .selectExpr
+df_transformed = df.selectExpr(
+    "Name",
+    "Age + 10 as Age_In_10_Years",
+    "Salary / 1000 as Salary_In_Thousands",
+)
+df_transformed.show()
+```
+
+In the code above:
+
+- `selectExpr()` - Enables SQL expressions for column selection and transformations
+- `"Age + 10 as Age_In_10_Years"` - Adds 10 to the `Age` column and renames it
+- `"Salary / 1000 as Salary_In_Thousands"` - Divides the `Salary` column by 1000 and renames it
+
+
+[Link to PySpark](https://spark.apache.org/docs/latest/api/python/index.html).
 
 ### Tempo: Simplified Time Series Analysis in PySpark
 

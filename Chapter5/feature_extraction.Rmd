@@ -15,6 +15,7 @@ jupyter:
 
 ```{python tags=c("remove-cell")}
 import warnings
+
 warnings.filterwarnings("ignore")
 ```
 
@@ -46,7 +47,7 @@ dist.plot()
 Beyond finding the optimal distribution, `distfit` can also help identify outliers based on deviation from the fitted distribution.
 
 
-[Link to distfit](https://erdogant.github.io/distfit/pages/html/index.html).
+[Link to distfit](https://github.com/erdogant/distfit).
 
 
 ### Geopy: Extract Location Based on Python String
@@ -76,7 +77,7 @@ You can also extract latitude and longitude:
 location.latitude, location.longitude
 ```
 
-[Link to Geopy](https://geopy.readthedocs.io/en/stable/)
+[Link to Geopy](https://github.com/geopy/geopy).
 
 
 ### fastai’s cont_cat_split: Separate Continuous and Categorical Variables
@@ -113,44 +114,62 @@ print("Categorical columns:", cat_names)
 [Link to the documentation](https://docs.fast.ai/tabular.core.html).
 
 
-### Patsy: Build Features with Arbitrary Python Code
+### Formulaic: Write Clear Feature Engineering Code
 
 ```{python tags=c("hide-cell")}
-# !pip install patsy
+# !pip install formulaic
 ```
 
-Patsy lets you quickly create features for your model using an intuitive syntax, ideal for experimentation.
+Feature engineering, especially for statistical models, often requires manually creating interaction terms, polynomial transformations, or encoding categorical variables. This can quickly become verbose and error-prone when using libraries like pandas or NumPy:
 
 ```{python}
-from sklearn.datasets import load_wine
-import pandas as pd 
-```
-
-```{python}
-df = load_wine(as_frame=True)
-data = pd.concat([df['data'], df['target']], axis=1)
-data.head(10)
+df = pd.DataFrame({"x": ["A", "B", "C"], "z": [0.3, 0.1, 0.2], "y": [0, 1, 2]})
+print(df)
 ```
 
 ```{python}
-from patsy import dmatrices
+import numpy as np
+import pandas as pd
 
-y, X = dmatrices('target ~ alcohol + flavanoids + proline', data=data)
+# Sample dataset
+df = pd.DataFrame({"x": ["A", "B", "C"], "z": [0.3, 0.1, 0.2], "y": [0, 1, 2]})
+
+# Manual feature engineering
+df["x_B"] = (df["x"] == "B").astype(int)
+df["x_C"] = (df["x"] == "C").astype(int)
+df["z_squared"] = df["z"] ** 2
+
+print(df)
 ```
+
+Manually encoding categorical variables and creating polynomial features leads to repetitive code and increases the likelihood of errors, especially in larger datasets or more complex models.
+
+Formulaic streamlines feature engineering by allowing you to define transformations and relationships in a single formula string, inspired by Wilkinson formulas.
 
 ```{python}
-X
+from formulaic import Formula
+
+# Define a formula for feature engineering
+formula = "y ~ x + I(z**2)"
+
+# Apply the formula to get the response and design matrices
+y, X = Formula(formula).get_model_matrix(df)
+
+print("Response (y):")
+print(y)
+
+print("\nDesign Matrix (X):")
+print(X)
 ```
 
-These features can be directly used with machine learning models:
+In this example:
 
-```{python}
-from sklearn.linear_model import LinearRegression
+- `"y ~ x + I(z**2)"`: The formula specifies that `y` is the response variable, `x` is a categorical predictor (automatically one-hot encoded), and `z**2` represents the square of `z`.
+- `Formula.get_model_matrix()`: Automatically generates the response (`y`) and design matrix (`X`) based on the formula.
 
-model = LinearRegression().fit(X, y)
-```
+The output demonstrates how Formulaic automatically handles categorical encoding, interaction terms, and polynomial transformations, significantly simplifying feature engineering.
 
-[Link to Patsy](https://patsy.readthedocs.io/en/latest/overview.html).
+[Link to Formulaic](https://github.com/matthewwardrop/formulaic)
 
 
 ### yarl: Create and Extract Elements from a URL Using Python
@@ -162,22 +181,22 @@ model = LinearRegression().fit(X, y)
 `yarl` makes URL parsing and creation easy. You can extract elements like host, path, and query from a URL or construct new URLs.
 
 ```{python}
-from yarl import URL 
+from yarl import URL
 
-url = URL('https://github.com/search?q=data+science')
-url 
+url = URL("https://github.com/search?q=data+science")
+url
 ```
 
 ```{python}
-print(url.host) 
+print(url.host)
 ```
 
 ```{python}
-print(url.path) 
+print(url.path)
 ```
 
 ```{python}
-print(url.query_string) 
+print(url.query_string)
 ```
 
 You can also build new URLs:
@@ -228,7 +247,6 @@ For fast data annotation within Jupyter Notebooks, use `Pigeon`. This tool allow
 ```{python}
 from pigeon import annotate
 
-
 annotations = annotate(
     ["The service is terrible", "I will definitely come here again"],
     options=["positive", "negative"],
@@ -251,7 +269,7 @@ After labeling all your data, you can get the examples along with their labels b
 ### probablepeople: Parse Unstructured Names Into Structured Components
 
 ```{python tags=c("hide-cell")}
-# !pip install probablepeople  
+# !pip install probablepeople
 ```
 
 `probablepeople` helps you parse unstructured names into structured components like first names, surnames, and company names.
@@ -273,22 +291,100 @@ pp.parse("Prefect Technologies, Inc")
 [Link to probablepeople](https://github.com/datamade/probablepeople).
 
 
-### Supercharge PDF Text Extraction in Python with pypdf
+### Extract PDF Text Precisely with PyPDF
 
 ```{python tags=c("hide-cell")}
-# !pip install -U pypdf
+# !pip install fpdf pypdf
 ```
 
-PDF text is designed for beautiful on-screen display rather than optimized structured data extraction, making text extraction from PDFs challenging. 
+Extracting text from PDFs often results in including undesired elements like headers, footers, page numbers, or small captions due to the lack of semantic layers in PDF files.
 
-Besides simple text extraction, pypdf also knows about fonts, encodings, and typical character distance, which enhances the accuracy of text extraction from PDFs.
+PyPDF can split, merge, crop, transform, and manipulate PDFs. It also supports extracting text and metadata from PDF files, making it a powerful tool for PDF processing.
+
+To demonstrate this, start with creating an example PDF:
 
 ```{python}
-from pypdf import PdfReader
+from fpdf import FPDF
+from pathlib import Path
 
-reader = PdfReader("example.pdf")
-page = reader.pages[0]
-text = page.extract_text()
+# Create a duck-themed PDF with headers and body text
+class DuckPDF(FPDF):
+    def add_header(self, text):
+        self.set_font("Arial", "B", 14)
+        self.cell(0, 10, text, ln=True)
+
+    def add_body(self, text):
+        self.set_font("Arial", "", 9)
+        self.multi_cell(0, 10, text)
+        self.ln(5)
+
+# Create and fill the PDF
+pdf = DuckPDF()
+pdf.add_page()
+pdf.add_header("DUCK BIOLOGY")
+pdf.add_body("Mallards are common ducks found in North America.\nThey have green heads and a yellow bill.")
+pdf.add_header("Duck Habitats")
+pdf.add_body("Ducks live near ponds, lakes, and marshes.\nThey build nests near the water and eat aquatic plants.")
+
+# Save the PDF
+duck_pdf_path = Path("duck_biology.pdf")
+pdf.output(str(duck_pdf_path))
 ```
 
-[Link to pypdf](https://github.com/py-pdf/pypdf).
+```{python}
+from PyPDF2 import PdfReader
+
+# Extracting text without filtering headers, footers, or specific elements
+reader = PdfReader("duck_biology.pdf")
+page = reader.pages[0]
+text = page.extract_text()
+print(text)  # Outputs all text, including headers, footers, and other elements
+```
+
+In the code above, the text extraction results in capturing all textual elements on the page, including headers, footers, and possibly formatting artifacts. This makes it challenging to focus only on the main content.
+
+Using the `visitor_text` feature of PyPDF, you can precisely control the parts of the text to extract by applying custom logic, such as filtering out headers, footers, or small-font elements.
+
+
+The code snippet below demonstrates how to filter out small-font text (e.g., headers, footers, or captions) by using a visitor function in the `extract_text` method.
+
+```{python}
+from PyPDF2 import PdfReader
+
+# Threshold to consider "small" text
+SMALL_FONT_THRESHOLD = 10
+
+# Prepare a list to store the filtered text
+parts = []
+
+
+# Visitor function to filter text based on font size
+def visitor_body(text, cm, tm, font_dict, font_size):
+    if font_size < SMALL_FONT_THRESHOLD:
+        parts.append(text)
+```
+
+Explanation of parameters in the visitor function:
+- `text`: This is the actual text string from the PDF that the visitor function processes. It contains the specific snippet of text that is currently being evaluated.
+- `cm` (current transformation matrix): This matrix describes how the text is positioned and scaled on the page. For example, `cm[4]` and `cm[5]` represent the horizontal and vertical positions of the text, respectively.
+- `tm` (text matrix): This describes the transformation applied in the text coordinate space. It is used internally to map text coordinates to the user space.
+- `font_dict`: This is a dictionary containing font metadata (e.g., font type, style). For instance, it may include keys like `/BaseFont` with values such as `/Arial,Bold`.
+- `font_size`: The font size of the current text snippet being processed. It is measured in text coordinate space and can be used to identify small text such as footers or captions.
+
+
+Using the `extract_text` method with the `visitor_body` function allows us to extract only the desired text elements.
+
+```{python}
+reader = PdfReader("duck_biology.pdf")
+page = reader.pages[0]
+page.extract_text(visitor_text=visitor_body)
+
+# Combine all filtered parts into a single string
+text_body = "".join(parts)
+
+print(text_body)
+```
+
+The extracted text is now free of page numbers or small-font elements like headers and footers, providing a cleaner and more focused output for further analysis.
+
+[Link to PyPDF](https://github.com/py-pdf/pypdf).

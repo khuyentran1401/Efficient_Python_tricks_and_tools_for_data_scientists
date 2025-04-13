@@ -28,9 +28,9 @@ This section covers some libraries for feature engineering.
 Normally, after using scikit-learn's `train_test_split`, the proportion of values in the sample will be different from the proportion of values in the entire dataset. 
 
 ```{python}
+import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-import numpy as np
 
 X, y = load_iris(return_X_y=True)
 np.bincount(y)
@@ -72,17 +72,19 @@ np.bincount(y_test)
 In time-sensitive datasets, a random split can cause data leakage by including future data in the training set, which biases the model. To prevent this, split data chronologically:
 
 ```{python}
+from datetime import datetime
+
 import pandas as pd
-from datetime import datetime 
 from sklearn.model_selection import train_test_split
 
-
 # Sample data
-data = {'customer_id': [1, 2, 3, 4, 5],
-        'amount': [10.00, 20.00, 15.00, 25.00, 30.00],
-        'date': ['2021-01-01', '2021-01-02', '2021-01-03', '2021-01-04', '2021-01-05']}
+data = {
+    "customer_id": [1, 2, 3, 4, 5],
+    "amount": [10.00, 20.00, 15.00, 25.00, 30.00],
+    "date": ["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"],
+}
 df = pd.DataFrame(data)
-df['date'] = pd.to_datetime(df['date'])
+df["date"] = pd.to_datetime(df["date"])
 
 # Random split
 train_data, test_data = train_test_split(df, test_size=0.3, random_state=42)
@@ -92,16 +94,14 @@ print("Test data:\n", test_data)
 
 # Time-based split
 cutoff_date = datetime(2021, 1, 4)
-train_data = df[df['date'] < cutoff_date]
-test_data = df[df['date'] >= cutoff_date]
+train_data = df[df["date"] < cutoff_date]
+test_data = df[df["date"] >= cutoff_date]
 print("\n\nTime-based split:\n")
 print("Train data:\n", train_data)  # Data before the cutoff
-print("Test data:\n", test_data)   # Data after the cutoff
-
+print("Test data:\n", test_data)  # Data after the cutoff
 ```
 
 ### TimeSeriesSplit for Cross-Validation in Time Series
-
 
 
 For time series data, using `TimeSeriesSplit` ensures the temporal order is maintained during cross-validation:
@@ -133,15 +133,14 @@ This approach ensures:
 By default, scikit-learn transformers return NumPy arrays. To return pandas DataFrames, use the `set_output` method:
 
 ```{python}
-from sklearn.preprocessing import StandardScaler
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
 data = {"age": [25, 30, None, 35], "income": [50000, 60000, 70000, None]}
 df = pd.DataFrame(data)
 
-scaler = StandardScaler().set_output(transform='pandas')
+scaler = StandardScaler().set_output(transform="pandas")
 print(scaler.fit_transform(df))
-
 ```
 
 You can apply this in pipelines too:
@@ -150,11 +149,11 @@ You can apply this in pipelines too:
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 
-pipeline = Pipeline([("imputer", SimpleImputer(strategy="mean")), 
-                     ("scaler", StandardScaler())]).set_output(transform="pandas")
+pipeline = Pipeline(
+    [("imputer", SimpleImputer(strategy="mean")), ("scaler", StandardScaler())]
+).set_output(transform="pandas")
 
 print(pipeline.fit_transform(df))
-
 ```
 
 ### Efficient Feature Transformation with make_column_transformer in scikit-learn
@@ -163,8 +162,8 @@ print(pipeline.fit_transform(df))
 `make_column_transformer` allows you to apply different transformations to specific feature sets:
 
 ```{python}
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 data = {
     "cat1": ["A", "B", "A", np.nan, "C"],
@@ -175,16 +174,14 @@ data = {
 
 X = pd.DataFrame(data)
 y = pd.Series([0, 1, 0, 0, 1])
-
 ```
 
 ```{python}
 from sklearn.compose import make_column_transformer
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
-
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 # Define the numeric and categorical features
 numeric_features = ["num1", "num2"]
@@ -206,7 +203,6 @@ preprocessor = make_column_transformer(
 # Fit and transform the data
 X_transformed = preprocessor.fit_transform(X)
 X_transformed
-
 ```
 
 You can integrate this into a pipeline with a machine learning model:
@@ -216,7 +212,6 @@ You can integrate this into a pipeline with a machine learning model:
 pipe = make_pipeline(preprocessor, LogisticRegression())
 pipe.fit(X, y)
 pipe.predict(X)
-
 ```
 
 This streamlines feature preprocessing and modeling in one unified workflow.
@@ -241,11 +236,11 @@ This allows you to seamlessly integrate custom functions into a pipeline, mainta
 Here's an example of using `FunctionTransformer` in a full pipeline:
 
 ```{python}
-import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import FunctionTransformer
 import numpy as np
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
 
 # Create a simple pandas DataFrame
 data = {
@@ -280,22 +275,128 @@ predictions = pipeline.predict(new_df)
 print("Predictions:", predictions)
 ```
 
+### Simplify Tabular Dataset Preparation with TabularPandas
+
+```{python tags=c("hide-cell")}
+# !pip install fastai
+```
+
+While scikit-learn pipelines provide a way to chain preprocessing steps, they require manual configuration for handling missing values, encoding categorical variables, and normalizing continuous data, which can be cumbersome when dealing with complex tabular datasets:
+
+```{python}
+import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+# Sample dataset
+data = {
+    "age": [25, 30, None, 22, 35],
+    "salary": [50000, 60000, 45000, None, 80000],
+    "job": ["engineer", "doctor", "nurse", "engineer", None],
+    "target": [1, 0, 1, 0, 1],
+}
+df = pd.DataFrame(data)
+
+# Define preprocessing steps for columns
+numerical_features = ["age", "salary"]
+categorical_features = ["job"]
+
+numerical_transformer = Pipeline(
+    steps=[("imputer", SimpleImputer(strategy="mean")), ("scaler", StandardScaler())]
+)
+
+categorical_transformer = Pipeline(
+    steps=[
+        ("imputer", SimpleImputer(strategy="constant", fill_value="unknown")),
+        ("onehot", OneHotEncoder(handle_unknown="ignore")),
+    ]
+)
+
+# Combine preprocessing steps
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", numerical_transformer, numerical_features),
+        ("cat", categorical_transformer, categorical_features),
+    ]
+)
+
+# Apply preprocessing to dataset
+X = df.drop(columns=["target"])
+y = df["target"]
+
+X_preprocessed = pd.DataFrame(preprocessor.fit_transform(X))
+
+print(X_preprocessed)
+```
+
+The scikit-learn pipeline requires significant manual effort to define and combine preprocessing steps for different types of features, making the process less streamlined for tabular data preparation.
+
+TabularPandas from fastai simplifies these tasks by automating preprocessing steps and providing a unified interface for tabular data handling.
+
+```{python}
+from fastai.tabular.all import (
+    Categorify,
+    FillMissing,
+    Normalize,
+    RandomSplitter,
+    TabularPandas,
+    range_of,
+)
+
+# Define preprocessing steps
+procs = [FillMissing, Categorify, Normalize]
+
+# Define categorical and continuous variables
+cat_names = ["job"]
+cont_names = ["age", "salary"]
+y_names = "target"
+
+# Create a TabularPandas object
+to = TabularPandas(
+    df,
+    procs=procs,
+    cat_names=cat_names,
+    cont_names=cont_names,
+    y_names=y_names,
+    splits=RandomSplitter(valid_pct=0.2)(range_of(df)),
+)
+```
+
+In this example:
+
+- `FillMissing`: Automatically fills missing values in continuous variables.
+- `Categorify`: Encodes categorical variables into numeric labels.
+- `Normalize`: Normalizes continuous variables for better model performance.
+- `RandomSplitter`: Splits the dataset into training and validation sets.
+
+The output shows how TabularPandas automatically processes the dataset in a single step, saving time and effort compared to manually configuring preprocessing pipelines in scikit-learn.
+
+[Link to fastai](https://github.com/fastai/fastai)
+
 ### Drop Correlated Features
 
 ```{python tags=c("hide-cell")}
-# !pip install feature_engine 
+# !pip install feature_engine
 ```
 
 To remove highly correlated features, you can use `DropCorrelatedFeatures` from the `feature-engine` package.
 
 ```{python}
 import pandas as pd
-from sklearn.datasets import make_classification
 from feature_engine.selection import DropCorrelatedFeatures
+from sklearn.datasets import make_classification
 
 # Create a dataset with correlated variables
 X, y = make_classification(
-    n_samples=1000, n_features=6, n_redundant=3, n_clusters_per_class=1, class_sep=2, random_state=0
+    n_samples=1000,
+    n_features=6,
+    n_redundant=3,
+    n_clusters_per_class=1,
+    class_sep=2,
+    random_state=0,
 )
 
 # Convert the dataset to a DataFrame
@@ -309,7 +410,6 @@ Xt = tr.fit_transform(X)
 # Check correlated features
 print("Correlated features:", tr.correlated_feature_sets_)
 print("Remaining features:", Xt.columns)
-
 ```
 
 [Link to feature-engine](https://feature-engine.trainindata.com).
@@ -321,17 +421,17 @@ print("Remaining features:", Xt.columns)
 Handling rare categories in high-cardinality categorical features can be simplified using the `RareLabelEncoder`. This encoder groups infrequent categories into a single value.
 
 ```{python}
-from sklearn.datasets import fetch_openml
 from feature_engine.encoding import RareLabelEncoder
+from sklearn.datasets import fetch_openml
 
-data = fetch_openml('dating_profile')['data']
+data = fetch_openml("dating_profile")["data"]
 data.head(10)
 ```
 
 ```{python}
 # Drop rows with missing values in 'education' column
 
-processed = data.dropna(subset=['education'])
+processed = data.dropna(subset=["education"])
 ```
 
 In the code below, 
@@ -347,7 +447,7 @@ encoded = encoder.fit_transform(processed)
 Now the rare categories in the column `education` are replaced with "Other".
 
 ```{python}
-encoded['education'].sample(10)
+encoded["education"].sample(10)
 ```
 
 [Link to feature-engine](https://feature-engine.trainindata.com).
@@ -406,8 +506,8 @@ To handle dirty categorical variables, use dirty\_cat's `SimilarityEncoder`. Thi
 Example using the employee_salaries dataset:
 
 ```{python}
-from dirty_cat.datasets import fetch_employee_salaries
 from dirty_cat import SimilarityEncoder
+from dirty_cat.datasets import fetch_employee_salaries
 
 X = fetch_employee_salaries().X
 X.head(10)
@@ -430,34 +530,41 @@ X_enc
 To better visualize the similarity, create a heatmap:
 
 ```{python}
-import seaborn as sns
 import numpy as np
-from sklearn.preprocessing import normalize
+import seaborn as sns
 from IPython.core.pylabtools import figsize
+from sklearn.preprocessing import normalize
+
 
 def plot_similarity(labels, features):
-  
     normalized_features = normalize(features)
-    
+
     # Create correction matrix
     corr = np.inner(normalized_features, normalized_features)
-    
+
     # Plot
     figsize(10, 10)
     sns.set(font_scale=1.2)
-    g = sns.heatmap(corr, xticklabels=labels, yticklabels=labels, vmin=0,
-        vmax=1, cmap="YlOrRd", annot=True, annot_kws={"size": 10})
-        
+    g = sns.heatmap(
+        corr,
+        xticklabels=labels,
+        yticklabels=labels,
+        vmin=0,
+        vmax=1,
+        cmap="YlOrRd",
+        annot=True,
+        annot_kws={"size": 10},
+    )
+
     g.set_xticklabels(labels, rotation=90)
     g.set_title("Similarity")
 
 
 def encode_and_plot(labels):
-  
-    enc = SimilarityEncoder(similarity="ngram") # Encode
+    enc = SimilarityEncoder(similarity="ngram")  # Encode
     X_enc = enc.fit_transform(labels.reshape(-1, 1))
-    
-    plot_similarity(labels, X_enc) # Plot
+
+    plot_similarity(labels, X_enc)  # Plot
 ```
 
 ```{python}
@@ -486,11 +593,11 @@ skrub's `deduplicate()` function helps solve this problem by using unsupervised 
 To demonstrate the deduplicate function, start with generating a duplicated dataset:
 
 ```{python}
-from skrub.datasets import make_deduplication_data
 import pandas as pd
+from skrub.datasets import make_deduplication_data
 
 duplicated_food = make_deduplication_data(
-    examples=["Chocolate", "Broccoli", 'Jalapeno', 'Zucchini'],  
+    examples=["Chocolate", "Broccoli", "Jalapeno", "Zucchini"],
     entries_per_example=[100, 200, 300, 200],  # their respective number of occurrences
     prob_mistake_per_letter=0.05,  # 5% probability of typo per letter
     random_state=42,  # set seed for reproducibility
@@ -516,7 +623,11 @@ from skrub import deduplicate
 translation_table = deduplicate(duplicated_food)
 
 # remove duplicated rows
-translation_table = translation_table.reset_index().rename(columns={'index': 'mispelled_food', 0: 'corrected_food'}).drop_duplicates()
+translation_table = (
+    translation_table.reset_index()
+    .rename(columns={"index": "mispelled_food", 0: "corrected_food"})
+    .drop_duplicates()
+)
 
 # view 10 sample rows
 print(translation_table.sample(10, random_state=2))
@@ -552,6 +663,7 @@ df = df[["Country", "Happiness score"]]
 
 ```{python}
 from skrub.datasets import fetch_world_bank_indicator
+
 gdppc = fetch_world_bank_indicator(indicator_id="NY.GDP.PCAP.CD").X
 ```
 
@@ -574,7 +686,7 @@ df1 = fuzzy_join(
     return_score=True,
 )
 
-print(df1[['Country', 'Country Name', "matching_score"]].tail(20))
+print(df1[["Country", "Country Name", "matching_score"]].tail(20))
 # We merged the first WB table to our initial one.
 ```
 
@@ -596,9 +708,11 @@ Let’s say you want to detect fake job postings based on a few assumptions:
 You can load a sample dataset like this:
 
 ```{python}
-import pandas as pd 
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+
+import pandas as pd
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
 train_df = pd.read_pickle(
@@ -610,7 +724,7 @@ train_df.head(5)
 Snorkel helps programmatically label data. Start by defining labels:
 
 ```{python}
-from snorkel.labeling import labeling_function, PandasLFApplier, LFAnalysis
+from snorkel.labeling import LFAnalysis, PandasLFApplier, labeling_function
 
 FAKE = 1
 REAL = 0
@@ -678,27 +792,24 @@ Sketch is an AI code-writing assistant for pandas users that understands the con
 ```
 
 ```{python}
-import pandas as pd  
-import seaborn as sns 
+import pandas as pd
+import seaborn as sns
 import sketch
 ```
 
 ```{python}
-data = sns.load_dataset('taxis')
+data = sns.load_dataset("taxis")
 data.head(10)
 ```
 
 ```{python}
 data.sketch.ask(
-    "Can you give me friendly names for each column?" 
-    "(Output as an HTML list)"
+    "Can you give me friendly names for each column?" "(Output as an HTML list)"
 )
 ```
 
 ```{python}
-data.sketch.ask(
-    "Which payment is the most popular payment?"
-)
+data.sketch.ask("Which payment is the most popular payment?")
 ```
 
 ```{python}
@@ -706,39 +817,36 @@ data.sketch.howto("Create some features from the pickup column")
 ```
 
 ```{python}
-
 # Create a new column for the hour of the pickup
-data['pickup_hour'] = data['pickup'].dt.hour
+data["pickup_hour"] = data["pickup"].dt.hour
 
 # Create a new column for the day of the week of the pickup
-data['pickup_day'] = data['pickup'].dt.weekday
+data["pickup_day"] = data["pickup"].dt.weekday
 
 # Create a new column for the month of the pickup
-data['pickup_month'] = data['pickup'].dt.month_name()
-
+data["pickup_month"] = data["pickup"].dt.month_name()
 ```
 
 ```{python}
-data.sketch.howto(
-    "Create some features from the pickup_zone column"
-)
+data.sketch.howto("Create some features from the pickup_zone column")
 ```
 
 ```{python}
-
 # Create a new column called 'pickup_zone_count'
-data['pickup_zone_count'] = data.groupby('pickup_zone')['pickup_zone'].transform('count')
+data["pickup_zone_count"] = data.groupby("pickup_zone")["pickup_zone"].transform(
+    "count"
+)
 
 # Create a new column called 'pickup_zone_fare'
-data['pickup_zone_fare'] = data.groupby('pickup_zone')['fare'].transform('mean')
+data["pickup_zone_fare"] = data.groupby("pickup_zone")["fare"].transform("mean")
 
 # Create a new column called 'pickup_zone_distance'
-data['pickup_zone_distance'] = data.groupby('pickup_zone')['distance'].transform('mean')
-
+data["pickup_zone_distance"] = data.groupby("pickup_zone")["distance"].transform("mean")
 ```
 
 ```{python}
-data 
+data
 ```
 
 [Link to Sketch](https://github.com/approximatelabs/sketch).
+

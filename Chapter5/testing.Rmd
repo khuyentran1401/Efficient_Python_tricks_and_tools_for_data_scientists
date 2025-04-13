@@ -124,7 +124,7 @@ Now you should see the statistics of the time it takes to execute the test funct
 ### pytest.mark.parametrize: Test Your Functions with Multiple Inputs
 
 ```{python tags=c("hide-cell")}
-# !pip install pytest 
+# !pip install pytest
 ```
 
 If you want to test your function with different examples, use `pytest.mark.parametrize` decorator.
@@ -135,20 +135,19 @@ To use `pytest.mark.parametrize`, add `@pytest.mark.parametrize` to the test fun
 # %%writefile pytest_parametrize.py
 import pytest
 
+
 def text_contain_word(word: str, text: str):
-    '''Find whether the text contains a particular word'''
-    
+    """Find whether the text contains a particular word"""
+
     return word in text
 
-test = [
-    ('There is a duck in this text',True),
-    ('There is nothing here', False)
-    ]
 
-@pytest.mark.parametrize('sample, expected', test)
+test = [("There is a duck in this text", True), ("There is nothing here", False)]
+
+
+@pytest.mark.parametrize("sample, expected", test)
 def test_text_contain_word(sample, expected):
-
-    word = 'duck'
+    word = "duck"
 
     assert text_contain_word(word, sample) == expected
 ```
@@ -173,7 +172,7 @@ Sweet! 2 tests passed when running pytest.
 ### pytest parametrize twice: Test All Possible Combinations of Two Sets of Parameters
 
 ```{python tags=c("hide-cell")}
-# !pip install pytest 
+# !pip install pytest
 ```
 
 If you want to test the combinations of two sets of parameters, writing all possible combinations can be time-consuming and is difficult to read. 
@@ -200,11 +199,14 @@ You can save your time by using `pytest.mark.parametrize` twice instead.
 # %%writefile pytest_combination.py
 import pytest
 
+
 def average(n1, n2):
     return (n1 + n2) / 2
 
+
 def perc_difference(n1, n2):
-    return (n2 - n1)/n1 * 100
+    return (n2 - n1) / n1 * 100
+
 
 # Test the combinations of operations and inputs
 @pytest.mark.parametrize("operation", [average, perc_difference])
@@ -238,6 +240,7 @@ from pytest import mark
 def average(n1, n2):
     return (n1 + n2) / 2
 
+
 @mark.parametrize(
     "n1, n2",
     [(-1, -2), (2, 3), (0, 0)],
@@ -251,7 +254,7 @@ $ pytest -v pytest_without_ids.py
 ```
 
 ```{python tags=c("remove-input")}
-# !pytest -v pytest_without_ids.py 
+# !pytest -v pytest_without_ids.py
 ```
 
 You can add `ids` to pytest parametrize to assign a name to each test case.
@@ -260,8 +263,10 @@ You can add `ids` to pytest parametrize to assign a name to each test case.
 # %%writefile pytest_ids.py
 from pytest import mark
 
+
 def average(n1, n2):
     return (n1 + n2) / 2
+
 
 @mark.parametrize(
     "n1, n2",
@@ -277,7 +282,7 @@ $ pytest -v pytest_ids.py
 ```
 
 ```{python tags=c("remove-input")}
-# !pytest -v pytest_ids.py 
+# !pytest -v pytest_ids.py
 ```
 
 We can see that instead of `[-1--2]`, the first test case is shown as `neg and neg`. This makes it easier for others to understand the roles of your test cases.  
@@ -304,7 +309,6 @@ examples = [
 @pytest.mark.parametrize("n1, n2", examples)
 def test_is_float(n1, n2):
     assert isinstance(average(n1, n2), float)
-
 ```
 
 ```bash
@@ -318,7 +322,7 @@ $ pytest -v pytest_param.py
 ### Pytest Fixtures: Use The Same Data for Different Tests
 
 ```{python tags=c("hide-cell")}
-# !pip install pytest textblob 
+# !pip install pytest textblob
 ```
 
 If you want to use the same data to test different functions, use pytest fixtures.
@@ -328,18 +332,21 @@ To use pytest fixtures,  add the decorator `@pytest.fixture` to the function tha
 
 ```{python}
 # %%writefile pytest_fixture.py
-import pytest 
+import pytest
 from textblob import TextBlob
+
 
 def extract_sentiment(text: str):
     """Extract sentimetn using textblob. Polarity is within range [-1, 1]"""
-    
+
     text = TextBlob(text)
     return text.sentiment.polarity
 
-@pytest.fixture 
+
+@pytest.fixture
 def example_data():
-    return 'Today I found a duck and I am happy'
+    return "Today I found a duck and I am happy"
+
 
 def test_extract_sentiment(example_data):
     sentiment = extract_sentiment(example_data)
@@ -353,7 +360,7 @@ $ pytest pytest_fixture.py
 Output:
 
 ```{python tags=c("remove-input")}
-# !pytest pytest_fixture.py 
+# !pytest pytest_fixture.py
 ```
 
 ### Execute a Fixture Only Once per Session
@@ -394,16 +401,19 @@ If a fixture is expensive to execute, you can make the fixture be executed only 
 
 ```{python}
 # %%writefile pytest_scope.py
-import pytest 
+import pytest
+
 
 @pytest.fixture(scope="session")
 def my_data():
     print("Reading data...")
     return 1
 
+
 def test_division(my_data):
     print("Test division...")
     assert my_data / 2 == 0.5
+
 
 def test_modulus(my_data):
     print("Test modulus...")
@@ -427,13 +437,16 @@ If you want to skip a test when a condition is not met, use pytest `skipif`. For
 ```{python}
 # %%writefile pytest_skip.py
 import sys
-import pytest 
+
+import pytest
+
 
 def add_two(num: int):
-    return num + 2 
+    return num + 2
+
 
 @pytest.mark.skipif(sys.version_info < (3, 9), reason="Eequires Python 3.9 or higher")
-def test_add_two(): 
+def test_add_two():
     assert add_two(3) == 5
 ```
 
@@ -445,7 +458,7 @@ $ pytest pytest_skip.py -v
 Output:
 
 ```{python tags=c("remove-input")}
-# !pytest pytest_skip.py -v 
+# !pytest pytest_skip.py -v
 ```
 
 ### Pytest xfail: Mark a Test as Expected to Fail
@@ -470,9 +483,9 @@ df.groupby(["col2"]).agg({"col1": "mean"})
 
 ```{python}
 # %%writefile pytest_mark_xfail.py
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
 
 
 def get_mean(df, group_column, value_column):
@@ -552,9 +565,9 @@ For example, you can use it to test if a ValueError is thrown when there are NaN
 
 ```{python}
 # %%writefile pytest_to_fail.py
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
 
 
 def get_mean(df, group_column, value_column):
@@ -586,8 +599,9 @@ For instance, you can mark slow tests or tests involving integration with extern
 
 ```{python}
 # %%writefile pytest_mark.py
-import pytest
 import time
+
+import pytest
 
 
 @pytest.mark.slow
@@ -653,12 +667,14 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
+
 def divide(num1: float, num2: float) -> float:
     if num2 == 0:
         logger.error(f"Can't divide {num1} by 0")
     else:
         logger.info(f"Divide {num1} by {num2}")
         return num1 / num2
+
 
 def test_divide_by_0(caplog):
     divide(1, 0)
@@ -670,7 +686,7 @@ $ pytest test_logging.py
 ```
 
 ```{python tags=c("remove-input")}
-# !pytest test_logging.py 
+# !pytest test_logging.py
 ```
 
 ### Pytest repeat
@@ -686,11 +702,14 @@ To use pytest-repeat, add the decorator `@pytest.mark.repeat(N)` to the test fun
 
 ```{python}
 # %%writfile pytest_repeat_example.py
-import pytest 
-import random 
+import random
+
+import pytest
+
 
 def generate_numbers():
     return random.randint(1, 100)
+
 
 @pytest.mark.repeat(100)
 def test_generate_numbers():
@@ -713,7 +732,7 @@ We can see that 100 experiments are executed and passed:
 ### pytest-sugar: Show the Failures and Errors Instantly With a Progress Bar
 
 ```{python tags=c("hide-cell")}
-# !pip install pytest-sugar 
+# !pip install pytest-sugar
 ```
 
 It can be frustrating to wait for a lot of tests to run before knowing the status of the tests. If you want to see the failures and errors instantly with a progress bar, use pytest-sugar. 
@@ -775,9 +794,9 @@ def perc_difference_test(steps_data):
 
 @test_steps(sum_test, perc_difference_test)
 def test_calc_suite(test_step, steps_data):
-    if test_step == 'sum_test':
+    if test_step == "sum_test":
         sum_test(steps_data)
-    elif test_step == 'perc_difference_test':
+    elif test_step == "perc_difference_test":
         perc_difference_test(steps_data)
 ```
 
@@ -834,7 +853,7 @@ $ pytest --picked
 When testing a Python class, it can be repetitive and time-consuming to create multiple instances to test a large number of instance methods. 
 
 ```{python}
-# %%writefile get_dog.py 
+# %%writefile get_dog.py
 class Dog:
     def __init__(self, name, age):
         self.name = name
@@ -850,15 +869,17 @@ class Dog:
 ```{python}
 # %%writefile test_get_dog.py
 import unittest
+
 from get_dog import Dog
+
 
 class TestDog(unittest.TestCase):
     def test_walk(self):
-        dog = Dog("Max", 3) 
+        dog = Dog("Max", 3)
         dog.walk() == "Max is walking"
 
     def test_bark(self):
-        dog = Dog("Max", 3) 
+        dog = Dog("Max", 3)
         dog.bark() == "Max is barking"
 ```
 
@@ -867,7 +888,9 @@ A better approach is to use the `setUp` method to instantiate a class object bef
 ```{python}
 # %%writefile test_get_dog.py
 import unittest
+
 from get_dog import Dog
+
 
 class TestDog(unittest.TestCase):
     def setUp(self):
@@ -893,16 +916,18 @@ With FreezeGun, you can freeze time at a particular point, ensuring your tests a
 
 ```{python}
 # %%writefile test_freezegun.py
+import datetime
+
 from freezegun import freeze_time
-import datetime 
+
 
 def get_day_of_week():
     return datetime.datetime.now().weekday()
 
+
 @freeze_time("2024-10-13")
 def test_get_day_of_week():
     assert get_day_of_week() == 6
-
 ```
 
 ```bash
@@ -921,120 +946,103 @@ The test calls `get_day_of_week()` and checks if it returns 6 (Sunday). This tes
 [Link to FreezeGun](https://github.com/spulec/freezegun).
 
 
-### Simulate External Services in Testing with Mock Objects
+### Simplify Mocking External Services with pytest-mock
 
-
-Testing code that relies on external services, like a database, can be difficult since the behaviors of these services can change. 
-
-A mock object can control the behavior of a real object in a testing environment by simulating responses from external services.
-
-Here are two common use cases with examples:
-
-
-1. **Mocking Time-Dependent Functions**
-
-When testing functions that depend on the current time or date, you can mock the time to ensure consistent results.
-
-Example: Testing a function that returns data for the last week
-
-```{python}
-# %%writefile main.py
-from datetime import datetime, timedelta
-
-
-def get_data_for_last_week():
-    end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=7)
-    return {
-        "start_date": start_date.strftime("%Y-%m-%d"),
-        "end_date": end_date.strftime("%Y-%m-%d"),
-    }
+```{python tags=c("hide-cell")}
+# !pip install pytest pytest-mock
 ```
 
-Now, let's create a test for this function using mock:
-
+Testing code that interacts with external services, such as databases, is challenging because the behavior of these services might vary, introducing inconsistencies and making tests unreliable.
 
 ```{python}
-# %%writefile test_main.py
-from datetime import datetime
-from unittest.mock import patch
-from main import get_data_for_last_week
+# %%writefile test_postgres.py
+import psycopg2
 
 
-@patch("main.datetime")
-def test_get_data_for_last_week(mock_datetime):
-    # Set a fixed date for the test
-    mock_datetime.now.return_value = datetime(2024, 8, 5)
+def fetch_user_from_db(user_id):
+    conn = psycopg2.connect(
+        dbname="testdb", user="testuser", password="password", host="localhost"
+    )
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE id = %s;", (user_id,))
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+    return result
+
+
+# Example test without mocking
+def test_fetch_user_from_db():
+    user = fetch_user_from_db(1)
+    assert user == (1, "John Doe")
+```
+
+```{python}
+# !pytest test_postgres.py
+```
+
+```
+E       psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed: could not initiate GSSAPI security context:  The operation or option is not available: Credential for asked mech-type mech not found in the credential handle
+E       connection to server at "localhost" (::1), port 5432 failed: FATAL:  role "testuser" does not exist
+```
+
+
+The example above shows how unmocked tests can fail due to changes in the database content or configuration.
+
+pytest-mock provides the `mocker` fixture, a thin wrapper around the `mock` package, making it easier to mock external services and ensure predictable test behavior.
+
+Mock the database connection and query execution:
+
+```{python}
+# %%writefile test_postgres.py
+import psycopg2
+
+
+def fetch_user_from_db(user_id):
+    conn = psycopg2.connect(
+        dbname="testdb", user="testuser", password="password", host="localhost"
+    )
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE id = %s;", (user_id,))
+    result = cur.fetchone()
+    cur.close()
+    conn.close()
+    return result
+
+
+def test_fetch_user_from_db_with_mock(mocker):
+    # Mock psycopg2.connect
+    mock_conn = mocker.patch("psycopg2.connect", autospec=True)
+    mock_cursor = mock_conn.return_value.cursor.return_value
+    mock_cursor.fetchone.return_value = (1, "John Doe")
 
     # Call the function
-    result = get_data_for_last_week()
+    user = fetch_user_from_db(1)
 
-    # Assert the results
-    assert result["start_date"] == "2024-07-29"
-    assert result["end_date"] == "2024-08-05"
-
-    # Verify that datetime.now() was called
-    mock_datetime.now.assert_called_once()
-```
-
-This test mocks the `datetime.now()` method to return a fixed date, allowing for predictable and consistent test results.
-
-```{python tags=c("hide-cell")}
-# !pytest -sv test_main.py
-```
-
-2. **Mocking API calls**
-
-When testing code that makes external API calls, mocking helps avoid actual network requests during testing.
-
-Example: Testing a function that makes an API call
-
-```{python}
-# %%writefile main.py
-import requests
-from requests.exceptions import ConnectionError
-
-
-def get_data():
-    """Make an API call to Postgres"""
-    try:
-        response = requests.get("http://localhost:5432")
-        return response.json()
-    except ConnectionError:
-        return None
+    # Assertions
+    mock_conn.assert_called_once()
+    mock_cursor.execute.assert_called_once_with(
+        "SELECT * FROM users WHERE id = %s;", (1,)
+    )
+    assert user == (1, "John Doe")
 ```
 
 ```{python}
-# %%writefile test_main.py
-from unittest.mock import patch
-from requests.exceptions import ConnectionError
-from main import get_data
-
-
-@patch("main.requests.get")
-def test_get_data_fails(mock_get):
-    """Test the get_data function when the API call fails"""
-    # Define what happens when the function is called
-    mock_get.side_effect = ConnectionError
-    assert get_data() is None
-
-
-@patch("main.requests.get")
-def test_get_data_succeeds(mock_get):
-    """Test the get_data function when the API call succeeds"""
-    # Define the return value of the function
-    mock_get.return_value.json.return_value = {"data": "test"}
-    assert get_data() == {"data": "test"}
+# !pytest test_postgres.py
 ```
 
-These tests mock the `requests.get()` function to simulate both successful and failed API calls, allowing us to test our function's behavior in different scenarios without making actual network requests.
+In this code:
 
-```{python tags=c("hide-cell")}
-# !pytest test_main.py
-```
+1. **Mock Connection**: Replace `psycopg2.connect` with a mock object to avoid actual database interactions.
+2. **Return Value**: Simulate the query result by defining the return value for `fetchone`.
+3. **Assertions**: Check that the mock connection and cursor were used with the expected parameters.
 
-By using mocks in these ways, we can create more reliable and controlled unit tests for our data projects, ensuring that our code behaves correctly under various conditions.
+Outputs:
 
+- Test passes without requiring a real database.
+- Behavior is controlled and deterministic.
+
+[Link to pytest-mock](https://pypi.org/project/pytest-mock/)
 
 ### pytest-mock vs unittest.mock: Simplifying Mocking in Python Tests
 
@@ -1052,8 +1060,8 @@ Using unittest.mock:
 
 ```{python}
 # %%writefile test_rm_file.py
-from unittest.mock import patch
 import os
+from unittest.mock import patch
 
 
 def rm_file(filename):
@@ -1123,10 +1131,11 @@ def save_result(folder: str, file_name: str, text: str):
     # Write result to the new file
     file.write_text(text)
 
+
 def test_save_result(tmp_path):
     # Create a temporary folder
     folder = tmp_path / "new"
-    folder.mkdir() 
+    folder.mkdir()
 
     file_name = "my_file.txt"
     text = "Accuracy: 0.9"
@@ -1294,9 +1303,11 @@ You can also use the `check_types()` decorator to validate polars LazyFrame func
 ```{python}
 from pandera.typing.polars import LazyFrame
 
+
 @pa.check_types
 def filter_state(lf: LazyFrame[Schema], state: str) -> LazyFrame[Schema]:
     return lf.filter(pl.col("state").eq(state))
+
 
 filter_state(lf, "CA").collect()
 ```
@@ -1336,17 +1347,17 @@ out_schema = schema.add_columns(
 
 @pa.check_output(out_schema)
 def processing_fn(df):
-    processed = df.assign(val3=df.val1/df.val2)
+    processed = df.assign(val3=df.val1 / df.val2)
     return processed
 
 
-@hypothesis.given(schema.strategy(size=5)) # Generate 5 examples
+@hypothesis.given(schema.strategy(size=5))  # Generate 5 examples
 def test_processing_fn(dataframe):
     processing_fn(dataframe)
 ```
 
 ```{python tags=c("remove-cell")}
-# !pytest test_processing_fn.py 
+# !pytest test_processing_fn.py
 ```
 
 ```bash
@@ -1398,14 +1409,14 @@ Is there a way that you can exclude certain parts of the object from the compari
 <!-- #endregion -->
 
 ```{python}
-from deepdiff import DeepDiff 
+from deepdiff import DeepDiff
 ```
 
 DeepDiff can output a meaningful comparison like below:
 
 ```{python}
-price1 = {'apple': 2, 'orange': 3, 'banana': [3, 2]}
-price2 = {'apple': 2, 'orange': 3, 'banana': [2, 3]}
+price1 = {"apple": 2, "orange": 3, "banana": [3, 2]}
+price2 = {"apple": 2, "orange": 3, "banana": [2, 3]}
 
 DeepDiff(price1, price2)
 ```
@@ -1413,7 +1424,7 @@ DeepDiff(price1, price2)
 With DeepDiff, you also have full control of which characteristics of the Python object DeepDiff should ignore. In the example below, since the order is ignored `[3, 2]` is equivalent to `[2, 3]`.
 
 ```{python}
-# Ignore orders 
+# Ignore orders
 
 DeepDiff(price1, price2, ignore_order=True)
 ```
@@ -1452,20 +1463,18 @@ DeepDiff(num1, num2, significant_digits=2)
 If you want to write declarative assertions and avoid boilerplate code in your unit tests, try dirty_equals. 
 
 ```{python}
-from dirty_equals import IsNow, IsPartialDict, IsList, IsStr, IsTrueLike
+from dirty_equals import IsList, IsNow, IsPartialDict, IsStr, IsTrueLike
 ```
 
 ```{python}
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 shopping = {
     "time": datetime.today().now(),
     "quantity": {"apple": 1, "banana": 2, "orange": 1},
     "locations": ["Walmart", "Aldi"],
-    "is_male": 1 
+    "is_male": 1,
 }
-
 ```
 
 ```{python}
@@ -1473,9 +1482,8 @@ assert shopping == {
     "time": IsNow(delta=timedelta(hours=1)),
     "quantity": IsPartialDict(apple=1, orange=1),
     "locations": IsList("Aldi", "Walmart", check_order=False),
-    "is_male": IsTrueLike
+    "is_male": IsTrueLike,
 }
-
 ```
 
 [Link to dirty-equals](https://github.com/samuelcolvin/dirty-equals).
@@ -1493,10 +1501,9 @@ If you want to test some properties or assumptions, it can be cumbersome to writ
 In the code below, I test if the addition of two floats is commutative. The test fails when either `x` or `y` is `NaN`. 
 
 ```{python}
-# %%writefile test_hypothesis.py 
+# %%writefile test_hypothesis.py
 from hypothesis import given
 from hypothesis.strategies import floats
-
 
 
 @given(floats(), floats())
@@ -1521,7 +1528,7 @@ Now I can rewrite my code to make it more robust against these edge cases.
 ### Deepchecks: Check Category Mismatch Between Train and Test Set
 
 ```{python tags=c("hide-cell")}
-# !pip install deepchecks 
+# !pip install deepchecks
 ```
 
 Sometimes, it is important to know if your test set contains the same categories in the train set. If you want to check the category mismatch between the train and test set, use Deepchecks's `CategoryMismatchTrainTest`.
@@ -1530,9 +1537,9 @@ Sometimes, it is important to know if your test set contains the same categories
 In the example below, the result shows that there are 2 new categories in the test set. They are 'd' and 'e'.
 
 ```{python}
-from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest
-from deepchecks.base import Dataset
 import pandas as pd
+from deepchecks.base import Dataset
+from deepchecks.checks.integrity.new_category import CategoryMismatchTrainTest
 ```
 
 ```{python}
@@ -1561,11 +1568,10 @@ AB testing is crucial for assessing the effectiveness of changes in a controlled
 ```{python}
 from leab import before
 
-# What is the number of sample needed per variation to detect a 1% result 
+# What is the number of sample needed per variation to detect a 1% result
 # difference in a population with a 15% conversion rate?
 ab_test = before.leSample(conversion_rate=15, min_detectable_effect=1)
 ab_test.get_size_per_variation()
-
 ```
 
 After reaching the sample size, you can compare the successes between group A and group B. 
@@ -1576,13 +1582,12 @@ from leab import after, leDataset
 # Import sample data for A and B
 data = leDataset.SampleLeSuccess()
 data.A.head()
-
 ```
 
 ```{python}
 ab_test = after.leSuccess(data.A, data.B, confidence_level=0.95)
 
-# Get the conclusion on the test 
+# Get the conclusion on the test
 ab_test.get_verdict()
 ```
 
@@ -1603,16 +1608,18 @@ pytest-postgres provides fixtures that manage the setup and cleanup of test data
 To see how pytest-postgres works, let's create a test function that sets up a test table in a PostgreSQL database, inserts some test data, and then verifies that the query results match the expected data.
 
 ```{python}
-# %%writefile test_postgres.py 
+# %%writefile test_postgres.py
 def test_query_results(postgresql):
     """Check that the query results are as expected."""
     with postgresql.cursor() as cur:
         cur.execute("CREATE TABLE test_table (id SERIAL PRIMARY KEY, name VARCHAR);")
-        cur.execute("INSERT INTO test_table (name) VALUES ('John'), ('Jane'), ('Alice');")
+        cur.execute(
+            "INSERT INTO test_table (name) VALUES ('John'), ('Jane'), ('Alice');"
+        )
 
         # Assert the results
         cur.execute("SELECT * FROM test_table;")
-        assert cur.fetchall() == [(1, 'John'), (2, 'Jane'), (3, 'Alice')]
+        assert cur.fetchall() == [(1, "John"), (2, "Jane"), (3, "Alice")]
 ```
 
 ```bash
@@ -1620,7 +1627,7 @@ $ pytest test_postgres.py
 ```
 
 ```{python tags=c("remove-input")}
-# !pytest test_postgres.py 
+# !pytest test_postgres.py
 ```
 
 [Link to pytest-postgresql](https://github.com/ClearcodeHQ/pytest-postgresql).
@@ -1634,7 +1641,7 @@ Including examples in a docstring is helpful. However, examples can become obsol
 To ensure that the examples remain accurate, use doctest.
 
 ```{python tags=c("remove-output")}
-# %%writefile example.py 
+# %%writefile example.py
 def perc_difference(n1, n2):
     """Return the percentage difference between two numbers, n1 and n2.
 
@@ -1655,6 +1662,7 @@ def perc_difference(n1, n2):
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
 ```
 
@@ -1682,8 +1690,9 @@ In the following code, we use DeepEval to check if the LLM output is accurate an
 # %%writefile test_chatbot.py
 import pytest
 from deepeval.metrics.factual_consistency import FactualConsistencyMetric
-from deepeval.test_case import LLMTestCase
 from deepeval.run_test import assert_test
+from deepeval.test_case import LLMTestCase
+
 
 def test_case():
     query = "What if these shoes don't fit?"

@@ -22,29 +22,78 @@ This section shows some tools to work with datetime and time series.
 ![](../img/datetime.png)
 
 
-### datefinder: Automatically Find Dates and Time in a Python String
+### Extract Dates from Text with Datefinder
 
 ```{python tags=c("hide-cell")}
 # !pip install datefinder
 ```
 
-To automatically find date and time with different formats in a Python string, use datefinder. 
+Extracting dates from unstructured text can be challenging and time-consuming, especially when the format of the dates varies significantly within the same text:
 
 ```{python}
-from datefinder import find_dates
-
-text = """"We have one meeting on May 17th, 2021 at 9:00am 
+# Example Input
+string_with_dates = """
+We have one meeting on May 17th, 2021 at 9:00am 
 and another meeting on 5/18/2021 at 10:00. 
-I hope you can attend one of the meetings."""
+I hope you can attend one of the meetings.
+"""
 
-matches = find_dates(text)
+# Traditional string processing to find dates
+import re
 
-for match in matches:
-    print("Date and time:", match)
-    print("Only day:", match.day)
+# Basic regex for dates
+pattern = r"(\b\d{1,2}/\d{1,2}/\d{4}\b)|(\b\w+\s\d{1,2}(st|nd|rd|th)?,\s\d{4}\b)"
+matches = re.findall(pattern, string_with_dates)
+print(
+    f"Matches: {[match[0] or match[1] for match in matches]}"
+)  # Limited and inflexible
 ```
 
-[Link to datefinder](https://github.com/akoumjian/datefinder).
+Datefinder simplifies the process of identifying and extracting dates from text, even when the formats vary:
+
+```{python}
+import datefinder
+
+# Example Input
+string_with_dates = """
+We have one meeting on May 17th, 2021 at 9:00am 
+and another meeting on 5/18/2021 at 10:00. 
+I hope you can attend one of the meetings.
+"""
+
+# Extract dates from text
+matches = datefinder.find_dates(string_with_dates)
+
+# Print each match
+for match in matches:
+    print(match)
+```
+
+```{python}
+import datefinder
+
+# Example Input
+string_with_dates = """
+We have one meeting on May 17th, 2021 at 9:00am 
+and another meeting on 5/18/2021 at 10:00. 
+I hope you can attend one of the meetings.
+"""
+
+# Extract dates from text
+matches = datefinder.find_dates(string_with_dates)
+
+# Print each match
+for match in matches:
+    print(match)
+```
+
+In the above code:
+
+- `datefinder.find_dates()` - This function identifies potential date strings in the input text and converts them into `datetime` objects.
+- `string_with_dates` - Text containing dates in multiple formats.
+- `matches` - An iterator returning each located date as a `datetime` object.
+
+[Link to Datefinder](https://github.com/akoumjian/datefinder).
 
 
 ### Fastai's add_datepart: Add Relevant DateTime Features in One Line of Code
@@ -667,6 +716,101 @@ kneedle.plot_knee_normalized()
 ```
 
 [Link to kneed](https://github.com/arvkevi/kneed).
+
+### Visualize Time Series with `plot_series`
+
+```{python tags=c("hide-cell")}
+# !pip install utilsforecast
+```
+
+Analyzing time series data and forecasts can be challenging without proper visualization. Raw data often lacks context or insights, making it difficult to interpret trends, anomalies, and forecast accuracy effectively.
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+# Example of a simple time series dataset
+np.random.seed(42)
+date_range = pd.date_range(start="2023-01-01", periods=30, freq="D")
+data = {
+    "unique_id": ["id_1"] * 30,
+    "ds": date_range,
+    "y": np.random.randn(30).cumsum(),  # Simulating cumulative values
+}
+df = pd.DataFrame(data)
+
+# Plotting without any framework - raw visualization
+plt.plot(df["ds"], df["y"], label="Observed Values")
+plt.xlabel("Date")
+plt.ylabel("Value")
+plt.title("Raw Time Series Visualization")
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+`plot_series` from Nixtla's `utilsforecast` offers advanced and customizable plotting capabilities for time series data, enabling clear visualization of forecasts, anomalies, and prediction intervals.
+
+Utilize `plot_series` to visualize time series data and forecasts using the following steps:
+
+#### Preparing the Data
+`generate_series` is a utility to simulate time series data, including training and testing datasets. Below, we create a dataset with 4 time series, each containing a trend, and split it into training and testing sets.
+
+```{python}
+from utilsforecast.data import generate_series
+
+# Generate example time series data
+level = [80, 95]  # Confidence intervals
+series = generate_series(
+    n_series=1,  # Number of time series
+    freq="D",  # Daily frequency
+    equal_ends=True,
+    with_trend=True,
+    n_models=2,  # Number of forecast models
+    level=level,
+)
+
+# Split data into training and testing
+test_pd = series.groupby("unique_id", observed=True).tail(10).copy()
+train_pd = series.drop(test_pd.index)
+```
+
+#### Visualizing Using `plot_series`
+
+We utilize the `plot_series` function to visualize both the training and forecasted data for selected time series. 
+
+```{python}
+import matplotlib.pyplot as plt
+from utilsforecast.plotting import plot_series
+
+# Style for plots
+plt.style.use("ggplot")
+
+# Plot using plot_series
+fig = plot_series(
+    train_pd,  # Training dataset
+    forecasts_df=test_pd,  # Forecast dataset
+    ids=[0],  # Select specific time series to plot
+    plot_random=False,  # Ensure reproducibility
+    level=level,  # Add prediction intervals
+    max_insample_length=50,  # Limit insample length
+    engine="matplotlib",  # Use matplotlib for visualization
+    plot_anomalies=True,  # Highlight anomalies
+)
+
+fig
+```
+
+The generated plot includes:
+- The actual observed values from the training dataset.
+- Forecasted values for the testing dataset.
+- Highlighted anomalies (if any) based on prediction intervals.
+- Confidence intervals (80% and 95%) for forecasted data.
+
+The output reveals the time series trends, forecasts, and anomalies. Confidence intervals provide clarity on the uncertainty of predictions, while anomalies indicate deviations from expected patterns.
+
+[Link to Plotting - Nixtla](https://nixtlaverse.nixtla.io/utilsforecast/plotting.html).
 
 ### NeuralForecast: Streamline Neural Forecasting with Familiar Sklearn Syntax
 

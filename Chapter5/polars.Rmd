@@ -239,7 +239,6 @@ pl_df.select([pl.col(pl.Int64), "B"])
 # !pip install polars deltalake
 ```
 
-<!-- #region -->
 Polars is a Rust-based DataFrame library that is designed for high-performance data manipulation and analysis. Delta Lake is a storage format that offers a range of benefits, including ACID transactions, time travel, schema enforcement, and more. It's designed to work seamlessly with big data processing engines like Apache Spark and can handle large amounts of data with ease.
 
 
@@ -248,7 +247,6 @@ When you combine Polars and Delta Lake, you get a powerful data processing syste
 Imagine you have a huge dataset with millions of rows. You want to group the data by category and calculate the sum of a certain column. With Polars and Delta Lake, you can do this quickly and easily.
 
 First, you create a sample dataset:
-<!-- #endregion -->
 
 ```{python}
 import numpy as np
@@ -528,7 +526,6 @@ pd_df = pd.DataFrame(data)
 # %timeit analyze_sales_pandas(pd_df)
 ```
 
-<!-- #region -->
 As shown above, the eager execution approach used by Pandas results in a execution time of approximately 367 milliseconds.
 
 
@@ -537,7 +534,6 @@ With lazy execution, Polars will:
 - Create an execution plan first, optimizing the entire chain before processing any data
 - Only process data once at .collect(), reducing memory overhead
 - Rearrange operations for optimal performance (pushing filters before groupby)
-<!-- #endregion -->
 
 ```{python}
 import polars as pl
@@ -560,5 +556,4 @@ pl_df = pl.DataFrame(data)
 ```
 
 In contrast, the lazy execution approach with Polars takes approximately 170 milliseconds to complete, which is about 53.68% faster than the eager execution approach with Pandas.
-
 
