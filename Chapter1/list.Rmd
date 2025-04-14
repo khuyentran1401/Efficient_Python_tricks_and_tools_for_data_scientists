@@ -1,0 +1,300 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: venv10
+    language: python
+    name: python3
+---
+
+# List
+
+## any: Check if Any Element of an Iterable is True
+
+If you want to check if any element of an iterable is True, use any. In the code below, I use any to find if any element in the text is in uppercase.
+
+```{python}
+text = "abcdE"
+any(c.isupper() for c in text)
+```
+
+## all: Check if All Elements of an Interable Are Strings
+
+If you want to check if all elements of an iterable are strings, use `all` and `isinstance`.
+
+```{python}
+l = ['a', 'b', 1, 2]
+
+all(isinstance(item, str) for item in l)
+```
+
+## filter: Get the Elements of an Iterable that a Function Evaluates True
+
+If you want to get only the elements of an iterable that satisfy the given condition, use filter.
+
+```{python}
+nums = [1, 2, 3, 4, 5]
+
+# Get even numbers
+list(filter(lambda num: num % 2 == 0, nums))
+```
+
+## map method: Apply a Function to Each Item of an Iterable
+
+If you want to apply a function to each element of an iterable, use `map`.
+
+```{python}
+nums = [1, 2, 3, 4, 5]
+
+# Multiply every number by 2
+list(map(lambda num: num * 2, nums))
+```
+
+## sort: Sort a List of Tuples by the First or Second Item
+
+To sort a list of tuples, use the `sort()` method and pass in the key parameter to indicate which item to sort by.
+
+```{python}
+prices = [('orange', 1), ('grape', 3), ('banana', 2)]
+
+# Sort by the first item
+by_letter = lambda x: x[0]
+prices.sort(key=by_letter)
+prices
+```
+
+```{python}
+# Sort by the second item
+by_price = lambda x: x[1]
+prices.sort(key=by_price)
+prices
+```
+
+## Simplify List Condition Evaluation with any and List Comprehensions
+
+When checking if a condition is true for any list element in Python, use any with a list comprehension instead of a for loop and if-else statements for more readable code.
+
+```{python}
+FRUITS = ['apple', 'orange', 'grape']
+
+def check_mention_fruit_1(text: str):
+    for fruit in FRUITS:
+        if fruit in text:
+            return True 
+
+check_mention_fruit_1('I got an apple.')
+```
+
+```{python}
+def check_mention_fruit_2(text: str):
+
+    return any(fruit in text for fruit in FRUITS)
+
+
+check_mention_fruit_2("I got an apple.")
+```
+
+```{python}
+sum([1, 2, 3], start=10)
+```
+
+## random.choice: Get a Randomly Selected Element From a Python List
+
+Besides getting a random number, you can also get a random element from a Python list using random. In the code below, "stay at home" was picked randomly from a list of options.
+
+```{python}
+import random
+
+to_do_tonight = ["stay at home", "attend party", "do exercise"]
+
+random.choice(to_do_tonight)
+```
+
+```{python}
+l = [1, 2, 3]
+l.pop()
+```
+
+## random.choices: Get Weighted Random Choices From a Python List
+
+If you want to get a list of random elements from a specific list, use `random.choices`. This method also allows you to weigh the possibility for each value with the `weights` parameter.
+
+In the code below, I use `random.choices` to get a list of 10 random values. 0 is two times more likely to be selected than 1 and is ten times more likely to be selected than 2. 
+
+```{python}
+import random
+
+random.choices([0, 1, 2], weights=[10, 5, 1], k=10)
+```
+
+## random.sample: Get Multiple Random Elements from a Python List
+
+If you want to get n random elements from a list, use `random.sample`.
+
+```{python}
+import random
+
+random.seed(1)
+nums = [1, 2, 3, 4, 5]
+random_nums = random.sample(nums, 2)
+random_nums
+```
+
+## heapq: Find n Max Values of a Python List
+
+If you want to extract n max values from a large Python list, using `heapq` will speed up the code.
+
+In the code below, using heapq is more than 2 times faster than using sorting and indexing. Both methods try to find the max values of a list of 10000 items.
+
+```{python}
+import heapq
+import random
+from timeit import timeit
+
+random.seed(0)
+l = random.sample(range(0, 10000), 10000)
+
+def get_n_max_sorting(l: list, n: int):
+    l = sorted(l, reverse=True)
+    return l[:n]
+
+def get_n_max_heapq(l: list, n: int):
+    return heapq.nlargest(n, l)
+```
+
+```{python}
+expSize = 1000
+n = 100
+time_sorting = timeit("get_n_max_sorting(l, n)", number=expSize,
+                        globals=globals())
+time_heapq = timeit('get_n_max_heapq(l, n)', number=expSize,
+                    globals=globals())
+
+ratio = round(time_sorting/time_heapq, 3)
+print(f'Run {expSize} experiments. Using heapq is {ratio} times'
+' faster than using sorting')
+```
+
+## join method: Turn an Iterable into a Python String
+
+If you want to turn an iterable into a string, use `join()`.
+
+In the code below, I join elements in the list `fruits` using ", ".
+
+```{python}
+fruits = ['apples', 'oranges', 'grapes']
+
+fruits_str = ', '.join(fruits)
+
+print(f"Today, I need to get some {fruits_str} in the grocery store")
+```
+
+## Zip: Associate Elements from Two Iterators based on the Order
+
+If you want to associate elements from two iterators based on the order, combine `list` and `zip`. 
+
+```{python}
+nums = [1, 2, 3, 4]
+string = "abcd"
+combinations = list(zip(nums, string))
+combinations
+```
+
+## Python 3.10's strict=True: Preventing Data Loss in zip Operations
+
+`zip` allows you to aggregate elements from each of the iterables. However, if the iterables are not the same length, the remaining elements of the longer iterables are not paired, potentially leading to unnoticed bugs.
+
+```{python}
+fruits = ["apple", "orange", "grape"]
+prices = [1, 2]
+
+list(zip(fruits, prices))
+```
+
+Starting with Python 3.10, using the strict keyword argument with `zip` raises a `ValueError` if the lengths of the iterables are unequal.
+
+```{python}
+try:
+    list(zip(fruits, prices, strict=True))
+except ValueError as e:
+    print(f"Error: {e}")
+```
+
+## Unzip a List of Iterables
+
+You can turn a list of iterables into 2 separate iterables using `zip(*list)`.
+
+```{python}
+comb = [(1, 'a'), (2, 'b'), (3, 'c'), (4, 'd')]
+```
+
+```{python}
+nums_2, chars_2 = zip(*comb)
+nums_2
+```
+
+## Difference between list append and list extend
+
+If you want to add a list to another list, use the `append` method. To add elements of a list to another list, use the `extend` method.
+
+```{python}
+# Add a list to a list
+a = [1, 2, 3, 4]
+a.append([5, 6])
+a
+```
+
+```{python}
+a = [1, 2, 3, 4]
+a.extend([5, 6])
+
+a
+```
+
+
+## Clean Iterables Unpacking in Python	
+
+Are you extracting items from an iterable using indexing?
+
+```{python}
+l = [1, 2, 3]
+
+a = l[0]
+b = l[1]
+c = l[2]
+```
+
+A more efficient way to achieve the same result is to assign the iterable to multiple variables simultaneously.
+
+```{python}
+l = [1, 2, 3]
+a, b, c = l
+```
+
+```{python}
+print("a =", a)
+print("b =", b)
+print("c =", c)
+```
+
+This can make our code easier to read and understand, and is a common practice in Python.
+
+## Extended Iterable Unpacking: Ignore Multiple Values when Unpacking a Python Iterable
+
+If we have a longer iterable but we only want to extract the subset of the iterable, we can use the "splat" operator (*) to represent the elements that we don't care about:
+
+```{python}
+a, *_, b = [1, 2, 3, 4]
+```
+
+```{python}
+print("a =", a)
+print("b =", b)
+print("_ =", _)
+```
+
