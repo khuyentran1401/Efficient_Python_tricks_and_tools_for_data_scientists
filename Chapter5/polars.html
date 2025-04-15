@@ -1729,8 +1729,8 @@ Polars time: 41.079080 seconds
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Create two large DataFrames</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
 </pre></div>
 </div>
 </div>
@@ -1738,7 +1738,7 @@ Polars time: 41.079080 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
-<span class="n">result_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">result_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result_pandas</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1763,8 +1763,8 @@ Wall time: 23 ms
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
 
 <span class="c1"># Create two large DataFrames</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
 </pre></div>
 </div>
 </div>
@@ -1772,7 +1772,7 @@ Wall time: 23 ms
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
-<span class="n">result_polars</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">result_polars</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result_polars</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -1836,6 +1836,14 @@ Wall time: 5.29 ms
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>          value1_sum  value2_mean
+category                         
+A                 30         10.0
+B                 70         30.0
+</pre></div>
+</div>
+</div>
 </div>
 <p>Here, you must explicitly define each aggregation using tuples, which can be tedious for larger datasets or more complex operations.</p>
 <p>Polars simplifies this process with its declarative approach using <code class="docutils literal notranslate"><span class="pre">pl.col</span></code>.</p>
@@ -1852,14 +1860,26 @@ Wall time: 5.29 ms
 <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 <span class="c1"># Aggregations in Polars</span>
-<span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="p">[</span>
         <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value1_sum&quot;</span><span class="p">),</span>
         <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value2_mean&quot;</span><span class="p">),</span>
-    <span class="p">])</span>
+    <span class="p">]</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shape: (2, 3)
+┌──────────┬────────────┬─────────────┐
+│ category ┆ value1_sum ┆ value2_mean │
+│ ---      ┆ ---        ┆ ---         │
+│ str      ┆ i64        ┆ f64         │
+╞══════════╪════════════╪═════════════╡
+│ B        ┆ 70         ┆ 30.0        │
+│ A        ┆ 30         ┆ 10.0        │
+└──────────┴────────────┴─────────────┘
 </pre></div>
 </div>
 </div>
