@@ -233,7 +233,7 @@ SELECT pgml.transform(
 
 Output:
 
-```python
+```{python}
                     positivity
 ------------------------------------------------------
 [
@@ -294,37 +294,43 @@ print(f"Limit: {parsed_query.limit_and_offset}")
 
 [Link to sql-metadata](https://github.com/macbre/sql-metadata).
 
-## SQLGlot: Write Once, Run Anywhere SQL
+## Simplify SQL Parsing and Transpilation with SQLGlot
 
 ```{python tags=c("hide-cell")}
-# !pip install "sqlglot[rs]"
+!pip install sqlglot
 ```
 
-SQL dialects vary across databases, making it challenging to port queries between different database systems.
+Writing and maintaining SQL queries across different database systems can be challenging. Each system has its own dialect, syntax, and quirks, making it difficult to ensure compatibility and consistency when working with multiple databases.
 
-SQLGlot addresses this by providing a parser and transpiler supporting 21 dialects. This enables automatic SQL translation between systems, eliminating the need for manual query rewrites.
+For example, consider a scenario where you need to convert a SQL query written in one dialect (e.g., MySQL) to another (e.g., Spark SQL). Manually rewriting queries can be error-prone and time-consuming.
+
+
+```{python}
+# Example of a SQL query in MySQL dialect
+mysql_query = """
+SELECT IFNULL(column_name, 'default_value') AS column_value 
+FROM my_table;
+"""
+
+# This query uses MySQL-specific syntax (e.g., IFNULL function).
+```
+
+In this query, the `IFNULL` function replaces null values in `column_name` with `'default_value'`. However, Spark SQL uses the `COALESCE` function for this operation.
+
+SQLGlot simplifies this process by providing a powerful SQL parser and transpiler that can automatically convert SQL queries between different dialects.
 
 ```{python}
 import sqlglot
+
+# Transpile the MySQL query to Spark SQL dialect
+spark_sql_query = sqlglot.transpile(mysql_query, read="mysql", write="spark")[0]
+
+print(spark_sql_query)
 ```
 
-Convert a DuckDB-specific date formatting query into an equivalent query in Hive SQL:
+Here, SQLGlot automatically converts the MySQL `IFNULL` function to Spark SQL's `COALESCE` function. This saves time and ensures accuracy when working with multiple SQL dialects.
 
-```{python}
-sqlglot.transpile("SELECT STRFTIME(x, '%y-%-m-%S')", read="duckdb", write="hive")[0]
-```
-
-Convert a SQL query to Spark SQL:
-
-```{python}
-## Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`
-sql = "SELECT id, name, CAST(price AS REAL) AS converted_price FROM products"
-
-## Translates the query into Spark SQL, formats it, and delimits all of its identifiers
-print(sqlglot.transpile(sql, write="spark", identify=True, pretty=True)[0])
-```
-
-[Link to SQLGlot](https://bit.ly/4dGyTmP).
+[Link to SQLGlot](https://github.com/tobymao/sqlglot).
 
 ## SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations
 
