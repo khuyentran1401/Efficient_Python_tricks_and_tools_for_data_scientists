@@ -570,13 +570,13 @@ Joining large datasets can be slow and memory-intensive, especially when using t
 import pandas as pd
 
 # Create two large DataFrames
-df1 = pd.DataFrame({'id': range(1, 1000001), 'value': range(1000000)})
-df2 = pd.DataFrame({'id': range(500000, 1500000), 'value': range(500000, 1500000)})
+df1 = pd.DataFrame({"id": range(1, 1000001), "value": range(1000000)})
+df2 = pd.DataFrame({"id": range(500000, 1500000), "value": range(500000, 1500000)})
 ```
 
 ```{python}
 # %%time
-result_pandas = pd.merge(df1, df2, on='id', how='inner')
+result_pandas = pd.merge(df1, df2, on="id", how="inner")
 print(result_pandas.head())
 ```
 
@@ -588,13 +588,13 @@ Polars provides a high-performance alternative for joining large datasets. Its o
 import polars as pl
 
 # Create two large DataFrames
-df1 = pl.DataFrame({'id': range(1, 1000001), 'value': range(1000000)})
-df2 = pl.DataFrame({'id': range(500000, 1500000), 'value': range(500000, 1500000)})
+df1 = pl.DataFrame({"id": range(1, 1000001), "value": range(1000000)})
+df2 = pl.DataFrame({"id": range(500000, 1500000), "value": range(500000, 1500000)})
 ```
 
 ```{python}
 # %%time
-result_polars = df1.join(df2, on='id', how='inner')
+result_polars = df1.join(df2, on="id", how="inner")
 print(result_polars.head())
 ```
 
@@ -646,12 +646,11 @@ data = {
 df = pl.DataFrame(data)
 
 # Aggregations in Polars
-result = (
-    df.group_by("category")
-    .agg([
+result = df.group_by("category").agg(
+    [
         pl.col("value1").sum().alias("value1_sum"),
         pl.col("value2").mean().alias("value2_mean"),
-    ])
+    ]
 )
 print(result)
 ```
