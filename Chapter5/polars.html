@@ -535,6 +535,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-join-large-datasets-with-polars">6.14.11. Efficiently Join Large Datasets with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-aggregations-with-polars-declarative-expressions">6.14.12. Simplify Aggregations with Polars’ Declarative Expressions</a></li>
 </ul>
             </nav>
         </div>
@@ -1705,6 +1707,166 @@ Polars time: 41.079080 seconds
 </div>
 <p>In contrast, the lazy execution approach with Polars takes approximately 170 milliseconds to complete, which is about 53.68% faster than the eager execution approach with Pandas.</p>
 </section>
+<section id="efficiently-join-large-datasets-with-polars">
+<h2><span class="section-number">6.14.11. </span>Efficiently Join Large Datasets with Polars<a class="headerlink" href="#efficiently-join-large-datasets-with-polars" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>Joining large datasets can be slow and memory-intensive, especially when using traditional tools like Pandas. This can lead to performance bottlenecks when handling millions of rows or performing complex join operations. Let’s compare the execution time of joins in Pandas and Polars using Jupyter Notebook magic commands.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of a slow join in Pandas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create two large DataFrames</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">result_pandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result_pandas</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>       id  value_x  value_y
+0  500000   499999   500000
+1  500001   500000   500001
+2  500002   500001   500002
+3  500003   500002   500003
+4  500004   500003   500004
+CPU times: user 13.4 ms, sys: 8.63 ms, total: 22 ms
+Wall time: 23 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, Pandas performs the join operation, but it can be slow and memory-intensive for large datasets.</p>
+<p>Polars provides a high-performance alternative for joining large datasets. Its optimized engine and memory-efficient design make it ideal for such tasks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="c1"># Create two large DataFrames</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000001</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000000</span><span class="p">)})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">500000</span><span class="p">,</span> <span class="mi">1500000</span><span class="p">)})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">result_polars</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result_polars</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>shape: (5, 3)
+┌────────┬────────┬─────────────┐
+│ id     ┆ value  ┆ value_right │
+│ ---    ┆ ---    ┆ ---         │
+│ i64    ┆ i64    ┆ i64         │
+╞════════╪════════╪═════════════╡
+│ 500000 ┆ 499999 ┆ 500000      │
+│ 500001 ┆ 500000 ┆ 500001      │
+│ 500002 ┆ 500001 ┆ 500002      │
+│ 500003 ┆ 500002 ┆ 500003      │
+│ 500004 ┆ 500003 ┆ 500004      │
+└────────┴────────┴─────────────┘
+CPU times: user 6.81 ms, sys: 9.12 ms, total: 15.9 ms
+Wall time: 5.29 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Polars processes the join operation faster and uses less memory compared to Pandas. Its efficient algorithms and off-heap memory management ensure smooth handling of large datasets.</p>
+</section>
+<section id="simplify-aggregations-with-polars-declarative-expressions">
+<h2><span class="section-number">6.14.12. </span>Simplify Aggregations with Polars’ Declarative Expressions<a class="headerlink" href="#simplify-aggregations-with-polars-declarative-expressions" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>polars
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>In pandas, performing multiple aggregations on a DataFrame can be cumbersome. The <code class="docutils literal notranslate"><span class="pre">agg()</span></code> method requires you to use tuples to specify the column name and the aggregation function. This approach can become verbose and harder to read when dealing with multiple columns and aggregations.</p>
+<p>For example, consider the following pandas code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Sample data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;value1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s2">&quot;value2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Aggregations in pandas</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">value1_sum</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;value1&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
+    <span class="n">value2_mean</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;value2&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, you must explicitly define each aggregation using tuples, which can be tedious for larger datasets or more complex operations.</p>
+<p>Polars simplifies this process with its declarative approach using <code class="docutils literal notranslate"><span class="pre">pl.col</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="c1"># Sample data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;value1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>
+    <span class="s2">&quot;value2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Aggregations in Polars</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value1_sum&quot;</span><span class="p">),</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;value2_mean&quot;</span><span class="p">),</span>
+    <span class="p">])</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this example, Polars allows you to define aggregations directly using expressions like <code class="docutils literal notranslate"><span class="pre">pl.col(&quot;value1&quot;).sum()</span></code> and <code class="docutils literal notranslate"><span class="pre">pl.col(&quot;value2&quot;).mean()</span></code>. This approach eliminates the need for tuples and makes the code more intuitive.</p>
+<p><a class="reference external" href="https://github.com/pola-rs/polars">Link to Polars</a>.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1781,6 +1943,8 @@ Polars time: 41.079080 seconds
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polars-streaming-mode-a-solution-for-large-data-sets">6.14.8. Polars’ Streaming Mode: A Solution for Large Data Sets</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pandas-vs-polars-syntax-comparison-for-data-scientists">6.14.9. Pandas vs Polars: Syntax Comparison for Data Scientists</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-data-analysis-with-polars-a-guide-to-lazy-execution">6.14.10. Faster Data Analysis with Polars: A Guide to Lazy Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-join-large-datasets-with-polars">6.14.11. Efficiently Join Large Datasets with Polars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-aggregations-with-polars-declarative-expressions">6.14.12. Simplify Aggregations with Polars’ Declarative Expressions</a></li>
 </ul>
   </nav></div>
 

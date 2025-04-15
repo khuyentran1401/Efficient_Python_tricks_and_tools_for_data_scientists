@@ -525,20 +525,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-analytics-with-duckdb">6.13.1. SQL Analytics with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.13.2. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.13.3. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.13.4. Simplify CSV Data Management with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-csv-files-processing-with-duckdb">6.13.5. Multiple CSV Files Processing with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.6. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">6.13.7. Create Dynamic SQL Statements with Python string Template</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.13.8. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.13.9. SQLModel: Simplify SQL Database Interactions in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.13.10. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.13.11. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.12. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.13. SQLGlot: Write Once, Run Anywhere SQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.14. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">6.13.1. Create Dynamic SQL Statements with Python string Template</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.13.2. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.13.3. SQLModel: Simplify SQL Database Interactions in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.13.4. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.13.5. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.6. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-mysql-queries-to-spark-sql-with-sqlglot">6.13.7. Convert MySQL Queries to Spark SQL with SQLGlot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.8. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
             </nav>
         </div>
@@ -552,644 +546,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="sql-libraries">
 <h1><span class="section-number">6.13. </span>SQL Libraries<a class="headerlink" href="#sql-libraries" title="Link to this heading">#</a></h1>
-<section id="sql-analytics-with-duckdb">
-<h2><span class="section-number">6.13.1. </span>SQL Analytics with DuckDB<a class="headerlink" href="#sql-analytics-with-duckdb" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>psycopg2<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>SQL operations on data frames typically require setting up and maintaining separate database servers, adding complexity to analytical workflows:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1"># Create sample data</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;customer_id&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;revenue&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="s2">&quot;segment&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">500</span><span class="p">}</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
-
-<span class="c1"># Create a connection to PostgreSQL</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s2">&quot;postgresql://postgres:postgres@localhost:5432/postgres&quot;</span><span class="p">)</span>
-
-<span class="c1"># Write the DataFrame to a PostgreSQL table</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Execute SQL query against the PostgreSQL database</span>
-<span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        SELECT </span>
-<span class="sd">            segment,</span>
-<span class="sd">            AVG(revenue) as avg_revenue,</span>
-<span class="sd">            COUNT(*) as customer_count</span>
-<span class="sd">        FROM customers</span>
-<span class="sd">        GROUP BY segment</span>
-<span class="sd">        ORDER BY avg_revenue DESC</span>
-<span class="sd">    &quot;&quot;&quot;</span><span class="p">,</span>
-        <span class="n">conn</span><span class="p">,</span>
-    <span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Segment Analysis:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Segment Analysis:
-  segment  avg_revenue  customer_count
-0       B        500.0             500
-1       A        499.0             500
-</pre></div>
-</div>
-</div>
-</div>
-<p>DuckDB simplifies this by providing direct SQL operations on DataFrames without server setup:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-
-<span class="c1"># Direct SQL operations on DataFrame - no server needed</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    SELECT </span>
-<span class="sd">        segment,</span>
-<span class="sd">        AVG(revenue) as avg_revenue,</span>
-<span class="sd">        COUNT(*) as customer_count</span>
-<span class="sd">    FROM df</span>
-<span class="sd">    GROUP BY segment</span>
-<span class="sd">    ORDER BY avg_revenue DESC</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Segment Analysis:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Segment Analysis:
-  segment  avg_revenue  customer_count
-0       B        500.0             500
-1       A        499.0             500
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a></p>
-</section>
-<section id="efficient-sql-operations-with-duckdb-on-pandas-dataframes">
-<h2><span class="section-number">6.13.2. </span>Efficient SQL Operations with DuckDB on Pandas DataFrames<a class="headerlink" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<p>Using SQL with pandas empowers data scientists to leverage SQL’s powerful querying capabilities alongside the data manipulation functionalities of pandas.</p>
-<p>In the code below, aggregating data using DuckDB is nearly 6 times faster compared to aggregating with pandas.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;l_returnflag&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-    <span class="n">Sum</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
-    <span class="n">Min</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">),</span>
-    <span class="n">Max</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">),</span>
-    <span class="n">Avg</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;l_extendedprice&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>226 ms ± 4.63 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">duckdb</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">SELECT</span>
-<span class="sd">      l_returnflag,</span>
-<span class="sd">      SUM(l_extendedprice),</span>
-<span class="sd">      MIN(l_extendedprice),</span>
-<span class="sd">      MAX(l_extendedprice),</span>
-<span class="sd">      AVG(l_extendedprice)</span>
-<span class="sd">FROM df</span>
-<span class="sd">GROUP BY</span>
-<span class="sd">        l_returnflag</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">to_df</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>37 ms ± 2.41 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
-<section id="efficiently-handle-large-datasets-with-duckdb-and-pyarrow">
-<h2><span class="section-number">6.13.3. </span>Efficiently Handle Large Datasets with DuckDB and PyArrow<a class="headerlink" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>deltalake<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-q<span class="w"> </span>https://github.com/cwida/duckdb-data/releases/download/v1.0/lineitemsf1.snappy.parquet
-</pre></div>
-</div>
-</div>
-</div>
-<p>DuckDB leverages various optimizations for query execution, while PyArrow efficiently handles in-memory data processing and storage. Combining DuckDB and PyArrow allows you to efficiently process datasets larger than memory on a single machine.</p>
-<p>In the code below, we convert a Delta Lake table with over 6 million rows to a pandas DataFrame and a PyArrow dataset, which are then used by DuckDB.</p>
-<p>Running DuckDB on PyArrow dataset is approximately 2906 times faster than running DuckDB on pandas.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">deltalake.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_deltalake</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;lineitemsf1.snappy.parquet&quot;</span><span class="p">)</span>
-<span class="n">write_deltalake</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">deltalake</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeltaTable</span>
-
-<span class="n">table</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="p">(</span><span class="s2">&quot;delta_lake&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">df</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.77 s ± 108 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>it
-<span class="n">quack</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">to_pyarrow_dataset</span><span class="p">())</span>
-<span class="n">quack</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;l_quantity &gt; 50&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>954 µs ± 32.2 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
-<section id="simplify-csv-data-management-with-duckdb">
-<h2><span class="section-number">6.13.4. </span>Simplify CSV Data Management with DuckDB<a class="headerlink" href="#simplify-csv-data-management-with-duckdb" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>Traditional database systems require a predefined table schema and a subsequent data import process when working with CSV data.</p>
-<p>To demonstrate this, let’s create a CSV file called <code class="docutils literal notranslate"><span class="pre">customer.csv</span></code>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1"># Create a sample dataframe</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Charlie&quot;</span><span class="p">,</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span> <span class="s2">&quot;Eve&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">38</span><span class="p">],</span>
-    <span class="s2">&quot;city&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;New York&quot;</span><span class="p">,</span> <span class="s2">&quot;London&quot;</span><span class="p">,</span> <span class="s2">&quot;Paris&quot;</span><span class="p">,</span> <span class="s2">&quot;Berlin&quot;</span><span class="p">,</span> <span class="s2">&quot;Tokyo&quot;</span><span class="p">],</span>
-<span class="p">}</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="c1"># Save the dataframe as a CSV file</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;customers.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>To load this CSV file in Postgres, you need to run the following query:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Create the table</span>
-<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
-<span class="w">    </span><span class="n">age</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
-<span class="w">    </span><span class="n">city</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="p">);</span>
-
-<span class="c1">-- Load data from CSV</span>
-<span class="k">COPY</span><span class="w"> </span><span class="n">customers</span>
-<span class="k">FROM</span><span class="w"> </span><span class="s1">&#39;customers.csv&#39;</span>
-<span class="k">DELIMITER</span><span class="w"> </span><span class="s1">&#39;,&#39;</span>
-<span class="n">CSV</span><span class="w"> </span><span class="n">HEADER</span><span class="p">;</span>
-</pre></div>
-</div>
-<p>In contrast, DuckDB allows for direct reading of CSV files from disk, eliminating the need for explicit table creation and data loading.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-
-<span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM &#39;customers.csv&#39;&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>┌─────────┬───────┬──────────┐
-│  name   │  age  │   city   │
-│ varchar │ int64 │ varchar  │
-├─────────┼───────┼──────────┤
-│ Alice   │    25 │ New York │
-│ Bob     │    32 │ London   │
-│ Charlie │    45 │ Paris    │
-│ David   │    19 │ Berlin   │
-│ Eve     │    38 │ Tokyo    │
-└─────────┴───────┴──────────┘
-</pre></div>
-</div>
-</div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
-<section id="multiple-csv-files-processing-with-duckdb">
-<h2><span class="section-number">6.13.5. </span>Multiple CSV Files Processing with DuckDB<a class="headerlink" href="#multiple-csv-files-processing-with-duckdb" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>Processing multiple CSV files is a common task in data analysis and engineering workflows. Traditionally, handling multiple CSV files requires writing loops or list comprehensions, which can be verbose and error-prone.</p>
-<p>To demonstrate, let’s assume we have 2 CSV files in the “folder” directory:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1"># Create example dataframe for first file</span>
-<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;Date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2023-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-01-03&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;Product&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;Phone&quot;</span><span class="p">,</span> <span class="s2">&quot;Tablet&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># Create example dataframe for second file</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;Date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;2023-02-01&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-02-02&quot;</span><span class="p">,</span> <span class="s2">&quot;2023-02-03&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;Product&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Laptop&quot;</span><span class="p">,</span> <span class="s2">&quot;Monitor&quot;</span><span class="p">,</span> <span class="s2">&quot;Mouse&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-
-<span class="n">Path</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
-<span class="n">df1</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data/sales_jan.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">df2</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;data/sales_feb.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1">## Read all CSV files and concatenate them</span>
-<span class="n">csv_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;data/*.csv&quot;</span><span class="p">)</span>
-<span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">csv_files</span><span class="p">:</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-    <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-
-<span class="c1">## Concatenate all dataframes</span>
-<span class="n">combined_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dfs</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1">## Perform grouping and aggregation</span>
-<span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">combined_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)[</span><span class="s2">&quot;Sales&quot;</span><span class="p">]</span>
-    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Sales&quot;</span><span class="p">:</span> <span class="s2">&quot;total_sales&quot;</span><span class="p">})</span>
-    <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="n">result</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Date</th>
-      <th>total_sales</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2023-01-01</td>
-      <td>1200</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2023-01-02</td>
-      <td>800</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2023-01-03</td>
-      <td>600</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2023-02-01</td>
-      <td>1500</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2023-02-02</td>
-      <td>400</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2023-02-03</td>
-      <td>50</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>DuckDB simplifies reading multiple CSV files with a single line of code that efficiently processes the files:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-
-<span class="c1">## Read and analyze all CSV files at once</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    SELECT </span>
-<span class="sd">        date,</span>
-<span class="sd">        SUM(sales) as total_sales</span>
-<span class="sd">    FROM &#39;data/*.csv&#39;</span>
-<span class="sd">    GROUP BY date</span>
-<span class="sd">    ORDER BY date</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
-<span class="n">result</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Date</th>
-      <th>total_sales</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2023-01-01</td>
-      <td>1200.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2023-01-02</td>
-      <td>800.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2023-01-03</td>
-      <td>600.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2023-02-01</td>
-      <td>1500.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2023-02-02</td>
-      <td>400.0</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>2023-02-03</td>
-      <td>50.0</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
-<section id="duckdb-query-pandas-dataframes-faster-with-columnar-storage">
-<h2><span class="section-number">6.13.6. </span>DuckDB: Query Pandas DataFrames Faster with Columnar Storage<a class="headerlink" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage" title="Link to this heading">#</a></h2>
-<div class="cell tag_hide-cell docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell content</span>
-<span class="expanded">Hide code cell content</span>
-</summary>
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>duckdb
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<p>When analyzing data with operations like GROUP BY, SUM, or AVG on specific columns, row-based storage results in reading unnecessary data and inefficient memory usage since entire rows must be loaded even when only a few columns are needed.</p>
-<p>Example using SQLite (row-based):</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]}</span>
-<span class="p">)</span>
-
-<span class="c1">## Load data to SQLite and query</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">)</span>
-<span class="n">customer</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1">## Must read all columns internally even though we only need &#39;age&#39;</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT age FROM customer&quot;</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>DuckDB uses columnar storage, allowing you to efficiently read and process only the columns needed for your analysis. This improves both query speed and memory usage:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="n">customer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Alex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ben&quot;</span><span class="p">,</span> <span class="s2">&quot;Chase&quot;</span><span class="p">],</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">]}</span>
-<span class="p">)</span>
-
-
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;SELECT age FROM customer&quot;</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">df</span><span class="p">()</span>
-<span class="n">result</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>age</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>25</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>30</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>35</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<p>In this example, DuckDB only needs to access the ‘age’ column in memory, while SQLite must read all columns (‘id’, ‘name’, ‘age’) internally even though only ‘age’ is selected. DuckDB also provides a simpler workflow by querying pandas DataFrames directly.</p>
-<p><a class="reference external" href="https://github.com/duckdb/duckdb">Link to DuckDB</a>.</p>
-</section>
 <section id="create-dynamic-sql-statements-with-python-string-template">
-<h2><span class="section-number">6.13.7. </span>Create Dynamic SQL Statements with Python string Template<a class="headerlink" href="#create-dynamic-sql-statements-with-python-string-template" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.1. </span>Create Dynamic SQL Statements with Python string Template<a class="headerlink" href="#create-dynamic-sql-statements-with-python-string-template" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%writefile</span> query.sql
@@ -1259,7 +617,7 @@ WHERE
 </div>
 </section>
 <section id="fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">
-<h2><span class="section-number">6.13.8. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.2. </span>FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames<a class="headerlink" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1308,7 +666,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/fugue-project/fugue">Link to fugue</a>.</p>
 </section>
 <section id="sqlmodel-simplify-sql-database-interactions-in-python">
-<h2><span class="section-number">6.13.9. </span>SQLModel: Simplify SQL Database Interactions in Python<a class="headerlink" href="#sqlmodel-simplify-sql-database-interactions-in-python" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.3. </span>SQLModel: Simplify SQL Database Interactions in Python<a class="headerlink" href="#sqlmodel-simplify-sql-database-interactions-in-python" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1407,7 +765,7 @@ Total count: 2
 <p><a class="reference external" href="https://github.com/tiangolo/sqlmodel">Link to SQLModel</a>.</p>
 </section>
 <section id="sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">
-<h2><span class="section-number">6.13.10. </span>SQLFluff: A Linter and Auto-Formatter for Your SQL Code<a class="headerlink" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.4. </span>SQLFluff: A Linter and Auto-Formatter for Your SQL Code<a class="headerlink" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1493,7 +851,7 @@ FROM my_table
 <p><a class="reference external" href="https://github.com/sqlfluff/sqlfluff">Link to SQLFluff</a>.</p>
 </section>
 <section id="postgresml-integrate-machine-learning-with-postgresql">
-<h2><span class="section-number">6.13.11. </span>PostgresML: Integrate Machine Learning with PostgreSQL<a class="headerlink" href="#postgresml-integrate-machine-learning-with-postgresql" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.5. </span>PostgresML: Integrate Machine Learning with PostgreSQL<a class="headerlink" href="#postgresml-integrate-machine-learning-with-postgresql" title="Link to this heading">#</a></h2>
 <p>If you want to seamlessly integrate machine learning models into your PostgreSQL database, use PostgresML.</p>
 <p><strong>Sentiment Analysis:</strong></p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">pgml</span><span class="p">.</span><span class="k">transform</span><span class="p">(</span>
@@ -1506,13 +864,17 @@ FROM my_table
 </pre></div>
 </div>
 <p>Output:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>                    <span class="n">positivity</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>                    <span class="n">positivity</span>
 <span class="o">------------------------------------------------------</span>
 <span class="p">[</span>
     <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;POSITIVE&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">0.9995759129524232</span><span class="p">},</span> 
     <span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;NEGATIVE&quot;</span><span class="p">,</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="mf">0.9903519749641418</span><span class="p">}</span>
 <span class="p">]</span>
 </pre></div>
+</div>
+</div>
 </div>
 <p><strong>Training a classification model</strong></p>
 <p>Training:</p>
@@ -1539,7 +901,7 @@ FROM my_table
 <p><a class="reference external" href="https://github.com/postgresml/postgresml">Link to PostgresML</a>.s</p>
 </section>
 <section id="sql-metadata-extract-components-from-a-sql-statement-in-python">
-<h2><span class="section-number">6.13.12. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.6. </span>sql-metadata: Extract Components From a SQL Statement in Python<a class="headerlink" href="#sql-metadata-extract-components-from-a-sql-statement-in-python" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1582,8 +944,8 @@ Limit: (10, 0)
 </div>
 <p><a class="reference external" href="https://github.com/macbre/sql-metadata">Link to sql-metadata</a>.</p>
 </section>
-<section id="sqlglot-write-once-run-anywhere-sql">
-<h2><span class="section-number">6.13.13. </span>SQLGlot: Write Once, Run Anywhere SQL<a class="headerlink" href="#sqlglot-write-once-run-anywhere-sql" title="Link to this heading">#</a></h2>
+<section id="convert-mysql-queries-to-spark-sql-with-sqlglot">
+<h2><span class="section-number">6.13.7. </span>Convert MySQL Queries to Spark SQL with SQLGlot<a class="headerlink" href="#convert-mysql-queries-to-spark-sql-with-sqlglot" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1591,59 +953,51 @@ Limit: (10, 0)
 <span class="expanded">Hide code cell content</span>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;sqlglot[rs]&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>sqlglot
 </pre></div>
 </div>
 </div>
 </details>
 </div>
-<p>SQL dialects vary across databases, making it challenging to port queries between different database systems.</p>
-<p>SQLGlot addresses this by providing a parser and transpiler supporting 21 dialects. This enables automatic SQL translation between systems, eliminating the need for manual query rewrites.</p>
+<p>When migrating SQL queries from MySQL to Spark SQL, you may encounter differences in syntax. For example, MySQL uses the <code class="docutils literal notranslate"><span class="pre">IFNULL</span></code> function to handle null values, while Spark SQL uses the <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> function for the same purpose. Manually rewriting such queries can be tedious and error-prone.</p>
+<p>Consider the following MySQL query:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of a SQL query in MySQL dialect</span>
+<span class="n">mysql_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SELECT IFNULL(column_name, &#39;default_value&#39;) AS column_value </span>
+<span class="s2">FROM my_table;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># This query uses MySQL-specific syntax (e.g., IFNULL function).</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this query, the <code class="docutils literal notranslate"><span class="pre">IFNULL</span></code> function replaces null values in <code class="docutils literal notranslate"><span class="pre">column_name</span></code> with <code class="docutils literal notranslate"><span class="pre">'default_value'</span></code>. However, Spark SQL uses the <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> function for this operation.</p>
+<p>SQLGlot can automate this conversion process, making it seamless to adapt queries for Spark SQL.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlglot</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Convert a DuckDB-specific date formatting query into an equivalent query in Hive SQL:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="s2">&quot;SELECT STRFTIME(x, &#39;%y-%-m-%S&#39;)&quot;</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="s2">&quot;duckdb&quot;</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;hive&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;SELECT DATE_FORMAT(x, &#39;yy-M-ss&#39;)&quot;
-</pre></div>
-</div>
-</div>
-</div>
-<p>Convert a SQL query to Spark SQL:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Spark SQL requires backticks (`) for delimited identifiers and uses `FLOAT` over `REAL`</span>
-<span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT id, name, CAST(price AS REAL) AS converted_price FROM products&quot;</span>
 
-<span class="c1">## Translates the query into Spark SQL, formats it, and delimits all of its identifiers</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;spark&quot;</span><span class="p">,</span> <span class="n">identify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># Transpile the MySQL query to Spark SQL dialect</span>
+<span class="n">spark_sql_query</span> <span class="o">=</span> <span class="n">sqlglot</span><span class="o">.</span><span class="n">transpile</span><span class="p">(</span><span class="n">mysql_query</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="s2">&quot;mysql&quot;</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="s2">&quot;spark&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">spark_sql_query</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT
-  `id`,
-  `name`,
-  CAST(`price` AS FLOAT) AS `converted_price`
-FROM `products`
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SELECT COALESCE(column_name, &#39;default_value&#39;) AS column_value FROM my_table
 </pre></div>
 </div>
 </div>
 </div>
-<p><a class="reference external" href="https://bit.ly/4dGyTmP">Link to SQLGlot</a>.</p>
+<p>Here, SQLGlot automatically converts the MySQL <code class="docutils literal notranslate"><span class="pre">IFNULL</span></code> function to Spark SQL’s <code class="docutils literal notranslate"><span class="pre">COALESCE</span></code> function. This ensures compatibility and saves time when migrating queries between MySQL and Spark SQL.</p>
+<p><a class="reference external" href="https://github.com/tobymao/sqlglot">Link to SQLGlot</a>.</p>
 </section>
 <section id="sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">
-<h2><span class="section-number">6.13.14. </span>SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations<a class="headerlink" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">6.13.8. </span>SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations<a class="headerlink" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-cell docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1809,20 +1163,14 @@ P3={&#39;name&#39;: &#39;Keyboard&#39;, &#39;price&#39;: 59.99, &#39;stock&#39;:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-analytics-with-duckdb">6.13.1. SQL Analytics with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-sql-operations-with-duckdb-on-pandas-dataframes">6.13.2. Efficient SQL Operations with DuckDB on Pandas DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficiently-handle-large-datasets-with-duckdb-and-pyarrow">6.13.3. Efficiently Handle Large Datasets with DuckDB and PyArrow</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simplify-csv-data-management-with-duckdb">6.13.4. Simplify CSV Data Management with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-csv-files-processing-with-duckdb">6.13.5. Multiple CSV Files Processing with DuckDB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#duckdb-query-pandas-dataframes-faster-with-columnar-storage">6.13.6. DuckDB: Query Pandas DataFrames Faster with Columnar Storage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">6.13.7. Create Dynamic SQL Statements with Python string Template</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.13.8. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.13.9. SQLModel: Simplify SQL Database Interactions in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.13.10. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.13.11. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.12. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlglot-write-once-run-anywhere-sql">6.13.13. SQLGlot: Write Once, Run Anywhere SQL</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.14. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-dynamic-sql-statements-with-python-string-template">6.13.1. Create Dynamic SQL Statements with Python string Template</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fuguesql-use-sql-to-work-with-pandas-spark-and-dask-dataframes">6.13.2. FugueSQL: Use SQL to Work with Pandas, Spark, and Dask DataFrames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlmodel-simplify-sql-database-interactions-in-python">6.13.3. SQLModel: Simplify SQL Database Interactions in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlfluff-a-linter-and-auto-formatter-for-your-sql-code">6.13.4. SQLFluff: A Linter and Auto-Formatter for Your SQL Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#postgresml-integrate-machine-learning-with-postgresql">6.13.5. PostgresML: Integrate Machine Learning with PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sql-metadata-extract-components-from-a-sql-statement-in-python">6.13.6. sql-metadata: Extract Components From a SQL Statement in Python</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-mysql-queries-to-spark-sql-with-sqlglot">6.13.7. Convert MySQL Queries to Spark SQL with SQLGlot</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sqlitedict-reducing-sqlite-complexity-with-dictionary-style-operations">6.13.8. SQliteDict: Reducing SQLite Complexity with Dictionary-Style Operations</a></li>
 </ul>
   </nav></div>
 
